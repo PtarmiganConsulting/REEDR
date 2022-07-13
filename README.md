@@ -1,4 +1,4 @@
-# REEDR
+# REEDR-O
 
 A repo for REEDR tied to an organization account rather than to my personal Github.
 
