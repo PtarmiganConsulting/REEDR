@@ -1,3 +1,3 @@
 # REEDR-O
 
-A repo for REEDR tied to an organization account (REEDR-Devs)
+A repo for REEDR tied to an organizational account (REEDR-Devs)
