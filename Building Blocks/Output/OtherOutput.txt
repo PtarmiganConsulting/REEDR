@@ -1,0 +1,94 @@
+Output:VariableDictionary,
+    Regular;                 !- Key Field
+
+
+!-   ===========  ALL OBJECTS IN CLASS: OUTPUT:CONSTRUCTIONS ===========
+
+Output:Constructions,
+    Constructions,           !- Details Type 1
+    Materials;               !- Details Type 2
+
+
+!-   ===========  ALL OBJECTS IN CLASS: OUTPUT:TABLE:SUMMARYREPORTS ===========
+
+Output:Table:SummaryReports,
+    InputVerificationandResultsSummary,  !- Report 1 Name
+    EquipmentSummary,        !- Report 2 Name
+    ClimaticDataSummary,     !- Report 3 Name
+    EnvelopeSummary,         !- Report 4 Name
+    AllSummary;              !- Report 5 Name
+
+!-   ===========  ALL OBJECTS IN CLASS: OUTPUTCONTROL:TABLE:STYLE ===========
+
+OutputControl:Table:Style,
+    CommaAndHTML,            !- Column Separator
+    InchPound;               !- Unit Conversion
+
+
+Output:Table:Monthly,
+    FanSplit,                !- Name
+    3,                       !- Digits After Decimal
+    Air System Cooling Coil Total Cooling Energy,  !- Variable or Meter 1 Name
+    HoursNonZero,            !- Aggregation Type for Variable or Meter 1
+    Air System Fan Electricity Energy,  !- Variable or Meter 2 Name
+    SumOrAverageDuringHoursShown,  !- Aggregation Type for Variable or Meter 2
+    Air System Heating Coil Total Heating Energy,  !- Variable or Meter 3 Name
+    HoursNonZero,            !- Aggregation Type for Variable or Meter 3
+    Air System Fan Electricity Energy,  !- Variable or Meter 4 Name
+    SumOrAverageDuringHoursShown,  !- Aggregation Type for Variable or Meter 4
+    Air System Fan Electricity Energy,  !- Variable or Meter 5 Name
+    SumOrAverage;            !- Aggregation Type for Variable or Meter 5
+
+Output:Table:Monthly,
+    CoilLoads,               !- Name
+    2,                       !- Digits After Decimal
+    Heating Coil Heating Rate ,  !- Variable or Meter 1 Name
+    SumOrAverage,            !- Aggregation Type for Variable or Meter 1
+    Heating Coil Air Heating Rate ,      !- Variable or Meter 2 Name
+    SumOrAverage,            !- Aggregation Type for Variable or Meter 2
+    Cooling Coil Total Cooling Rate ,  !- Variable or Meter 3 Name
+    SumOrAverage;            !- Aggregation Type for Variable or Meter 3
+
+Output:Table:Monthly,
+    Water Heater: Loads,     !- Name
+    2,                       !- Digits After Decimal
+    Water Heater Total Demand Rate ,  !- Variable or Meter 1 Name
+    SumOrAverage,            !- Aggregation Type for Variable or Meter 1
+    Water Heater Total Demand Energy ,  !- Variable or Meter 2 Name
+    SumOrAverage,            !- Aggregation Type for Variable or Meter 2
+    Water Heater Heating Rate ,  !- Variable or Meter 3 Name
+    SumOrAverage,            !- Aggregation Type for Variable or Meter 3
+    Water Heater Heating Energy ,  !- Variable or Meter 4 Name
+    SumOrAverage;            !- Aggregation Type for Variable or Meter 4
+
+Output:Table:Monthly,
+    Heating and Cooling Loads,  !- Name
+    2,                       !- Digits After Decimal
+    Zone Air System Sensible Cooling Energy,  !- Variable or Meter 1 Name
+    SumOrAverage,            !- Aggregation Type for Variable or Meter 1
+    Zone Air System Sensible Heating Energy,  !- Variable or Meter 2 Name
+    SumOrAverage;            !- Aggregation Type for Variable or Meter 2
+
+Output:Table:Monthly,
+    Lighting Loads,          !- Name
+    2,                       !- Digits After Decimal
+    Zone Lights Electric Consumption ,  !- Variable or Meter 1 Name
+    SumOrAverage,            !- Aggregation Type for Variable or Meter 1
+Exterior Lights Electric Consumption ,  !- Variable or Meter 2 Name
+    SumOrAverage;            !- Aggregation Type for Variable or Meter 2
+
+Output:Table:Monthly,
+    InternalGains,               !- Name
+    2,                       !- Digits After Decimal
+    Zone People Total Heat Gain,  !- Variable or Meter 1 Name
+    SumOrAverage,            !- Aggregation Type for Variable or Meter 1
+    Zone Lights Total Heat Gain,       !- Variable or Meter 2 Name
+    SumOrAverage,            !- Aggregation Type for Variable or Meter 2
+    Zone Electric Equipment Total Heat Gain,  !- Variable or Meter 3 Name
+    SumOrAverage,            !- Aggregation Type for Variable or Meter 3
+    Zone Gas Equipment Total Heat Gain,  !- Variable or Meter 4 Name
+    SumOrAverage,            !- Aggregation Type for Variable or Meter 4
+    Zone Other Equipment Total Heat Gain,  !- Variable or Meter 5 Name
+    SumOrAverage,            !- Aggregation Type for Variable or Meter 5
+    Zone Total Internal Total Heat Gain,  !- Variable or Meter 6 Name
+    SumOrAverage;            !- Aggregation Type for Variable or Meter 6

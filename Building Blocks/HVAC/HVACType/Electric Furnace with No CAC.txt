@@ -1,0 +1,84 @@
+!-   ===========  ALL OBJECTS IN CLASS: AIRFLOWNETWORK:DISTRIBUTION:COMPONENT:COIL ===========
+
+AirflowNetwork:Distribution:Component:Coil,
+    Main electric Heating Coil_unit1,
+    Coil:Heating:electric,
+    0.1,
+    1.000;
+
+AirflowNetwork:Distribution:Component:Coil,
+    DX Cooling Coil_unit1,                   !- Coil Name
+    Coil:Cooling:DX:SingleSpeed,              !- Coil Object Type
+    0.1,                                      !- Air Path Length {{m}}
+    1.000;                                    !- Air Path Hydraulic Diameter {{m}}
+
+!-   ===========  ALL OBJECTS IN CLASS: AIRFLOWNETWORK:DISTRIBUTION:LINKAGE ===========
+
+AirflowNetwork:Distribution:Linkage,
+    HeatingCoilLink_unit1,
+    HeatingInletNode_unit1,
+    HeatingOutletNode_unit1,
+    Main electric Heating Coil_unit1;
+
+!-   ===========  ALL OBJECTS IN CLASS: AIRLOOPHVAC:UNITARYHEATCOOL ===========
+
+AirLoopHVAC:UnitaryHeatCool,
+    ACandF_unit1,                     	!- Name
+    always_avail,             		!- Availability Schedule Name
+    air loop inlet node_unit1,        	!- Unitary System Air Inlet Node Name
+    air loop outlet node_unit1,       	!- Unitary System Air Outlet Node Name
+    fan_cycle,              		!- Supply Air Fan Operating Mode Schedule Name
+    80,                         	!- Maximum Supply Air Temperature {{C}}
+    autosize,                   	!- Supply Air Flow Rate During Cooling Operation {{m3/s}}
+    autosize,                   	!- Supply Air Flow Rate During Heating Operation {{m3/s}}
+    0,                          	!- Supply Air Flow Rate When No Cooling or Heating is Needed {{m3/s}}
+    living_unit1,                     	!- Controlling Zone or Thermostat Location
+    Fan:OnOff,            		!- Supply Fan Object Type
+    Supply Fan_unit1,                 	!- Supply Fan Name
+    BlowThrough,                	!- Fan Placement
+    Coil:Heating:electric, 	!- Heating Coil Object Type
+    Main electric Heating Coil_unit1,    !- Heating Coil Name
+    Coil:Cooling:DX:SingleSpeed,	!- Cooling Coil Object Type
+    DX Cooling Coil_unit1,            	!- Cooling Coil Name
+    None;                       	!- Dehumidification Control Type
+
+!-   ===========  ALL OBJECTS IN CLASS: COIL:HEATING ===========
+
+Coil:Heating:electric,
+    Main electric heating coil_unit1,	!- Name
+    always_avail,               		!- Availability Schedule Name
+    1,          			!- Efficiency
+    autosize,                   		!- Nominal Capacity {{W}}
+    heating coil air inlet node_unit1,    	!- Air Inlet Node Name
+    air loop outlet node_unit1;       	!- Air Outlet Node Name
+
+!-   ===========  ALL OBJECTS IN CLASS: COIL:COOLING:DX:SINGLESPEED ===========
+
+Coil:Cooling:DX:SingleSpeed,
+    DX Cooling Coil_unit1,     !- Name
+    always_off,             	!- Availability Schedule Name
+    autosize,                   !- Gross Rated Total Cooling Capacity {{W}}
+    autosize,                   !- Gross Rated Sensible Heat Ratio
+    4.06853019625951,               !- Gross Rated Cooling COP {{W/W}}
+    autosize,                   !- Rated Air Flow Rate {{m3/s}}
+    ,                        	!- Rated Evaporator Fan Power Per Volume Flow Rate {{W/(m3/s)}}
+    Cooling Coil Air Inlet Node_unit1,!- Air Inlet Node Name
+    Heating Coil Air Inlet Node_unit1,!- Air Outlet Node Name
+
+
+    Cool-Cap-FT,                !- Total Cooling Capacity Function of Temperature Curve Name
+    ConstantCubic,              !- Total Cooling Capacity Function of Flow Fraction Curve Name
+    Cool-EIR-FT,                !- Energy Input Ratio Function of Temperature Curve Name
+    ConstantCubic,              !- Energy Input Ratio Function of Flow Fraction Curve Name
+    Cool-PLF-fPLR,              !- Part Load Fraction Correlation Curve Name
+    ;														!- Minimum Outdoor Dry-Bulb Temperature for Compressor Operation {{C}}
+
+!-   ===========  ALL OBJECTS IN CLASS: BRANCH ===========
+
+Branch,
+    Air Loop Main Branch_unit1,       	!- Name
+    ,                           	!- Pressure Drop Curve Name
+    AirLoopHVAC:UnitaryHeatCool,	!- Component 1 Object Type
+    ACandF_unit1,                     	!- Component 1 Name
+    Air Loop Inlet Node_unit1,        	!- Component 1 Inlet Node Name
+    Air loop outlet node_unit1;       	!- Component 1 Outlet Node Name

@@ -1,0 +1,345 @@
+!-   ===========  ALL OBJECTS IN CLASS: MATERIAL ===========
+
+!- Sheathing insulation and framing material: R0
+ Material,
+     sheathing_consol_layer, !Name
+     Rough,!- Roughness
+     0.0127, !- Thickness {m}
+     0.0940184, !- Conductivity {W/m-K}
+     685.008, !- Density {kg/m3}
+     1172.332; !- Specific Heat {J/kg-K}
+
+!- bsmtwall insulation and framing material: R0.0001
+ Material,
+     bsmtwall_consol_layer, !Name
+     Rough,!- Roughness
+     0.000254, !- Thickness {m}
+     10.84384, !- Conductivity {W/m-K}
+     120.801, !- Density {kg/m3}
+     1036.25775; !- Specific Heat {J/kg-K}
+
+!- crawlwall insulation and framing material: R0.0001
+ Material,
+     crawlwall_consol_layer, !Name
+     Rough,!- Roughness
+     0.000254, !- Thickness {m}
+     10.84384, !- Conductivity {W/m-K}
+     120.801, !- Density {kg/m3}
+     1036.25775; !- Specific Heat {J/kg-K}
+
+ Material,
+     Very High Reflectivity Surface,  !- Name
+     Smooth,                  !- Roughness
+     0.0005,                  !- Thickness {m}
+     237,                     !- Conductivity {W/m-K}
+     2702,                    !- Density {kg/m3}
+     903,                     !- Specific Heat {J/kg-K}
+     0.90,                    !- Thermal Absorptance
+     0.05,                    !- Solar Absorptance
+     0.05;                    !- Visible Absorptance
+
+ Material,
+     GypsumBoard-5/16in,       !- Name
+     Rough,                   !- Roughness
+     7.93953E-03,              !- Thickness {m}
+     0.1586200,               !- Conductivity {W/m-K}
+     640,                     !- Density {kg/m3}
+     1129.6,                   !- Specific Heat {J/kg-K}
+     0.9,                     !- Thermal Absorptance
+     0.4,                     !- Solar Absorptance
+     0.1;                     !- Visible Absorptance
+
+ Material,
+     CopperPipe,              !- Name
+     MediumRough,             !- Roughness
+     1.90500386169072E-02,    !- Thickness {m}
+     401,                     !- Conductivity {W/m-K}
+     2243.000,                !- Density {kg/m3}
+     837.0000,                !- Specific Heat {J/kg-K}
+     0.9000000,               !- Thermal Absorptance
+     0.6500000,               !- Solar Absorptance
+     0.6500000;               !- Visible Absorptance
+
+ Material,
+     F08 Metal surface,       !- Name
+     Smooth,                  !- Roughness
+     0.0008,                  !- Thickness {m}
+     45.28,                   !- Conductivity {W/m-K}
+     7824,                    !- Density {kg/m3}
+     500;                     !- Specific Heat {J/kg-K}
+
+ Material,
+     Concrete_4in,            !- Name
+     Rough,                   !- Roughness
+     0.1014984,               !- Thickness {m}
+     1.312098,                !- Conductivity {W/m-K}
+     2242.8,                  !- Density {kg/m3}
+     465.2;                   !- Specific Heat {J/kg-K}
+
+ Material,
+     Asphalt_shingle,         !- Name
+     MediumRough,             !- Roughness
+     6.33985285170672E-03,    !- Thickness {m}
+     0.08186,                 !- Conductivity {W/m-K}
+     1121.2917044623,         !- Density {kg/m3}
+     1255.20000949809,        !- Specific Heat {J/kg-K}
+     ,                        !- Thermal Absorptance
+     0.75;                     !- Solar Absorptance
+
+ Material,
+     Wood_shingle,            !- Name
+     MediumSmooth,            !- Roughness
+     1.27000257446048E-02,    !- Thickness {m}
+     0.11388,                 !- Conductivity {W/m-K}
+     426.090847695673,        !- Density {kg/m3}
+     1631.76001234752;        !- Specific Heat {J/kg-K}
+
+ Material,
+     Slate_shingle,           !- Name
+     MediumSmooth,            !- Roughness
+     1.27000257446048E-02,    !- Thickness {m}
+     1.44219,                 !- Conductivity {W/m-K}
+     1601.845292089,          !- Density {kg/m3}
+     1255.20000949809;        !- Specific Heat {J/kg-K}
+
+ Material,
+     cement_stucco,              !- Name
+     MediumSmooth,            !- Roughness
+     1.905E-02,    	     !- Thickness {m}
+     0.721,                   !- Conductivity {W/m-K}
+     1865.58	   ,         !- Density {kg/m3}
+     878.640006648665;        !- Specific Heat {J/kg-K}
+
+ Material,
+     syn_stucco,              !- Name	# VM: Used perlite plaster from 2009 HOF, Table 4, chp 26 and back-calculated thickness to meet R0.2 based on Reid's note dtd. 3/28/2013
+     MediumSmooth,            !- Roughness
+     0.3048E-02,    	     !- Thickness {m}
+     8.65E-02,                   !- Conductivity {W/m-K}
+     400	   ,                 !- Density {kg/m3}
+     878.640006648665;        !- Specific Heat {J/kg-K} # VM: Kept sp.heat same as cement_stucco due to lack of data
+
+ Material,
+     Drywall_1/2in,           !- Name
+     MediumSmooth,            !- Roughness
+     1.27000257446048E-02,    !- Thickness {m}
+     0.16009,                 !- Conductivity {W/m-K}
+     800.922646044499,        !- Density {kg/m3}
+     1087.84000823168;        !- Specific Heat {J/kg-K}
+
+ Material,
+     OSB_5/8in,               !- Name
+     MediumSmooth,            !- Roughness
+     0.015875032180756,       !- Thickness {m}
+     0.1163,                  !- Conductivity {W/m-K}
+     544.627399310259,        !- Density {kg/m3}
+     1213.36000918149;        !- Specific Heat {J/kg-K}
+
+ Material,
+     OSB_7/16in,               !- Name
+     MediumSmooth,            !- Roughness
+     0.0111125,       		!- Thickness {m}
+     0.1163,                  !- Conductivity {W/m-K}
+     544.627399310259,        !- Density {kg/m3}
+     1213.36000918149;        !- Specific Heat {J/kg-K}
+
+ Material,
+     Blown_R30,               !- Name
+     MediumRough,             !- Roughness
+     0.212598430964684,       !- Thickness {m}
+     0.04119,                 !- Conductivity {W/m-K}
+     9.61107175253399,        !- Density {kg/m3}
+     836.800006332062;        !- Specific Heat {J/kg-K}
+
+ Material,
+     Blown_R30_top,           !- Name
+     MediumRough,             !- Roughness
+     0.117348237880148,       !- Thickness {m}
+     0.04119,                 !- Conductivity {W/m-K}
+     9.61107175253399,        !- Density {kg/m3}
+     836.800006332062,        !- Specific Heat {J/kg-K}
+     0.9,                     !- Thermal Absorptance
+     0.7,                     !- Solar Absorptance
+     0.7;                     !- Visible Absorptance
+
+ Material,
+     Plywood_3/4in,           !- Name
+     Rough,                   !- Roughness
+     0.01905,                 !- Thickness {m}
+     0.1154577,               !- Conductivity {W/m-K}
+     544.68,                  !- Density {kg/m3}
+     674.54,                  !- Specific Heat {J/kg-K}
+     0.9,                     !- Thermal Absorptance
+     0.7,                     !- Solar Absorptance
+     0.7;                     !- Visible Absorptance
+
+ Material,
+     Batt_R19,                !- Name
+     MediumRough,             !- Roughness
+     2.54000514892096E-02,    !- Thickness {m}
+     3.47522010738099E-03,    !- Conductivity {W/m-K}
+     9.61107175253399,        !- Density {kg/m3}
+     836.800006332062,        !- Specific Heat {J/kg-K}
+     0.9,                     !- Thermal Absorptance
+     0.7,                     !- Solar Absorptance
+     0.7;                     !- Visible Absorptance
+
+ Material,
+     Lumber_2x4,              !- Name
+     Rough	,            !- Roughness
+     0.0890016,               !- Thickness {m}
+     0.1154577,               !- Conductivity {W/m-K}
+     512.64,                  !- Density {kg/m3}
+     767.58,                  !- Specific Heat {J/kg-K}
+     0.9,                     !- Thermal Absorptance
+     0.7,                     !- Solar Absorptance
+     0.7;                     !- Visible Absorptance
+
+ Material,
+     Carpet_n_pad,            !- Name
+     MediumSmooth,            !- Roughness
+     2.54000514892096E-02,    !- Thickness {m}
+     6.01314018580031E-02,    !- Conductivity {W/m-K}
+     32.03690584178,          !- Density {kg/m3}
+     836.800006332062,        !- Specific Heat {J/kg-K}
+     0.9,                     !- Thermal Absorptance
+     0.7,                     !- Solar Absorptance
+     0.7;                     !- Visible Absorptance
+
+ Material,
+     Batt_R13,                !- Name
+     MediumRough,             !- Roughness
+     0.0889,                  !- Thickness {m}
+     0.03876,                 !- Conductivity {W/m-K}
+     9.61107175253399,        !- Density {kg/m3}
+     836.800006332062,        !- Specific Heat {J/kg-K}
+     0.9,                     !- Thermal Absorptance
+     0.7,                     !- Solar Absorptance
+     0.7;                     !- Visible Absorptance
+
+ Material,
+     OSB_1/2in,               !- Name
+     MediumSmooth,            !- Roughness
+     1.27000257446048E-02,    !- Thickness {m}
+     0.1163,                  !- Conductivity {W/m-K}
+     544.627399310259,        !- Density {kg/m3}
+     1213.36000918149,        !- Specific Heat {J/kg-K}
+     0.9,                     !- Thermal Absorptance
+     0.7,                     !- Solar Absorptance
+     0.7;                     !- Visible Absorptance
+
+ Material,
+     soil_12in,               !- Name
+     Rough,                   !- Roughness
+     0.3048,                  !- Thickness {m}
+     1.731,                   !- Conductivity {W/m-K}
+     1842.3,                  !- Density {kg/m3}
+     232.6,                   !- Specific Heat {J/kg-K}
+     0.9,                     !- Thermal Absorptance
+     0.7,                     !- Solar Absorptance
+     0.7;                     !- Visible Absorptance
+
+ Material,
+     door_const,              !- Name
+     Smooth,                  !- Roughness
+     0.0362310629883623,               !- Thickness {m}			# back calculating to yield reqd. U
+     0.0720096,               !- Conductivity {W/m-K}
+     512.64,                  !- Density {kg/m3}
+     767.58;                  !- Specific Heat {J/kg-K}
+
+ Material,
+     Gyp_board_1/2in,       !- Name
+     Rough,                   !- Roughness
+     0.01271016,              !- Thickness {m}
+     0.1586200,               !- Conductivity {W/m-K}
+     640,                     !- Density {kg/m3}
+     1129.6,                   !- Specific Heat {J/kg-K}
+     0.9,                     !- Thermal Absorptance
+     0.4,                     !- Solar Absorptance
+     0.1;                     !- Visible Absorptance
+
+ Material,
+     Std Wood 6inch,          !- Name
+     MediumSmooth,            !- Roughness
+     0.15,                    !- Thickness {m}
+     0.12,                    !- Conductivity {W/m-K}
+     540.0000,                !- Density {kg/m3}
+     1210,                    !- Specific Heat {J/kg-K}
+     0.9000000,               !- Thermal Absorptance
+     0.7000000,               !- Solar Absorptance
+     0.7000000;               !- Visible Absorptance
+
+ !-   ===========  ALL OBJECTS IN CLASS: MATERIAL:NOMASS ===========
+
+ Material:NoMass,
+     Manf_wall_airgap,         !- Name
+     Smooth,                  !- Roughness
+     0.12;    !- Thermal Resistance {m2-K/W}..1 inch air gap in vented walls..
+
+ Material:NoMass,
+     Bldg_paper_felt,         !- Name
+     Smooth,                  !- Roughness
+     1.05666113069662E-02;    !- Thermal Resistance {m2-K/W}
+
+ Material:NoMass,
+     R_high,                  !- Name
+     MediumRough,             !- Roughness
+     177;                     !- Thermal Resistance {m2-K/W}
+
+Material,
+	    Pipe Insulation,         !- Name
+	    VeryRough,               !- Roughness
+	    0.0127032520325203,  !- Thickness {m}
+	    0.03317175,          !- Conductivity {W/m-K}
+	    91.0,                    !- Density {kg/m3}
+	    836.0,                   !- Specific Heat {J/kg-K}
+	    0.9,                     !- Thermal Absorptance
+	    0.5,                     !- Solar Absorptance
+	    0.5;                     !- Visible Absorptance
+
+ !-   ===========  ALL OBJECTS IN CLASS: MATERIAL:AIRGAP ===========
+
+ Material:AirGap,
+     Air_4_in_vert,           !- Name
+     0.158499169604493;       !- Thermal Resistance {m2-K/W}
+
+ Material:AirGap,
+     3/4in_air_space,           !- Name
+     0.08513;       !- Thermal Resistance {m2-K/W} http://www.maconline.org/tech/design/cavity2web.pdf (adjusted to 3/4 in)
+
+ Material:AirGap,
+     3/4in_Reflective_air_space,           !- Name
+     0.246554;       !- Thermal Resistance {m2-K/W} http://www.maconline.org/tech/design/cavity2web.pdf (adjusted to 3/4 in)
+
+ !-   ===========  ALL OBJECTS IN CLASS: WINDOWMATERIAL:GLAZING ===========
+
+ WindowMaterial:Glazing,
+     Clear Acrylic Plastic,   !- Name
+     SpectralAverage,         !- Optical Data Type
+     ,                        !- Window Glass Spectral Data Set Name
+     0.003,                   !- Thickness {m}
+     0.92,                    !- Solar Transmittance at Normal Incidence
+     0.05,                    !- Front Side Solar Reflectance at Normal Incidence
+     0.05,                    !- Back Side Solar Reflectance at Normal Incidence
+     0.92,                    !- Visible Transmittance at Normal Incidence
+     0.05,                    !- Front Side Visible Reflectance at Normal Incidence
+     0.05,                    !- Back Side Visible Reflectance at Normal Incidence
+     0.00,                    !- Infrared Transmittance at Normal Incidence
+     0.90,                    !- Front Side Infrared Hemispherical Emissivity
+     0.90,                    !- Back Side Infrared Hemispherical Emissivity
+     0.90;                    !- Conductivity {W/m-K}
+
+   WindowMaterial:Glazing,
+     Diffusing Acrylic Plastic,  !- Name
+     SpectralAverage,         !- Optical Data Type
+     ,                        !- Window Glass Spectral Data Set Name
+     0.0022,                  !- Thickness {m}
+     0.90,                    !- Solar Transmittance at Normal Incidence
+     0.08,                    !- Front Side Solar Reflectance at Normal Incidence
+     0.08,                    !- Back Side Solar Reflectance at Normal Incidence
+     0.90,                    !- Visible Transmittance at Normal Incidence
+     0.08,                    !- Front Side Visible Reflectance at Normal Incidence
+     0.08,                    !- Back Side Visible Reflectance at Normal Incidence
+     0.00,                    !- Infrared Transmittance at Normal Incidence
+     0.90,                    !- Front Side Infrared Hemispherical Emissivity
+     0.90,                    !- Back Side Infrared Hemispherical Emissivity
+     0.90;                    !- Conductivity {W/m-K}
