@@ -5,6 +5,7 @@ from pprint import pprint # used to print dataframes to command prompt in more l
 
 ## Import "internal" modules needed for REEDR...
 from unitconversions import convert_J_to_kWh, convert_J_to_therm, convert_W_to_Btuh, convert_degC_to_degF
+from getdata import cwd, parent, sht1, REEDR_wb, Model_Input_ws, master_directory, runlog, master_dict_list
 
 
 ## Main fuction used to generate custom output reports for REEDR.
@@ -12,10 +13,10 @@ from unitconversions import convert_J_to_kWh, convert_J_to_therm, convert_W_to_B
 ##   1) user inputs (i.e. instructions) on requested output granularity and end uses, and
 ##   2) EnergyPlus-generated outputs from individual runs
 ## to create a custom report that combines output from all EnergyPlus runs.
-def genoutputs(gui_params, get_data_dict):
+def genoutputs(begin_mo, begin_day, end_mo, end_day, sim_type, output_gran, output_enduses):
 
     # Set the proper working directory.
-    set_dir = get_data_dict["parent"]
+    set_dir = parent
 
     # Update simulation status box in Excel interface...
     status = "Generating model output..."
@@ -51,53 +52,53 @@ def genoutputs(gui_params, get_data_dict):
     "Infiltration_UnheatedBasement[ACH]": ['UNHEATEDBSMT_UNIT1:AFN Zone Infiltration Air Change Rate [ach](Annual)', "NA"],
     }
 
-    Demand_Total_Electric_HVAC_dict = {"Total_Electric_HVAC[W]": ['Whole Building:Facility Total HVAC Electricity Demand Rate [W]' + '(' + gui_params["output_gran"] +')', "Elec"],
-    "Living_Zone_Air_Temperature[F]": ['LIVING_UNIT1:Zone Mean Air Temperature [C]' + '(' + gui_params["output_gran"] +')', "Temp"],
-    "Attic_Zone_Air_Temperature[F]": ['ATTIC_UNIT1:Zone Mean Air Temperature [C]' + '(' + gui_params["output_gran"] +')', "Temp"],
-    "Crawlspace_Zone_Air_Temperature[F]": ['CRAWLSPACE_UNIT1:Zone Mean Air Temperature [C]' + '(' + gui_params["output_gran"] +')', "Temp"],
+    Demand_Total_Electric_HVAC_dict = {"Total_Electric_HVAC[W]": ['Whole Building:Facility Total HVAC Electricity Demand Rate [W]' + '(' + output_gran +')', "Elec"],
+    "Living_Zone_Air_Temperature[F]": ['LIVING_UNIT1:Zone Mean Air Temperature [C]' + '(' + output_gran +')', "Temp"],
+    "Attic_Zone_Air_Temperature[F]": ['ATTIC_UNIT1:Zone Mean Air Temperature [C]' + '(' + output_gran +')', "Temp"],
+    "Crawlspace_Zone_Air_Temperature[F]": ['CRAWLSPACE_UNIT1:Zone Mean Air Temperature [C]' + '(' + output_gran +')', "Temp"],
     }
 
-    Demand_Heating_dict = {"ASHP_Compressor_Heat[W]": ['MAIN DX HEATING COIL_UNIT1:Heating Coil Electricity Rate [W]' + '(' + gui_params["output_gran"] +')', "Elec"],
-    "ASHP_Resistance_Backup_Heat[W]": ['SUPP HEATING COIL_UNIT1:Heating Coil Electricity Rate [W]' + '(' + gui_params["output_gran"] +')', "Elec"],
-    "Electric_Furnace_Heat[W]": ['MAIN ELECTRIC HEATING COIL_UNIT1:Heating Coil Electricity Rate [W]' + '(' + gui_params["output_gran"] +')', "Elec"],
-    "Gas_Furnace_Gas_Heat[Btu/h]": ['MAIN FUEL HEATING COIL_UNIT1:Heating Coil NaturalGas Rate [W]' + '(' + gui_params["output_gran"] +')', "Gas"],
-    "Gas_Furnace_Electric_Heat[W]": ['MAIN FUEL HEATING COIL_UNIT1:Heating Coil Electricity Rate [W]' + '(' + gui_params["output_gran"] +')', "Elec"],
-    "Living_Zone_Air_Temperature[F]": ['LIVING_UNIT1:Zone Mean Air Temperature [C]' + '(' + gui_params["output_gran"] +')', "Temp"],
-    "Attic_Zone_Air_Temperature[F]": ['ATTIC_UNIT1:Zone Mean Air Temperature [C]' + '(' + gui_params["output_gran"] +')', "Temp"],
-    "Crawlspace_Zone_Air_Temperature[F]": ['CRAWLSPACE_UNIT1:Zone Mean Air Temperature [C]' + '(' + gui_params["output_gran"] +')', "Temp"],
+    Demand_Heating_dict = {"ASHP_Compressor_Heat[W]": ['MAIN DX HEATING COIL_UNIT1:Heating Coil Electricity Rate [W]' + '(' + output_gran +')', "Elec"],
+    "ASHP_Resistance_Backup_Heat[W]": ['SUPP HEATING COIL_UNIT1:Heating Coil Electricity Rate [W]' + '(' + output_gran +')', "Elec"],
+    "Electric_Furnace_Heat[W]": ['MAIN ELECTRIC HEATING COIL_UNIT1:Heating Coil Electricity Rate [W]' + '(' + output_gran +')', "Elec"],
+    "Gas_Furnace_Gas_Heat[Btu/h]": ['MAIN FUEL HEATING COIL_UNIT1:Heating Coil NaturalGas Rate [W]' + '(' + output_gran +')', "Gas"],
+    "Gas_Furnace_Electric_Heat[W]": ['MAIN FUEL HEATING COIL_UNIT1:Heating Coil Electricity Rate [W]' + '(' + output_gran +')', "Elec"],
+    "Living_Zone_Air_Temperature[F]": ['LIVING_UNIT1:Zone Mean Air Temperature [C]' + '(' + output_gran +')', "Temp"],
+    "Attic_Zone_Air_Temperature[F]": ['ATTIC_UNIT1:Zone Mean Air Temperature [C]' + '(' + output_gran +')', "Temp"],
+    "Crawlspace_Zone_Air_Temperature[F]": ['CRAWLSPACE_UNIT1:Zone Mean Air Temperature [C]' + '(' + output_gran +')', "Temp"],
     }
 
-    Demand_Cooling_dict = {"Cooling[W]": ['DX COOLING COIL_UNIT1:Cooling Coil Electricity Rate [W]' + '(' + gui_params["output_gran"] +')', "Elec"],
-    "Living_Zone_Air_Temperature[F]": ['LIVING_UNIT1:Zone Mean Air Temperature [C]' + '(' + gui_params["output_gran"] +')', "Temp"],
-    "Attic_Zone_Air_Temperature[F]": ['ATTIC_UNIT1:Zone Mean Air Temperature [C]' + '(' + gui_params["output_gran"] +')', "Temp"],
-    "Crawlspace_Zone_Air_Temperature[F]": ['CRAWLSPACE_UNIT1:Zone Mean Air Temperature [C]' + '(' + gui_params["output_gran"] +')', "Temp"],
+    Demand_Cooling_dict = {"Cooling[W]": ['DX COOLING COIL_UNIT1:Cooling Coil Electricity Rate [W]' + '(' + output_gran +')', "Elec"],
+    "Living_Zone_Air_Temperature[F]": ['LIVING_UNIT1:Zone Mean Air Temperature [C]' + '(' + output_gran +')', "Temp"],
+    "Attic_Zone_Air_Temperature[F]": ['ATTIC_UNIT1:Zone Mean Air Temperature [C]' + '(' + output_gran +')', "Temp"],
+    "Crawlspace_Zone_Air_Temperature[F]": ['CRAWLSPACE_UNIT1:Zone Mean Air Temperature [C]' + '(' + output_gran +')', "Temp"],
     }
 
-    Demand_Fan_dict = {"Main_Supply_Fan[W]": ['SUPPLY FAN_UNIT1:Fan Electricity Rate [W]' + '(' + gui_params["output_gran"] +')', "Elec"],
-    "OA_Supply_Fan[W]": ['OASUPPLYFAN_UNIT1:Fan Electricity Rate [W]' + '(' + gui_params["output_gran"] +')', "Elec"],
-    "OA_Exhaust_Fan[W]": ['OAEXHAUSTFAN_UNIT1:Fan Electricity Rate [W]' + '(' + gui_params["output_gran"] +')', "Elec"],
-    "Living_Zone_Air_Temperature[F]": ['LIVING_UNIT1:Zone Mean Air Temperature [C]' + '(' + gui_params["output_gran"] +')', "Temp"],
-    "Attic_Zone_Air_Temperature[F]": ['ATTIC_UNIT1:Zone Mean Air Temperature [C]' + '(' + gui_params["output_gran"] +')', "Temp"],
-    "Crawlspace_Zone_Air_Temperature[F]": ['CRAWLSPACE_UNIT1:Zone Mean Air Temperature [C]' + '(' + gui_params["output_gran"] +')', "Temp"],
+    Demand_Fan_dict = {"Main_Supply_Fan[W]": ['SUPPLY FAN_UNIT1:Fan Electricity Rate [W]' + '(' + output_gran +')', "Elec"],
+    "OA_Supply_Fan[W]": ['OASUPPLYFAN_UNIT1:Fan Electricity Rate [W]' + '(' + output_gran +')', "Elec"],
+    "OA_Exhaust_Fan[W]": ['OAEXHAUSTFAN_UNIT1:Fan Electricity Rate [W]' + '(' + output_gran +')', "Elec"],
+    "Living_Zone_Air_Temperature[F]": ['LIVING_UNIT1:Zone Mean Air Temperature [C]' + '(' + output_gran +')', "Temp"],
+    "Attic_Zone_Air_Temperature[F]": ['ATTIC_UNIT1:Zone Mean Air Temperature [C]' + '(' + output_gran +')', "Temp"],
+    "Crawlspace_Zone_Air_Temperature[F]": ['CRAWLSPACE_UNIT1:Zone Mean Air Temperature [C]' + '(' + output_gran +')', "Temp"],
     }
 
-    Demand_Lighting_dict = {"Hardwired_Lighting[W]": ['LIVING HARDWIRED LIGHTING1:Lights Electricity Rate [W]' + '(' + gui_params["output_gran"] +')', "Elec"],
-    "Plugin_Lighting[W]": ['LIVING PLUG-IN LIGHTING1:Lights Electricity Rate [W]' + '(' + gui_params["output_gran"] +')', "Elec"],
+    Demand_Lighting_dict = {"Hardwired_Lighting[W]": ['LIVING HARDWIRED LIGHTING1:Lights Electricity Rate [W]' + '(' + output_gran +')', "Elec"],
+    "Plugin_Lighting[W]": ['LIVING PLUG-IN LIGHTING1:Lights Electricity Rate [W]' + '(' + output_gran +')', "Elec"],
     }
 
-    Demand_Water_Heating_dict = {"Electric_Water_Heater[W]": ['WATER HEATER_UNIT1:Water Heater Electricity Rate [W]' + '(' + gui_params["output_gran"] +')', "Elec"],
-    "Gas_Water_Heater[Btu/h]": ['WATER HEATER_UNIT1:Water Heater NaturalGas Rate [W]' + '(' + gui_params["output_gran"] +')', "Gas"],
-    "Mains_Water_Temp[F]": ['Environment:Site Mains Water Temperature [C]' + '(' + gui_params["output_gran"] +')', "Temp"],
+    Demand_Water_Heating_dict = {"Electric_Water_Heater[W]": ['WATER HEATER_UNIT1:Water Heater Electricity Rate [W]' + '(' + output_gran +')', "Elec"],
+    "Gas_Water_Heater[Btu/h]": ['WATER HEATER_UNIT1:Water Heater NaturalGas Rate [W]' + '(' + output_gran +')', "Gas"],
+    "Mains_Water_Temp[F]": ['Environment:Site Mains Water Temperature [C]' + '(' + output_gran +')', "Temp"],
     }
 
-    Demand_Other_Electric_Equipment_dict = {"Dishwasher[W]": ['DISHWASHER1:Electric Equipment Electricity Rate [W]' + '(' + gui_params["output_gran"] +')', "Elec"],
-    "Refrigerator[W]": ['REFRIGERATOR1:Electric Equipment Electricity Rate [W]' + '(' + gui_params["output_gran"] +')', "Elec"],
-    "Clothes_Washer[W]": ['CLOTHESWASHER1:Electric Equipment Electricity Rate [W]' + '(' + gui_params["output_gran"] +')', "Elec"],
-    "Electric_Dryer[W]": ['ELECTRIC_DRYER1:Electric Equipment Electricity Rate [W]' + '(' + gui_params["output_gran"] +')', "Elec"],
-    "Electric_Range[W]": ['ELECTRIC_RANGE1:Electric Equipment Electricity Rate [W]' + '(' + gui_params["output_gran"] +')', "Elec"],
-    "Television[W]": ['TELEVISION1:Electric Equipment Electricity Rate [W]' + '(' + gui_params["output_gran"] +')', "Elec"],
-    "Miscellaneous_Electric_Loads_1[W]": ['ELECTRIC_MELS1:Electric Equipment Electricity Rate [W]' + '(' + gui_params["output_gran"] +')', "Elec"],
-    "Miscellaneous_Electric_Loads_2[W]": ['IECC_ADJ1:Electric Equipment Electricity Rate [W]' + '(' + gui_params["output_gran"] +')', "Elec"],
+    Demand_Other_Electric_Equipment_dict = {"Dishwasher[W]": ['DISHWASHER1:Electric Equipment Electricity Rate [W]' + '(' + output_gran +')', "Elec"],
+    "Refrigerator[W]": ['REFRIGERATOR1:Electric Equipment Electricity Rate [W]' + '(' + output_gran +')', "Elec"],
+    "Clothes_Washer[W]": ['CLOTHESWASHER1:Electric Equipment Electricity Rate [W]' + '(' + output_gran +')', "Elec"],
+    "Electric_Dryer[W]": ['ELECTRIC_DRYER1:Electric Equipment Electricity Rate [W]' + '(' + output_gran +')', "Elec"],
+    "Electric_Range[W]": ['ELECTRIC_RANGE1:Electric Equipment Electricity Rate [W]' + '(' + output_gran +')', "Elec"],
+    "Television[W]": ['TELEVISION1:Electric Equipment Electricity Rate [W]' + '(' + output_gran +')', "Elec"],
+    "Miscellaneous_Electric_Loads_1[W]": ['ELECTRIC_MELS1:Electric Equipment Electricity Rate [W]' + '(' + output_gran +')', "Elec"],
+    "Miscellaneous_Electric_Loads_2[W]": ['IECC_ADJ1:Electric Equipment Electricity Rate [W]' + '(' + output_gran +')', "Elec"],
     }
 
     # Build Demand_All_End_Use dictionary by combining all individual end use dictionaries
@@ -106,11 +107,11 @@ def genoutputs(gui_params, get_data_dict):
         Demand_All_End_Uses_dict.update(d)
 
     # Write to RunLog...
-    get_data_dict["runlog"].write("Starting to read model outputs... \n ...\n")
+    runlog.write("Starting to read model outputs... \n ...\n")
 
     ## Determine report type to output based on user input...
     #... determine whether to create an energy or demand report
-    if gui_params["output_gran"] == "Annual":
+    if output_gran == "Annual":
         output_type = "Energy"
         output_enduses = "All_End_Uses" # if outputting annual energy report, always report all end uses
     else:
@@ -122,18 +123,18 @@ def genoutputs(gui_params, get_data_dict):
     #... convert string to a dictionary, so that it can be properly processed below
     output_dict = locals()[output_dict_str]
     #... write to RunLog...
-    get_data_dict["runlog"].write("Producing report for " + report_name + "... \n")
+    runlog.write("Producing report for " + report_name + "... \n")
 
     ## This is the main function ("sub-routine") that generates the actual custom report.
     ## It takes as arguments the working directory (set_dir), the proper output dictionary (output_dict),
     ## the proper report name (report_name), and the requested output granularity (output_gran).
     ## From there, it takes the proper outputs from the individual EnergyPlus-generated output files
     ## and creates a new, custom report in Excel that combines all runs.
-    produce_output_report(set_dir, output_dict, report_name, gui_params["output_gran"], output_type, get_data_dict)
+    produce_output_report(set_dir, output_dict, report_name, output_gran, output_type)
 
     # Update simulation status box in REEDR.xlsm...
     #sht1.range('status_line_3').value = "Generating model output... Model output complete."
-    get_data_dict["runlog"].write("...\nModel output complete.")
+    runlog.write("...\nModel output complete.")
 
     # sub = subprocess.Popen("cmd /k")
 
@@ -145,10 +146,10 @@ def genoutputs(gui_params, get_data_dict):
 ## the proper report name (report_name), the requested output granularity (output_gran), and the output type (energy or demand: output_type).
 ## From there, it takes the proper outputs from the individual EnergyPlus-generated output files
 ## and creates a new, custom report in Excel that combines all runs.
-def produce_output_report(set_dir, output_dict, end_use_report_name, output_gran, output_type, get_data_dict):
+def produce_output_report(set_dir, output_dict, end_use_report_name, output_gran, output_type):
 
     # Get run labels for output table
-    df_for_run_labels = pd.read_excel(get_data_dict["REEDR_wb"], sheet_name=get_data_dict["Model_Input_ws"]) # This is the sheet with the model inputs
+    df_for_run_labels = pd.read_excel(REEDR_wb, sheet_name=Model_Input_ws) # This is the sheet with the model inputs
     run_label_list = df_for_run_labels['Run_Label'].tolist()
 
     # Get column names/output fields for output table
@@ -166,7 +167,7 @@ def produce_output_report(set_dir, output_dict, end_use_report_name, output_gran
     # Set counter used to update simulation progress to 1...
     i = 1
     ## Main loop that fills output dataframe.
-    for row in get_data_dict["master_directory"]: # go through every runlabel row...
+    for row in master_dict_list: # go through every runlabel row...
         run_label = row["Run_Label"]
         timestep = row["Timesteps_Per_Hr"]
 
@@ -176,7 +177,7 @@ def produce_output_report(set_dir, output_dict, end_use_report_name, output_gran
         #sht1.range('status_line_3').value = status
 
         # Get the path to the EnergyPlus output csv for each run
-        eplus_out_path = get_data_dict["master_directory"] + '/' + run_label + '/' + "eplusout.csv"
+        eplus_out_path = master_directory + '/' + run_label + '/' + "eplusout.csv"
 
         if output_gran == "Annual":
             # Read in the EnergyPlus-generated output csv
@@ -220,12 +221,12 @@ def produce_output_report(set_dir, output_dict, end_use_report_name, output_gran
             df_out = pd.concat([df_out, eplus_out_df])
 
         # Update run log
-        get_data_dict["runlog"].write("... sucessfully read outputs for run " + run_label + "\n")
+        runlog.write("... sucessfully read outputs for run " + run_label + "\n")
         # Update sim status counter
         i = i + 1
 
     # Create path string for new custom report
-    out_path = get_data_dict["master_directory"] + '/' + end_use_report_name + ".xlsx"
+    out_path = master_directory + '/' + end_use_report_name + ".xlsx"
     # If path already exists, remove it, to be overwritten
     if os.path.exists(out_path) == True:
         try:
@@ -233,7 +234,7 @@ def produce_output_report(set_dir, output_dict, end_use_report_name, output_gran
         except Exception as e:
             print(e)
             # Write error to RunLog
-            get_data_dict["runlog"].write("!!! Could not remove existing output file. REEDR experienced the following error: " + str(e) + " \n")
+            runlog.write("!!! Could not remove existing output file. REEDR experienced the following error: " + str(e) + " \n")
 
     ## Rename column headers in df with simpler, more descriptive names
     ## AND convert units where necessary

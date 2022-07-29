@@ -3,6 +3,7 @@ import subprocess
 from pathlib import Path # for getting current directory path
 import sys
 
+
 cwd = Path(os. getcwd())
 parent = cwd.parent.absolute()
 os.chdir(cwd)
@@ -14,10 +15,10 @@ sys.path.append(os.path.join(parent,"python-3.10.0","Lib","site-packages","win32
 sys.path.append(os.path.join(parent,"python-3.10.0","Lib","site-packages","openpyxl","xml"))
 
 # Note: when exe'ing, must add "Python." in front of each file name
+from getdata import sht1, runlog, begin_mo, begin_day, end_mo, end_day, sim_type, output_gran, output_enduses
 from genmodels import genmodels
 from runmodels import runmodels
 from genoutputs import genoutputs
-from getdata import getdata
 
 
 ##############################################
@@ -98,7 +99,7 @@ ed = ttk.Combobox(frm, width=5, values=days, textvariable=ed_input).grid(column=
 ttk.Button(frm, text="RUN", style='Run.TButton', width=15).grid(column=2, row=9, columnspan=3, padx=10, pady=15) # run button, idle rn
 
 
-gui_params={
+gui_data={
 "path_val" : path_input.get(),
 "project_val" : project_input.get(),
 "sim_type" : sim_input.get(),
@@ -116,8 +117,10 @@ root.mainloop()
 
 def main():
     
-    get_data_dict = getdata(gui_params)
+    
 
+
+# Here ends get data 
 ###########
 
 
@@ -126,11 +129,11 @@ def main():
 
     #Run genmodels.py
     try:
-        genmodels(gui_params, get_data_dict)
+        genmodels(begin_mo, begin_day, end_mo, end_day, sim_type, output_gran, output_enduses)
 
     except Exception as e:
-        get_data_dict["runlog"].write("!!! REEDR experienced the following error during model build: " + str(e) + " \n")
-        get_data_dict["runlog"].close()
+        runlog.write("!!! REEDR experienced the following error during model build: " + str(e) + " \n")
+        runlog.close()
         print()
         print("Model build failed.")
         print()
@@ -142,11 +145,11 @@ def main():
     #Run runmodels.py
     if hit_error == False:
         try:
-            runmodels(gui_params, get_data_dict)
+            runmodels()
 
         except Exception as e:
-            get_data_dict["runlog"].write("!!! REEDR experienced the following error during model runs: " + str(e) + " \n")
-            get_data_dict["runlog"].close()
+            runlog.write("!!! REEDR experienced the following error during model runs: " + str(e) + " \n")
+            runlog.close()
             print()
             print("Model run failed.")
             print()
@@ -158,11 +161,11 @@ def main():
     #Run genoutputs.py
     if hit_error == False:
         try:
-            genoutputs(gui_params, get_data_dict)
+            genoutputs(begin_mo, begin_day, end_mo, end_day, sim_type, output_gran, output_enduses)
 
         except Exception as e:
-            get_data_dict["runlog"].write("!!! REEDR experienced the following error during model output generation: " + str(e) + " \n")
-            get_data_dict["runlog"].close()
+            runlog.write("!!! REEDR experienced the following error during model output generation: " + str(e) + " \n")
+            runlog.close()
             print()
             print("Model output failed.")
             print()
@@ -174,5 +177,5 @@ def main():
     if hit_error == False:
         input("REEDR run successful. Please press enter to continue...")
 
-# if __name__ == "__main__":
-#     main()
+if __name__ == "__main__":
+    main()
