@@ -26,7 +26,72 @@ from tkinter import *
 from tkinter import ttk, filedialog
 from tkinter.filedialog import askopenfile
 
+##############################################
 
+def main():
+    
+    get_data_dict = getdata(gui_params)
+
+###########
+
+
+    # A switch used to skip subsequent code if an error is hit
+    hit_error = False
+
+    #Run genmodels.py
+    try:
+        genmodels(gui_params, get_data_dict)
+
+    except Exception as e:
+        get_data_dict["runlog"].write("!!! REEDR experienced the following error during model build: " + str(e) + " \n")
+        get_data_dict["runlog"].close()
+        print()
+        print("Model build failed.")
+        print()
+        print("REEDR experienced the following error: " + str(e))
+        print()
+        input("Please press enter to continue...")
+        hit_error = True
+
+    #Run runmodels.py
+    if hit_error == False:
+        try:
+            runmodels(gui_params, get_data_dict)
+
+        except Exception as e:
+            get_data_dict["runlog"].write("!!! REEDR experienced the following error during model runs: " + str(e) + " \n")
+            get_data_dict["runlog"].close()
+            print()
+            print("Model run failed.")
+            print()
+            print("REEDR experienced the following error: " + str(e))
+            print()
+            input("Please press enter to continue...")
+            hit_error = True
+
+    #Run genoutputs.py
+    if hit_error == False:
+        try:
+            genoutputs(gui_params, get_data_dict)
+
+        except Exception as e:
+            get_data_dict["runlog"].write("!!! REEDR experienced the following error during model output generation: " + str(e) + " \n")
+            get_data_dict["runlog"].close()
+            print()
+            print("Model output failed.")
+            print()
+            print("REEDR experienced the following error: " + str(e))
+            print()
+            input("Please press enter to continue...")
+            hit_error = True
+
+    if hit_error == False:
+        input("REEDR run successful. Please press enter to continue...")
+
+# if __name__ == "__main__":
+#     main()
+
+##############################################################################################################################################
 
 #combobox selection sets
 months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
@@ -95,7 +160,7 @@ em = ttk.Combobox(frm, width=5, values=months, textvariable=em_input).grid(colum
 ed_input = StringVar()
 ed = ttk.Combobox(frm, width=5, values=days, textvariable=ed_input).grid(column=4, row=6) # end day
 
-ttk.Button(frm, text="RUN", style='Run.TButton', width=15).grid(column=2, row=9, columnspan=3, padx=10, pady=15) # run button, idle rn
+ttk.Button(frm, text="RUN", style='Run.TButton', width=15, command=main).grid(column=2, row=9, columnspan=3, padx=10, pady=15) # run button, idle rn
 
 
 gui_params={
@@ -111,68 +176,3 @@ gui_params={
 }
 
 root.mainloop()
-
-##############################################
-
-def main():
-    
-    get_data_dict = getdata(gui_params)
-
-###########
-
-
-    # A switch used to skip subsequent code if an error is hit
-    hit_error = False
-
-    #Run genmodels.py
-    try:
-        genmodels(gui_params, get_data_dict)
-
-    except Exception as e:
-        get_data_dict["runlog"].write("!!! REEDR experienced the following error during model build: " + str(e) + " \n")
-        get_data_dict["runlog"].close()
-        print()
-        print("Model build failed.")
-        print()
-        print("REEDR experienced the following error: " + str(e))
-        print()
-        input("Please press enter to continue...")
-        hit_error = True
-
-    #Run runmodels.py
-    if hit_error == False:
-        try:
-            runmodels(gui_params, get_data_dict)
-
-        except Exception as e:
-            get_data_dict["runlog"].write("!!! REEDR experienced the following error during model runs: " + str(e) + " \n")
-            get_data_dict["runlog"].close()
-            print()
-            print("Model run failed.")
-            print()
-            print("REEDR experienced the following error: " + str(e))
-            print()
-            input("Please press enter to continue...")
-            hit_error = True
-
-    #Run genoutputs.py
-    if hit_error == False:
-        try:
-            genoutputs(gui_params, get_data_dict)
-
-        except Exception as e:
-            get_data_dict["runlog"].write("!!! REEDR experienced the following error during model output generation: " + str(e) + " \n")
-            get_data_dict["runlog"].close()
-            print()
-            print("Model output failed.")
-            print()
-            print("REEDR experienced the following error: " + str(e))
-            print()
-            input("Please press enter to continue...")
-            hit_error = True
-
-    if hit_error == False:
-        input("REEDR run successful. Please press enter to continue...")
-
-# if __name__ == "__main__":
-#     main()
