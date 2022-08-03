@@ -2,11 +2,16 @@
 import pandas as pd # to import xcel, some initial data manipulation
 import os # for making paths and directories and removing files
 import shutil # for removing full directories
+from pprint import pprint # for debugging
 
 ## Note: when exe'ing, must add "Python." in front of each file name
 from unitconversions import convert_WperFt2_to_WperM2, convert_degF_to_degC, convert_IP_Uvalue_to_SI_Uvalue
 
 def genmodels(gui_params, get_data_dict):
+    # gui params and data dict
+    # pprint(gui_params) ###
+    # pprint(get_data_dict) ###
+    # print("\n \n genmodels line 14") ###
 
     # Sets the directory. When calling from __main__, needs to be set to "parent". When calling from entry exe script, needs to be set to "cwd".
     set_dir = get_data_dict["parent"]
@@ -36,6 +41,16 @@ def genmodels(gui_params, get_data_dict):
     zones_surfaces_main_dir = "ZonesAndSurfaces"
     zones_surfaces_foundation_dir = "FoundationType"
 
+    # it looks like these are unused, but actually they need to be here for the localization
+    begin_mo = get_data_dict["begin_mo"]
+    begin_day = get_data_dict["begin_day"]
+    end_mo = get_data_dict["end_mo"]
+    end_day = get_data_dict["end_day"]
+    sim_type = get_data_dict["sim_type"]
+    output_gran = gui_params["output_gran"]
+    output_enduses = gui_params["output_enduses"]
+
+
     # Update simulation status box in REEDR.xlsm...
     print("Starting model build...")
 
@@ -60,6 +75,10 @@ def genmodels(gui_params, get_data_dict):
     directory_names = []
     for i in range(len(get_data_dict["df"])):
         directory_names.append(get_data_dict["df"].loc[i][0])
+
+    
+    # pprint(directory_names) ###
+    # print("line 70, just after directory names are made") ###
 
     # Creates subdirectories for each model under the main project directory.
     get_data_dict["runlog"].write("Starting to build subdirectories under " + os.path.join(get_data_dict["master_directory"]) + ". \n")

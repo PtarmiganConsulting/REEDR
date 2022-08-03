@@ -7,8 +7,12 @@ from openpyxl import Workbook
 from openpyxl import load_workbook
 import warnings
 import subprocess
+from pprint import pprint #for debugging
 
 def getdata(gui_params):
+    # print("keys and values received from gui") ###
+    # pprint(gui_params.keys()) ###
+    # pprint(gui_params.values()) ### for debugging...looks good, not sure what's up
 
     try:
         warnings.filterwarnings('ignore', category=UserWarning, module='openpyxl')
@@ -114,6 +118,8 @@ def getdata(gui_params):
             for ii in range(len(keylist)):
                 dict.update({keylist[ii]:present_row[ii]}) # ...pair every field with the corresponding key...
             master_dict_list.append(dict) # ...and add it to the dict list
+        
+        # print(master_dict_list) for debugging...once again looks good, wtf #####
 
     except Exception as e:
         print("Error getting user input data...")
@@ -132,6 +138,14 @@ def getdata(gui_params):
         "master_dict_list":master_dict_list,
         "df":df,
         "runlog":runlog,
-        "eplus_directory":eplus_directory
+        "eplus_directory":eplus_directory,
+        "begin_mo": begin_mo,
+        "begin_day": begin_day, 
+        "end_mo": end_mo, 
+        "end_day": end_day, 
+        "sim_type": sim_type,
     }
+    
+    # print("Get data dict") ###
+    # pprint(get_data_d) ### for debugging
     return  get_data_d

@@ -2,6 +2,7 @@ import os # for making paths and directories
 import subprocess
 from pathlib import Path # for getting current directory path
 import sys
+from pprint import pprint
 
 cwd = Path(os. getcwd())
 parent = cwd.parent.absolute()
@@ -19,17 +20,11 @@ from runmodels import runmodels
 from genoutputs import genoutputs
 from getdata import getdata
 
-
 ##############################################
-# GUI
-from tkinter import *
-from tkinter import ttk, filedialog
-from tkinter.filedialog import askopenfile
+# the main function
 
-##############################################
-
-def main():
-    
+def main(gui_params):
+    # pprint(gui_params)
     get_data_dict = getdata(gui_params)
 
 ###########
@@ -39,61 +34,70 @@ def main():
     hit_error = False
 
     #Run genmodels.py
-    try:
-        genmodels(gui_params, get_data_dict)
+    genmodels(gui_params, get_data_dict) # for untry-ing
+    # try:
+    # ## pprint(gui_params)
+    #     genmodels(gui_params, get_data_dict)
 
-    except Exception as e:
-        get_data_dict["runlog"].write("!!! REEDR experienced the following error during model build: " + str(e) + " \n")
-        get_data_dict["runlog"].close()
-        print()
-        print("Model build failed.")
-        print()
-        print("REEDR experienced the following error: " + str(e))
-        print()
-        input("Please press enter to continue...")
-        hit_error = True
+    # except Exception as e:
+    #     get_data_dict["runlog"].write("!!! REEDR experienced the following error during model build: " + str(e) + " \n")
+    #     get_data_dict["runlog"].close()
+    #     print()
+    #     print("Model build failed.")
+    #     print()
+    #     print("REEDR experienced the following error: " + str(e))
+    #     print()
+    #     input("Please press enter to continue...")
+    #     hit_error = True
 
     #Run runmodels.py
-    if hit_error == False:
-        try:
-            runmodels(gui_params, get_data_dict)
+    # pprint(get_data_dict["master_dict_list"])
+    runmodels(gui_params, get_data_dict) # for untrying
+    # if hit_error == False:
+    #     try:
+    #         runmodels(gui_params, get_data_dict)
 
-        except Exception as e:
-            get_data_dict["runlog"].write("!!! REEDR experienced the following error during model runs: " + str(e) + " \n")
-            get_data_dict["runlog"].close()
-            print()
-            print("Model run failed.")
-            print()
-            print("REEDR experienced the following error: " + str(e))
-            print()
-            input("Please press enter to continue...")
-            hit_error = True
+    #     except Exception as e:
+    #         get_data_dict["runlog"].write("!!! REEDR experienced the following error during model runs: " + str(e) + " \n")
+    #         get_data_dict["runlog"].close()
+    #         print()
+    #         print("Model run failed.")
+    #         print()
+    #         print("REEDR experienced the following error: " + str(e))
+    #         print()
+    #         input("Please press enter to continue...")
+    #         hit_error = True
 
     #Run genoutputs.py
-    if hit_error == False:
-        try:
-            genoutputs(gui_params, get_data_dict)
+    genoutputs(gui_params, get_data_dict) # for untrying
+    # print("done")
 
-        except Exception as e:
-            get_data_dict["runlog"].write("!!! REEDR experienced the following error during model output generation: " + str(e) + " \n")
-            get_data_dict["runlog"].close()
-            print()
-            print("Model output failed.")
-            print()
-            print("REEDR experienced the following error: " + str(e))
-            print()
-            input("Please press enter to continue...")
-            hit_error = True
+    # if hit_error == False:
+    #     try:
+    #         genoutputs(gui_params, get_data_dict)
 
-    if hit_error == False:
-        input("REEDR run successful. Please press enter to continue...")
+    #     except Exception as e:
+    #         get_data_dict["runlog"].write("!!! REEDR experienced the following error during model output generation: " + str(e) + " \n")
+    #         get_data_dict["runlog"].close()
+    #         print()
+    #         print("Model output failed.")
+    #         print()
+    #         print("REEDR experienced the following error: " + str(e))
+    #         print()
+    #         input("Please press enter to continue...")
+    #         hit_error = True
 
-# if __name__ == "__main__":
-#     main()
+    # if hit_error == False:
+    #     input("REEDR run successful. Please press enter to continue...")
 
-##############################################################################################################################################
+# end main
+############################################################################
+# GUI - this may become a function, and housed in its own module
+from tkinter import *
+from tkinter import ttk, filedialog
+from tkinter.filedialog import askopenfile
 
-#combobox selection sets
+#combobox selection lists
 months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
 days = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31]
 sim_select = ["Annual", "Sub-Annual: enter start and end dates at right -->"] # check with CD
@@ -107,6 +111,21 @@ def browse(*args):
     if file:
         filepath = os.path.abspath(file.name)
         path_entry.insert(0, filepath)
+
+def exe_main(*args):
+    gui_params={
+    "path_val":path_input.get(),
+    "project_val":project_input.get(),
+    "sim_type":sim_input.get(),
+    "output_gran":outgran_input.get(),
+    "output_enduses":outenduses_input.get(),
+    "begin_mo":bm_input.get(),
+    "begin_day":bd_input.get(),
+    "end_mo":em_input.get(),
+    "end_day":ed_input.get(),
+    }
+    # print(gui_params.values()) # for debugging
+    main(gui_params)
 
 
 #GUI
@@ -160,19 +179,38 @@ em = ttk.Combobox(frm, width=5, values=months, textvariable=em_input).grid(colum
 ed_input = StringVar()
 ed = ttk.Combobox(frm, width=5, values=days, textvariable=ed_input).grid(column=4, row=6) # end day
 
-ttk.Button(frm, text="RUN", style='Run.TButton', width=15, command=main).grid(column=2, row=9, columnspan=3, padx=10, pady=15) # run button, idle rn
+ttk.Button(frm, text="RUN", style='Run.TButton', width=15, command=exe_main).grid(column=2, row=9, columnspan=3, padx=10, pady=15) # run button, idle rn
 
 
-gui_params={
-"path_val" : path_input.get(),
-"project_val" : project_input.get(),
-"sim_type" : sim_input.get(),
-"output_gran" : outgran_input.get(),
-"output_enduses" : outenduses_input.get(),
-"begin_mo" : bm_input.get(),
-"begin_day" : bd_input.get(),
-"end_mo" : em_input.get(),
-"end_day" : ed_input.get(),
-}
+# gui_params={
+# "path_val" : path_input.get(),
+# "project_val" : project_input.get(),
+# "sim_type" : sim_input.get(),
+# "output_gran" : outgran_input.get(),
+# "output_enduses" : outenduses_input.get(),
+# "begin_mo" : bm_input.get(),
+# "begin_day" : bd_input.get(),
+# "end_mo" : em_input.get(),
+# "end_day" : ed_input.get(),
+# }
 
 root.mainloop()
+
+# endgui
+##############################################################################################################################################
+
+# research and implement a way to end loop
+
+
+
+
+
+#--------------------------------------------------------------
+##Notes
+
+# old -
+# if __name__ == "__main__":
+#     main()
+# reimplement dunder name conditional later if need be
+
+
