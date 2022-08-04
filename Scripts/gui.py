@@ -63,16 +63,16 @@ def gui(func):
 
     ttk.Label(frm, text="Project Name: ", style='Body.TLabel').grid(sticky=W, column=0, row=3, padx=10, pady=20)
     project_input = StringVar()
-    project_entry = ttk.Entry(frm, width=48, style='Body.TEntry', textvariable=project_input).grid(sticky=W, column=1, row=3, padx=10, pady=20, columnspan=2) # project entry
+    project_entry = ttk.Entry(frm, width=48, style='Body.TEntry', textvariable=project_input,).grid(sticky=W, column=1, row=3, padx=10, pady=20, columnspan=2) # project entry
     ttk.Label(frm, text="Simulation Run Period: ", style='Body.TLabel').grid(sticky=W, column=0, row=5, padx=10, pady=0)
     sim_input = StringVar()
-    simperiod_entry = ttk.Combobox(frm, width=45, textvariable=sim_input, values=sim_select).grid(sticky=W, column=1, row=5, padx=10, pady=0) # simulation run period
+    simperiod_entry = ttk.Combobox(frm, width=45, textvariable=sim_input, values=sim_select, state="readonly").grid(sticky=W, column=1, row=5, padx=10, pady=0) # simulation run period
     ttk.Label(frm, text="Output Granularity: ", style='Body.TLabel').grid(sticky=W, column=0, row=7, padx=10, pady=25)
     outgran_input = StringVar()
-    outgran_entry = ttk.Combobox(frm, width=45, textvariable=outgran_input, values=gran_select).grid(sticky=W, column=1, row=7, padx=10, pady=25) # output granularity
+    outgran_entry = ttk.Combobox(frm, width=45, textvariable=outgran_input, values=gran_select, state="readonly").grid(sticky=W, column=1, row=7, padx=10, pady=25) # output granularity
     ttk.Label(frm, text="Output End Uses: ", style='Body.TLabel').grid(sticky=W, column=0, row=8, padx=10, pady=0)
     outenduses_input = StringVar()
-    outenduses_entry = ttk.Combobox(frm, width=45, textvariable=outenduses_input, values=end_select).grid(sticky=W, column=1, row=8, padx=10, pady=0) # output end uses
+    outenduses_entry = ttk.Combobox(frm, width=45, textvariable=outenduses_input, values=end_select, state="readonly").grid(sticky=W, column=1, row=8, padx=10, pady=0) # output end uses
     ttk.Button(frm, text="Browse", style='Browse.TButton', command=browse).grid(column=3, row=2, columnspan=2)
 
     ttk.Label(frm, text="Begin: ", style='Body.TLabel').grid(column=2, row=5, sticky=E)
@@ -81,13 +81,13 @@ def gui(func):
     ttk.Label(frm, text="Day: ", style='Body.TLabel').grid(column=4, row=4)
 
     bm_input = StringVar() # this one is called "inp" because it avoids a mysterious error
-    bm = ttk.Combobox(frm, width=5, values=months, textvariable=bm_input).grid(column=3, row=5) # begin month
+    bm = ttk.Combobox(frm, width=5, values=months, textvariable=bm_input, state="readonly").grid(column=3, row=5) # begin month
     bd_input = StringVar()
-    bd = ttk.Combobox(frm, width=5, values=days, textvariable=bd_input).grid(column=4, row=5) # begin day
+    bd = ttk.Combobox(frm, width=5, values=days, textvariable=bd_input, state="readonly").grid(column=4, row=5) # begin day
     em_input = StringVar()
-    em = ttk.Combobox(frm, width=5, values=months, textvariable=em_input).grid(column=3, row=6) # end month
+    em = ttk.Combobox(frm, width=5, values=months, textvariable=em_input, state="readonly").grid(column=3, row=6) # end month
     ed_input = StringVar()
-    ed = ttk.Combobox(frm, width=5, values=days, textvariable=ed_input).grid(column=4, row=6) # end day
+    ed = ttk.Combobox(frm, width=5, values=days, textvariable=ed_input, state="readonly").grid(column=4, row=6) # end day
 
     ttk.Button(frm, text="RUN", style='Run.TButton', width=15, command=exe_main).grid(column=2, row=9, columnspan=3, padx=10, pady=15) # run button, idle rn
 

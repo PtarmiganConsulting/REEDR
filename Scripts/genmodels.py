@@ -8,10 +8,6 @@ from pprint import pprint # for debugging
 from unitconversions import convert_WperFt2_to_WperM2, convert_degF_to_degC, convert_IP_Uvalue_to_SI_Uvalue
 
 def genmodels(gui_params, get_data_dict):
-    # gui params and data dict
-    # pprint(gui_params) ###
-    # pprint(get_data_dict) ###
-    # print("\n \n genmodels line 14") ###
 
     # Sets the directory. When calling from __main__, needs to be set to "parent". When calling from entry exe script, needs to be set to "cwd".
     set_dir = get_data_dict["parent"]
@@ -76,9 +72,7 @@ def genmodels(gui_params, get_data_dict):
     for i in range(len(get_data_dict["df"])):
         directory_names.append(get_data_dict["df"].loc[i][0])
 
-    
-    # pprint(directory_names) ###
-    # print("line 70, just after directory names are made") ###
+
 
     # Creates subdirectories for each model under the main project directory.
     get_data_dict["runlog"].write("Starting to build subdirectories under " + os.path.join(get_data_dict["master_directory"]) + ". \n")
