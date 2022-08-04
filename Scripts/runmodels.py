@@ -78,8 +78,7 @@ def runmodels(gui_params, get_data_dict):
 
         run_label = dictionary["Run_Label"]
         location_pull = dictionary["Weather_File"]
-        print(run_label)
-        print(location_pull)
+
         try:
             plusterwolf(run_label, location_pull, get_data_dict["master_directory"], gui_params["path_val"], i, get_data_dict["df"])
             get_data_dict["runlog"].write("... model run for " + run_label + " complete. \n")
