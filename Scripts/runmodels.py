@@ -2,13 +2,14 @@
 import os
 import subprocess
 import pandas as pd
+from pprint import pprint # for debugging
 
-from getdata import cwd, parent, sht1, master_directory, master_dict_list, df, eplus_directory, runlog
+# from getdata import cwd, parent, sht1, master directory, master_dict_list, df, eplus_directory, runlog
 
-def runmodels():
+def runmodels(gui_params, get_data_dict):
 
     # Sets the directory. When calling from __main__, needs to be set to "parent". When calling from entry exe script, needs to be set to "cwd".
-    set_dir = parent
+    set_dir = get_data_dict["parent"]
 
     # Update simulation status box in REEDR.xlsm...
     status = "Starting model run(s)..."
@@ -67,27 +68,28 @@ def runmodels():
     ## iterates over the master dictionary list and calls eplus on all of them
     ## remember, each dictionary is effectively a complete runlabel row...
     ## and that's how we can catch every runlabel with one short loop!
-    runlog.write("Starting model runs... \n")
+    get_data_dict["runlog"].write("Starting model runs... \n")
     i = 1
-    for dictionary in master_dict_list:
+    for dictionary in get_data_dict["master_dict_list"]:
         # Update simulation status box in REEDR.xlsm...
-        status = "...running model " + str(i) + " of " + str(len(df)) + "..."
+        status = "...running model " + str(i) + " of " + str(len(get_data_dict["df"])) + "..."
         print(status)
         #sht1.range('status_line_2').value = status
 
         run_label = dictionary["Run_Label"]
         location_pull = dictionary["Weather_File"]
+
         try:
-            plusterwolf(run_label, location_pull, master_directory, eplus_directory, i, df)
-            runlog.write("... model run for " + run_label + " complete. \n")
+            plusterwolf(run_label, location_pull, get_data_dict["master_directory"], gui_params["path_val"], i, get_data_dict["df"])
+            get_data_dict["runlog"].write("... model run for " + run_label + " complete. \n")
         except Exception as e:
-            runlog.write("!!! problem running model " + run_label + "\n")
-            runlog.write("!!! REEDR experienced the following error: " + str(e) + "\n")
+            get_data_dict["runlog"].write("!!! problem running model " + run_label + "\n")
+            get_data_dict["runlog"].write("!!! REEDR experienced the following error: " + str(e) + "\n")
             print(e)
 
         i = i + 1
 
-    runlog.write("... \n")
+    get_data_dict["runlog"].write("... \n")
 
     #sub = subprocess.Popen("cmd /k")
 

@@ -2,15 +2,15 @@
 import pandas as pd # to import xcel, some initial data manipulation
 import os # for making paths and directories and removing files
 import shutil # for removing full directories
+from pprint import pprint # for debugging
 
 ## Note: when exe'ing, must add "Python." in front of each file name
 from unitconversions import convert_WperFt2_to_WperM2, convert_degF_to_degC, convert_IP_Uvalue_to_SI_Uvalue
-from getdata import cwd, parent, sht1, REEDR_wb, master_directory, master_dict_list, df, runlog
 
-def genmodels(begin_mo, begin_day, end_mo, end_day, sim_type, output_gran, output_enduses):
+def genmodels(gui_params, get_data_dict):
 
     # Sets the directory. When calling from __main__, needs to be set to "parent". When calling from entry exe script, needs to be set to "cwd".
-    set_dir = parent
+    set_dir = get_data_dict["parent"]
 
     #Set directory and file names as variables, so they can be established only once here, and flow throughout.
     building_block_dir = "Building Blocks"
@@ -37,6 +37,16 @@ def genmodels(begin_mo, begin_day, end_mo, end_day, sim_type, output_gran, outpu
     zones_surfaces_main_dir = "ZonesAndSurfaces"
     zones_surfaces_foundation_dir = "FoundationType"
 
+    # it looks like these are unused, but actually they need to be here for the localization
+    begin_mo = get_data_dict["begin_mo"]
+    begin_day = get_data_dict["begin_day"]
+    end_mo = get_data_dict["end_mo"]
+    end_day = get_data_dict["end_day"]
+    sim_type = get_data_dict["sim_type"]
+    output_gran = gui_params["output_gran"]
+    output_enduses = gui_params["output_enduses"]
+
+
     # Update simulation status box in REEDR.xlsm...
     print("Starting model build...")
 
@@ -59,43 +69,45 @@ def genmodels(begin_mo, begin_day, end_mo, end_day, sim_type, output_gran, outpu
     # gathers the subdirectory names for each runlabel by skimming them from the excel file
     # Note: df is a dataframe that contains user inputs from the "Model_Inputs" tab in REEDR.xlsm
     directory_names = []
-    for i in range(len(df)):
-        directory_names.append(df.loc[i][0])
+    for i in range(len(get_data_dict["df"])):
+        directory_names.append(get_data_dict["df"].loc[i][0])
+
+
 
     # Creates subdirectories for each model under the main project directory.
-    runlog.write("Starting to build subdirectories under " + os.path.join(master_directory) + ". \n")
+    get_data_dict["runlog"].write("Starting to build subdirectories under " + os.path.join(get_data_dict["master_directory"]) + ". \n")
 
     for name in directory_names:
-        path = os.path.join(master_directory, name)
+        path = os.path.join(get_data_dict["master_directory"], name)
         try:
             os.mkdir(path)
-            runlog.write("... subdirectory successfully created at " + path + ". \n")
+            get_data_dict["runlog"].write("... subdirectory successfully created at " + path + ". \n")
         except Exception as e:
-            runlog.write("!!! subdirectory could not be created at " + path + ". \n")
-            runlog.write("!!! REEDR experienced the following error: " + str(e) + ". \n")
-            runlog.close()
+            get_data_dict["runlog"].write("!!! subdirectory could not be created at " + path + ". \n")
+            get_data_dict["runlog"].write("!!! REEDR experienced the following error: " + str(e) + ". \n")
+            get_data_dict["runlog"].close()
             print(e)
 
-    runlog.write("... \n")
+    get_data_dict["runlog"].write("... \n")
 
     ## IDF WRITER LOOP BEGINS HERE
     ## the loop covers every dictionary (effectively a runlabel row) in the big dictionary list we made,
     ## each time the loop comes to a new dictionary/runlabel row, it updates the changable variables before doing anything else
     ## that's how we make sure the changeable values get properly filled into each created idf
-    runlog.write("Starting to build EnergyPlus .idf model files... \n")
+    get_data_dict["runlog"].write("Starting to build EnergyPlus .idf model files... \n")
 
     # Set output end uses and granularity based on user input...
-    if output_gran == "Annual":
+    if gui_params["output_gran"] == "Annual":
         output_type = "Energy"
     else:
         output_type = "Demand"
-    output_lookup = output_type + "_" + output_enduses
+    output_lookup = output_type + "_" + gui_params["output_enduses"]
 
     i = 1
-    for dictionary in master_dict_list:
+    for dictionary in get_data_dict["master_dict_list"]:
 
         # Update simulation status box in REEDR.xlsm...
-        status = "...building model " + str(i) + " of " + str(len(df)) + "..."
+        status = "...building model " + str(i) + " of " + str(len(get_data_dict["df"])) + "..."
         print(status)
         #sht1['D16'] = status
 
@@ -390,18 +402,18 @@ def genmodels(begin_mo, begin_day, end_mo, end_day, sim_type, output_gran, outpu
         for bigstring in master_tl:
             fullidf += bigstring # every stringified .txt file gets added to the idf
         filename = f"{run_label}.idf" # then it gets named after the harvested runlabel
-        path = os.path.join(master_directory, run_label, filename) # the path gets set for the new idf
+        path = os.path.join(get_data_dict["master_directory"], run_label, filename) # the path gets set for the new idf
         with open(path, 'w') as newfile:
                 newfile.write(fullidf) # and voila! the idf gets written for the present runlabel, and the loop begins again
 
         i = i + 1
-        runlog.write("... successfully built EnergyPlus model at " +  path + " \n")
+        get_data_dict["runlog"].write("... successfully built EnergyPlus model at " +  path + " \n")
 
     # Update simulation status box in REEDR.xlsm...
     #sht1['D16'] = "Starting model build... Model build complete."
     print("...model build complete.")
     print()
 
-    runlog.write("... \n")
+    get_data_dict["runlog"].write("... \n")
 
     ##########################################################################################################################
