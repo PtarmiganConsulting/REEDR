@@ -116,9 +116,9 @@ def genoutputs(gui_params, get_data_dict):
     else:
         output_type = "Demand"
     #... determine report name
-    report_name = output_type + "_" + output_enduses # make sure this comes from dictionary
+    report_name = output_type + "_" + gui_params["output_enduses"] # make sure this comes from dictionary
     #... determine which output dictionary to use for report, defined as a string
-    output_dict_str = output_type + "_" + output_enduses + "_dict" # make sure this comes from dictionary
+    output_dict_str = output_type + "_" + gui_params["output_enduses"] + "_dict" # make sure this comes from dictionary
     #... convert string to a dictionary, so that it can be properly processed below
     output_dict = locals()[output_dict_str]
     #... write to RunLog...
