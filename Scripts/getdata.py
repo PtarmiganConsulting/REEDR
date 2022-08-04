@@ -10,9 +10,6 @@ import subprocess
 from pprint import pprint #for debugging
 
 def getdata(gui_params):
-    # print("keys and values received from gui") ###
-    # pprint(gui_params.keys()) ###
-    # pprint(gui_params.values()) ### for debugging...looks good, not sure what's up
 
     try:
         warnings.filterwarnings('ignore', category=UserWarning, module='openpyxl')
