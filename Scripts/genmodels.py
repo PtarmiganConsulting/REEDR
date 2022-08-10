@@ -72,8 +72,6 @@ def genmodels(gui_params, get_data_dict):
     for i in range(len(get_data_dict["df"])):
         directory_names.append(get_data_dict["df"].loc[i][0])
 
-
-
     # Creates subdirectories for each model under the main project directory.
     get_data_dict["runlog"].write("Starting to build subdirectories under " + os.path.join(get_data_dict["master_directory"]) + ". \n")
 
@@ -152,6 +150,15 @@ def genmodels(gui_params, get_data_dict):
         "USA_WA_Spokane.Intl.AP.727850_TMY3": os.path.join(set_dir, building_block_dir, location_and_climate_dir, 'USA_WA_Spokane.Intl.AP.727850_TMY3.txt'),
         "USA_ID_Boise.AP-Gowen.Field.ANGB.726810_TMY3": os.path.join(set_dir, building_block_dir, location_and_climate_dir, 'USA_ID_Boise.AP-Gowen.Field.ANGB.726810_TMY3.txt'),
         "USA_MT_Kalispell-Glacier.Park.Intl.AP.727790_TMY3": os.path.join(set_dir, building_block_dir, location_and_climate_dir, 'USA_MT_Kalispell-Glacier.Park.Intl.AP.727790_TMY3.txt'),
+        "USA_ID_Coeur.dAlene.AP-Boyington.Field.727834_TMYx.2004-2018": os.path.join(set_dir, building_block_dir, location_and_climate_dir, 'USA_ID_Coeur.dAlene.AP-Boyington.Field.727834_TMYx.2004-2018.txt'),
+        "USA_ID_Craters.of.the.Moon.Natl.Monument.725790_TMYx.2004-2018": os.path.join(set_dir, building_block_dir, location_and_climate_dir, 'USA_ID_Craters.of.the.Moon.Natl.Monument.725790_TMYx.2004-2018.txt'),
+        "USA_ID_Jerome.County.AP.726816_TMYx.2004-2018": os.path.join(set_dir, building_block_dir, location_and_climate_dir, 'USA_ID_Jerome.County.AP.726816_TMYx.2004-2018.txt'),
+        "USA_MT_Baker.Muni.AP.726777_TMYx.2004-2018": os.path.join(set_dir, building_block_dir, location_and_climate_dir, 'USA_MT_Baker.Muni.AP.726777_TMYx.2004-2018.txt'),
+        "USA_MT_Kalispell-Glacier.Park.Intl.AP.727790_TMYx.2004-2018": os.path.join(set_dir, building_block_dir, location_and_climate_dir, 'USA_MT_Kalispell-Glacier.Park.Intl.AP.727790_TMYx.2004-2018.txt'),
+        "USA_OR_Baker.City.Muni.AP.726886_TMYx.2004-2018": os.path.join(set_dir, building_block_dir, location_and_climate_dir, 'USA_OR_Baker.City.Muni.AP.726886_TMYx.2004-2018.txt'),
+        "USA_OR_Salem.Muni.AP-McNary.Field.726940_TMYx.2004-2018": os.path.join(set_dir, building_block_dir, location_and_climate_dir, 'USA_OR_Salem.Muni.AP-McNary.Field.726940_TMYx.2004-2018.txt'),
+        "USA_WA_Pasco-Tri.Cities.AP.727845_TMYx.2004-2018": os.path.join(set_dir, building_block_dir, location_and_climate_dir, 'USA_WA_Pasco-Tri.Cities.AP.727845_TMYx.2004-2018.txt'),
+        "USA_WA_Tacoma-JB.Lewis-McChord-Gray.AAF.742070_TMYx.2004-2018": os.path.join(set_dir, building_block_dir, location_and_climate_dir, 'USA_WA_Tacoma-JB.Lewis-McChord-Gray.AAF.742070_TMYx.2004-2018.txt'),
         }
 
         ## above ground wall construction dictionary
