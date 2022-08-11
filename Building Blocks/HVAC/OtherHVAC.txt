@@ -2,7 +2,7 @@
 
 ZoneVentilation:DesignFlowRate,
     Ventilation_unit1,                        !- Name
-    living_unit1,                        !- Zone or ZoneList Name
+    living,                        !- Zone or ZoneList Name
     always_avail,                        !- Schedule Name
     Flow/Zone,               !- Design Flow Rate Calculation Method
     0,                        !- Design Flow Rate {m3/s}
@@ -50,7 +50,7 @@ AirflowNetwork:SimulationControl,
 !-   ===========  ALL OBJECTS IN CLASS: AIRFLOWNETWORK:MULTIZONE:ZONE ===========
 
 AirflowNetwork:MultiZone:Zone,
-    living_unit1,           !- Zone Name
+    living,           !- Zone Name
     NoVent,                  !- Ventilation Control Mode
     ,                        !- Ventilation Control Zone Temperature Setpoint Schedule Name
     0,                       !- Minimum Venting Open Factor {dimensionless}
@@ -60,7 +60,7 @@ AirflowNetwork:MultiZone:Zone,
     300000.0;                !- Indoor and Outdoor Enthalpy Difference Upper Limit for Minimun Venting Open Factor {deltaJ/kg}
 
 AirflowNetwork:MultiZone:Zone,
-    attic_unit1,            !- Zone Name
+    attic,            !- Zone Name
     Constant,                !- Ventilation Control Mode
     ,                        !- Ventilation Control Zone Temperature Setpoint Schedule Name
     ,                        !- Minimum Venting Open Factor {dimensionless}
@@ -71,7 +71,7 @@ AirflowNetwork:MultiZone:Zone,
     inf_sch;                 !- Venting Availability Schedule Name
 
 AirflowNetwork:MultiZone:Surface,
-    Roof_front_unit1,       !- Surface Name
+    roof_front,       !- Surface Name
     AtticVent,               !- Leakage Component Name
     ,                        !- External Node Name
     1,                       !- Window/Door Opening Factor, or Crack Factor {dimensionless}
@@ -85,7 +85,7 @@ AirflowNetwork:MultiZone:Surface,
     inf_sch;                 !- Venting Availability Schedule Name
 
 AirflowNetwork:MultiZone:Surface,
-    Roof_back_unit1,        !- Surface Name
+    roof_back,        !- Surface Name
     AtticVent,               !- Leakage Component Name
     ,                        !- External Node Name
     1,                       !- Window/Door Opening Factor, or Crack Factor {dimensionless}
@@ -99,7 +99,7 @@ AirflowNetwork:MultiZone:Surface,
     inf_sch;                 !- Venting Availability Schedule Name
 
 AirflowNetwork:MultiZone:Surface,
-    Roof_right_unit1,       !- Surface Name
+    roof_right,       !- Surface Name
     AtticVent,               !- Leakage Component Name
     ,                        !- External Node Name
     1,                       !- Window/Door Opening Factor, or Crack Factor {dimensionless}
@@ -113,7 +113,7 @@ AirflowNetwork:MultiZone:Surface,
     inf_sch;                 !- Venting Availability Schedule Name
 
 AirflowNetwork:MultiZone:Surface,
-    Roof_left_unit1,        !- Surface Name
+    roof_left,        !- Surface Name
     AtticVent,               !- Leakage Component Name
     ,                        !- External Node Name
     1,                       !- Window/Door Opening Factor, or Crack Factor {dimensionless}
@@ -127,7 +127,7 @@ AirflowNetwork:MultiZone:Surface,
     inf_sch;                 !- Venting Availability Schedule Name
 
 AirflowNetwork:MultiZone:Surface,
-    ceiling_unit1,       !- Surface Name
+    ceiling,       !- Surface Name
     ZoneLeak_Ceiling,                !- Leakage Component Name
     ,                        !- External Node Name
     1.0,                     !- Window/Door Opening Factor, or Crack Factor {dimensionless}
@@ -135,21 +135,21 @@ AirflowNetwork:MultiZone:Surface,
 
 
 AirflowNetwork:MultiZone:Surface,
-    Wall_ldf_1.unit1,       !- Surface Name
+    wall_floor1_front,       !- Surface Name
     ZoneLeak_LongWall,                !- Leakage Component Name
     ,                        !- External Node Name
     1.0,                     !- Window/Door Opening Factor, or Crack Factor {dimensionless}
     NoVent;                  !- Ventilation Control Mode
 
 AirflowNetwork:MultiZone:Surface,
-    Wall_ldb_1.unit1,       !- Surface Name
+    wall_floor1_back,       !- Surface Name
     ZoneLeak_LongWall,                !- Leakage Component Name
     ,                        !- External Node Name
     1.0,                     !- Window/Door Opening Factor, or Crack Factor {dimensionless}
     NoVent;                  !- Ventilation Control Mode
 
 AirflowNetwork:MultiZone:Surface,
-    Wall_sdl_1.unit1,       !- Surface Name
+    wall_floor1_left,       !- Surface Name
     ZoneLeak_ShortWall,                !- Leakage Component Name
     ,                        !- External Node Name
     1,                       !- Window/Door Opening Factor, or Crack Factor {dimensionless}
@@ -157,40 +157,67 @@ AirflowNetwork:MultiZone:Surface,
 
 
 AirflowNetwork:MultiZone:Surface,
-    Wall_sdr_1.unit1,       !- Surface Name
+    wall_floor1_right,       !- Surface Name
     ZoneLeak_ShortWall,                !- Leakage Component Name
     ,                        !- External Node Name
     1,                       !- Window/Door Opening Factor, or Crack Factor {dimensionless}
     NoVent;                  !- Ventilation Control Mode
 
 AirflowNetwork:MultiZone:Surface,
-    Wall_ldf_2.unit1,       !- Surface Name
+    wall_floor2_front,       !- Surface Name
     ZoneLeak_LongWall,                !- Leakage Component Name
     ,                        !- External Node Name
     1.0,                     !- Window/Door Opening Factor, or Crack Factor {dimensionless}
     NoVent;                  !- Ventilation Control Mode
 
 AirflowNetwork:MultiZone:Surface,
-    Wall_ldb_2.unit1,       !- Surface Name
+    wall_floor2_back,       !- Surface Name
     ZoneLeak_LongWall,                !- Leakage Component Name
     ,                        !- External Node Name
     1,                       !- Window/Door Opening Factor, or Crack Factor {dimensionless}
     NoVent;                  !- Ventilation Control Mode
 
 AirflowNetwork:MultiZone:Surface,
-    Wall_sdr_2.unit1,       !- Surface Name
+    wall_floor2_right,       !- Surface Name
     ZoneLeak_ShortWall,                !- Leakage Component Name
     ,                        !- External Node Name
     1,                       !- Window/Door Opening Factor, or Crack Factor {dimensionless}
     NoVent;                  !- Ventilation Control Mode
 
 AirflowNetwork:MultiZone:Surface,
-    Wall_sdl_2.unit1,       !- Surface Name
+    wall_floor2_left,       !- Surface Name
     ZoneLeak_ShortWall,                !- Leakage Component Name
     ,                        !- External Node Name
     1,                       !- Window/Door Opening Factor, or Crack Factor {dimensionless}
     NoVent;                  !- Ventilation Control Mode
 
+AirflowNetwork:MultiZone:Surface,
+    wall_floor3_front,       !- Surface Name
+    ZoneLeak_LongWall,                !- Leakage Component Name
+    ,                        !- External Node Name
+    1.0,                     !- Window/Door Opening Factor, or Crack Factor {dimensionless}
+    NoVent;                  !- Ventilation Control Mode
+
+AirflowNetwork:MultiZone:Surface,
+    wall_floor3_back,       !- Surface Name
+    ZoneLeak_LongWall,                !- Leakage Component Name
+    ,                        !- External Node Name
+    1,                       !- Window/Door Opening Factor, or Crack Factor {dimensionless}
+    NoVent;                  !- Ventilation Control Mode
+
+AirflowNetwork:MultiZone:Surface,
+    wall_floor3_right,       !- Surface Name
+    ZoneLeak_ShortWall,                !- Leakage Component Name
+    ,                        !- External Node Name
+    1,                       !- Window/Door Opening Factor, or Crack Factor {dimensionless}
+    NoVent;                  !- Ventilation Control Mode
+
+AirflowNetwork:MultiZone:Surface,
+    wall_floor3_left,       !- Surface Name
+    ZoneLeak_ShortWall,                !- Leakage Component Name
+    ,                        !- External Node Name
+    1,                       !- Window/Door Opening Factor, or Crack Factor {dimensionless}
+    NoVent;                  !- Ventilation Control Mode
 
 !-   ===========  ALL OBJECTS IN CLASS: AIRFLOWNETWORK:DISTRIBUTION:NODE ===========
 
@@ -369,38 +396,38 @@ AirflowNetwork:Distribution:Linkage,
     EquipmentInletNode_unit1,!- Node 1 Name
     SplitterNode_unit1,      !- Node 2 Name
     MainTrunk_unit1,         !- Component Name
-    attic_unit1;             !- Thermal Zone Name
+    attic;             !- Thermal Zone Name
 
 AirflowNetwork:Distribution:Linkage,
     ZoneSupplyLink_unit1,    !- Name
     SplitterNode_unit1,      !- Node 1 Name
     ZoneSupplyNode_unit1,    !- Node 2 Name
     ZoneSupply_unit1,        !- Component Name
-    attic_unit1;             !- Thermal Zone Name
+    attic;             !- Thermal Zone Name
 
 AirflowNetwork:Distribution:Linkage,
     ZoneSupplyLink2_unit1 ATInlet,   !- Name
     ZoneSupplyRegisterNode_unit1 ATInlet,    !- Node 1 Name
     ZoneSupplyRegisterNode_unit1,  !- Node 2 Name
     ZoneSupplyLink2_unit1 ATInlet Duct,        !- Component Name
-    attic_unit1;             !- Thermal Zone Name
+    attic;             !- Thermal Zone Name
 
 AirflowNetwork:Distribution:Linkage,
     ZoneSupplyLink2_unit1,   !- Name
     ZoneSupplyNode_unit1,    !- Node 1 Name
     ZoneSupplyRegisterNode_unit1 ATInlet,  !- Node 2 Name
     ZoneSupply_unit1,        !- Component Name
-    attic_unit1;             !- Thermal Zone Name
+    attic;             !- Thermal Zone Name
 
 AirflowNetwork:Distribution:Linkage,
     ZoneSupplyConnectionLink_unit1,  !- Name
     ZoneSupplyRegisterNode_unit1,  !- Node 1 Name
-    living_unit1,            !- Node 2 Name
+    living,            !- Node 2 Name
     ZoneConnectionDuct_unit1;!- Component Name
 
 AirflowNetwork:Distribution:Linkage,
     ZoneReturnConnectionLink_unit1,  !- Name
-    living_unit1,            !- Node 1 Name
+    living,            !- Node 1 Name
     ZoneOutletNode_unit1,    !- Node 2 Name
     ZoneConnectionDuct_unit1;!- Component Name
 
@@ -431,7 +458,7 @@ AirflowNetwork:Distribution:Linkage,
 AirflowNetwork:Distribution:Linkage,
     ZoneSupplyLeakLink_unit1,       	!- Name
     ZoneSupplyNode_unit1,           	!- Node 1 Name
-    attic_unit1,      		!- Node 2 Name
+    attic,      		!- Node 2 Name
     SupplyLeak;               		!- Component Name
 
 !-   ===========  ALL OBJECTS IN CLASS: DESIGNSPECIFICATION:OUTDOORAIR ===========
@@ -445,7 +472,7 @@ DesignSpecification:OutdoorAir,
 
 !-   ===========  ALL OBJECTS IN CLASS: SIZING:ZONE ===========
 Sizing:Zone,
-      living_unit1,            !- Zone or ZoneList Name
+      living,            !- Zone or ZoneList Name
       SupplyAirTemperature,    !- Zone Cooling Design Supply Air Temperature Input Method
       12,                      !- Zone Cooling Design Supply Air Temperature {C}
       ,                        !- Zone Cooling Design Supply Air Temperature Difference {deltaC}
@@ -513,7 +540,7 @@ Sizing:System,
 
 ZoneControl:Thermostat,
     Zone Thermostat_unit1,            	!- Name
-    living_unit1,                     	!- Zone or ZoneList Name
+    living,                     	!- Zone or ZoneList Name
     zone_control_type,          	!- Control Type Schedule Name
     ThermostatSetpoint:DualSetpoint,    !- Control 1 Object Type
     thermostat_living Dual SP Control;  !- Control 1 Name
@@ -581,7 +608,7 @@ ZoneHVAC:EquipmentList,
 !-   ===========  ALL OBJECTS IN CLASS: ZONEHVAC:EQUIPMENTCONNECTIONS ===========
 
 ZoneHVAC:EquipmentConnections,
-    living_unit1,            !- Zone Name
+    living,            !- Zone Name
     ZoneEquipment_unit1,     !- Zone Conditioning Equipment List Name
     zone inlet nodes_unit1,  !- Zone Air Inlet Node or NodeList Name
     Zone Exhaust Node_unit1, !- Zone Air Exhaust Node or NodeList Name
