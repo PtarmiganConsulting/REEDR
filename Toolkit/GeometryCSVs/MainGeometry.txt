@@ -1,0 +1,144 @@
+BuildingSurface:Detailed,  
+     roof_front,  !- name
+     Roof,  !- surface type
+     roof construction,  !- construction name
+     attic,  !- zone name
+     Outdoors,  !- outside boundary condition
+     nan,  !- outside boundary condition object
+     SunExposed,  !- sun exposure
+     WindExposed,  !- wind exposure
+     autocalculate,  !- view factor to ground
+     4,  !- number of vertices
+     {origin_x},{origin_y},{top_flr_ht_AG},  !- vertex 1 coordinates
+     {building_width},{origin_y},{top_flr_ht_AG},  !- vertex 2 coordinates
+     {building_width},{roof_ridge_depth},{roof_ht_AG},  !- vertex 3 coordinates
+     {origin_x},{roof_ridge_depth},{roof_ht_AG};  !- vertex 4 coordinates
+
+BuildingSurface:Detailed,  
+     roof_back,  !- name
+     Roof,  !- surface type
+     roof construction,  !- construction name
+     attic,  !- zone name
+     Outdoors,  !- outside boundary condition
+     nan,  !- outside boundary condition object
+     SunExposed,  !- sun exposure
+     WindExposed,  !- wind exposure
+     autocalculate,  !- view factor to ground
+     4,  !- number of vertices
+     {building_width},{building_depth},{top_flr_ht_AG},  !- vertex 1 coordinates
+     {origin_x},{building_depth},{top_flr_ht_AG},  !- vertex 2 coordinates
+     {origin_x},{roof_ridge_depth},{roof_ht_AG},  !- vertex 3 coordinates
+     {building_width},{roof_ridge_depth},{roof_ht_AG};  !- vertex 4 coordinates
+
+BuildingSurface:Detailed,  
+     roof_right,  !- name
+     Wall,  !- surface type
+     gable construction,  !- construction name
+     attic,  !- zone name
+     Outdoors,  !- outside boundary condition
+     nan,  !- outside boundary condition object
+     SunExposed,  !- sun exposure
+     WindExposed,  !- wind exposure
+     autocalculate,  !- view factor to ground
+     3,  !- number of vertices
+     {building_width},{origin_y},{top_flr_ht_AG},  !- vertex 1 coordinates
+     {building_width},{building_depth},{top_flr_ht_AG},  !- vertex 2 coordinates
+     {building_width},{roof_ridge_depth},{roof_ht_AG},  !- vertex 3 coordinates
+     nan;  !- vertex 4 coordinates
+
+BuildingSurface:Detailed,  
+     roof_left,  !- name
+     Wall,  !- surface type
+     gable construction,  !- construction name
+     attic,  !- zone name
+     Outdoors,  !- outside boundary condition
+     nan,  !- outside boundary condition object
+     SunExposed,  !- sun exposure
+     WindExposed,  !- wind exposure
+     autocalculate,  !- view factor to ground
+     3,  !- number of vertices
+     {origin_x},{building_depth},{top_flr_ht_AG},  !- vertex 1 coordinates
+     {origin_x},{origin_y},{top_flr_ht_AG},  !- vertex 2 coordinates
+     {origin_x},{roof_ridge_depth},{roof_ht_AG},  !- vertex 3 coordinates
+     nan;  !- vertex 4 coordinates
+
+BuildingSurface:Detailed,  
+     ceiling,  !- name
+     Ceiling,  !- surface type
+     ceiling construction,  !- construction name
+     living,  !- zone name
+     Zone,  !- outside boundary condition
+     attic,  !- outside boundary condition object
+     NoSun,  !- sun exposure
+     NoWind,  !- wind exposure
+     autocalculate,  !- view factor to ground
+     4,  !- number of vertices
+     {origin_x},{origin_y},{top_flr_ht_AG},  !- vertex 1 coordinates
+     {building_width},{origin_y},{top_flr_ht_AG},  !- vertex 2 coordinates
+     {building_width},{building_depth},{top_flr_ht_AG},  !- vertex 3 coordinates
+     {origin_x},{building_depth},{top_flr_ht_AG};  !- vertex 4 coordinates
+
+BuildingSurface:Detailed,  
+     wall_floor1_front,  !- name
+     Wall,  !- surface type
+     ag wall construction,  !- construction name
+     living,  !- zone name
+     Outdoors,  !- outside boundary condition
+     nan,  !- outside boundary condition object
+     SunExposed,  !- sun exposure
+     WindExposed,  !- wind exposure
+     autocalculate,  !- view factor to ground
+     4,  !- number of vertices
+     {origin_x},{origin_y},{foundationwall_ht_AG},  !- vertex 1 coordinates
+     {building_width},{origin_y},{foundationwall_ht_AG},  !- vertex 2 coordinates
+     {building_width},{origin_y},{first_flr_ht_AG},  !- vertex 3 coordinates
+     {origin_x},{origin_y},{first_flr_ht_AG};  !- vertex 4 coordinates
+
+BuildingSurface:Detailed,  
+     wall_floor1_right,  !- name
+     Wall,  !- surface type
+     ag wall construction,  !- construction name
+     living,  !- zone name
+     Outdoors,  !- outside boundary condition
+     nan,  !- outside boundary condition object
+     SunExposed,  !- sun exposure
+     WindExposed,  !- wind exposure
+     autocalculate,  !- view factor to ground
+     4,  !- number of vertices
+     {building_width},{origin_y},{foundationwall_ht_AG},  !- vertex 1 coordinates
+     {building_width},{building_depth},{foundationwall_ht_AG},  !- vertex 2 coordinates
+     {building_width},{building_depth},{first_flr_ht_AG},  !- vertex 3 coordinates
+     {building_width},{origin_y},{first_flr_ht_AG};  !- vertex 4 coordinates
+
+BuildingSurface:Detailed,  
+     wall_floor1_back,  !- name
+     Wall,  !- surface type
+     ag wall construction,  !- construction name
+     living,  !- zone name
+     Outdoors,  !- outside boundary condition
+     nan,  !- outside boundary condition object
+     SunExposed,  !- sun exposure
+     WindExposed,  !- wind exposure
+     autocalculate,  !- view factor to ground
+     4,  !- number of vertices
+     {building_width},{building_depth},{foundationwall_ht_AG},  !- vertex 1 coordinates
+     {origin_x},{building_depth},{foundationwall_ht_AG},  !- vertex 2 coordinates
+     {origin_x},{building_depth},{first_flr_ht_AG},  !- vertex 3 coordinates
+     {building_width},{building_depth},{first_flr_ht_AG};  !- vertex 4 coordinates
+
+BuildingSurface:Detailed,  
+     wall_floor1_left,  !- name
+     Wall,  !- surface type
+     ag wall construction,  !- construction name
+     living,  !- zone name
+     Outdoors,  !- outside boundary condition
+     nan,  !- outside boundary condition object
+     SunExposed,  !- sun exposure
+     WindExposed,  !- wind exposure
+     autocalculate,  !- view factor to ground
+     4,  !- number of vertices
+     {origin_x},{building_depth},{foundationwall_ht_AG},  !- vertex 1 coordinates
+     {origin_x},{origin_y},{foundationwall_ht_AG},  !- vertex 2 coordinates
+     {origin_x},{origin_y},{first_flr_ht_AG},  !- vertex 3 coordinates
+     {origin_x},{building_depth},{first_flr_ht_AG};  !- vertex 4 coordinates
+
