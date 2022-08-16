@@ -1,22 +1,3 @@
-!-   ===========  ALL OBJECTS IN CLASS: ZONEHVAC:AIRDISTRIBUTIONUNIT ===========
-
-ZoneHVAC:AirDistributionUnit,
-  	ZoneDirectAir ADU,                              !- Name
-  	Zone Inlet Node,                                !- Air Distribution Unit Outlet Node Name
-  	AirTerminal:SingleDuct:ConstantVolume:NoReheat, !- Air Terminal Object Type
-  	ZoneDirectAir;                                  !- Air Terminal Name
-
-!-   ===========  ALL OBJECTS IN CLASS: AirTerminal:SingleDuct:ConstantVolume:NoReheat ===========
-
-AirTerminal:SingleDuct:ConstantVolume:NoReheat,
-    ZoneDirectAir,             	!- Name
-    always_avail,               !- Availability Schedule Name
-    Zone Inlet Node ATInlet,    !- Air Inlet Node Name
-    Zone Inlet Node,           	!- Zone Supply Air Node Name
-    autosize,                   !- Maximum Air Flow Rate {m3/s}
-	,                           !- Design Specification Outdoor Air Object Name
-    ;                           !- Per Person Ventilation Rate Mode
-
 !-   ===========  ALL OBJECTS IN CLASS: ZoneHVAC:EquipmentList ===========
 
 ZoneHVAC:EquipmentList,
@@ -40,7 +21,7 @@ ZoneHVAC:EquipmentList,
 ZoneHVAC:EquipmentConnections,
     living,            !- Zone Name
     ZoneEquipment,     !- Zone Conditioning Equipment List Name
-    zone inlet nodes,  !- Zone Air Inlet Node or NodeList Name
+    Zone Inlet Nodes,  !- Zone Air Inlet Node or NodeList Name
     Zone Exhaust Node, !- Zone Air Exhaust Node or NodeList Name
     Zone Node,         !- Zone Air Node Name
     Zone Outlet Node;  !- Zone Return Air Node Name
