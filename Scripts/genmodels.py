@@ -31,6 +31,20 @@ def genmodels(gui_params, get_data_dict):
     hvac_main_dir = "HVAC"
     hvac_type_dir = "HVACType"
     hvac_returnduct_dir = "ReturnDuctLocation"
+    hvac_afn_main_dir = "HVAC_AirFlowNetwork"
+    hvac_afn_coil_dir = "AFN_Coils"
+    hvac_afn_leakage_dir = "AFN_Leakage"
+    hvac_afn_linkage_dir = "AFN_Linkage"
+    hvac_afn_node_dir = "AFN_Nodes"
+    hvac_afn_surface_dir = "AFN_Surfaces"
+    hvac_afn_zone_dir = "AFN_Zones"
+    hvac_airloop_main_dir = "HVAC_AirLoop"
+    hvac_airloop_hvac_dir = "AirLoopHVAC"
+    hvac_coil_dir = "HVAC_Coils"
+    hvac_fan_dir = "HVAC_Fans"
+    hvac_tstat_dir = "HVAC_Thermostat"
+    hvac_zone_main_dir = "HVAC_Zone"
+    hvac_zone_hvac_dir = "ZoneHVAC"
     output_dir = "Output"
     window_main_dir = "Windows"
     window_blinds_dir = "Blinds"
@@ -221,11 +235,21 @@ def genmodels(gui_params, get_data_dict):
 
         ## hvac type dictionary
         ## this determines what water heater type will later be pulled to the idf
-        hvac_dict = {"Air Source Heat Pump_Single Speed": os.path.join(set_dir, building_block_dir, hvac_main_dir, hvac_type_dir, 'Air Source Heat Pump_Single Speed.txt'),
-        "Electric Furnace with CAC": os.path.join(set_dir, building_block_dir, hvac_main_dir, hvac_type_dir, 'Electric Furnace with CAC.txt'),
-        "Electric Furnace with No CAC": os.path.join(set_dir, building_block_dir, hvac_main_dir, hvac_type_dir, 'Electric Furnace with No CAC.txt'),
-        "Gas Furnace with CAC": os.path.join(set_dir, building_block_dir, hvac_main_dir, hvac_type_dir, 'Gas Furnace with CAC.txt'),
-        "Gas Furnace with No CAC": os.path.join(set_dir, building_block_dir, hvac_main_dir, hvac_type_dir, 'Gas Furnace with No CAC.txt'),
+        hvac_dict = {"Air Source Heat Pump_Single Speed": \
+            [os.path.join(set_dir, building_block_dir, hvac_main_dir, hvac_type_dir, 'Air Source Heat Pump_Single Speed.txt'), \
+            1],
+        "Electric Furnace with CAC": \
+            [os.path.join(set_dir, building_block_dir, hvac_main_dir, hvac_type_dir, 'Electric Furnace with CAC.txt'), \
+            1],
+        "Electric Furnace with No CAC": \
+            [os.path.join(set_dir, building_block_dir, hvac_main_dir, hvac_type_dir, 'Electric Furnace with No CAC.txt'), \
+            1],
+        "Gas Furnace with CAC": \
+            [os.path.join(set_dir, building_block_dir, hvac_main_dir, hvac_type_dir, 'Gas Furnace with CAC.txt'), \
+            1],
+        "Gas Furnace with No CAC": \
+            [os.path.join(set_dir, building_block_dir, hvac_main_dir, hvac_type_dir, 'Gas Furnace with No CAC.txt'), \
+            1],
         }
 
         ## output dictionary
@@ -348,7 +372,7 @@ def genmodels(gui_params, get_data_dict):
 
         ## HVAC
         #... get main HVAC type
-        with open(hvac_dict[hvac_type], 'r') as f:
+        with open(hvac_dict[hvac_type][0], 'r') as f:
             hvac_type_t = f"{f.read()}".format(**locals())
         #... get appropriate return duct location, which depends on foundation type
         with open(os.path.join(set_dir, building_block_dir, hvac_main_dir, hvac_returnduct_dir, foundation_dict[foundation_key][2]), 'r') as f:

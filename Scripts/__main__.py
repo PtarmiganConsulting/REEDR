@@ -35,19 +35,19 @@ def main(gui_params):
     #Run genmodels.py
     # genmodels(gui_params, get_data_dict) # for debugging
 
-    try:
-        genmodels(gui_params, get_data_dict)
+    #try:
+    genmodels(gui_params, get_data_dict)
 
-    except Exception as e:
-        get_data_dict["runlog"].write("!!! REEDR experienced the following error during model build: " + str(e) + " \n")
-        get_data_dict["runlog"].close()
-        print()
-        print("Model build failed.")
-        print()
-        print("REEDR experienced the following error: " + str(e))
-        print()
-        input("Please press enter to continue...")
-        hit_error = True
+    # except Exception as e:
+    #     get_data_dict["runlog"].write("!!! REEDR experienced the following error during model build: " + str(e) + " \n")
+    #     get_data_dict["runlog"].close()
+    #     print()
+    #     print("Model build failed.")
+    #     print()
+    #     print("REEDR experienced the following error: " + str(e))
+    #     print()
+    #     input("Please press enter to continue...")
+    #     hit_error = True
 
     #Run runmodels.py
 
