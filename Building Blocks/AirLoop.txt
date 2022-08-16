@@ -16,15 +16,15 @@ AirLoopHVAC,
 
 AirLoopHVAC:ZoneSplitter,
     Zone Supply Air Splitter,	!- Name
-    Zone Equipment Inlet Node,  	!- Inlet Node Name
-    Zone Inlet Node ATInlet;         	!- Outlet 1 Node Name
+    Zone Equipment Inlet Node,  !- Inlet Node Name
+    Zone Inlet Node ATInlet;    !- Outlet 1 Node Name
 
 !-   ===========  ALL OBJECTS IN CLASS: AIRLOOPHVAC:SUPPLYPATH ===========
 
 AirLoopHVAC:SupplyPath,
     SupplyPath,    !- Name
-    Zone Equipment Inlet Node,   !- Supply Air Path Inlet Node Name
-    AirLoopHVAC:ZoneSplitter,   	!- Component 1 Object Type
+    Zone Equipment Inlet Node,      !- Supply Air Path Inlet Node Name
+    AirLoopHVAC:ZoneSplitter,       !- Component 1 Object Type
     Zone Supply Air Splitter;   	!- Component 1 Name
 
 !-   ===========  ALL OBJECTS IN CLASS: AIRLOOPHVAC:ZONEMIXER ===========
@@ -51,9 +51,10 @@ BranchList,
 !-   ===========  ALL OBJECTS IN CLASS: BRANCH ===========
 
 Branch,
-    Air Loop Main Branch,    	!- Name
+    Air Loop Main Branch,    	    !- Name
     ,                        		!- Pressure Drop Curve Name
-    {unitaryHVAC_type},   !- Component 1 Object Type
-    {unitaryHVAC_name},               	!- Component 1 Name
-    Air Loop Inlet Node,     	!- Component 1 Inlet Node Name
-    Air Loop Outlet Node;    	!- Component 1 Outlet Node Name
+    {unitaryHVAC_type},             !- Component 1 Object Type
+    {unitaryHVAC_name},             !- Component 1 Name
+    Air Loop Inlet Node,     	    !- Component 1 Inlet Node Name
+    Air Loop Outlet Node;    	    !- Component 1 Outlet Node Name
+    

@@ -1,28 +1,84 @@
 !-   ===========  ALL OBJECTS IN CLASS: COIL:HEATING ===========
 
 Coil:Heating:DX:SingleSpeed,
-    Main DX Heating Coil,   	!- Name
-    always_avail,           		!-Availability Schedule Name
-    autosize,               		!- Rated Total Heating Capacity {{W}}
-    3.69308080013886,           		!- Rated COP
-    autosize,               		!- Rated Air Flow Rate {{m3/s}}
-    ,					!- Rated Evaporator Fan Power Per Volume Flow Rate {{W/(m3/s)}}
-    Heating Coil Air Inlet Node_unit1, !- Air Inlet Node Name
-    Supp Heating Coil Air Inlet Node_unit1,   !- Air Outlet Node Name
-    HPACHeatCapFT,          		!- Total Heating Capacity Function of Temperature Curve Name
-    HPACHeatCapFFF,         		!- Total Heating Capacity Function of Flow Fraction Curve Name
-    HPACHeatEIRFT,          		!- Energy Input Ratio Function of Temperature Curve Name
-    HPACHeatEIRFFF,         		!- Energy Input Ratio Function of Flow Fraction Curve Name
-    HPACCOOLPLFFPLR,        		!- Part Load Fraction Correlation Curve Name
-    Defrost_EIR_FT,         		!- Defrost Energy Input Ratio Function of Temperature Curve Name
-    {hp_min_compressor_temp},         !- Minimum Outdoor Dry-Bulb Temperature for Compressor Operation {{C}}
-    ,					!- Outdoor Dry-Bulb Temperature to Turn On Compressor
-    5.0,                    		!- Maximum Outdoor Dry-Bulb Temperature for Defrost Operation {{C}}
-    200.0,                  		!- Crankcase Heater Capacity {{W}}
-    10.0,                   		!- Maximum Outdoor Dry-Bulb Temperature for Crankcase Heater Operation {{C}}
-    ReverseCycle,           		!- Defrost Strategy
-    OnDemand,               		!- Defrost Control
-    , 			    		!- Defrost Time Period Fraction
-    , 			    		!- Resistive Defrost Heater Capacity {{W}}
-    ,					!- Region number for calculating HSPF
-    ;					!- Evaporator Air Inlet Node Name
+    Main DX Heating Coil,   	            !- Name
+    always_avail,           		          !-Availability Schedule Name
+    autosize,               		          !- Rated Total Heating Capacity {{W}}
+    3.69308080013886,           	        !- Rated COP
+    autosize,               		          !- Rated Air Flow Rate {{m3/s}}
+    ,					                            !- Rated Evaporator Fan Power Per Volume Flow Rate {{W/(m3/s)}}
+    Heating Coil Air Inlet Node,          !- Air Inlet Node Name
+    Supp Heating Coil Air Inlet Node,     !- Air Outlet Node Name
+    HPACHeatCapFT,          		          !- Total Heating Capacity Function of Temperature Curve Name
+    HPACHeatCapFFF,         		          !- Total Heating Capacity Function of Flow Fraction Curve Name
+    HPACHeatEIRFT,          		          !- Energy Input Ratio Function of Temperature Curve Name
+    HPACHeatEIRFFF,         		          !- Energy Input Ratio Function of Flow Fraction Curve Name
+    HPACHeatPLFFPLR,        		          !- Part Load Fraction Correlation Curve Name
+    Defrost_EIR_FT,         		          !- Defrost Energy Input Ratio Function of Temperature Curve Name
+    {hp_min_compressor_temp},             !- Minimum Outdoor Dry-Bulb Temperature for Compressor Operation {{C}}
+    ,					                            !- Outdoor Dry-Bulb Temperature to Turn On Compressor
+    5.0,                    		          !- Maximum Outdoor Dry-Bulb Temperature for Defrost Operation {{C}}
+    200.0,                  		          !- Crankcase Heater Capacity {{W}}
+    10.0,                   		          !- Maximum Outdoor Dry-Bulb Temperature for Crankcase Heater Operation {{C}}
+    ReverseCycle,           		          !- Defrost Strategy
+    OnDemand,               		          !- Defrost Control
+    , 			    		                      !- Defrost Time Period Fraction
+    , 			    		                      !- Resistive Defrost Heater Capacity {{W}}
+    ,					                            !- Region number for calculating HSPF
+    ;					                            !- Evaporator Air Inlet Node Name
+
+Curve:Cubic,
+  HPACHeatCapFT,           !- Name
+  0.758746,                !- Coefficient1 Constant
+  0.027626,                !- Coefficient2 x
+  0.000148716,             !- Coefficient3 x**2
+  0.0000034992,            !- Coefficient4 x**3
+  -20.0,                   !- Minimum Value of x
+  20.0;                    !- Maximum Value of x
+
+Curve:Cubic,
+  HPACHeatCapFFF,          !- Name
+  0.84,                    !- Coefficient1 Constant
+  0.16,                    !- Coefficient2 x
+  0.0,                     !- Coefficient3 x**2
+  0.0,                     !- Coefficient4 x**3
+  0.5,                     !- Minimum Value of x
+  1.5;                     !- Maximum Value of x
+
+Curve:Cubic,
+  HPACHeatEIRFT,           !- Name
+  1.19248,                 !- Coefficient1 Constant
+  -0.0300438,              !- Coefficient2 x
+  0.00103745,              !- Coefficient3 x**2
+  -0.000023328,            !- Coefficient4 x**3
+  -20.0,                   !- Minimum Value of x
+  20.0;                    !- Maximum Value of x
+
+Curve:Quadratic,
+  HPACHeatEIRFFF,          !- Name
+  1.3824,                  !- Coefficient1 Constant
+  -0.4336,                 !- Coefficient2 x
+  0.0512,                  !- Coefficient3 x**2
+  0.0,                     !- Minimum Value of x
+  1.0;                     !- Maximum Value of x
+
+Curve:Quadratic,
+  HPACHeatPLFFPLR,         !- Name
+  0.85,                    !- Coefficient1 Constant
+  0.15,                    !- Coefficient2 x
+  0.0,                     !- Coefficient3 x**2
+  0.0,                     !- Minimum Value of x
+  1.0;                     !- Maximum Value of x
+
+Curve:Biquadratic,
+  Defrost_EIR_FT,             !- Name
+  1,                       !- Coefficient1 Constant
+  0,                       !- Coefficient2 x
+  0,                       !- Coefficient3 x**2
+  0,                       !- Coefficient4 y
+  0,                       !- Coefficient5 y**2
+  0,                       !- Coefficient6 x*y
+  0,                       !- Minimum Value of x
+  100,                     !- Maximum Value of x
+  0,                       !- Minimum Value of y
+  100;                     !- Maximum Value of y
