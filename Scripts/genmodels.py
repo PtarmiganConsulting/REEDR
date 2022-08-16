@@ -50,7 +50,11 @@ def genmodels(gui_params, get_data_dict):
     window_blinds_dir = "Blinds"
     zones_surfaces_main_dir = "ZonesAndSurfaces"
     zones_surfaces_foundation_dir = "FoundationType"
-
+    geometry_main_dir = "Geometry"
+    geometry_door_dir = "Doors"
+    geometry_envelope_dir = "Envelope"
+    geometry_window_dir = "Windows"
+    geometry_zone_dir = "Zones"
     # it looks like these are unused, but actually they need to be here for the localization
     begin_mo = get_data_dict["begin_mo"]
     begin_day = get_data_dict["begin_day"]
@@ -102,18 +106,24 @@ def genmodels(gui_params, get_data_dict):
 
     get_data_dict["runlog"].write("... \n")
 
-    ## IDF WRITER LOOP BEGINS HERE
-    ## the loop covers every dictionary (effectively a runlabel row) in the big dictionary list we made,
-    ## each time the loop comes to a new dictionary/runlabel row, it updates the changable variables before doing anything else
-    ## that's how we make sure the changeable values get properly filled into each created idf
-    get_data_dict["runlog"].write("Starting to build EnergyPlus .idf model files... \n")
-
     # Set output end uses and granularity based on user input...
     if gui_params["output_gran"] == "Annual":
         output_type = "Energy"
     else:
         output_type = "Demand"
     output_lookup = output_type + "_" + gui_params["output_enduses"]
+
+    # Set geometry parameters that are needed to create geometry but not needed to be changed by user. All units in ft.
+    origin_x = 0 # ft
+    origin_y = 0
+    origin_z = 0
+
+    ## IDF WRITER LOOP BEGINS HERE
+    ## the loop covers every dictionary (effectively a runlabel row) in the big dictionary list we made,
+    ## each time the loop comes to a new dictionary/runlabel row, it updates the changable variables before doing anything else
+    ## that's how we make sure the changeable values get properly filled into each created idf
+    
+    get_data_dict["runlog"].write("Starting to build EnergyPlus .idf model files... \n")
 
     i = 1
     for dictionary in get_data_dict["master_dict_list"]:
@@ -126,8 +136,11 @@ def genmodels(gui_params, get_data_dict):
         run_label = dictionary["Run_Label"]
         timestep = dictionary["Timesteps_Per_Hr"]
         location_pull = dictionary["Weather_File"] # I should name this something better.
-        people = dictionary["Number_Of_People"]
         bldg_orient = dictionary["Bldg_Orient"]
+        stories_above_ground = dictionary["Stories_Above_Ground"]
+        area_per_story = dictionary["Area_Per_Story"]
+        height_per_story = dictionary["Height_Per_Story"]
+        ratio_width_to_depth = dictionary["Ratio_Width_to_Depth"]
         above_ground_wall_con = dictionary["Above_Ground_Wall_Construction"]
         ceiling_and_roof_con = dictionary["Ceiling_And_Roof_Construction"]
         foundation_and_floor_con = dictionary["Foundation_And_Floor_Construction"]
@@ -135,6 +148,10 @@ def genmodels(gui_params, get_data_dict):
         window_shgc = dictionary["Window_SHGC"]
         window_shades = dictionary["Window_Shades"]
         window_overhangs = dictionary["Window_Overhangs"]
+        wtw_ratio_front = dictionary["WtW_Ratio_Front"]
+        wtw_ratio_back = dictionary["WtW_Ratio_Back"]
+        wtw_ratio_left = dictionary["WtW_Ratio_Left"]
+        wtw_ratio_right = dictionary["WtW_Ratio_Right"]
         hvac_type = dictionary["HVAC_Type"]
         htg_stpt_sch = dictionary["Htg_StPt_Sch"]
         clg_stpt_sch = dictionary["Clg_StPt_Sch"]
@@ -144,6 +161,7 @@ def genmodels(gui_params, get_data_dict):
         hp_min_compressor_temp = convert_degF_to_degC(dictionary["HP_Min_Compressor_Temp"])
         water_heater_type = dictionary["Water_Heater_Type"]
         dhw_stpt_sch = dictionary["DHW_StPt_Sch"]
+        people = dictionary["Number_Of_People"]
         interior_lpd = convert_WperFt2_to_WperM2(dictionary["Interior_LPD"])/2 #divide total lpd by plug lights and hardwired lights
         exterior_lp = dictionary["Exterior_W"]/2 #divide total lp by garage lights and exterior facade lights
         range_type = dictionary["Range"]
@@ -291,6 +309,8 @@ def genmodels(gui_params, get_data_dict):
         chars = 4
         foundation_key = foundation_and_floor_con[:chars]
         foundation_type = foundation_dict[foundation_key][0]
+
+        #
 
         ## this section imports all the necessary text from .txt files and turns them into strings
         ## the ones with changeable variables are turned into f-strings so that their values can be properly adjusted.
