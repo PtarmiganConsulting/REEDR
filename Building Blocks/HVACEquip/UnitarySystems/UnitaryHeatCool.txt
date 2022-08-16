@@ -1,0 +1,21 @@
+!-   ===========  ALL OBJECTS IN CLASS: AIRLOOPHVAC:UNITARYHEATCOOL ===========
+
+AirLoopHVAC:UnitaryHeatCool,
+    ACandFurnace,               !- Name
+    always_avail,               !- Availability Schedule Name
+    Air Loop Inlet Node,        !- Unitary System Air Inlet Node Name
+    Air Loop Outlet Node,       !- Unitary System Air Outlet Node Name
+    fan_cycle,                  !- Supply Air Fan Operating Mode Schedule Name
+    80,                         !- Maximum Supply Air Temperature {{C}}
+    autosize,                   !- Supply Air Flow Rate During Cooling Operation {{m3/s}}
+    autosize,                   !- Supply Air Flow Rate During Heating Operation {{m3/s}}
+    0,                          !- Supply Air Flow Rate When No Cooling or Heating is Needed {{m3/s}}
+    living,                     !- Controlling Zone or Thermostat Location
+    Fan:OnOff,            		!- Supply Fan Object Type
+    Supply Fan,                 !- Supply Fan Name
+    BlowThrough,                !- Fan Placement
+    {main_heating_coil_type},   !- Heating Coil Object Type (e.g. Coil:Heating:electric)
+    {main_heating_coil_name},   !- Heating Coil Name
+    {cooling_coil_type},	    !- Cooling Coil Object Type
+    {cooling_coil_name},        !- Cooling Coil Name
+    None;                       !- Dehumidification Control Type

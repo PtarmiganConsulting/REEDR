@@ -1,0 +1,102 @@
+AirflowNetwork:Distribution:Linkage,
+    MainSupplyLink,    !- Name
+    EquipmentInletNode,!- Node 1 Name
+    SplitterNode,      !- Node 2 Name
+    MainTrunk,         !- Component Name
+    attic;             !- Thermal Zone Name
+
+AirflowNetwork:Distribution:Linkage,
+    ZoneSupplyLink,    !- Name
+    SplitterNode,      !- Node 1 Name
+    ZoneSupplyNode,    !- Node 2 Name
+    ZoneSupply,        !- Component Name
+    attic;             !- Thermal Zone Name
+
+AirflowNetwork:Distribution:Linkage,
+    ZoneSupplyLeakLink,     !- Name
+    ZoneSupplyNode,         !- Node 1 Name
+    attic,      		    !- Node 2 Name
+    SupplyLeak;             !- Component Name
+
+AirflowNetwork:Distribution:Linkage,
+    ZoneSupplyLink2,                    !- Name
+    ZoneSupplyNode,                     !- Node 1 Name
+    ZoneSupplyRegisterNode ATInlet,     !- Node 2 Name
+    ZoneSupply,                         !- Component Name
+    attic;                              !- Thermal Zone Name
+
+AirflowNetwork:Distribution:Linkage,
+    ZoneSupplyLink2 ATInlet,            !- Name
+    ZoneSupplyRegisterNode ATInlet,     !- Node 1 Name
+    ZoneSupplyRegisterNode,             !- Node 2 Name
+    ZoneSupplyLink2 ATInlet Duct,       !- Component Name
+    attic;                              !- Thermal Zone Name
+
+AirflowNetwork:Distribution:Linkage,
+    ZoneSupplyConnectionLink,   !- Name
+    ZoneSupplyRegisterNode,     !- Node 1 Name
+    living,                     !- Node 2 Name
+    ZoneConnectionDuct;         !- Component Name
+
+AirflowNetwork:Distribution:Linkage,
+    ZoneReturnConnectionLink,   !- Name
+    living,                     !- Node 1 Name
+    ZoneOutletNode,             !- Node 2 Name
+    ZoneConnectionDuct;         !- Component Name
+
+AirflowNetwork:Distribution:Linkage,
+    ZoneReturnLink1,        !- Name
+    Zoneoutletnode,         !- Node 1 Name
+    ZoneReturnNode,         !- Node 2 Name
+    ZoneReturn,             !- Component Name
+    {returnduct_location};  !- Thermal Zone Name
+
+AirflowNetwork:Distribution:Linkage,
+    ZoneReturnLeakLink,     !- Name
+    {returnduct_location},  !- Node 1 Name
+    ZoneReturnNode,         !- Node 2 Name
+    ReturnLeak;             !- Component Name
+
+AirflowNetwork:Distribution:Linkage,
+    ZoneReturnLink2,        !- Name
+    ZoneReturnNode,         !- Node 1 Name
+    MixerNode,              !- Node 2 Name
+    ZoneReturn,             !- Component Name
+    {returnduct_location};  !- Thermal Zone Name
+
+AirflowNetwork:Distribution:Linkage,
+    MainReturnLink,         !- Name
+    MixerNode,              !- Node 1 Name
+    MainReturnNode,         !- Node 2 Name
+    MainReturn,             !- Component Name
+    {returnduct_location};  !- Thermal Zone Name
+
+AirflowNetwork:Distribution:Linkage,
+    SystemReturnLink,  !- Name
+    MainReturnNode,    !- Node 1 Name
+    MainInletNode,     !- Node 2 Name
+    AirLoopReturn;     !- Component Name
+
+AirflowNetwork:Distribution:Linkage,
+    SupplyFanLink,      !- Name
+    MainInletNode,      !- Node 1 Name
+    FanOutletNode,      !- Node 2 Name
+    Supply Fan;         !- Component Name
+
+AirflowNetwork:Distribution:Linkage,
+    CoolingCoilLink,    !- Name
+    FanOutletNode,      !- Node 1 Name
+    HeatingInletNode,   !- Node 2 Name
+    Main Cooling Coil;  !- Component Name
+
+AirflowNetwork:Distribution:Linkage,
+    HeatingCoilLink,            !- Name
+    HeatingInletNode,           !- Node 1 Name
+    {main_heating_coil_outlet}, !- Node 2 Name
+    Main Heating Coil;          !- Component Name
+
+AirflowNetwork:Distribution:Linkage,
+    EquipmentAirLoopLink,   !- Name
+    {airloopsupply_duct_inlet},      !- Node 1 Name
+    EquipmentInletNode,     !- Node 2 Name
+    AirLoopSupply;          !- Component Name

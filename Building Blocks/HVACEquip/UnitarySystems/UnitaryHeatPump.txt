@@ -1,0 +1,23 @@
+!-   ===========  ALL OBJECTS IN CLASS: AIRLOOPHVAC:UNITARYHEATCOOL ===========
+
+AirLoopHVAC:UnitaryHeatPump:AirToAir,
+    Heat Pump,              	    !- Name
+    always_avail,         		    !- Availability Schedule Name
+    Air Loop Inlet Node,    	    !- Air Inlet Node Name
+    Air Loop Outlet Node,   	    !- Air Outlet Node Name
+    autosize,               		!- Supply Air Flow Rate During Cooling Operation {{m3/s}}
+    autosize,               		!- Supply Air Flow Rate During Heating Operation {{m3/s}}
+    0.0,                    		!- Supply Air Flow Rate When No Cooling or Heating is Needed {{m3/s}}
+    living,                 	    !- Controlling Zone or Thermostat Location
+    Fan:OnOff,              		!- Supply Air Fan Object Type
+    Supply Fan,             	    !- Supply Air Fan Name
+    {main_heating_coil_type},    	!- Heating Coil Object Type (e.g. Coil:Heating:DX:SingleSpeed)
+    {main_heating_coil_name},   	!- Heating Coil Name (e.g. Main DX Heating Coil)
+    {cooling_coil_type},    	    !- Cooling Coil Object Type (e.g. Coil:Cooling:DX:SingleSpeed)
+    {cooling_coil_name},        	!- Cooling Coil Name (e.g. DX Cooling Coil)
+    {supp_heating_coil_type},  		!- Supplemental Heating Coil Object Type (e.g. Coil:Heating:Electric)
+    {supp_heating_coil_name},      	!- Supplemental Heating Coil Name (e.g. Supp Heating Coil)
+    50,                     		!- Maximum Supply Air Temperature from Supplemental Heater {{C}}
+    {hp_max_resistance_temp},       !- Maximum Outdoor Dry-Bulb Temperature for Supplemental Heater Operation {{C}}
+    BlowThrough,            		!- Fan Placement
+    fan_cycle;              		!-Supply Air Fan Operating Mode Schedule Name
