@@ -113,11 +113,6 @@ def genmodels(gui_params, get_data_dict):
         output_type = "Demand"
     output_lookup = output_type + "_" + gui_params["output_enduses"]
 
-    # Set geometry parameters that are needed to create geometry but not needed to be changed by user. All units in ft.
-    origin_x = 0 # ft
-    origin_y = 0
-    origin_z = 0
-
     ## IDF WRITER LOOP BEGINS HERE
     ## the loop covers every dictionary (effectively a runlabel row) in the big dictionary list we made,
     ## each time the loop comes to a new dictionary/runlabel row, it updates the changable variables before doing anything else
@@ -138,8 +133,8 @@ def genmodels(gui_params, get_data_dict):
         location_pull = dictionary["Weather_File"] # I should name this something better.
         bldg_orient = dictionary["Bldg_Orient"]
         stories_above_ground = dictionary["Stories_Above_Ground"]
-        area_per_story = dictionary["Area_Per_Story"]
-        height_per_story = dictionary["Height_Per_Story"]
+        area_per_story = convert_ft2_to_m2(dictionary["Area_Per_Story"])
+        height_per_story = convert_ft_to_m(dictionary["Height_Per_Story"])
         ratio_width_to_depth = dictionary["Ratio_Width_to_Depth"]
         above_ground_wall_con = dictionary["Above_Ground_Wall_Construction"]
         ceiling_and_roof_con = dictionary["Ceiling_And_Roof_Construction"]
@@ -177,7 +172,8 @@ def genmodels(gui_params, get_data_dict):
 
         ## locations & climate dictionary
         ## this determines what location and climate file will later be pulled to the idf
-        location_dict = {"USA_OR_Portland.Intl.AP.726980_TMY3": os.path.join(set_dir, building_block_dir, location_and_climate_dir, 'USA_OR_Portland.Intl.AP.726980_TMY3.txt'),
+        location_dict = {
+        "USA_OR_Portland.Intl.AP.726980_TMY3": os.path.join(set_dir, building_block_dir, location_and_climate_dir, 'USA_OR_Portland.Intl.AP.726980_TMY3.txt'),
         "USA_WA_Seattle-Tacoma.Intl.AP.727930_TMY3": os.path.join(set_dir, building_block_dir, location_and_climate_dir, 'USA_WA_Seattle-Tacoma.Intl.AP.727930_TMY3.txt'),
         "USA_WA_Spokane.Intl.AP.727850_TMY3": os.path.join(set_dir, building_block_dir, location_and_climate_dir, 'USA_WA_Spokane.Intl.AP.727850_TMY3.txt'),
         "USA_ID_Boise.AP-Gowen.Field.ANGB.726810_TMY3": os.path.join(set_dir, building_block_dir, location_and_climate_dir, 'USA_ID_Boise.AP-Gowen.Field.ANGB.726810_TMY3.txt'),
@@ -195,7 +191,8 @@ def genmodels(gui_params, get_data_dict):
 
         ## above ground wall construction dictionary
         ## this determines what above ground wall insulation layer will later be pulled to the idf
-        above_ground_wall_dict = {"Wood-Framed - 2x4 - 16 in OC - R-0 Cavity": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_wall_ins_dir, 'Wood-Framed - 2x4 - 16 in OC - R-0 Cavity.txt'),
+        above_ground_wall_dict = {
+        "Wood-Framed - 2x4 - 16 in OC - R-0 Cavity": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_wall_ins_dir, 'Wood-Framed - 2x4 - 16 in OC - R-0 Cavity.txt'),
         "Wood-Framed - 2x4 - 16 in OC - R-11 Cavity": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_wall_ins_dir, 'Wood-Framed - 2x4 - 16 in OC - R-11 Cavity.txt'),
         "Wood-Framed - 2x4 - 16 in OC - R-13 Cavity": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_wall_ins_dir, 'Wood-Framed - 2x4 - 16 in OC - R-13 Cavity.txt'),
         "Wood-Framed - 2x4 - 16 in OC - R-15 Cavity": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_wall_ins_dir, 'Wood-Framed - 2x4 - 16 in OC - R-15 Cavity.txt'),
@@ -213,7 +210,8 @@ def genmodels(gui_params, get_data_dict):
 
         ## ceiling/attic construction dictionary
         ## this determines what ceiling/attic insulation layer will later be pulled to the idf
-        ceiling_and_roof_dict = {"Attic - R0 Cavity Insulation": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_attic_ins_dir, 'Attic - R0 Cavity Insulation.txt'),
+        ceiling_and_roof_dict = {
+        "Attic - R0 Cavity Insulation": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_attic_ins_dir, 'Attic - R0 Cavity Insulation.txt'),
         "Attic - R30 Cavity Insulation": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_attic_ins_dir, 'Attic - R30 Cavity Insulation.txt'),
         "Attic - R38 Cavity Insulation": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_attic_ins_dir, 'Attic - R38 Cavity Insulation.txt'),
         "Attic - R49 Cavity Insulation": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_attic_ins_dir, 'Attic - R49 Cavity Insulation.txt'),
@@ -222,7 +220,8 @@ def genmodels(gui_params, get_data_dict):
 
         ## floor and foundation construction dictionary
         ## this determines what ceiling/attic insulation layer will later be pulled to the idf
-        foundation_and_floor_dict = {"Vented Crawlspace - R0 Cavity Insulation": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_floor_ins_dir, 'Vented Crawlspace - R0 Cavity Insulation.txt'),
+        foundation_and_floor_dict = {
+        "Vented Crawlspace - R0 Cavity Insulation": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_floor_ins_dir, 'Vented Crawlspace - R0 Cavity Insulation.txt'),
         "Vented Crawlspace - R13 Cavity Insulation": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_floor_ins_dir, 'Vented Crawlspace - R13 Cavity Insulation.txt'),
         "Vented Crawlspace - R19 Cavity Insulation": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_floor_ins_dir, 'Vented Crawlspace - R19 Cavity Insulation.txt'),
         "Vented Crawlspace - R30 Cavity Insulation": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_floor_ins_dir, 'Vented Crawlspace - R30 Cavity Insulation.txt'),
@@ -247,31 +246,32 @@ def genmodels(gui_params, get_data_dict):
 
         ## water heater type dictionary
         ## this determines what water heater type will later be pulled to the idf
-        water_heater_dict = {"Electric Storage_50-gallon": os.path.join(set_dir, building_block_dir, dhw_main_dir, dhw_wh_type_dir, 'Electric Storage_50-gallon.txt'),
+        water_heater_dict = {
+        "Electric Storage_50-gallon": os.path.join(set_dir, building_block_dir, dhw_main_dir, dhw_wh_type_dir, 'Electric Storage_50-gallon.txt'),
         "Gas Storage_50-gallon": os.path.join(set_dir, building_block_dir, dhw_main_dir, dhw_wh_type_dir, 'Gas Storage_50-gallon.txt'),
         }
 
-        ## hvac type dictionary
-        ## this determines what water heater type will later be pulled to the idf
-        hvac_dict = {"Air Source Heat Pump_Single Speed": \
-            [os.path.join(set_dir, building_block_dir, hvac_main_dir, hvac_type_dir, 'Air Source Heat Pump_Single Speed.txt'), \
-            1],
-        "Electric Furnace with CAC": \
-            [os.path.join(set_dir, building_block_dir, hvac_main_dir, hvac_type_dir, 'Electric Furnace with CAC.txt'), \
-            1],
-        "Electric Furnace with No CAC": \
-            [os.path.join(set_dir, building_block_dir, hvac_main_dir, hvac_type_dir, 'Electric Furnace with No CAC.txt'), \
-            1],
-        "Gas Furnace with CAC": \
-            [os.path.join(set_dir, building_block_dir, hvac_main_dir, hvac_type_dir, 'Gas Furnace with CAC.txt'), \
-            1],
-        "Gas Furnace with No CAC": \
-            [os.path.join(set_dir, building_block_dir, hvac_main_dir, hvac_type_dir, 'Gas Furnace with No CAC.txt'), \
-            1],
+        ## range type dictionary
+        range_dict = {
+        "Electric": os.path.join(set_dir, building_block_dir, gains_main_dir, gains_rangetype_dir, 'ElectricRange.txt'),
+        "Gas": os.path.join(set_dir, building_block_dir, gains_main_dir, gains_rangetype_dir, 'GasRange.txt'),
+        }
+
+        ## dryer type dictionary
+        dryer_dict = {
+        "Electric": os.path.join(set_dir, building_block_dir, gains_main_dir, gains_dryertype_dir, 'ElectricDryer.txt'),
+        "Gas": os.path.join(set_dir, building_block_dir, gains_main_dir, gains_dryertype_dir, 'GasDryer.txt'),
+        }
+
+        ## window blinds dictionary
+        blinds_dict = {
+        "Yes": os.path.join(set_dir, building_block_dir, window_main_dir, window_blinds_dir, 'YesBlinds.txt'),
+        "No": os.path.join(set_dir, building_block_dir, window_main_dir, window_blinds_dir, 'NoBlinds.txt'),
         }
 
         ## output dictionary
-        output_dict = {"Energy_All_End_Uses": os.path.join(set_dir, building_block_dir, output_dir, 'Energy_All_End_Uses.txt'),
+        output_dict = {
+        "Energy_All_End_Uses": os.path.join(set_dir, building_block_dir, output_dir, 'Energy_All_End_Uses.txt'),
         "Demand_All_End_Uses": os.path.join(set_dir, building_block_dir, output_dir, 'Demand_All_End_Uses.txt'),
         "Demand_Total_Electric_HVAC": os.path.join(set_dir, building_block_dir, output_dir, 'Demand_Total_Electric_HVAC.txt'),
         "Demand_Heating": os.path.join(set_dir, building_block_dir, output_dir, 'Demand_Heating.txt'),
@@ -282,33 +282,52 @@ def genmodels(gui_params, get_data_dict):
         "Demand_Other_Electric_Equipment": os.path.join(set_dir, building_block_dir, output_dir, 'Demand_Other_Electric_Equipment.txt'),
         }
 
+        ## hvac type dictionary
+        ## this determines what water heater type will later be pulled to the idf
+        hvac_dict = {
+        "Air Source Heat Pump_Single Speed": [
+            os.path.join(set_dir, building_block_dir, hvac_main_dir, hvac_type_dir, 'Air Source Heat Pump_Single Speed.txt'),
+            1
+            ],
+        "Electric Furnace with CAC": [
+            os.path.join(set_dir, building_block_dir, hvac_main_dir, hvac_type_dir, 'Electric Furnace with CAC.txt'), 
+            1
+            ],
+        "Electric Furnace with No CAC": [
+            os.path.join(set_dir, building_block_dir, hvac_main_dir, hvac_type_dir, 'Electric Furnace with No CAC.txt'),
+            1
+            ],
+        "Gas Furnace with CAC": [
+            os.path.join(set_dir, building_block_dir, hvac_main_dir, hvac_type_dir, 'Gas Furnace with CAC.txt'),
+            1
+            ],
+        "Gas Furnace with No CAC": [
+            os.path.join(set_dir, building_block_dir, hvac_main_dir, hvac_type_dir, 'Gas Furnace with No CAC.txt'),
+            1
+            ],
+        }
+
         ## foundation type dictionary
         # contents of dictionary: foundation type name, text file required in ZonesAndSurfaces --> FoundationType, text file required in HVAC --> ReturnDuctLocation
-        foundation_dict = {"Vent": ["Vented Crawlspace", 'Vented Crawl.txt', 'CrawlReturn.txt'],
+        foundation_dict = {
+        "Vent": ["Vented Crawlspace", 'Vented Crawl.txt', 'CrawlReturn.txt'],
         "Slab": ["Slab", 'Slab.txt', 'AtticReturn.txt'],
         "Heat": ["Heated Basement", 'Heated Basement.txt', 'InsideReturn.txt'],
         "Unhe": ["Unheated Basement", 'Unheated Basement.txt', 'UnheatedBasementReturn.txt'],
-        }
-
-        ## range type dictionary
-        range_dict = {"Electric": os.path.join(set_dir, building_block_dir, gains_main_dir, gains_rangetype_dir, 'ElectricRange.txt'),
-        "Gas": os.path.join(set_dir, building_block_dir, gains_main_dir, gains_rangetype_dir, 'GasRange.txt'),
-        }
-
-        ## dryer type dictionary
-        dryer_dict = {"Electric": os.path.join(set_dir, building_block_dir, gains_main_dir, gains_dryertype_dir, 'ElectricDryer.txt'),
-        "Gas": os.path.join(set_dir, building_block_dir, gains_main_dir, gains_dryertype_dir, 'GasDryer.txt'),
-        }
-
-        ## window blinds dictionary
-        blinds_dict = {"Yes": os.path.join(set_dir, building_block_dir, window_main_dir, window_blinds_dir, 'YesBlinds.txt'),
-        "No": os.path.join(set_dir, building_block_dir, window_main_dir, window_blinds_dir, 'NoBlinds.txt'),
         }
 
         #Find foundation type
         chars = 4
         foundation_key = foundation_and_floor_con[:chars]
         foundation_type = foundation_dict[foundation_key][0]
+
+        # Set geometry parameters that are needed to create geometry but not needed to be changed by user. All units in ft.
+        origin_x = convert_ft_to_m(0) 
+        origin_y = convert_ft_to_m(0)
+        origin_z = convert_ft_to_m(0)
+        foundationwall_ht_BG = convert_ft_to_m(0)
+        foundationwall_ht_AG = convert_ft_to_m(0)
+        roof_ht = convert_ft_to_m(4.5)
 
         #
 
