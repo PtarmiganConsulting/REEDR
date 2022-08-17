@@ -149,7 +149,7 @@ def produce_output_report(set_dir, output_dict, end_use_report_name, output_gran
 
     # Get run labels for output table
     df_for_run_labels = pd.read_excel(get_data_dict["REEDR_wb"], sheet_name=get_data_dict["Model_Input_ws"]) # This is the sheet with the model inputs
-    run_label_list = df_for_run_labels['Run_Label'].tolist()
+    run_label_list = df_for_run_labels['Run Label'].tolist()
 
     # Get column names/output fields for output table
     # Note: getList is a function that takes a dictionary and returns the keys of that dictionary as a list.
@@ -167,8 +167,8 @@ def produce_output_report(set_dir, output_dict, end_use_report_name, output_gran
     i = 1
     ## Main loop that fills output dataframe.
     for row in get_data_dict["master_dict_list"]: # go through every runlabel row...
-        run_label = row["Run_Label"]
-        timestep = row["Timesteps_Per_Hr"]
+        run_label = row["Run Label"]
+        timestep = row["Timesteps Per Hr"]
 
         # Update simulation status box in REEDR.xlsm...
         status = "...generating output for run " + str(i) + " of " + str(len(df_for_run_labels)) + "..."
@@ -215,7 +215,7 @@ def produce_output_report(set_dir, output_dict, end_use_report_name, output_gran
             # Strip leading or trailing whitespace from column names...
             eplus_out_df.columns = eplus_out_df.columns.str.strip()
             # Insert the Run_label into the first column of the file
-            eplus_out_df.insert(1, "Run_Label", run_label)
+            eplus_out_df.insert(1, "Run Label", run_label)
             # Concat the individual EnergyPlus run to the end of the custom report file, thus combining output from all EnergyPlus runs
             df_out = pd.concat([df_out, eplus_out_df])
 

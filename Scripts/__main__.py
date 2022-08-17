@@ -54,37 +54,37 @@ def main(gui_params):
     # runmodels(gui_params, get_data_dict) # for debugging
 
     if hit_error == False:
-        try:
-            runmodels(gui_params, get_data_dict)
+        #try:
+        runmodels(gui_params, get_data_dict)
 
-        except Exception as e:
-            get_data_dict["runlog"].write("!!! REEDR experienced the following error during model runs: " + str(e) + " \n")
-            get_data_dict["runlog"].close()
-            print()
-            print("Model run failed.")
-            print()
-            print("REEDR experienced the following error: " + str(e))
-            print()
-            input("Please press enter to continue...")
-            hit_error = True
+        # except Exception as e:
+        #     get_data_dict["runlog"].write("!!! REEDR experienced the following error during model runs: " + str(e) + " \n")
+        #     get_data_dict["runlog"].close()
+        #     print()
+        #     print("Model run failed.")
+        #     print()
+        #     print("REEDR experienced the following error: " + str(e))
+        #     print()
+        #     input("Please press enter to continue...")
+        #     hit_error = True
 
     #Run genoutputs.py
 
     # genoutputs(gui_params, get_data_dict) # for debugging
     if hit_error == False:
-        try:
-            genoutputs(gui_params, get_data_dict)
+        #try:
+        genoutputs(gui_params, get_data_dict)
 
-        except Exception as e:
-            get_data_dict["runlog"].write("!!! REEDR experienced the following error during model output generation: " + str(e) + " \n")
-            get_data_dict["runlog"].close()
-            print()
-            print("Model output failed.")
-            print()
-            print("REEDR experienced the following error: " + str(e))
-            print()
-            input("Please press enter to continue...")
-            hit_error = True
+        # except Exception as e:
+        #     get_data_dict["runlog"].write("!!! REEDR experienced the following error during model output generation: " + str(e) + " \n")
+        #     get_data_dict["runlog"].close()
+        #     print()
+        #     print("Model output failed.")
+        #     print()
+        #     print("REEDR experienced the following error: " + str(e))
+        #     print()
+        #     input("Please press enter to continue...")
+            # hit_error = True
 
     if hit_error == False:
         input("REEDR run successful. Please press enter to continue...")

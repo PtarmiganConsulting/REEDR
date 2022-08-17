@@ -2,10 +2,12 @@
 import pandas as pd # to import xcel, some initial data manipulation
 import os # for making paths and directories and removing files
 import shutil # for removing full directories
+import math
 from pprint import pprint # for debugging
 
 ## Note: when exe'ing, must add "Python." in front of each file name
-from unitconversions import convert_WperFt2_to_WperM2, convert_degF_to_degC, convert_IP_Uvalue_to_SI_Uvalue
+from unitconversions import convert_WperFt2_to_WperM2, convert_degF_to_degC, convert_IP_Uvalue_to_SI_Uvalue, convert_ft_to_m, convert_ft2_to_m2, convert_ft3_to_m3, \
+    convert_Btuh_to_W
 
 def genmodels(gui_params, get_data_dict):
 
@@ -113,6 +115,152 @@ def genmodels(gui_params, get_data_dict):
         output_type = "Demand"
     output_lookup = output_type + "_" + gui_params["output_enduses"]
 
+        ## locations & climate dictionary
+    ## this determines what location and climate file will later be pulled to the idf
+    location_dict = {
+    "USA_OR_Portland.Intl.AP.726980_TMY3": os.path.join(set_dir, building_block_dir, location_and_climate_dir, 'USA_OR_Portland.Intl.AP.726980_TMY3.txt'),
+    "USA_WA_Seattle-Tacoma.Intl.AP.727930_TMY3": os.path.join(set_dir, building_block_dir, location_and_climate_dir, 'USA_WA_Seattle-Tacoma.Intl.AP.727930_TMY3.txt'),
+    "USA_WA_Spokane.Intl.AP.727850_TMY3": os.path.join(set_dir, building_block_dir, location_and_climate_dir, 'USA_WA_Spokane.Intl.AP.727850_TMY3.txt'),
+    "USA_ID_Boise.AP-Gowen.Field.ANGB.726810_TMY3": os.path.join(set_dir, building_block_dir, location_and_climate_dir, 'USA_ID_Boise.AP-Gowen.Field.ANGB.726810_TMY3.txt'),
+    "USA_MT_Kalispell-Glacier.Park.Intl.AP.727790_TMY3": os.path.join(set_dir, building_block_dir, location_and_climate_dir, 'USA_MT_Kalispell-Glacier.Park.Intl.AP.727790_TMY3.txt'),
+    "USA_ID_Coeur.dAlene.AP-Boyington.Field.727834_TMYx.2004-2018": os.path.join(set_dir, building_block_dir, location_and_climate_dir, 'USA_ID_Coeur.dAlene.AP-Boyington.Field.727834_TMYx.2004-2018.txt'),
+    "USA_ID_Craters.of.the.Moon.Natl.Monument.725790_TMYx.2004-2018": os.path.join(set_dir, building_block_dir, location_and_climate_dir, 'USA_ID_Craters.of.the.Moon.Natl.Monument.725790_TMYx.2004-2018.txt'),
+    "USA_ID_Jerome.County.AP.726816_TMYx.2004-2018": os.path.join(set_dir, building_block_dir, location_and_climate_dir, 'USA_ID_Jerome.County.AP.726816_TMYx.2004-2018.txt'),
+    "USA_MT_Baker.Muni.AP.726777_TMYx.2004-2018": os.path.join(set_dir, building_block_dir, location_and_climate_dir, 'USA_MT_Baker.Muni.AP.726777_TMYx.2004-2018.txt'),
+    "USA_MT_Kalispell-Glacier.Park.Intl.AP.727790_TMYx.2004-2018": os.path.join(set_dir, building_block_dir, location_and_climate_dir, 'USA_MT_Kalispell-Glacier.Park.Intl.AP.727790_TMYx.2004-2018.txt'),
+    "USA_OR_Baker.City.Muni.AP.726886_TMYx.2004-2018": os.path.join(set_dir, building_block_dir, location_and_climate_dir, 'USA_OR_Baker.City.Muni.AP.726886_TMYx.2004-2018.txt'),
+    "USA_OR_Salem.Muni.AP-McNary.Field.726940_TMYx.2004-2018": os.path.join(set_dir, building_block_dir, location_and_climate_dir, 'USA_OR_Salem.Muni.AP-McNary.Field.726940_TMYx.2004-2018.txt'),
+    "USA_WA_Pasco-Tri.Cities.AP.727845_TMYx.2004-2018": os.path.join(set_dir, building_block_dir, location_and_climate_dir, 'USA_WA_Pasco-Tri.Cities.AP.727845_TMYx.2004-2018.txt'),
+    "USA_WA_Tacoma-JB.Lewis-McChord-Gray.AAF.742070_TMYx.2004-2018": os.path.join(set_dir, building_block_dir, location_and_climate_dir, 'USA_WA_Tacoma-JB.Lewis-McChord-Gray.AAF.742070_TMYx.2004-2018.txt'),
+    }
+
+    ## above ground wall construction dictionary
+    ## this determines what above ground wall insulation layer will later be pulled to the idf
+    above_ground_wall_dict = {
+    "Wood-Framed - 2x4 - 16 in OC - R-0 Cavity": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_wall_ins_dir, 'Wood-Framed - 2x4 - 16 in OC - R-0 Cavity.txt'),
+    "Wood-Framed - 2x4 - 16 in OC - R-11 Cavity": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_wall_ins_dir, 'Wood-Framed - 2x4 - 16 in OC - R-11 Cavity.txt'),
+    "Wood-Framed - 2x4 - 16 in OC - R-13 Cavity": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_wall_ins_dir, 'Wood-Framed - 2x4 - 16 in OC - R-13 Cavity.txt'),
+    "Wood-Framed - 2x4 - 16 in OC - R-15 Cavity": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_wall_ins_dir, 'Wood-Framed - 2x4 - 16 in OC - R-15 Cavity.txt'),
+    "Wood-Framed - 2x6 - 16 in OC - R-0 Cavity": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_wall_ins_dir, 'Wood-Framed - 2x6 - 16 in OC - R-0 Cavity.txt'),
+    "Wood-Framed - 2x6 - 16 in OC - R-19 Cavity - R-10 Header": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_wall_ins_dir, 'Wood-Framed - 2x6 - 16 in OC - R-19 Cavity - R-10 Header.txt'),
+    "Wood-Framed - 2x6 - 16 in OC - R-19 Cavity": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_wall_ins_dir, 'Wood-Framed - 2x6 - 16 in OC - R-19 Cavity.txt'),
+    "Wood-Framed - 2x6 - 16 in OC - R-21 Cavity - R-10 Header": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_wall_ins_dir, 'Wood-Framed - 2x6 - 16 in OC - R-21 Cavity - R-10 Header.txt'),
+    "Wood-Framed - 2x6 - 16 in OC - R-21 Cavity": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_wall_ins_dir, 'Wood-Framed - 2x6 - 16 in OC - R-21 Cavity.txt'),
+    "Wood-Framed - 2x6 - 24 in OC - R-0 Cavity": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_wall_ins_dir, 'Wood-Framed - 2x6 - 24 in OC - R-0 Cavity.txt'),
+    "Wood-Framed - 2x6 - 24 in OC - R-19 Cavity - R-10 Header": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_wall_ins_dir, 'Wood-Framed - 2x6 - 24 in OC - R-19 Cavity - R-10 Header.txt'),
+    "Wood-Framed - 2x6 - 24 in OC - R-19 Cavity": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_wall_ins_dir, 'Wood-Framed - 2x6 - 24 in OC - R-19 Cavity.txt'),
+    "Wood-Framed - 2x6 - 24 in OC - R-21 Cavity - R-10 Header": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_wall_ins_dir, 'Wood-Framed - 2x6 - 24 in OC - R-21 Cavity - R-10 Header.txt'),
+    "Wood-Framed - 2x6 - 24 in OC - R-21 Cavity": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_wall_ins_dir, 'Wood-Framed - 2x6 - 24 in OC - R-21 Cavity.txt'),
+    }
+
+    ## ceiling/attic construction dictionary
+    ## this determines what ceiling/attic insulation layer will later be pulled to the idf
+    ceiling_and_roof_dict = {
+    "Attic - R0 Cavity Insulation": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_attic_ins_dir, 'Attic - R0 Cavity Insulation.txt'),
+    "Attic - R30 Cavity Insulation": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_attic_ins_dir, 'Attic - R30 Cavity Insulation.txt'),
+    "Attic - R38 Cavity Insulation": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_attic_ins_dir, 'Attic - R38 Cavity Insulation.txt'),
+    "Attic - R49 Cavity Insulation": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_attic_ins_dir, 'Attic - R49 Cavity Insulation.txt'),
+    "Attic - R60 Cavity Insulation": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_attic_ins_dir, 'Attic - R60 Cavity Insulation.txt'),
+    }
+
+    ## floor and foundation construction dictionary
+    ## this determines what ceiling/attic insulation layer will later be pulled to the idf
+    foundation_and_floor_dict = {
+    "Vented Crawlspace - R0 Cavity Insulation": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_floor_ins_dir, 'Vented Crawlspace - R0 Cavity Insulation.txt'),
+    "Vented Crawlspace - R13 Cavity Insulation": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_floor_ins_dir, 'Vented Crawlspace - R13 Cavity Insulation.txt'),
+    "Vented Crawlspace - R19 Cavity Insulation": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_floor_ins_dir, 'Vented Crawlspace - R19 Cavity Insulation.txt'),
+    "Vented Crawlspace - R30 Cavity Insulation": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_floor_ins_dir, 'Vented Crawlspace - R30 Cavity Insulation.txt'),
+    "Vented Crawlspace - R38 Cavity Insulation": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_floor_ins_dir, 'Vented Crawlspace - R38 Cavity Insulation.txt'),
+    "Slab - Uninsulated": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_slab_ins_dir, 'Slab - Uninsulated.txt'),
+    "Slab - R5 Perimeter with No Thermal Break": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_slab_ins_dir, 'Slab - R5 Perimeter with No Thermal Break.txt'),
+    "Slab - R10 Perimeter with No Thermal Break": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_slab_ins_dir, 'Slab - R10 Perimeter with No Thermal Break.txt'),
+    "Slab - R5 Perimeter with R5 Thermal Break": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_slab_ins_dir, 'Slab - R5 Perimeter with R5 Thermal Break.txt'),
+    "Slab - R10 Perimeter with R5 Thermal Break": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_slab_ins_dir, 'Slab - R10 Perimeter with R5 Thermal Break.txt'),
+    "Slab - R5 Under Full Slab with R5 Thermal Break": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_slab_ins_dir, 'Slab - R5 Under Full Slab with R5 Thermal Break.txt'),
+    "Slab - R10 Under Full Slab with R5 Thermal Break": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_slab_ins_dir, 'Slab - R10 Under Full Slab with R5 Thermal Break.txt'),
+    "Heated Basement - Uninsulated": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_basement_ins_dir, 'Heated Basement - Uninsulated.txt'),
+    "Heated Basement - R5 Exterior Insulation": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_basement_ins_dir, 'Heated Basement - R5 Exterior Insulation.txt'),
+    "Heated Basement - R10 Exterior Insulation": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_basement_ins_dir, 'Heated Basement - R10 Exterior Insulation.txt'),
+    "Heated Basement - R15 Exterior Insulation": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_basement_ins_dir, 'Heated Basement - R15 Exterior Insulation.txt'),
+    "Unheated Basement - Uninsulated": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_basement_ins_dir, 'Unheated Basement - Uninsulated.txt'),
+    "Unheated Basement - R13 Cavity Insulation": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_basement_ins_dir, 'Unheated Basement - R13 Cavity Insulation.txt'),
+    "Unheated Basement - R19 Cavity Insulation": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_basement_ins_dir, 'Unheated Basement - R19 Cavity Insulation.txt'),
+    "Unheated Basement - R30 Cavity Insulation": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_basement_ins_dir, 'Unheated Basement - R30 Cavity Insulation.txt'),
+    "Unheated Basement - R38 Cavity Insulation": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_basement_ins_dir, 'Unheated Basement - R38 Cavity Insulation.txt'),
+    }
+
+    ## water heater type dictionary
+    ## this determines what water heater type will later be pulled to the idf
+    water_heater_dict = {
+    "Electric Storage_50-gallon": os.path.join(set_dir, building_block_dir, dhw_main_dir, dhw_wh_type_dir, 'Electric Storage_50-gallon.txt'),
+    "Gas Storage_50-gallon": os.path.join(set_dir, building_block_dir, dhw_main_dir, dhw_wh_type_dir, 'Gas Storage_50-gallon.txt'),
+    }
+
+    ## range type dictionary
+    range_dict = {
+    "Electric": os.path.join(set_dir, building_block_dir, gains_main_dir, gains_rangetype_dir, 'ElectricRange.txt'),
+    "Gas": os.path.join(set_dir, building_block_dir, gains_main_dir, gains_rangetype_dir, 'GasRange.txt'),
+    }
+
+    ## dryer type dictionary
+    dryer_dict = {
+    "Electric": os.path.join(set_dir, building_block_dir, gains_main_dir, gains_dryertype_dir, 'ElectricDryer.txt'),
+    "Gas": os.path.join(set_dir, building_block_dir, gains_main_dir, gains_dryertype_dir, 'GasDryer.txt'),
+    }
+
+    ## window blinds dictionary
+    blinds_dict = {
+    "Yes": os.path.join(set_dir, building_block_dir, window_main_dir, window_blinds_dir, 'YesBlinds.txt'),
+    "No": os.path.join(set_dir, building_block_dir, window_main_dir, window_blinds_dir, 'NoBlinds.txt'),
+    }
+
+    ## output dictionary
+    output_dict = {
+    "Energy_All_End_Uses": os.path.join(set_dir, building_block_dir, output_dir, 'Energy_All_End_Uses.txt'),
+    "Demand_All_End_Uses": os.path.join(set_dir, building_block_dir, output_dir, 'Demand_All_End_Uses.txt'),
+    "Demand_Total_Electric_HVAC": os.path.join(set_dir, building_block_dir, output_dir, 'Demand_Total_Electric_HVAC.txt'),
+    "Demand_Heating": os.path.join(set_dir, building_block_dir, output_dir, 'Demand_Heating.txt'),
+    "Demand_Cooling": os.path.join(set_dir, building_block_dir, output_dir, 'Demand_Cooling.txt'),
+    "Demand_Fan": os.path.join(set_dir, building_block_dir, output_dir, 'Demand_Fan.txt'),
+    "Demand_Lighting": os.path.join(set_dir, building_block_dir, output_dir, 'Demand_Lighting.txt'),
+    "Demand_Water_Heating": os.path.join(set_dir, building_block_dir, output_dir, 'Demand_Water_Heating.txt'),
+    "Demand_Other_Electric_Equipment": os.path.join(set_dir, building_block_dir, output_dir, 'Demand_Other_Electric_Equipment.txt'),
+    }
+
+    ## hvac type dictionary
+    ## this determines what water heater type will later be pulled to the idf
+    hvac_dict = {
+    "Air Source Heat Pump_Single Speed": [
+        os.path.join(set_dir, building_block_dir, hvac_main_dir, hvac_type_dir, 'Air Source Heat Pump_Single Speed.txt'),
+        1
+        ],
+    "Electric Furnace with CAC": [
+        os.path.join(set_dir, building_block_dir, hvac_main_dir, hvac_type_dir, 'Electric Furnace with CAC.txt'), 
+        1
+        ],
+    "Electric Furnace with No CAC": [
+        os.path.join(set_dir, building_block_dir, hvac_main_dir, hvac_type_dir, 'Electric Furnace with No CAC.txt'),
+        1
+        ],
+    "Gas Furnace with CAC": [
+        os.path.join(set_dir, building_block_dir, hvac_main_dir, hvac_type_dir, 'Gas Furnace with CAC.txt'),
+        1
+        ],
+    "Gas Furnace with No CAC": [
+        os.path.join(set_dir, building_block_dir, hvac_main_dir, hvac_type_dir, 'Gas Furnace with No CAC.txt'),
+        1
+        ],
+    }
+
+    ## foundation type dictionary
+    # contents of dictionary: foundation type name, text file required in ZonesAndSurfaces --> FoundationType, text file required in HVAC --> ReturnDuctLocation
+    foundation_dict = {
+    "Vent": ["Vented Crawlspace", 'Vented Crawl.txt', 'CrawlReturn.txt'],
+    "Slab": ["Slab", 'Slab.txt', 'AtticReturn.txt'],
+    "Heat": ["Heated Basement", 'Heated Basement.txt', 'InsideReturn.txt'],
+    "Unhe": ["Unheated Basement", 'Unheated Basement.txt', 'UnheatedBasementReturn.txt'],
+    }
+
     ## IDF WRITER LOOP BEGINS HERE
     ## the loop covers every dictionary (effectively a runlabel row) in the big dictionary list we made,
     ## each time the loop comes to a new dictionary/runlabel row, it updates the changable variables before doing anything else
@@ -128,193 +276,48 @@ def genmodels(gui_params, get_data_dict):
         print(status)
         #sht1['D16'] = status
 
-        run_label = dictionary["Run_Label"]
-        timestep = dictionary["Timesteps_Per_Hr"]
-        location_pull = dictionary["Weather_File"] # I should name this something better.
-        bldg_orient = dictionary["Bldg_Orient"]
-        stories_above_ground = dictionary["Stories_Above_Ground"]
-        area_per_story = convert_ft2_to_m2(dictionary["Area_Per_Story"])
-        height_per_story = convert_ft_to_m(dictionary["Height_Per_Story"])
-        ratio_width_to_depth = dictionary["Ratio_Width_to_Depth"]
-        above_ground_wall_con = dictionary["Above_Ground_Wall_Construction"]
-        ceiling_and_roof_con = dictionary["Ceiling_And_Roof_Construction"]
-        foundation_and_floor_con = dictionary["Foundation_And_Floor_Construction"]
-        windowu_val = convert_IP_Uvalue_to_SI_Uvalue(dictionary["Window_U-Value"])
-        window_shgc = dictionary["Window_SHGC"]
-        window_shades = dictionary["Window_Shades"]
-        window_overhangs = dictionary["Window_Overhangs"]
-        wtw_ratio_front = dictionary["WtW_Ratio_Front"]
-        wtw_ratio_back = dictionary["WtW_Ratio_Back"]
-        wtw_ratio_left = dictionary["WtW_Ratio_Left"]
-        wtw_ratio_right = dictionary["WtW_Ratio_Right"]
-        hvac_type = dictionary["HVAC_Type"]
-        htg_stpt_sch = dictionary["Htg_StPt_Sch"]
-        clg_stpt_sch = dictionary["Clg_StPt_Sch"]
-        supply_leak = dictionary["Supply_Duct_Leakage"]
-        return_leak = dictionary["Return_Duct_Leakage"]
-        hp_max_resistance_temp = convert_degF_to_degC(dictionary["HP_Max_Resistance_Temp"])
-        hp_min_compressor_temp = convert_degF_to_degC(dictionary["HP_Min_Compressor_Temp"])
-        water_heater_type = dictionary["Water_Heater_Type"]
-        dhw_stpt_sch = dictionary["DHW_StPt_Sch"]
-        people = dictionary["Number_Of_People"]
-        interior_lpd = convert_WperFt2_to_WperM2(dictionary["Interior_LPD"])/2 #divide total lpd by plug lights and hardwired lights
-        exterior_lp = dictionary["Exterior_W"]/2 #divide total lp by garage lights and exterior facade lights
+        run_label = dictionary["Run Label"]
+        timestep = dictionary["Timesteps Per Hr"]
+        location_pull = dictionary["Weather File"] # I should name this something better.
+        bldg_orient = dictionary["Bldg Orient [deg]"]
+        conditioned_footprint_area = round(convert_ft2_to_m2(dictionary["Conditioned Footprint Area [ft^2]"]),2)
+        total_conditioned_volume = round(convert_ft3_to_m3(dictionary["Total Conditioned Volume Above Foundation Walls  [ft^3]"]),2)
+        ratio_width_to_depth = dictionary["Ratio Width to Depth"]
+        above_ground_wall_con = dictionary["Exterior Non-Foundation Wall Construction"]
+        ceiling_and_roof_con = dictionary["Ceiling And Roof Construction"]
+        foundation_and_floor_con = dictionary["Foundation And Floor Construction"]
+        foundation_wall_ht_AG = round(convert_ft_to_m(dictionary["Foundation Wall Height Above Ground [ft]"]),2)
+        foundation_wall_ht_BG = round(convert_ft_to_m(dictionary["Foundation Wall Height Below Ground [ft]"]),2)
+        windowu_val = round(convert_IP_Uvalue_to_SI_Uvalue(dictionary["Window U-Value [Btu/h/ft^2/F]"]),2)
+        window_shgc = dictionary["Window SHGC"]
+        window_shades = dictionary["Window Shades"]
+        window_overhangs = dictionary["Window Overhangs"]
+        wtw_ratio_front = dictionary["WtW Ratio Front [%]"]
+        wtw_ratio_back = dictionary["WtW Ratio Back [%]"]
+        wtw_ratio_left = dictionary["WtW Ratio Left [%]"]
+        wtw_ratio_right = dictionary["WtW Ratio Right [%]"]
+        hvac_type = dictionary["HVAC Type"]
+        htg_stpt_sch = dictionary["Htg StPt Sch"]
+        clg_stpt_sch = dictionary["Clg StPt Sch"]
+        supply_leak = dictionary["Supply Duct Leakage [%]"]
+        return_leak = dictionary["Return Duct Leakage [%]"]
+        hp_max_resistance_temp = convert_degF_to_degC(dictionary["HP Max Resistance Temp [deg F]"])
+        hp_min_compressor_temp = convert_degF_to_degC(dictionary["HP Min Compressor Temp [deg F]"])
+        water_heater_type = dictionary["Water Heater Type"]
+        dhw_stpt_sch = dictionary["DHW StPt Sch"]
+        people = dictionary["Number Of People"]
+        interior_lpd = convert_WperFt2_to_WperM2(dictionary["Interior LPD [W/ft^2]"])/2 #divide total lpd by plug lights and hardwired lights
+        exterior_lp = dictionary["Exterior LP [W]"]/2 #divide total lp by garage lights and exterior facade lights
         range_type = dictionary["Range"]
         dryer_type = dictionary["Dryer"]
         frig = dictionary["Refrigerator"]
         clotheswasher = dictionary["ClothesWasher"]
         dishwasher = dictionary["Dishwasher"]
-        misc_elec = dictionary["MiscElectric_W"]
-        misc_gas = dictionary["MiscGas_W"]
+        misc_elec = dictionary["Misc Electric Gains [Max W]"]
+        misc_gas = convert_Btuh_to_W(dictionary["Misc Gas Gains [Max Btu/h]"])
 
         ## Set window construction
         win_construction = "Exterior Window"
-
-        ## locations & climate dictionary
-        ## this determines what location and climate file will later be pulled to the idf
-        location_dict = {
-        "USA_OR_Portland.Intl.AP.726980_TMY3": os.path.join(set_dir, building_block_dir, location_and_climate_dir, 'USA_OR_Portland.Intl.AP.726980_TMY3.txt'),
-        "USA_WA_Seattle-Tacoma.Intl.AP.727930_TMY3": os.path.join(set_dir, building_block_dir, location_and_climate_dir, 'USA_WA_Seattle-Tacoma.Intl.AP.727930_TMY3.txt'),
-        "USA_WA_Spokane.Intl.AP.727850_TMY3": os.path.join(set_dir, building_block_dir, location_and_climate_dir, 'USA_WA_Spokane.Intl.AP.727850_TMY3.txt'),
-        "USA_ID_Boise.AP-Gowen.Field.ANGB.726810_TMY3": os.path.join(set_dir, building_block_dir, location_and_climate_dir, 'USA_ID_Boise.AP-Gowen.Field.ANGB.726810_TMY3.txt'),
-        "USA_MT_Kalispell-Glacier.Park.Intl.AP.727790_TMY3": os.path.join(set_dir, building_block_dir, location_and_climate_dir, 'USA_MT_Kalispell-Glacier.Park.Intl.AP.727790_TMY3.txt'),
-        "USA_ID_Coeur.dAlene.AP-Boyington.Field.727834_TMYx.2004-2018": os.path.join(set_dir, building_block_dir, location_and_climate_dir, 'USA_ID_Coeur.dAlene.AP-Boyington.Field.727834_TMYx.2004-2018.txt'),
-        "USA_ID_Craters.of.the.Moon.Natl.Monument.725790_TMYx.2004-2018": os.path.join(set_dir, building_block_dir, location_and_climate_dir, 'USA_ID_Craters.of.the.Moon.Natl.Monument.725790_TMYx.2004-2018.txt'),
-        "USA_ID_Jerome.County.AP.726816_TMYx.2004-2018": os.path.join(set_dir, building_block_dir, location_and_climate_dir, 'USA_ID_Jerome.County.AP.726816_TMYx.2004-2018.txt'),
-        "USA_MT_Baker.Muni.AP.726777_TMYx.2004-2018": os.path.join(set_dir, building_block_dir, location_and_climate_dir, 'USA_MT_Baker.Muni.AP.726777_TMYx.2004-2018.txt'),
-        "USA_MT_Kalispell-Glacier.Park.Intl.AP.727790_TMYx.2004-2018": os.path.join(set_dir, building_block_dir, location_and_climate_dir, 'USA_MT_Kalispell-Glacier.Park.Intl.AP.727790_TMYx.2004-2018.txt'),
-        "USA_OR_Baker.City.Muni.AP.726886_TMYx.2004-2018": os.path.join(set_dir, building_block_dir, location_and_climate_dir, 'USA_OR_Baker.City.Muni.AP.726886_TMYx.2004-2018.txt'),
-        "USA_OR_Salem.Muni.AP-McNary.Field.726940_TMYx.2004-2018": os.path.join(set_dir, building_block_dir, location_and_climate_dir, 'USA_OR_Salem.Muni.AP-McNary.Field.726940_TMYx.2004-2018.txt'),
-        "USA_WA_Pasco-Tri.Cities.AP.727845_TMYx.2004-2018": os.path.join(set_dir, building_block_dir, location_and_climate_dir, 'USA_WA_Pasco-Tri.Cities.AP.727845_TMYx.2004-2018.txt'),
-        "USA_WA_Tacoma-JB.Lewis-McChord-Gray.AAF.742070_TMYx.2004-2018": os.path.join(set_dir, building_block_dir, location_and_climate_dir, 'USA_WA_Tacoma-JB.Lewis-McChord-Gray.AAF.742070_TMYx.2004-2018.txt'),
-        }
-
-        ## above ground wall construction dictionary
-        ## this determines what above ground wall insulation layer will later be pulled to the idf
-        above_ground_wall_dict = {
-        "Wood-Framed - 2x4 - 16 in OC - R-0 Cavity": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_wall_ins_dir, 'Wood-Framed - 2x4 - 16 in OC - R-0 Cavity.txt'),
-        "Wood-Framed - 2x4 - 16 in OC - R-11 Cavity": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_wall_ins_dir, 'Wood-Framed - 2x4 - 16 in OC - R-11 Cavity.txt'),
-        "Wood-Framed - 2x4 - 16 in OC - R-13 Cavity": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_wall_ins_dir, 'Wood-Framed - 2x4 - 16 in OC - R-13 Cavity.txt'),
-        "Wood-Framed - 2x4 - 16 in OC - R-15 Cavity": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_wall_ins_dir, 'Wood-Framed - 2x4 - 16 in OC - R-15 Cavity.txt'),
-        "Wood-Framed - 2x6 - 16 in OC - R-0 Cavity": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_wall_ins_dir, 'Wood-Framed - 2x6 - 16 in OC - R-0 Cavity.txt'),
-        "Wood-Framed - 2x6 - 16 in OC - R-19 Cavity - R-10 Header": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_wall_ins_dir, 'Wood-Framed - 2x6 - 16 in OC - R-19 Cavity - R-10 Header.txt'),
-        "Wood-Framed - 2x6 - 16 in OC - R-19 Cavity": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_wall_ins_dir, 'Wood-Framed - 2x6 - 16 in OC - R-19 Cavity.txt'),
-        "Wood-Framed - 2x6 - 16 in OC - R-21 Cavity - R-10 Header": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_wall_ins_dir, 'Wood-Framed - 2x6 - 16 in OC - R-21 Cavity - R-10 Header.txt'),
-        "Wood-Framed - 2x6 - 16 in OC - R-21 Cavity": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_wall_ins_dir, 'Wood-Framed - 2x6 - 16 in OC - R-21 Cavity.txt'),
-        "Wood-Framed - 2x6 - 24 in OC - R-0 Cavity": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_wall_ins_dir, 'Wood-Framed - 2x6 - 24 in OC - R-0 Cavity.txt'),
-        "Wood-Framed - 2x6 - 24 in OC - R-19 Cavity - R-10 Header": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_wall_ins_dir, 'Wood-Framed - 2x6 - 24 in OC - R-19 Cavity - R-10 Header.txt'),
-        "Wood-Framed - 2x6 - 24 in OC - R-19 Cavity": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_wall_ins_dir, 'Wood-Framed - 2x6 - 24 in OC - R-19 Cavity.txt'),
-        "Wood-Framed - 2x6 - 24 in OC - R-21 Cavity - R-10 Header": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_wall_ins_dir, 'Wood-Framed - 2x6 - 24 in OC - R-21 Cavity - R-10 Header.txt'),
-        "Wood-Framed - 2x6 - 24 in OC - R-21 Cavity": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_wall_ins_dir, 'Wood-Framed - 2x6 - 24 in OC - R-21 Cavity.txt'),
-        }
-
-        ## ceiling/attic construction dictionary
-        ## this determines what ceiling/attic insulation layer will later be pulled to the idf
-        ceiling_and_roof_dict = {
-        "Attic - R0 Cavity Insulation": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_attic_ins_dir, 'Attic - R0 Cavity Insulation.txt'),
-        "Attic - R30 Cavity Insulation": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_attic_ins_dir, 'Attic - R30 Cavity Insulation.txt'),
-        "Attic - R38 Cavity Insulation": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_attic_ins_dir, 'Attic - R38 Cavity Insulation.txt'),
-        "Attic - R49 Cavity Insulation": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_attic_ins_dir, 'Attic - R49 Cavity Insulation.txt'),
-        "Attic - R60 Cavity Insulation": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_attic_ins_dir, 'Attic - R60 Cavity Insulation.txt'),
-        }
-
-        ## floor and foundation construction dictionary
-        ## this determines what ceiling/attic insulation layer will later be pulled to the idf
-        foundation_and_floor_dict = {
-        "Vented Crawlspace - R0 Cavity Insulation": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_floor_ins_dir, 'Vented Crawlspace - R0 Cavity Insulation.txt'),
-        "Vented Crawlspace - R13 Cavity Insulation": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_floor_ins_dir, 'Vented Crawlspace - R13 Cavity Insulation.txt'),
-        "Vented Crawlspace - R19 Cavity Insulation": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_floor_ins_dir, 'Vented Crawlspace - R19 Cavity Insulation.txt'),
-        "Vented Crawlspace - R30 Cavity Insulation": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_floor_ins_dir, 'Vented Crawlspace - R30 Cavity Insulation.txt'),
-        "Vented Crawlspace - R38 Cavity Insulation": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_floor_ins_dir, 'Vented Crawlspace - R38 Cavity Insulation.txt'),
-        "Slab - Uninsulated": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_slab_ins_dir, 'Slab - Uninsulated.txt'),
-        "Slab - R5 Perimeter with No Thermal Break": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_slab_ins_dir, 'Slab - R5 Perimeter with No Thermal Break.txt'),
-        "Slab - R10 Perimeter with No Thermal Break": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_slab_ins_dir, 'Slab - R10 Perimeter with No Thermal Break.txt'),
-        "Slab - R5 Perimeter with R5 Thermal Break": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_slab_ins_dir, 'Slab - R5 Perimeter with R5 Thermal Break.txt'),
-        "Slab - R10 Perimeter with R5 Thermal Break": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_slab_ins_dir, 'Slab - R10 Perimeter with R5 Thermal Break.txt'),
-        "Slab - R5 Under Full Slab with R5 Thermal Break": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_slab_ins_dir, 'Slab - R5 Under Full Slab with R5 Thermal Break.txt'),
-        "Slab - R10 Under Full Slab with R5 Thermal Break": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_slab_ins_dir, 'Slab - R10 Under Full Slab with R5 Thermal Break.txt'),
-        "Heated Basement - Uninsulated": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_basement_ins_dir, 'Heated Basement - Uninsulated.txt'),
-        "Heated Basement - R5 Exterior Insulation": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_basement_ins_dir, 'Heated Basement - R5 Exterior Insulation.txt'),
-        "Heated Basement - R10 Exterior Insulation": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_basement_ins_dir, 'Heated Basement - R10 Exterior Insulation.txt'),
-        "Heated Basement - R15 Exterior Insulation": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_basement_ins_dir, 'Heated Basement - R15 Exterior Insulation.txt'),
-        "Unheated Basement - Uninsulated": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_basement_ins_dir, 'Unheated Basement - Uninsulated.txt'),
-        "Unheated Basement - R13 Cavity Insulation": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_basement_ins_dir, 'Unheated Basement - R13 Cavity Insulation.txt'),
-        "Unheated Basement - R19 Cavity Insulation": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_basement_ins_dir, 'Unheated Basement - R19 Cavity Insulation.txt'),
-        "Unheated Basement - R30 Cavity Insulation": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_basement_ins_dir, 'Unheated Basement - R30 Cavity Insulation.txt'),
-        "Unheated Basement - R38 Cavity Insulation": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_basement_ins_dir, 'Unheated Basement - R38 Cavity Insulation.txt'),
-        }
-
-        ## water heater type dictionary
-        ## this determines what water heater type will later be pulled to the idf
-        water_heater_dict = {
-        "Electric Storage_50-gallon": os.path.join(set_dir, building_block_dir, dhw_main_dir, dhw_wh_type_dir, 'Electric Storage_50-gallon.txt'),
-        "Gas Storage_50-gallon": os.path.join(set_dir, building_block_dir, dhw_main_dir, dhw_wh_type_dir, 'Gas Storage_50-gallon.txt'),
-        }
-
-        ## range type dictionary
-        range_dict = {
-        "Electric": os.path.join(set_dir, building_block_dir, gains_main_dir, gains_rangetype_dir, 'ElectricRange.txt'),
-        "Gas": os.path.join(set_dir, building_block_dir, gains_main_dir, gains_rangetype_dir, 'GasRange.txt'),
-        }
-
-        ## dryer type dictionary
-        dryer_dict = {
-        "Electric": os.path.join(set_dir, building_block_dir, gains_main_dir, gains_dryertype_dir, 'ElectricDryer.txt'),
-        "Gas": os.path.join(set_dir, building_block_dir, gains_main_dir, gains_dryertype_dir, 'GasDryer.txt'),
-        }
-
-        ## window blinds dictionary
-        blinds_dict = {
-        "Yes": os.path.join(set_dir, building_block_dir, window_main_dir, window_blinds_dir, 'YesBlinds.txt'),
-        "No": os.path.join(set_dir, building_block_dir, window_main_dir, window_blinds_dir, 'NoBlinds.txt'),
-        }
-
-        ## output dictionary
-        output_dict = {
-        "Energy_All_End_Uses": os.path.join(set_dir, building_block_dir, output_dir, 'Energy_All_End_Uses.txt'),
-        "Demand_All_End_Uses": os.path.join(set_dir, building_block_dir, output_dir, 'Demand_All_End_Uses.txt'),
-        "Demand_Total_Electric_HVAC": os.path.join(set_dir, building_block_dir, output_dir, 'Demand_Total_Electric_HVAC.txt'),
-        "Demand_Heating": os.path.join(set_dir, building_block_dir, output_dir, 'Demand_Heating.txt'),
-        "Demand_Cooling": os.path.join(set_dir, building_block_dir, output_dir, 'Demand_Cooling.txt'),
-        "Demand_Fan": os.path.join(set_dir, building_block_dir, output_dir, 'Demand_Fan.txt'),
-        "Demand_Lighting": os.path.join(set_dir, building_block_dir, output_dir, 'Demand_Lighting.txt'),
-        "Demand_Water_Heating": os.path.join(set_dir, building_block_dir, output_dir, 'Demand_Water_Heating.txt'),
-        "Demand_Other_Electric_Equipment": os.path.join(set_dir, building_block_dir, output_dir, 'Demand_Other_Electric_Equipment.txt'),
-        }
-
-        ## hvac type dictionary
-        ## this determines what water heater type will later be pulled to the idf
-        hvac_dict = {
-        "Air Source Heat Pump_Single Speed": [
-            os.path.join(set_dir, building_block_dir, hvac_main_dir, hvac_type_dir, 'Air Source Heat Pump_Single Speed.txt'),
-            1
-            ],
-        "Electric Furnace with CAC": [
-            os.path.join(set_dir, building_block_dir, hvac_main_dir, hvac_type_dir, 'Electric Furnace with CAC.txt'), 
-            1
-            ],
-        "Electric Furnace with No CAC": [
-            os.path.join(set_dir, building_block_dir, hvac_main_dir, hvac_type_dir, 'Electric Furnace with No CAC.txt'),
-            1
-            ],
-        "Gas Furnace with CAC": [
-            os.path.join(set_dir, building_block_dir, hvac_main_dir, hvac_type_dir, 'Gas Furnace with CAC.txt'),
-            1
-            ],
-        "Gas Furnace with No CAC": [
-            os.path.join(set_dir, building_block_dir, hvac_main_dir, hvac_type_dir, 'Gas Furnace with No CAC.txt'),
-            1
-            ],
-        }
-
-        ## foundation type dictionary
-        # contents of dictionary: foundation type name, text file required in ZonesAndSurfaces --> FoundationType, text file required in HVAC --> ReturnDuctLocation
-        foundation_dict = {
-        "Vent": ["Vented Crawlspace", 'Vented Crawl.txt', 'CrawlReturn.txt'],
-        "Slab": ["Slab", 'Slab.txt', 'AtticReturn.txt'],
-        "Heat": ["Heated Basement", 'Heated Basement.txt', 'InsideReturn.txt'],
-        "Unhe": ["Unheated Basement", 'Unheated Basement.txt', 'UnheatedBasementReturn.txt'],
-        }
 
         #Find foundation type
         chars = 4
@@ -325,11 +328,47 @@ def genmodels(gui_params, get_data_dict):
         origin_x = convert_ft_to_m(0) 
         origin_y = convert_ft_to_m(0)
         origin_z = convert_ft_to_m(0)
-        foundationwall_ht_BG = convert_ft_to_m(0)
-        foundationwall_ht_AG = convert_ft_to_m(0)
         roof_ht = convert_ft_to_m(4.5)
+        number_of_stories = 1
 
-        #
+        # Calculate intermediate geometry variables
+        avg_conditioned_envelope_ht = round(total_conditioned_volume / conditioned_footprint_area, 10)
+        first_flr_ht_AG = round(foundation_wall_ht_AG + avg_conditioned_envelope_ht, 10)
+        top_flr_ht_AG = round(first_flr_ht_AG, 10)
+        roof_ht_AG = round(top_flr_ht_AG + roof_ht, 10)
+        building_width = round(ratio_width_to_depth * math.sqrt(conditioned_footprint_area / ratio_width_to_depth), 10)
+        building_depth = round(conditioned_footprint_area / building_width, 10)
+        roof_ridge_depth = round(building_depth / 2, 10)
+        wall_area_front = round(building_width * avg_conditioned_envelope_ht, 10)
+        wall_area_right = round(building_depth * avg_conditioned_envelope_ht, 10)
+        wall_area_left = round(building_depth * avg_conditioned_envelope_ht, 10)
+        wall_area_back = round(building_width * avg_conditioned_envelope_ht, 10)
+        window_area_front = round(wall_area_front * wtw_ratio_front, 10)
+        window_area_right = round(wall_area_right * wtw_ratio_right, 10)
+        window_area_left = round(wall_area_left * wtw_ratio_left, 10)
+        window_area_back = round(wall_area_back * wtw_ratio_back, 10)
+        window_centerX_front = round(building_width / 2, 10)
+        window_centerX_back = round(building_width / 2, 10)
+        window_centerX_sides = round(building_depth / 2, 10)
+        window_aspratio_front_lenToht = round(building_width / avg_conditioned_envelope_ht, 10)
+        window_aspratio_back_lenToht = round(building_width / avg_conditioned_envelope_ht, 10)
+        window_aspratio_sides_lenToht = round(building_depth / avg_conditioned_envelope_ht, 10)
+        window_len_front = round(window_aspratio_front_lenToht * math.sqrt(window_area_front / window_aspratio_front_lenToht), 10)
+        window_ht_front = round(window_area_front / window_len_front, 10)
+        window_len_right = round(window_aspratio_sides_lenToht * math.sqrt(window_area_right / window_aspratio_sides_lenToht), 10)
+        window_ht_right = round(window_area_right / window_len_right, 10)
+        window_len_left = round(window_aspratio_sides_lenToht * math.sqrt(window_area_left / window_aspratio_sides_lenToht), 10)
+        window_ht_left = round(window_area_left / window_len_left, 10)
+        window_len_back = round(window_aspratio_back_lenToht * math.sqrt(window_area_back / window_aspratio_back_lenToht), 10)
+        window_ht_back = round(window_area_back / window_len_back, 10)
+        window_startingX_front = round(window_centerX_front - window_len_front/2, 10)
+        window_startingX_right = round(window_centerX_sides - window_len_right/2, 10)
+        window_startingX_left = round(window_centerX_sides - window_len_left/2, 10)
+        window_startingX_back = round(window_centerX_back - window_len_back/2, 10)
+        window_startingZ_front = round((avg_conditioned_envelope_ht/2)-(window_ht_front/2), 10)
+        window_startingZ_right = round((avg_conditioned_envelope_ht/2)-(window_ht_right/2), 10)
+        window_startingZ_left = round((avg_conditioned_envelope_ht/2)-(window_ht_left/2), 10)
+        window_startingZ_back = round((avg_conditioned_envelope_ht/2)-(window_ht_back/2), 10)
 
         ## this section imports all the necessary text from .txt files and turns them into strings
         ## the ones with changeable variables are turned into f-strings so that their values can be properly adjusted.

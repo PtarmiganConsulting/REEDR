@@ -76,8 +76,8 @@ def runmodels(gui_params, get_data_dict):
         print(status)
         #sht1.range('status_line_2').value = status
 
-        run_label = dictionary["Run_Label"]
-        location_pull = dictionary["Weather_File"]
+        run_label = dictionary["Run Label"]
+        location_pull = dictionary["Weather File"]
 
         try:
             plusterwolf(run_label, location_pull, get_data_dict["master_directory"], gui_params["path_val"], i, get_data_dict["df"])
