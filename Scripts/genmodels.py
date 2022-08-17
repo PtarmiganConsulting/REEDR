@@ -324,6 +324,17 @@ def genmodels(gui_params, get_data_dict):
         foundation_key = foundation_and_floor_con[:chars]
         foundation_type = foundation_dict[foundation_key][0]
 
+        # Set main floor construction
+        if foundation_type == "Vented Crawlspace" or foundation_type == "Unheated Basement":
+            main_floor_construction = "Exterior Floor"
+            foundation_surface = "floor_foundation"
+        elif foundation_type ==  "Heated Basement":
+            main_floor_construction = "Interior Floor"
+            foundation_surface = "floor_foundation"
+        else: # foundation type is slab
+            main_floor_construction = "Slab Construction"
+            foundation_surface = "floor_main"
+
         # Set geometry parameters that are needed to create geometry but not needed to be changed by user. All units in ft.
         origin_x = convert_ft_to_m(0) 
         origin_y = convert_ft_to_m(0)

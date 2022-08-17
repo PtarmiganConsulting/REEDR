@@ -17,7 +17,7 @@ list_of_rows = []
 columns_as_list = df.columns
 
 
-range_grabber = len(df) - 1 # num of rows, should probably rename this -- used as range to iterate over variable # of rows
+range_grabber = len(df) # num of rows, should probably rename this -- used as range to iterate over variable # of rows
 counter = 0
 for _ in range(range_grabber): # this loop turns every row into a list, and then makes a list of those lists for iteration
     row_as_list = list(df.loc[counter])
@@ -55,7 +55,7 @@ list_of_rows = []
 columns_as_list = df.columns
 
 
-range_grabber = len(df) - 1 # num of rows, should probably rename this -- used as range to iterate over variable # of rows
+range_grabber = len(df) # num of rows, should probably rename this -- used as range to iterate over variable # of rows
 counter = 0
 for _ in range(range_grabber): # this loop turns every row into a list, and then makes a list of those lists for iteration
     row_as_list = list(df.loc[counter])
@@ -94,7 +94,7 @@ list_of_rows = []
 columns_as_list = df.columns
 
 
-range_grabber = len(df) - 1 # num of rows, should probably rename this -- used as range to iterate over variable # of rows
+range_grabber = len(df) # num of rows, should probably rename this -- used as range to iterate over variable # of rows
 counter = 0
 for _ in range(range_grabber): # this loop turns every row into a list, and then makes a list of those lists for iteration
     row_as_list = list(df.loc[counter])
@@ -134,7 +134,7 @@ list_of_rows = []
 columns_as_list = df.columns
 
 
-range_grabber = len(df) - 1 # num of rows, should probably rename this -- used as range to iterate over variable # of rows
+range_grabber = len(df) # num of rows, should probably rename this -- used as range to iterate over variable # of rows
 counter = 0
 for _ in range(range_grabber): # this loop turns every row into a list, and then makes a list of those lists for iteration
     row_as_list = list(df.loc[counter])
@@ -175,7 +175,7 @@ list_of_rows = []
 columns_as_list = df.columns
 
 
-range_grabber = len(df) - 1 # num of rows, should probably rename this -- used as range to iterate over variable # of rows
+range_grabber = len(df) # num of rows, should probably rename this -- used as range to iterate over variable # of rows
 counter = 0
 for _ in range(range_grabber): # this loop turns every row into a list, and then makes a list of those lists for iteration
     row_as_list = list(df.loc[counter])
@@ -215,7 +215,7 @@ list_of_rows = []
 columns_as_list = df.columns
 
 
-range_grabber = len(df) - 1 # num of rows, should probably rename this -- used as range to iterate over variable # of rows
+range_grabber = len(df) # num of rows, should probably rename this -- used as range to iterate over variable # of rows
 counter = 0
 for _ in range(range_grabber): # this loop turns every row into a list, and then makes a list of those lists for iteration
     row_as_list = list(df.loc[counter])
@@ -255,7 +255,7 @@ list_of_rows = []
 columns_as_list = df.columns
 
 
-range_grabber = len(df) - 1 # num of rows, should probably rename this -- used as range to iterate over variable # of rows
+range_grabber = len(df) # num of rows, should probably rename this -- used as range to iterate over variable # of rows
 counter = 0
 for _ in range(range_grabber): # this loop turns every row into a list, and then makes a list of those lists for iteration
     row_as_list = list(df.loc[counter])

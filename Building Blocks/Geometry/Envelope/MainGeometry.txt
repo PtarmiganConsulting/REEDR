@@ -4,7 +4,7 @@ BuildingSurface:Detailed,
      roof construction,  !- construction name
      attic,  !- zone name
      Outdoors,  !- outside boundary condition
-     nan,  !- outside boundary condition object
+      ,  !- outside boundary condition object
      SunExposed,  !- sun exposure
      WindExposed,  !- wind exposure
      autocalculate,  !- view factor to ground
@@ -20,7 +20,7 @@ BuildingSurface:Detailed,
      roof construction,  !- construction name
      attic,  !- zone name
      Outdoors,  !- outside boundary condition
-     nan,  !- outside boundary condition object
+      ,  !- outside boundary condition object
      SunExposed,  !- sun exposure
      WindExposed,  !- wind exposure
      autocalculate,  !- view factor to ground
@@ -36,15 +36,14 @@ BuildingSurface:Detailed,
      gable construction,  !- construction name
      attic,  !- zone name
      Outdoors,  !- outside boundary condition
-     nan,  !- outside boundary condition object
+      ,  !- outside boundary condition object
      SunExposed,  !- sun exposure
      WindExposed,  !- wind exposure
      autocalculate,  !- view factor to ground
      3,  !- number of vertices
      {building_width},{origin_y},{top_flr_ht_AG},  !- vertex 1 coordinates
      {building_width},{building_depth},{top_flr_ht_AG},  !- vertex 2 coordinates
-     {building_width},{roof_ridge_depth},{roof_ht_AG},  !- vertex 3 coordinates
-     nan;  !- vertex 4 coordinates
+     {building_width},{roof_ridge_depth},{roof_ht_AG};  !- vertex 3 coordinates
 
 BuildingSurface:Detailed,  
      roof_left,  !- name
@@ -52,15 +51,14 @@ BuildingSurface:Detailed,
      gable construction,  !- construction name
      attic,  !- zone name
      Outdoors,  !- outside boundary condition
-     nan,  !- outside boundary condition object
+      ,  !- outside boundary condition object
      SunExposed,  !- sun exposure
      WindExposed,  !- wind exposure
      autocalculate,  !- view factor to ground
      3,  !- number of vertices
      {origin_x},{building_depth},{top_flr_ht_AG},  !- vertex 1 coordinates
      {origin_x},{origin_y},{top_flr_ht_AG},  !- vertex 2 coordinates
-     {origin_x},{roof_ridge_depth},{roof_ht_AG},  !- vertex 3 coordinates
-     nan;  !- vertex 4 coordinates
+     {origin_x},{roof_ridge_depth},{roof_ht_AG};  !- vertex 3 coordinates
 
 BuildingSurface:Detailed,  
      ceiling,  !- name
@@ -84,7 +82,7 @@ BuildingSurface:Detailed,
      ag wall construction,  !- construction name
      living,  !- zone name
      Outdoors,  !- outside boundary condition
-     nan,  !- outside boundary condition object
+      ,  !- outside boundary condition object
      SunExposed,  !- sun exposure
      WindExposed,  !- wind exposure
      autocalculate,  !- view factor to ground
@@ -100,7 +98,7 @@ BuildingSurface:Detailed,
      ag wall construction,  !- construction name
      living,  !- zone name
      Outdoors,  !- outside boundary condition
-     nan,  !- outside boundary condition object
+      ,  !- outside boundary condition object
      SunExposed,  !- sun exposure
      WindExposed,  !- wind exposure
      autocalculate,  !- view factor to ground
@@ -116,7 +114,7 @@ BuildingSurface:Detailed,
      ag wall construction,  !- construction name
      living,  !- zone name
      Outdoors,  !- outside boundary condition
-     nan,  !- outside boundary condition object
+      ,  !- outside boundary condition object
      SunExposed,  !- sun exposure
      WindExposed,  !- wind exposure
      autocalculate,  !- view factor to ground
@@ -132,7 +130,7 @@ BuildingSurface:Detailed,
      ag wall construction,  !- construction name
      living,  !- zone name
      Outdoors,  !- outside boundary condition
-     nan,  !- outside boundary condition object
+      ,  !- outside boundary condition object
      SunExposed,  !- sun exposure
      WindExposed,  !- wind exposure
      autocalculate,  !- view factor to ground
@@ -141,4 +139,20 @@ BuildingSurface:Detailed,
      {origin_x},{origin_y},{foundationwall_ht_AG},  !- vertex 2 coordinates
      {origin_x},{origin_y},{first_flr_ht_AG},  !- vertex 3 coordinates
      {origin_x},{building_depth},{first_flr_ht_AG};  !- vertex 4 coordinates
+
+BuildingSurface:Detailed,  
+     floor_main,  !- name
+     Floor,  !- surface type
+     {main_floor_construction},  !- construction name
+     living,  !- zone name
+     {floor_main_outside_boundary_condition},  !- outside boundary condition
+     {floor_main_outside_boundary_condition object},  !- outside boundary condition object
+     NoSun,  !- sun exposure
+     NoWind,  !- wind exposure
+     autocalculate,  !- view factor to ground
+     4,  !- number of vertices
+     {origin_x},{origin_y},{foundationwall_ht_AG},  !- vertex 1 coordinates
+     {origin_x},{building_depth},{foundationwall_ht_AG},  !- vertex 2 coordinates
+     {building_width},{building_depth},{foundationwall_ht_AG},  !- vertex 3 coordinates
+     {building_width},{origin_y},{foundationwall_ht_AG};  !- vertex 4 coordinates
 

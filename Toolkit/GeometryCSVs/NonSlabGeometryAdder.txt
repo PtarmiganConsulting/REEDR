@@ -126,3 +126,19 @@ BuildingSurface:Detailed,
      {origin_x},{origin_y},{origin_z},  !- vertex 3 coordinates
      {origin_x},{building_depth},{origin_z};  !- vertex 4 coordinates
 
+BuildingSurface:Detailed,  
+     floor_foundation,  !- name
+     Floor,  !- surface type
+     foundation floor construction,  !- construction name
+     {floor_foundation zone name},  !- zone name
+     {floor_foundation outside boundary condition},  !- outside boundary condition
+     {floor_foundation outside boundary condition object},  !- outside boundary condition object
+     NoSun,  !- sun exposure
+     NoWind,  !- wind exposure
+     autocalculate,  !- view factor to ground
+     4,  !- number of vertices
+     {origin_x},{origin_y},{foundationwall_ht_BG},  !- vertex 1 coordinates
+     {origin_x},{building_depth},{foundationwall_ht_BG},  !- vertex 2 coordinates
+     {building_width},{building_depth},{foundationwall_ht_BG},  !- vertex 3 coordinates
+     {building_width},{origin_y},{foundationwall_ht_BG};  !- vertex 4 coordinates
+
