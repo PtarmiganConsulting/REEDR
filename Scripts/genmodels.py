@@ -166,27 +166,279 @@ def genmodels(gui_params, get_data_dict):
     ## floor and foundation construction dictionary
     ## this determines what ceiling/attic insulation layer will later be pulled to the idf
     foundation_and_floor_dict = {
-    "Vented Crawlspace - R0 Cavity Insulation": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_floor_ins_dir, 'Vented Crawlspace - R0 Cavity Insulation.txt'),
-    "Vented Crawlspace - R13 Cavity Insulation": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_floor_ins_dir, 'Vented Crawlspace - R13 Cavity Insulation.txt'),
-    "Vented Crawlspace - R19 Cavity Insulation": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_floor_ins_dir, 'Vented Crawlspace - R19 Cavity Insulation.txt'),
-    "Vented Crawlspace - R30 Cavity Insulation": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_floor_ins_dir, 'Vented Crawlspace - R30 Cavity Insulation.txt'),
-    "Vented Crawlspace - R38 Cavity Insulation": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_floor_ins_dir, 'Vented Crawlspace - R38 Cavity Insulation.txt'),
-    "Slab - Uninsulated": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_slab_ins_dir, 'Slab - Uninsulated.txt'),
-    "Slab - R5 Perimeter with No Thermal Break": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_slab_ins_dir, 'Slab - R5 Perimeter with No Thermal Break.txt'),
-    "Slab - R10 Perimeter with No Thermal Break": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_slab_ins_dir, 'Slab - R10 Perimeter with No Thermal Break.txt'),
-    "Slab - R5 Perimeter with R5 Thermal Break": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_slab_ins_dir, 'Slab - R5 Perimeter with R5 Thermal Break.txt'),
-    "Slab - R10 Perimeter with R5 Thermal Break": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_slab_ins_dir, 'Slab - R10 Perimeter with R5 Thermal Break.txt'),
-    "Slab - R5 Under Full Slab with R5 Thermal Break": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_slab_ins_dir, 'Slab - R5 Under Full Slab with R5 Thermal Break.txt'),
-    "Slab - R10 Under Full Slab with R5 Thermal Break": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_slab_ins_dir, 'Slab - R10 Under Full Slab with R5 Thermal Break.txt'),
-    "Heated Basement - Uninsulated": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_basement_ins_dir, 'Heated Basement - Uninsulated.txt'),
-    "Heated Basement - R5 Exterior Insulation": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_basement_ins_dir, 'Heated Basement - R5 Exterior Insulation.txt'),
-    "Heated Basement - R10 Exterior Insulation": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_basement_ins_dir, 'Heated Basement - R10 Exterior Insulation.txt'),
-    "Heated Basement - R15 Exterior Insulation": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_basement_ins_dir, 'Heated Basement - R15 Exterior Insulation.txt'),
-    "Unheated Basement - Uninsulated": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_basement_ins_dir, 'Unheated Basement - Uninsulated.txt'),
-    "Unheated Basement - R13 Cavity Insulation": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_basement_ins_dir, 'Unheated Basement - R13 Cavity Insulation.txt'),
-    "Unheated Basement - R19 Cavity Insulation": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_basement_ins_dir, 'Unheated Basement - R19 Cavity Insulation.txt'),
-    "Unheated Basement - R30 Cavity Insulation": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_basement_ins_dir, 'Unheated Basement - R30 Cavity Insulation.txt'),
-    "Unheated Basement - R38 Cavity Insulation": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_basement_ins_dir, 'Unheated Basement - R38 Cavity Insulation.txt'),
+    "Vented Crawlspace - R0 Cavity Insulation": [
+        "Exterior Floor", # main_floor_construction
+        "floor_foundation", # foundation_surface
+        "", # int_horiz_ins_mat_name 
+        "", # int_horiz_ins_depth 
+        "", # int_horiz_ins_width 
+        "", # int_vert_ins_mat_name 
+        "", # int_vert_ins_depth               
+        "", # ext_vert_ins_mat_name 
+        "", # ext_vert_ins_depth 
+        0.2, # wall_ht_above_grade 
+        0.3 # wall_ht_below_slab 
+        ],
+    "Vented Crawlspace - R13 Cavity Insulation": [
+        "Exterior Floor", # main_floor_construction
+        "floor_foundation", # foundation_surface
+        "", # int_horiz_ins_mat_name 
+        "", # int_horiz_ins_depth 
+        "", # int_horiz_ins_width 
+        "", # int_vert_ins_mat_name 
+        "", # int_vert_ins_depth               
+        "", # ext_vert_ins_mat_name 
+        "", # ext_vert_ins_depth 
+        0.2, # wall_ht_above_grade 
+        0.3 # wall_ht_below_slab 
+        ],
+    "Vented Crawlspace - R19 Cavity Insulation": [
+        "Exterior Floor", # main_floor_construction
+        "floor_foundation", # foundation_surface
+        "", # int_horiz_ins_mat_name 
+        "", # int_horiz_ins_depth 
+        "", # int_horiz_ins_width 
+        "", # int_vert_ins_mat_name 
+        "", # int_vert_ins_depth               
+        "", # ext_vert_ins_mat_name 
+        "", # ext_vert_ins_depth 
+        0.2, # wall_ht_above_grade 
+        0.3 # wall_ht_below_slab 
+        ],
+    "Vented Crawlspace - R30 Cavity Insulation": [
+        "Exterior Floor", # main_floor_construction
+        "floor_foundation", # foundation_surface
+        "", # int_horiz_ins_mat_name 
+        "", # int_horiz_ins_depth 
+        "", # int_horiz_ins_width 
+        "", # int_vert_ins_mat_name 
+        "", # int_vert_ins_depth               
+        "", # ext_vert_ins_mat_name 
+        "", # ext_vert_ins_depth 
+        0.2, # wall_ht_above_grade 
+        0.3 # wall_ht_below_slab 
+        ],
+    "Vented Crawlspace - R38 Cavity Insulation": [
+        "Exterior Floor", # main_floor_construction
+        "floor_foundation", # foundation_surface
+        "", # int_horiz_ins_mat_name 
+        "", # int_horiz_ins_depth 
+        "", # int_horiz_ins_width 
+        "", # int_vert_ins_mat_name 
+        "", # int_vert_ins_depth               
+        "", # ext_vert_ins_mat_name 
+        "", # ext_vert_ins_depth 
+        0.2, # wall_ht_above_grade 
+        0.3 # wall_ht_below_slab 
+        ],
+    "Slab - Uninsulated": [
+        "Slab Construction", # main_floor_construction
+        "floor_main", # foundation_surface
+        1, # int_horiz_ins_mat_name 
+        1, # int_horiz_ins_depth 
+        1, # int_horiz_ins_width 
+        1, # int_vert_ins_mat_name 
+        1, # int_vert_ins_depth               
+        1, # ext_vert_ins_mat_name 
+        1, # ext_vert_ins_depth 
+        1, # wall_ht_above_grade 
+        1 # wall_ht_below_slab 
+        ],
+    "Slab - R5 Perimeter with No Thermal Break": [
+        "Slab Construction", # main_floor_construction
+        "floor_main", # foundation_surface
+        1, # int_horiz_ins_mat_name 
+        1, # int_horiz_ins_depth 
+        1, # int_horiz_ins_width 
+        1, # int_vert_ins_mat_name 
+        1, # int_vert_ins_depth               
+        1, # ext_vert_ins_mat_name 
+        1, # ext_vert_ins_depth 
+        1, # wall_ht_above_grade 
+        1 # wall_ht_below_slab 
+        ],
+    "Slab - R10 Perimeter with No Thermal Break": [
+        "Slab Construction", # main_floor_construction
+        "floor_main", # foundation_surface
+        1, # int_horiz_ins_mat_name 
+        1, # int_horiz_ins_depth 
+        1, # int_horiz_ins_width 
+        1, # int_vert_ins_mat_name 
+        1, # int_vert_ins_depth               
+        1, # ext_vert_ins_mat_name 
+        1, # ext_vert_ins_depth 
+        1, # wall_ht_above_grade 
+        1 # wall_ht_below_slab 
+        ],
+    "Slab - R5 Perimeter with R5 Thermal Break": [
+        "Slab Construction", # main_floor_construction
+        "floor_main", # foundation_surface
+        1, # int_horiz_ins_mat_name 
+        1, # int_horiz_ins_depth 
+        1, # int_horiz_ins_width 
+        1, # int_vert_ins_mat_name 
+        1, # int_vert_ins_depth               
+        1, # ext_vert_ins_mat_name 
+        1, # ext_vert_ins_depth 
+        1, # wall_ht_above_grade 
+        1 # wall_ht_below_slab 
+        ],
+    "Slab - R10 Perimeter with R5 Thermal Break": [
+        "Slab Construction", # main_floor_construction
+        "floor_main", # foundation_surface
+        1, # int_horiz_ins_mat_name 
+        1, # int_horiz_ins_depth 
+        1, # int_horiz_ins_width 
+        1, # int_vert_ins_mat_name 
+        1, # int_vert_ins_depth               
+        1, # ext_vert_ins_mat_name 
+        1, # ext_vert_ins_depth 
+        1, # wall_ht_above_grade 
+        1 # wall_ht_below_slab 
+        ],
+    "Slab - R5 Under Full Slab with R5 Thermal Break": [
+        "Slab Construction", # main_floor_construction
+        "floor_main", # foundation_surface
+        1, # int_horiz_ins_mat_name 
+        1, # int_horiz_ins_depth 
+        1, # int_horiz_ins_width 
+        1, # int_vert_ins_mat_name 
+        1, # int_vert_ins_depth               
+        1, # ext_vert_ins_mat_name 
+        1, # ext_vert_ins_depth 
+        1, # wall_ht_above_grade 
+        1 # wall_ht_below_slab 
+        ],
+    "Slab - R10 Under Full Slab with R5 Thermal Break": [
+        "Slab Construction", # main_floor_construction
+        "floor_main", # foundation_surface
+        1, # int_horiz_ins_mat_name 
+        1, # int_horiz_ins_depth 
+        1, # int_horiz_ins_width 
+        1, # int_vert_ins_mat_name 
+        1, # int_vert_ins_depth               
+        1, # ext_vert_ins_mat_name 
+        1, # ext_vert_ins_depth 
+        1, # wall_ht_above_grade 
+        1 # wall_ht_below_slab 
+        ],
+    "Heated Basement - Uninsulated": [
+        "Interior Floor", # main_floor_construction
+        "floor_foundation", # foundation_surface
+        1, # int_horiz_ins_mat_name 
+        1, # int_horiz_ins_depth 
+        1, # int_horiz_ins_width 
+        1, # int_vert_ins_mat_name 
+        1, # int_vert_ins_depth               
+        1, # ext_vert_ins_mat_name 
+        1, # ext_vert_ins_depth 
+        1, # wall_ht_above_grade 
+        1 # wall_ht_below_slab 
+        ],
+    "Heated Basement - R5 Exterior Insulation": [
+        "Interior Floor", # main_floor_construction
+        "floor_foundation", # foundation_surface
+        1, # int_horiz_ins_mat_name 
+        1, # int_horiz_ins_depth 
+        1, # int_horiz_ins_width 
+        1, # int_vert_ins_mat_name 
+        1, # int_vert_ins_depth               
+        1, # ext_vert_ins_mat_name 
+        1, # ext_vert_ins_depth 
+        1, # wall_ht_above_grade 
+        1 # wall_ht_below_slab 
+        ],
+    "Heated Basement - R10 Exterior Insulation": [
+        "Interior Floor", # main_floor_construction
+        "floor_foundation", # foundation_surface
+        1, # int_horiz_ins_mat_name 
+        1, # int_horiz_ins_depth 
+        1, # int_horiz_ins_width 
+        1, # int_vert_ins_mat_name 
+        1, # int_vert_ins_depth               
+        1, # ext_vert_ins_mat_name 
+        1, # ext_vert_ins_depth 
+        1, # wall_ht_above_grade 
+        1 # wall_ht_below_slab 
+        ],
+    "Heated Basement - R15 Exterior Insulation": [
+        "Interior Floor", # main_floor_construction
+        "floor_foundation", # foundation_surface
+        1, # int_horiz_ins_mat_name 
+        1, # int_horiz_ins_depth 
+        1, # int_horiz_ins_width 
+        1, # int_vert_ins_mat_name 
+        1, # int_vert_ins_depth               
+        1, # ext_vert_ins_mat_name 
+        1, # ext_vert_ins_depth 
+        1, # wall_ht_above_grade 
+        1 # wall_ht_below_slab 
+        ],
+    "Unheated Basement - Uninsulated": [
+        "Exterior Floor", # main_floor_construction
+        "floor_foundation", # foundation_surface
+        "", # int_horiz_ins_mat_name 
+        "", # int_horiz_ins_depth 
+        "", # int_horiz_ins_width 
+        "", # int_vert_ins_mat_name 
+        "", # int_vert_ins_depth               
+        "", # ext_vert_ins_mat_name 
+        "", # ext_vert_ins_depth 
+        0.2, # wall_ht_above_grade 
+        0.3 # wall_ht_below_slab 
+        ],
+    "Unheated Basement - R13 Cavity Insulation": [
+        "Exterior Floor", # main_floor_construction
+        "floor_foundation", # foundation_surface
+        "", # int_horiz_ins_mat_name 
+        "", # int_horiz_ins_depth 
+        "", # int_horiz_ins_width 
+        "", # int_vert_ins_mat_name 
+        "", # int_vert_ins_depth               
+        "", # ext_vert_ins_mat_name 
+        "", # ext_vert_ins_depth 
+        0.2, # wall_ht_above_grade 
+        0.3 # wall_ht_below_slab 
+        ],
+    "Unheated Basement - R19 Cavity Insulation": [
+        "Exterior Floor", # main_floor_construction
+        "floor_foundation", # foundation_surface
+        "", # int_horiz_ins_mat_name 
+        "", # int_horiz_ins_depth 
+        "", # int_horiz_ins_width 
+        "", # int_vert_ins_mat_name 
+        "", # int_vert_ins_depth               
+        "", # ext_vert_ins_mat_name 
+        "", # ext_vert_ins_depth 
+        0.2, # wall_ht_above_grade 
+        0.3 # wall_ht_below_slab 
+        ],
+    "Unheated Basement - R30 Cavity Insulation": [
+        "Exterior Floor", # main_floor_construction
+        "floor_foundation", # foundation_surface
+        "", # int_horiz_ins_mat_name 
+        "", # int_horiz_ins_depth 
+        "", # int_horiz_ins_width 
+        "", # int_vert_ins_mat_name 
+        "", # int_vert_ins_depth               
+        "", # ext_vert_ins_mat_name 
+        "", # ext_vert_ins_depth 
+        0.2, # wall_ht_above_grade 
+        0.3 # wall_ht_below_slab 
+        ],
+    "Unheated Basement - R38 Cavity Insulation": [
+        "Exterior Floor", # main_floor_construction
+        "floor_foundation", # foundation_surface
+        "", # int_horiz_ins_mat_name 
+        "", # int_horiz_ins_depth 
+        "", # int_horiz_ins_width 
+        "", # int_vert_ins_mat_name 
+        "", # int_vert_ins_depth               
+        "", # ext_vert_ins_mat_name 
+        "", # ext_vert_ins_depth 
+        0.2, # wall_ht_above_grade 
+        0.3 # wall_ht_below_slab 
+        ],
     }
 
     ## water heater type dictionary
@@ -324,16 +576,29 @@ def genmodels(gui_params, get_data_dict):
         foundation_key = foundation_and_floor_con[:chars]
         foundation_type = foundation_dict[foundation_key][0]
 
-        # Set main floor construction
-        if foundation_type == "Vented Crawlspace" or foundation_type == "Unheated Basement":
-            main_floor_construction = "Exterior Floor"
-            foundation_surface = "floor_foundation"
-        elif foundation_type ==  "Heated Basement":
-            main_floor_construction = "Interior Floor"
-            foundation_surface = "floor_foundation"
-        else: # foundation type is slab
-            main_floor_construction = "Slab Construction"
-            foundation_surface = "floor_main"
+        # Set foundation parameters based on foundation type
+        dict_row = 0
+        main_floor_construction = foundation_and_floor_dict[foundation_and_floor_con][dict_row]
+        dict_row += 1
+        foundation_surface = foundation_and_floor_dict[foundation_and_floor_con][dict_row]
+        dict_row += 1
+        int_horiz_ins_mat_name = foundation_and_floor_dict[foundation_and_floor_con][dict_row]
+        dict_row += 1
+        int_horiz_ins_depth = foundation_and_floor_dict[foundation_and_floor_con][dict_row]
+        dict_row += 1     
+        int_horiz_ins_width = foundation_and_floor_dict[foundation_and_floor_con][dict_row]
+        dict_row += 1     
+        int_vert_ins_mat_name = foundation_and_floor_dict[foundation_and_floor_con][dict_row]
+        dict_row += 1    
+        int_vert_ins_depth = foundation_and_floor_dict[foundation_and_floor_con][dict_row]
+        dict_row += 1                           
+        ext_vert_ins_mat_name = foundation_and_floor_dict[foundation_and_floor_con][dict_row]
+        dict_row += 1   
+        ext_vert_ins_depth = foundation_and_floor_dict[foundation_and_floor_con][dict_row]
+        dict_row += 1 
+        wall_ht_above_grade = foundation_and_floor_dict[foundation_and_floor_con][dict_row]
+        dict_row += 1   
+        wall_ht_below_slab = foundation_and_floor_dict[foundation_and_floor_con][dict_row]
 
         # Set geometry parameters that are needed to create geometry but not needed to be changed by user. All units in ft.
         origin_x = convert_ft_to_m(0) 
