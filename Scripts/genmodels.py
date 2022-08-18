@@ -177,7 +177,8 @@ def genmodels(gui_params, get_data_dict):
         "", # ext_vert_ins_mat_name 
         "", # ext_vert_ins_depth 
         0.2, # wall_ht_above_grade 
-        0.3 # wall_ht_below_slab 
+        0.3, # wall_ht_below_slab
+        "Fiberglass_Batt_R0" # floor insulation layer material name
         ],
     "Vented Crawlspace - R13 Cavity Insulation": [
         "Exterior Floor", # main_floor_construction
@@ -190,7 +191,8 @@ def genmodels(gui_params, get_data_dict):
         "", # ext_vert_ins_mat_name 
         "", # ext_vert_ins_depth 
         0.2, # wall_ht_above_grade 
-        0.3 # wall_ht_below_slab 
+        0.3, # wall_ht_below_slab
+        "Fiberglass_Batt_R13" # floor insulation layer material name
         ],
     "Vented Crawlspace - R19 Cavity Insulation": [
         "Exterior Floor", # main_floor_construction
@@ -203,7 +205,8 @@ def genmodels(gui_params, get_data_dict):
         "", # ext_vert_ins_mat_name 
         "", # ext_vert_ins_depth 
         0.2, # wall_ht_above_grade 
-        0.3 # wall_ht_below_slab 
+        0.3, # wall_ht_below_slab
+        "Fiberglass_Batt_R19" # floor insulation layer material name
         ],
     "Vented Crawlspace - R30 Cavity Insulation": [
         "Exterior Floor", # main_floor_construction
@@ -216,7 +219,8 @@ def genmodels(gui_params, get_data_dict):
         "", # ext_vert_ins_mat_name 
         "", # ext_vert_ins_depth 
         0.2, # wall_ht_above_grade 
-        0.3 # wall_ht_below_slab 
+        0.3, # wall_ht_below_slab
+        "Fiberglass_Batt_R30" # floor insulation layer material name
         ],
     "Vented Crawlspace - R38 Cavity Insulation": [
         "Exterior Floor", # main_floor_construction
@@ -229,150 +233,162 @@ def genmodels(gui_params, get_data_dict):
         "", # ext_vert_ins_mat_name 
         "", # ext_vert_ins_depth 
         0.2, # wall_ht_above_grade 
-        0.3 # wall_ht_below_slab 
+        0.3, # wall_ht_below_slab
+        "Fiberglass_Batt_R38" # floor insulation layer material name
         ],
     "Slab - Uninsulated": [
         "Slab Construction", # main_floor_construction
         "floor_main", # foundation_surface
-        1, # int_horiz_ins_mat_name 
-        1, # int_horiz_ins_depth 
-        1, # int_horiz_ins_width 
-        1, # int_vert_ins_mat_name 
-        1, # int_vert_ins_depth               
-        1, # ext_vert_ins_mat_name 
-        1, # ext_vert_ins_depth 
-        1, # wall_ht_above_grade 
-        1 # wall_ht_below_slab 
+        "", # int_horiz_ins_mat_name 
+        "", # int_horiz_ins_depth 
+        "", # int_horiz_ins_width 
+        "", # int_vert_ins_mat_name 
+        "", # int_vert_ins_depth               
+        "", # ext_vert_ins_mat_name 
+        "", # ext_vert_ins_depth 
+        0, # wall_ht_above_grade 
+        0, # wall_ht_below_slab
+        "Fiberglass_Batt_R0" # floor insulation layer material name
         ],
     "Slab - R5 Perimeter with No Thermal Break": [
         "Slab Construction", # main_floor_construction
         "floor_main", # foundation_surface
-        1, # int_horiz_ins_mat_name 
-        1, # int_horiz_ins_depth 
-        1, # int_horiz_ins_width 
-        1, # int_vert_ins_mat_name 
-        1, # int_vert_ins_depth               
-        1, # ext_vert_ins_mat_name 
-        1, # ext_vert_ins_depth 
-        1, # wall_ht_above_grade 
-        1 # wall_ht_below_slab 
+        "XPS_R5", # int_horiz_ins_mat_name 
+        0, # int_horiz_ins_depth 
+        0.6, # int_horiz_ins_width 
+        "", # int_vert_ins_mat_name 
+        "", # int_vert_ins_depth               
+        "", # ext_vert_ins_mat_name 
+        "", # ext_vert_ins_depth 
+        0, # wall_ht_above_grade 
+        0, # wall_ht_below_slab
+        "Fiberglass_Batt_R0" # floor insulation layer material name
         ],
     "Slab - R10 Perimeter with No Thermal Break": [
         "Slab Construction", # main_floor_construction
         "floor_main", # foundation_surface
-        1, # int_horiz_ins_mat_name 
-        1, # int_horiz_ins_depth 
-        1, # int_horiz_ins_width 
-        1, # int_vert_ins_mat_name 
-        1, # int_vert_ins_depth               
-        1, # ext_vert_ins_mat_name 
-        1, # ext_vert_ins_depth 
-        1, # wall_ht_above_grade 
-        1 # wall_ht_below_slab 
+        "XPS_R10", # int_horiz_ins_mat_name 
+        0, # int_horiz_ins_depth 
+        0.6, # int_horiz_ins_width 
+        "", # int_vert_ins_mat_name 
+        "", # int_vert_ins_depth               
+        "", # ext_vert_ins_mat_name 
+        "", # ext_vert_ins_depth 
+        0, # wall_ht_above_grade 
+        0, # wall_ht_below_slab
+        "Fiberglass_Batt_R0" # floor insulation layer material name
         ],
     "Slab - R5 Perimeter with R5 Thermal Break": [
         "Slab Construction", # main_floor_construction
         "floor_main", # foundation_surface
-        1, # int_horiz_ins_mat_name 
-        1, # int_horiz_ins_depth 
-        1, # int_horiz_ins_width 
-        1, # int_vert_ins_mat_name 
-        1, # int_vert_ins_depth               
-        1, # ext_vert_ins_mat_name 
-        1, # ext_vert_ins_depth 
-        1, # wall_ht_above_grade 
-        1 # wall_ht_below_slab 
+        "XPS_R5", # int_horiz_ins_mat_name 
+        0, # int_horiz_ins_depth 
+        0.6, # int_horiz_ins_width 
+        "XPS_R5", # int_vert_ins_mat_name 
+        0.25, # int_vert_ins_depth               
+        "", # ext_vert_ins_mat_name 
+        "", # ext_vert_ins_depth 
+        0, # wall_ht_above_grade 
+        0, # wall_ht_below_slab
+        "Fiberglass_Batt_R0" # floor insulation layer material name
         ],
     "Slab - R10 Perimeter with R5 Thermal Break": [
         "Slab Construction", # main_floor_construction
         "floor_main", # foundation_surface
-        1, # int_horiz_ins_mat_name 
-        1, # int_horiz_ins_depth 
-        1, # int_horiz_ins_width 
-        1, # int_vert_ins_mat_name 
-        1, # int_vert_ins_depth               
-        1, # ext_vert_ins_mat_name 
-        1, # ext_vert_ins_depth 
-        1, # wall_ht_above_grade 
-        1 # wall_ht_below_slab 
+        "XPS_R10", # int_horiz_ins_mat_name 
+        0, # int_horiz_ins_depth 
+        0.6, # int_horiz_ins_width 
+        "XPS_R5", # int_vert_ins_mat_name 
+        0.25, # int_vert_ins_depth               
+        "", # ext_vert_ins_mat_name 
+        "", # ext_vert_ins_depth 
+        0, # wall_ht_above_grade 
+        0, # wall_ht_below_slab
+        "Fiberglass_Batt_R0" # floor insulation layer material name
         ],
     "Slab - R5 Under Full Slab with R5 Thermal Break": [
-        "Slab Construction", # main_floor_construction
+        "Slab Construction w Full R5 Insulation", # main_floor_construction
         "floor_main", # foundation_surface
-        1, # int_horiz_ins_mat_name 
-        1, # int_horiz_ins_depth 
-        1, # int_horiz_ins_width 
-        1, # int_vert_ins_mat_name 
-        1, # int_vert_ins_depth               
-        1, # ext_vert_ins_mat_name 
-        1, # ext_vert_ins_depth 
-        1, # wall_ht_above_grade 
-        1 # wall_ht_below_slab 
+        "", # int_horiz_ins_mat_name 
+        "", # int_horiz_ins_depth 
+        "", # int_horiz_ins_width 
+        "XPS_R5", # int_vert_ins_mat_name 
+        0.25, # int_vert_ins_depth               
+        "", # ext_vert_ins_mat_name 
+        "", # ext_vert_ins_depth 
+        0, # wall_ht_above_grade 
+        0, # wall_ht_below_slab
+        "Fiberglass_Batt_R0" # floor insulation layer material name
         ],
     "Slab - R10 Under Full Slab with R5 Thermal Break": [
-        "Slab Construction", # main_floor_construction
+        "Slab Construction w Full R10 Insulation", # main_floor_construction
         "floor_main", # foundation_surface
-        1, # int_horiz_ins_mat_name 
-        1, # int_horiz_ins_depth 
-        1, # int_horiz_ins_width 
-        1, # int_vert_ins_mat_name 
-        1, # int_vert_ins_depth               
-        1, # ext_vert_ins_mat_name 
-        1, # ext_vert_ins_depth 
-        1, # wall_ht_above_grade 
-        1 # wall_ht_below_slab 
+        "", # int_horiz_ins_mat_name 
+        "", # int_horiz_ins_depth 
+        "", # int_horiz_ins_width 
+        "XPS_R5", # int_vert_ins_mat_name 
+        0.25, # int_vert_ins_depth               
+        "", # ext_vert_ins_mat_name 
+        "", # ext_vert_ins_depth 
+        0, # wall_ht_above_grade 
+        0, # wall_ht_below_slab
+        "Fiberglass_Batt_R0" # floor insulation layer material name
         ],
     "Heated Basement - Uninsulated": [
         "Interior Floor", # main_floor_construction
         "floor_foundation", # foundation_surface
-        1, # int_horiz_ins_mat_name 
-        1, # int_horiz_ins_depth 
-        1, # int_horiz_ins_width 
-        1, # int_vert_ins_mat_name 
-        1, # int_vert_ins_depth               
-        1, # ext_vert_ins_mat_name 
-        1, # ext_vert_ins_depth 
-        1, # wall_ht_above_grade 
-        1 # wall_ht_below_slab 
+        "", # int_horiz_ins_mat_name 
+        "", # int_horiz_ins_depth 
+        "", # int_horiz_ins_width 
+        "", # int_vert_ins_mat_name 
+        "", # int_vert_ins_depth               
+        "", # ext_vert_ins_mat_name 
+        "", # ext_vert_ins_depth
+        0.2, # wall_ht_above_grade
+        0.3, # wall_ht_below_slab
+        "Fiberglass_Batt_R0" # floor insulation layer material name
         ],
     "Heated Basement - R5 Exterior Insulation": [
         "Interior Floor", # main_floor_construction
         "floor_foundation", # foundation_surface
-        1, # int_horiz_ins_mat_name 
-        1, # int_horiz_ins_depth 
-        1, # int_horiz_ins_width 
-        1, # int_vert_ins_mat_name 
-        1, # int_vert_ins_depth               
-        1, # ext_vert_ins_mat_name 
-        1, # ext_vert_ins_depth 
-        1, # wall_ht_above_grade 
-        1 # wall_ht_below_slab 
+        "", # int_horiz_ins_mat_name 
+        "", # int_horiz_ins_depth 
+        "", # int_horiz_ins_width 
+        "", # int_vert_ins_mat_name 
+        "", # int_vert_ins_depth               
+        "XPS_R5", # ext_vert_ins_mat_name 
+        2.9, # ext_vert_ins_depth
+        0.2, # wall_ht_above_grade
+        0.3, # wall_ht_below_slab
+        "Fiberglass_Batt_R0" # floor insulation layer material name
         ],
     "Heated Basement - R10 Exterior Insulation": [
         "Interior Floor", # main_floor_construction
         "floor_foundation", # foundation_surface
-        1, # int_horiz_ins_mat_name 
-        1, # int_horiz_ins_depth 
-        1, # int_horiz_ins_width 
-        1, # int_vert_ins_mat_name 
-        1, # int_vert_ins_depth               
-        1, # ext_vert_ins_mat_name 
-        1, # ext_vert_ins_depth 
-        1, # wall_ht_above_grade 
-        1 # wall_ht_below_slab 
+        "", # int_horiz_ins_mat_name 
+        "", # int_horiz_ins_depth 
+        "", # int_horiz_ins_width 
+        "", # int_vert_ins_mat_name 
+        "", # int_vert_ins_depth               
+        "XPS_R10", # ext_vert_ins_mat_name 
+        2.9, # ext_vert_ins_depth
+        0.2, # wall_ht_above_grade
+        0.3, # wall_ht_below_slab
+        "Fiberglass_Batt_R0" # floor insulation layer material name
         ],
     "Heated Basement - R15 Exterior Insulation": [
         "Interior Floor", # main_floor_construction
         "floor_foundation", # foundation_surface
-        1, # int_horiz_ins_mat_name 
-        1, # int_horiz_ins_depth 
-        1, # int_horiz_ins_width 
-        1, # int_vert_ins_mat_name 
-        1, # int_vert_ins_depth               
-        1, # ext_vert_ins_mat_name 
-        1, # ext_vert_ins_depth 
-        1, # wall_ht_above_grade 
-        1 # wall_ht_below_slab 
+        "", # int_horiz_ins_mat_name 
+        "", # int_horiz_ins_depth 
+        "", # int_horiz_ins_width 
+        "", # int_vert_ins_mat_name 
+        "", # int_vert_ins_depth               
+        "XPS_R15", # ext_vert_ins_mat_name 
+        2.9, # ext_vert_ins_depth
+        0.2, # wall_ht_above_grade
+        0.3, # wall_ht_below_slab
+        "Fiberglass_Batt_R0" # floor insulation layer material name
         ],
     "Unheated Basement - Uninsulated": [
         "Exterior Floor", # main_floor_construction
@@ -385,7 +401,8 @@ def genmodels(gui_params, get_data_dict):
         "", # ext_vert_ins_mat_name 
         "", # ext_vert_ins_depth 
         0.2, # wall_ht_above_grade 
-        0.3 # wall_ht_below_slab 
+        0.3, # wall_ht_below_slab
+        "Fiberglass_Batt_R0" # floor insulation layer material name
         ],
     "Unheated Basement - R13 Cavity Insulation": [
         "Exterior Floor", # main_floor_construction
@@ -398,7 +415,8 @@ def genmodels(gui_params, get_data_dict):
         "", # ext_vert_ins_mat_name 
         "", # ext_vert_ins_depth 
         0.2, # wall_ht_above_grade 
-        0.3 # wall_ht_below_slab 
+        0.3, # wall_ht_below_slab
+        "Fiberglass_Batt_R13" # floor insulation layer material name
         ],
     "Unheated Basement - R19 Cavity Insulation": [
         "Exterior Floor", # main_floor_construction
@@ -411,7 +429,8 @@ def genmodels(gui_params, get_data_dict):
         "", # ext_vert_ins_mat_name 
         "", # ext_vert_ins_depth 
         0.2, # wall_ht_above_grade 
-        0.3 # wall_ht_below_slab 
+        0.3, # wall_ht_below_slab
+        "Fiberglass_Batt_R19" # floor insulation layer material name
         ],
     "Unheated Basement - R30 Cavity Insulation": [
         "Exterior Floor", # main_floor_construction
@@ -424,7 +443,8 @@ def genmodels(gui_params, get_data_dict):
         "", # ext_vert_ins_mat_name 
         "", # ext_vert_ins_depth 
         0.2, # wall_ht_above_grade 
-        0.3 # wall_ht_below_slab 
+        0.3, # wall_ht_below_slab
+        "Fiberglass_Batt_R30" # floor insulation layer material name
         ],
     "Unheated Basement - R38 Cavity Insulation": [
         "Exterior Floor", # main_floor_construction
@@ -437,7 +457,8 @@ def genmodels(gui_params, get_data_dict):
         "", # ext_vert_ins_mat_name 
         "", # ext_vert_ins_depth 
         0.2, # wall_ht_above_grade 
-        0.3 # wall_ht_below_slab 
+        0.3, # wall_ht_below_slab
+        "Fiberglass_Batt_R38" # floor insulation layer material name
         ],
     }
 
@@ -599,6 +620,8 @@ def genmodels(gui_params, get_data_dict):
         wall_ht_above_grade = foundation_and_floor_dict[foundation_and_floor_con][dict_row]
         dict_row += 1   
         wall_ht_below_slab = foundation_and_floor_dict[foundation_and_floor_con][dict_row]
+        dict_row += 1 
+        floor_insulation_layer = foundation_and_floor_dict[foundation_and_floor_con][dict_row]
 
         # Set geometry parameters that are needed to create geometry but not needed to be changed by user. All units in ft.
         origin_x = convert_ft_to_m(0) 
