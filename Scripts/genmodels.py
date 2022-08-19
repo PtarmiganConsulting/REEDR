@@ -178,7 +178,10 @@ def genmodels(gui_params, get_data_dict):
         "", # ext_vert_ins_depth 
         0.2, # wall_ht_above_grade 
         0.3, # wall_ht_below_slab
-        "Fiberglass_Batt_R0" # floor insulation layer material name
+        "Fiberglass_Batt_R0", # floor insulation layer material name
+        "Zone", # floor_main outside boundary condition
+        "crawlspace", # floor_main outside boundary condition object
+        "crawlspace", # foundation_zone_name
         ],
     "Vented Crawlspace - R13 Cavity Insulation": [
         "Exterior Floor", # main_floor_construction
@@ -192,7 +195,10 @@ def genmodels(gui_params, get_data_dict):
         "", # ext_vert_ins_depth 
         0.2, # wall_ht_above_grade 
         0.3, # wall_ht_below_slab
-        "Fiberglass_Batt_R13" # floor insulation layer material name
+        "Fiberglass_Batt_R13", # floor insulation layer material name
+        "Zone", # floor_main outside boundary condition
+        "crawlspace", # floor_main outside boundary condition object
+        "crawlspace", # foundation_zone_name
         ],
     "Vented Crawlspace - R19 Cavity Insulation": [
         "Exterior Floor", # main_floor_construction
@@ -206,7 +212,10 @@ def genmodels(gui_params, get_data_dict):
         "", # ext_vert_ins_depth 
         0.2, # wall_ht_above_grade 
         0.3, # wall_ht_below_slab
-        "Fiberglass_Batt_R19" # floor insulation layer material name
+        "Fiberglass_Batt_R19", # floor insulation layer material name
+        "Zone", # floor_main outside boundary condition
+        "crawlspace", # floor_main outside boundary condition object
+        "crawlspace", # foundation_zone_name
         ],
     "Vented Crawlspace - R30 Cavity Insulation": [
         "Exterior Floor", # main_floor_construction
@@ -220,7 +229,10 @@ def genmodels(gui_params, get_data_dict):
         "", # ext_vert_ins_depth 
         0.2, # wall_ht_above_grade 
         0.3, # wall_ht_below_slab
-        "Fiberglass_Batt_R30" # floor insulation layer material name
+        "Fiberglass_Batt_R30", # floor insulation layer material name
+        "Zone", # floor_main outside boundary condition
+        "crawlspace", # floor_main outside boundary condition object
+        "crawlspace", # foundation_zone_name
         ],
     "Vented Crawlspace - R38 Cavity Insulation": [
         "Exterior Floor", # main_floor_construction
@@ -234,7 +246,10 @@ def genmodels(gui_params, get_data_dict):
         "", # ext_vert_ins_depth 
         0.2, # wall_ht_above_grade 
         0.3, # wall_ht_below_slab
-        "Fiberglass_Batt_R38" # floor insulation layer material name
+        "Fiberglass_Batt_R38", # floor insulation layer material name
+        "Zone", # floor_main outside boundary condition
+        "crawlspace", # floor_main outside boundary condition object
+        "crawlspace", # foundation_zone_name
         ],
     "Slab - Uninsulated": [
         "Slab Construction", # main_floor_construction
@@ -248,7 +263,10 @@ def genmodels(gui_params, get_data_dict):
         "", # ext_vert_ins_depth 
         0, # wall_ht_above_grade 
         0, # wall_ht_below_slab
-        "Fiberglass_Batt_R0" # floor insulation layer material name
+        "Fiberglass_Batt_R0", # floor insulation layer material name
+        "Foundation", # floor_main outside boundary condition
+        "Kiva Foundation", # floor_main outside boundary condition object
+        "", # foundation_zone_name
         ],
     "Slab - R5 Perimeter with No Thermal Break": [
         "Slab Construction", # main_floor_construction
@@ -262,7 +280,10 @@ def genmodels(gui_params, get_data_dict):
         "", # ext_vert_ins_depth 
         0, # wall_ht_above_grade 
         0, # wall_ht_below_slab
-        "Fiberglass_Batt_R0" # floor insulation layer material name
+        "Fiberglass_Batt_R0", # floor insulation layer material name
+        "Foundation", # floor_main outside boundary condition
+        "Kiva Foundation", # floor_main outside boundary condition object
+        "", # foundation_zone_name
         ],
     "Slab - R10 Perimeter with No Thermal Break": [
         "Slab Construction", # main_floor_construction
@@ -276,7 +297,10 @@ def genmodels(gui_params, get_data_dict):
         "", # ext_vert_ins_depth 
         0, # wall_ht_above_grade 
         0, # wall_ht_below_slab
-        "Fiberglass_Batt_R0" # floor insulation layer material name
+        "Fiberglass_Batt_R0", # floor insulation layer material name
+        "Foundation", # floor_main outside boundary condition
+        "Kiva Foundation", # floor_main outside boundary condition object
+        "", # foundation_zone_name
         ],
     "Slab - R5 Perimeter with R5 Thermal Break": [
         "Slab Construction", # main_floor_construction
@@ -290,7 +314,10 @@ def genmodels(gui_params, get_data_dict):
         "", # ext_vert_ins_depth 
         0, # wall_ht_above_grade 
         0, # wall_ht_below_slab
-        "Fiberglass_Batt_R0" # floor insulation layer material name
+        "Fiberglass_Batt_R0", # floor insulation layer material name
+        "Foundation", # floor_main outside boundary condition
+        "Kiva Foundation", # floor_main outside boundary condition object
+        "", # foundation_zone_name
         ],
     "Slab - R10 Perimeter with R5 Thermal Break": [
         "Slab Construction", # main_floor_construction
@@ -304,7 +331,10 @@ def genmodels(gui_params, get_data_dict):
         "", # ext_vert_ins_depth 
         0, # wall_ht_above_grade 
         0, # wall_ht_below_slab
-        "Fiberglass_Batt_R0" # floor insulation layer material name
+        "Fiberglass_Batt_R0", # floor insulation layer material name
+        "Foundation", # floor_main outside boundary condition
+        "Kiva Foundation", # floor_main outside boundary condition object
+        "", # foundation_zone_name
         ],
     "Slab - R5 Under Full Slab with R5 Thermal Break": [
         "Slab Construction w Full R5 Insulation", # main_floor_construction
@@ -318,7 +348,10 @@ def genmodels(gui_params, get_data_dict):
         "", # ext_vert_ins_depth 
         0, # wall_ht_above_grade 
         0, # wall_ht_below_slab
-        "Fiberglass_Batt_R0" # floor insulation layer material name
+        "Fiberglass_Batt_R0", # floor insulation layer material name
+        "Foundation", # floor_main outside boundary condition
+        "Kiva Foundation", # floor_main outside boundary condition object
+        "", # foundation_zone_name
         ],
     "Slab - R10 Under Full Slab with R5 Thermal Break": [
         "Slab Construction w Full R10 Insulation", # main_floor_construction
@@ -332,7 +365,10 @@ def genmodels(gui_params, get_data_dict):
         "", # ext_vert_ins_depth 
         0, # wall_ht_above_grade 
         0, # wall_ht_below_slab
-        "Fiberglass_Batt_R0" # floor insulation layer material name
+        "Fiberglass_Batt_R0", # floor insulation layer material name
+        "Foundation", # floor_main outside boundary condition
+        "Kiva Foundation", # floor_main outside boundary condition object
+        "", # foundation_zone_name
         ],
     "Heated Basement - Uninsulated": [
         "Interior Floor", # main_floor_construction
@@ -346,7 +382,10 @@ def genmodels(gui_params, get_data_dict):
         "", # ext_vert_ins_depth
         0.2, # wall_ht_above_grade
         0.3, # wall_ht_below_slab
-        "Fiberglass_Batt_R0" # floor insulation layer material name
+        "Fiberglass_Batt_R0", # floor insulation layer material name
+        "Zone", # floor_main outside boundary condition
+        "living", # floor_main outside boundary condition object
+        "living", # foundation_zone_name
         ],
     "Heated Basement - R5 Exterior Insulation": [
         "Interior Floor", # main_floor_construction
@@ -360,7 +399,10 @@ def genmodels(gui_params, get_data_dict):
         2.9, # ext_vert_ins_depth
         0.2, # wall_ht_above_grade
         0.3, # wall_ht_below_slab
-        "Fiberglass_Batt_R0" # floor insulation layer material name
+        "Fiberglass_Batt_R0", # floor insulation layer material name
+        "Zone", # floor_main outside boundary condition
+        "living", # floor_main outside boundary condition object
+        "living", # foundation_zone_name
         ],
     "Heated Basement - R10 Exterior Insulation": [
         "Interior Floor", # main_floor_construction
@@ -374,7 +416,10 @@ def genmodels(gui_params, get_data_dict):
         2.9, # ext_vert_ins_depth
         0.2, # wall_ht_above_grade
         0.3, # wall_ht_below_slab
-        "Fiberglass_Batt_R0" # floor insulation layer material name
+        "Fiberglass_Batt_R0", # floor insulation layer material name
+        "Zone", # floor_main outside boundary condition
+        "living", # floor_main outside boundary condition object
+        "living", # foundation_zone_name
         ],
     "Heated Basement - R15 Exterior Insulation": [
         "Interior Floor", # main_floor_construction
@@ -388,7 +433,10 @@ def genmodels(gui_params, get_data_dict):
         2.9, # ext_vert_ins_depth
         0.2, # wall_ht_above_grade
         0.3, # wall_ht_below_slab
-        "Fiberglass_Batt_R0" # floor insulation layer material name
+        "Fiberglass_Batt_R0", # floor insulation layer material name
+        "Zone", # floor_main outside boundary condition
+        "living", # floor_main outside boundary condition object
+        "living", # foundation_zone_name
         ],
     "Unheated Basement - Uninsulated": [
         "Exterior Floor", # main_floor_construction
@@ -402,7 +450,10 @@ def genmodels(gui_params, get_data_dict):
         "", # ext_vert_ins_depth 
         0.2, # wall_ht_above_grade 
         0.3, # wall_ht_below_slab
-        "Fiberglass_Batt_R0" # floor insulation layer material name
+        "Fiberglass_Batt_R0", # floor insulation layer material name
+        "Zone", # floor_main outside boundary condition
+        "unheatedbsmt", # floor_main outside boundary condition object
+        "unheatedbsmt", # foundation_zone_name
         ],
     "Unheated Basement - R13 Cavity Insulation": [
         "Exterior Floor", # main_floor_construction
@@ -416,7 +467,10 @@ def genmodels(gui_params, get_data_dict):
         "", # ext_vert_ins_depth 
         0.2, # wall_ht_above_grade 
         0.3, # wall_ht_below_slab
-        "Fiberglass_Batt_R13" # floor insulation layer material name
+        "Fiberglass_Batt_R13", # floor insulation layer material name
+        "Zone", # floor_main outside boundary condition
+        "unheatedbsmt", # floor_main outside boundary condition object
+        "unheatedbsmt", # foundation_zone_name
         ],
     "Unheated Basement - R19 Cavity Insulation": [
         "Exterior Floor", # main_floor_construction
@@ -430,7 +484,10 @@ def genmodels(gui_params, get_data_dict):
         "", # ext_vert_ins_depth 
         0.2, # wall_ht_above_grade 
         0.3, # wall_ht_below_slab
-        "Fiberglass_Batt_R19" # floor insulation layer material name
+        "Fiberglass_Batt_R19", # floor insulation layer material name
+        "Zone", # floor_main outside boundary condition
+        "unheatedbsmt", # floor_main outside boundary condition object
+        "unheatedbsmt", # foundation_zone_name
         ],
     "Unheated Basement - R30 Cavity Insulation": [
         "Exterior Floor", # main_floor_construction
@@ -444,7 +501,10 @@ def genmodels(gui_params, get_data_dict):
         "", # ext_vert_ins_depth 
         0.2, # wall_ht_above_grade 
         0.3, # wall_ht_below_slab
-        "Fiberglass_Batt_R30" # floor insulation layer material name
+        "Fiberglass_Batt_R30", # floor insulation layer material name
+        "Zone", # floor_main outside boundary condition
+        "unheatedbsmt", # floor_main outside boundary condition object
+        "unheatedbsmt", # foundation_zone_name
         ],
     "Unheated Basement - R38 Cavity Insulation": [
         "Exterior Floor", # main_floor_construction
@@ -458,7 +518,10 @@ def genmodels(gui_params, get_data_dict):
         "", # ext_vert_ins_depth 
         0.2, # wall_ht_above_grade 
         0.3, # wall_ht_below_slab
-        "Fiberglass_Batt_R38" # floor insulation layer material name
+        "Fiberglass_Batt_R38", # floor insulation layer material name
+        "Zone", # floor_main outside boundary condition
+        "unheatedbsmt", # floor_main outside boundary condition object
+        "unheatedbsmt", # foundation_zone_name    
         ],
     }
 
@@ -528,10 +591,10 @@ def genmodels(gui_params, get_data_dict):
     ## foundation type dictionary
     # contents of dictionary: foundation type name, text file required in ZonesAndSurfaces --> FoundationType, text file required in HVAC --> ReturnDuctLocation
     foundation_dict = {
-    "Vent": ["Vented Crawlspace", 'Vented Crawl.txt', 'CrawlReturn.txt'],
-    "Slab": ["Slab", 'Slab.txt', 'AtticReturn.txt'],
-    "Heat": ["Heated Basement", 'Heated Basement.txt', 'InsideReturn.txt'],
-    "Unhe": ["Unheated Basement", 'Unheated Basement.txt', 'UnheatedBasementReturn.txt'],
+        "Vent": ["Vented Crawlspace", 'Vented Crawl.txt', 'CrawlReturn.txt'],
+        "Slab": ["Slab", 'Slab.txt', 'AtticReturn.txt'],
+        "Heat": ["Heated Basement", 'Heated Basement.txt', 'InsideReturn.txt'],
+        "Unhe": ["Unheated Basement", 'Unheated Basement.txt', 'UnheatedBasementReturn.txt'],
     }
 
     ## IDF WRITER LOOP BEGINS HERE
@@ -553,14 +616,14 @@ def genmodels(gui_params, get_data_dict):
         timestep = dictionary["Timesteps Per Hr"]
         location_pull = dictionary["Weather File"] # I should name this something better.
         bldg_orient = dictionary["Bldg Orient [deg]"]
-        conditioned_footprint_area = round(convert_ft2_to_m2(dictionary["Conditioned Footprint Area [ft^2]"]),2)
-        total_conditioned_volume = round(convert_ft3_to_m3(dictionary["Total Conditioned Volume Above Foundation Walls  [ft^3]"]),2)
+        conditioned_footprint_area = round(convert_ft2_to_m2(dictionary["Conditioned Footprint Area [ft^2]"]),10)
+        total_conditioned_volume = round(convert_ft3_to_m3(dictionary["Total Conditioned Volume Above Foundation Walls  [ft^3]"]),10)
         ratio_width_to_depth = dictionary["Ratio Width to Depth"]
         above_ground_wall_con = dictionary["Exterior Non-Foundation Wall Construction"]
         ceiling_and_roof_con = dictionary["Ceiling And Roof Construction"]
         foundation_and_floor_con = dictionary["Foundation And Floor Construction"]
-        foundation_wall_ht_AG = round(convert_ft_to_m(dictionary["Foundation Wall Height Above Ground [ft]"]),2)
-        foundation_wall_ht_BG = round(convert_ft_to_m(dictionary["Foundation Wall Height Below Ground [ft]"]),2)
+        foundation_wall_ht_AG = round(convert_ft_to_m(dictionary["Foundation Wall Height Above Ground [ft]"]),10)
+        foundation_wall_ht_BG = round(convert_ft_to_m(dictionary["Foundation Wall Height Below Ground [ft]"]),10)
         windowu_val = round(convert_IP_Uvalue_to_SI_Uvalue(dictionary["Window U-Value [Btu/h/ft^2/F]"]),2)
         window_shgc = dictionary["Window SHGC"]
         window_shades = dictionary["Window Shades"]
@@ -600,28 +663,49 @@ def genmodels(gui_params, get_data_dict):
         # Set foundation parameters based on foundation type
         dict_row = 0
         main_floor_construction = foundation_and_floor_dict[foundation_and_floor_con][dict_row]
+        print("main_floor_construction = " + main_floor_construction)
         dict_row += 1
         foundation_surface = foundation_and_floor_dict[foundation_and_floor_con][dict_row]
+        print("foundation_surface = " + foundation_surface)
         dict_row += 1
         int_horiz_ins_mat_name = foundation_and_floor_dict[foundation_and_floor_con][dict_row]
+        print("int_horiz_ins_mat_name = " + int_horiz_ins_mat_name)
         dict_row += 1
         int_horiz_ins_depth = foundation_and_floor_dict[foundation_and_floor_con][dict_row]
+        print("int_horiz_ins_depth = " + str(int_horiz_ins_depth))
         dict_row += 1     
         int_horiz_ins_width = foundation_and_floor_dict[foundation_and_floor_con][dict_row]
+        print("int_horiz_ins_width = " + str(int_horiz_ins_width))
         dict_row += 1     
         int_vert_ins_mat_name = foundation_and_floor_dict[foundation_and_floor_con][dict_row]
+        print("int_vert_ins_mat_name = " + int_vert_ins_mat_name)
         dict_row += 1    
         int_vert_ins_depth = foundation_and_floor_dict[foundation_and_floor_con][dict_row]
+        print("int_vert_ins_depth = " + str(int_vert_ins_depth))
         dict_row += 1                           
         ext_vert_ins_mat_name = foundation_and_floor_dict[foundation_and_floor_con][dict_row]
+        print("ext_vert_ins_mat_name = " + ext_vert_ins_mat_name)
         dict_row += 1   
         ext_vert_ins_depth = foundation_and_floor_dict[foundation_and_floor_con][dict_row]
+        print("ext_vert_ins_depth = " + str(ext_vert_ins_depth))
         dict_row += 1 
         wall_ht_above_grade = foundation_and_floor_dict[foundation_and_floor_con][dict_row]
+        print("wall_ht_above_grade = " + str(wall_ht_above_grade))
         dict_row += 1   
         wall_ht_below_slab = foundation_and_floor_dict[foundation_and_floor_con][dict_row]
+        print("wall_ht_below_slab = " + str(wall_ht_below_slab))
         dict_row += 1 
         floor_insulation_layer = foundation_and_floor_dict[foundation_and_floor_con][dict_row]
+        print("floor_insulation_layer = " + floor_insulation_layer)
+        dict_row += 1 
+        floor_main_outside_boundary_condition = foundation_and_floor_dict[foundation_and_floor_con][dict_row]
+        print("floor_main_outside_boundary_condition = " + floor_main_outside_boundary_condition)
+        dict_row += 1 
+        floor_main_outside_boundary_condition_object = foundation_and_floor_dict[foundation_and_floor_con][dict_row]
+        print("floor_main_outside_boundary_condition_object = " + floor_main_outside_boundary_condition_object)
+        dict_row += 1 
+        foundation_zone_name = foundation_and_floor_dict[foundation_and_floor_con][dict_row]
+        print("foundation_zone_name = " + foundation_zone_name)
 
         # Set geometry parameters that are needed to create geometry but not needed to be changed by user. All units in ft.
         origin_x = convert_ft_to_m(0) 
@@ -632,196 +716,233 @@ def genmodels(gui_params, get_data_dict):
 
         # Calculate intermediate geometry variables
         avg_conditioned_envelope_ht = round(total_conditioned_volume / conditioned_footprint_area, 10)
+
         first_flr_ht_AG = round(foundation_wall_ht_AG + avg_conditioned_envelope_ht, 10)
+        print("first_flr_ht_AG = " + str(first_flr_ht_AG))
         top_flr_ht_AG = round(first_flr_ht_AG, 10)
+        print("top_flr_ht_AG = " + str(top_flr_ht_AG))
         roof_ht_AG = round(top_flr_ht_AG + roof_ht, 10)
+        print("roof_ht_AG = " + str(roof_ht_AG))
         building_width = round(ratio_width_to_depth * math.sqrt(conditioned_footprint_area / ratio_width_to_depth), 10)
+        print("building_width = " + str(building_width))
         building_depth = round(conditioned_footprint_area / building_width, 10)
+        print("building_depth = " + str(building_depth))
         roof_ridge_depth = round(building_depth / 2, 10)
+        print("roof_ridge_depth = " + str(roof_ridge_depth))
         wall_area_front = round(building_width * avg_conditioned_envelope_ht, 10)
+        print("wall_area_front = " + str(wall_area_front))
         wall_area_right = round(building_depth * avg_conditioned_envelope_ht, 10)
+        print("wall_area_right = " + str(wall_area_right))
         wall_area_left = round(building_depth * avg_conditioned_envelope_ht, 10)
+        print("wall_area_left = " + str(wall_area_left))
         wall_area_back = round(building_width * avg_conditioned_envelope_ht, 10)
+        print("wall_area_back = " + str(wall_area_back))
         window_area_front = round(wall_area_front * wtw_ratio_front, 10)
+        print("window_area_front = " + str(window_area_front))
         window_area_right = round(wall_area_right * wtw_ratio_right, 10)
+        print("window_area_right = " + str(window_area_right))
         window_area_left = round(wall_area_left * wtw_ratio_left, 10)
+        print("window_area_left = " + str(window_area_left))
         window_area_back = round(wall_area_back * wtw_ratio_back, 10)
+        print("window_area_back = " + str(window_area_back))
         window_centerX_front = round(building_width / 2, 10)
+        print("window_centerX_front = " + str(window_centerX_front))
         window_centerX_back = round(building_width / 2, 10)
+        print("window_centerX_back = " + str(window_centerX_back))
         window_centerX_sides = round(building_depth / 2, 10)
+        print("window_centerX_sides = " + str(window_centerX_sides))
         window_aspratio_front_lenToht = round(building_width / avg_conditioned_envelope_ht, 10)
+        print("window_aspratio_front_lenToht = " + str(window_aspratio_front_lenToht))
         window_aspratio_back_lenToht = round(building_width / avg_conditioned_envelope_ht, 10)
+        print("window_aspratio_back_lenToht = " + str(window_aspratio_back_lenToht))
         window_aspratio_sides_lenToht = round(building_depth / avg_conditioned_envelope_ht, 10)
+        print("window_aspratio_sides_lenToht = " + str(window_aspratio_sides_lenToht))
         window_len_front = round(window_aspratio_front_lenToht * math.sqrt(window_area_front / window_aspratio_front_lenToht), 10)
+        print("window_len_front = " + str(window_len_front))
         window_ht_front = round(window_area_front / window_len_front, 10)
+        print("window_ht_front = " + str(window_ht_front))
         window_len_right = round(window_aspratio_sides_lenToht * math.sqrt(window_area_right / window_aspratio_sides_lenToht), 10)
+        print("window_len_right = " + str(window_len_right))
         window_ht_right = round(window_area_right / window_len_right, 10)
+        print("window_ht_right = " + str(window_ht_right))
         window_len_left = round(window_aspratio_sides_lenToht * math.sqrt(window_area_left / window_aspratio_sides_lenToht), 10)
+        print("window_len_left = " + str(window_len_left))
         window_ht_left = round(window_area_left / window_len_left, 10)
+        print("window_ht_left = " + str(window_ht_left))
         window_len_back = round(window_aspratio_back_lenToht * math.sqrt(window_area_back / window_aspratio_back_lenToht), 10)
+        print("window_len_back = " + str(window_len_back))
         window_ht_back = round(window_area_back / window_len_back, 10)
+        print("window_ht_back = " + str(window_ht_back))
         window_startingX_front = round(window_centerX_front - window_len_front/2, 10)
+        print("window_startingX_front = " + str(window_startingX_front))
         window_startingX_right = round(window_centerX_sides - window_len_right/2, 10)
+        print("window_startingX_right = " + str(window_startingX_right))
         window_startingX_left = round(window_centerX_sides - window_len_left/2, 10)
+        print("window_startingX_left = " + str(window_startingX_left))
         window_startingX_back = round(window_centerX_back - window_len_back/2, 10)
+        print("window_startingX_back = " + str(window_startingX_back))
         window_startingZ_front = round((avg_conditioned_envelope_ht/2)-(window_ht_front/2), 10)
+        print("window_startingZ_front = " + str(window_startingZ_front))
         window_startingZ_right = round((avg_conditioned_envelope_ht/2)-(window_ht_right/2), 10)
+        print("window_startingZ_right = " + str(window_startingZ_right))
         window_startingZ_left = round((avg_conditioned_envelope_ht/2)-(window_ht_left/2), 10)
+        print("window_startingZ_left = " + str(window_startingZ_left))
         window_startingZ_back = round((avg_conditioned_envelope_ht/2)-(window_ht_back/2), 10)
+        print("window_startingZ_back = " + str(window_startingZ_back))
 
         ## this section imports all the necessary text from .txt files and turns them into strings
         ## the ones with changeable variables are turned into f-strings so that their values can be properly adjusted.
 
-        ## Gains
-        if range_type == "None":
-            range_t = ""
-        else:
-            with open(range_dict[range_type], 'r') as f:
-                range_t = f.read()
-        if dryer_type == "None":
-            dryer_t = ""
-        else:
-            with open(dryer_dict[dryer_type], 'r') as f:
-                dryer_t = f.read()
-        if clotheswasher == "None":
-            clotheswasher_t = ""
-        else:
-            with open(os.path.join(set_dir, building_block_dir, gains_main_dir, 'ClothesWasher.txt'), 'r') as f:
-                clotheswasher_t = f.read()
-        if dishwasher == "None":
-            dishwasher_t = ""
-        else:
-            with open(os.path.join(set_dir, building_block_dir, gains_main_dir, 'Dishwasher.txt'), 'r') as f:
-                dishwasher_t = f.read()
-        if frig == "None":
-            frig_t = ""
-        else:
-            with open(os.path.join(set_dir, building_block_dir, gains_main_dir, 'Refrigerator.txt'), 'r') as f:
-                frig_t = f.read()
-        with open(os.path.join(set_dir, building_block_dir, gains_main_dir, 'MiscElectric.txt'), 'r') as f:
-            misc_elec_t = f"{f.read()}".format(**locals())
-        with open(os.path.join(set_dir, building_block_dir, gains_main_dir, 'MiscGas.txt'), 'r') as f:
-            misc_gas_t = f"{f.read()}".format(**locals())
-        with open(os.path.join(set_dir, building_block_dir, gains_main_dir, 'People.txt'), 'r') as f:
-            people_t = f"{f.read()}".format(**locals())
-        with open(os.path.join(set_dir, building_block_dir, gains_main_dir, 'Lights.txt'), 'r') as f:
-            lights_t = f"{f.read()}".format(**locals())
+    #     ## Gains
+    #     if range_type == "None":
+    #         range_t = ""
+    #     else:
+    #         with open(range_dict[range_type], 'r') as f:
+    #             range_t = f.read()
+    #     if dryer_type == "None":
+    #         dryer_t = ""
+    #     else:
+    #         with open(dryer_dict[dryer_type], 'r') as f:
+    #             dryer_t = f.read()
+    #     if clotheswasher == "None":
+    #         clotheswasher_t = ""
+    #     else:
+    #         with open(os.path.join(set_dir, building_block_dir, gains_main_dir, 'ClothesWasher.txt'), 'r') as f:
+    #             clotheswasher_t = f.read()
+    #     if dishwasher == "None":
+    #         dishwasher_t = ""
+    #     else:
+    #         with open(os.path.join(set_dir, building_block_dir, gains_main_dir, 'Dishwasher.txt'), 'r') as f:
+    #             dishwasher_t = f.read()
+    #     if frig == "None":
+    #         frig_t = ""
+    #     else:
+    #         with open(os.path.join(set_dir, building_block_dir, gains_main_dir, 'Refrigerator.txt'), 'r') as f:
+    #             frig_t = f.read()
+    #     with open(os.path.join(set_dir, building_block_dir, gains_main_dir, 'MiscElectric.txt'), 'r') as f:
+    #         misc_elec_t = f"{f.read()}".format(**locals())
+    #     with open(os.path.join(set_dir, building_block_dir, gains_main_dir, 'MiscGas.txt'), 'r') as f:
+    #         misc_gas_t = f"{f.read()}".format(**locals())
+    #     with open(os.path.join(set_dir, building_block_dir, gains_main_dir, 'People.txt'), 'r') as f:
+    #         people_t = f"{f.read()}".format(**locals())
+    #     with open(os.path.join(set_dir, building_block_dir, gains_main_dir, 'Lights.txt'), 'r') as f:
+    #         lights_t = f"{f.read()}".format(**locals())
 
-        ## Constructions
-        with open(os.path.join(set_dir, building_block_dir, 'Constructions.txt'), 'r') as f:
-            construction_t = f.read()
+    #     ## Constructions
+    #     with open(os.path.join(set_dir, building_block_dir, 'Constructions.txt'), 'r') as f:
+    #         construction_t = f.read()
 
-        ## DHW
-        if water_heater_type == "None":
-            water_heater_t = ""
-            dhw_t = ""
-        else:
-            with open(water_heater_dict[water_heater_type], 'r') as f:
-                water_heater_t = f.read()
-            with open(os.path.join(set_dir, building_block_dir, dhw_main_dir, 'OtherDHW.txt'), 'r') as f:
-                dhw_t = f.read()
+    #     ## DHW
+    #     if water_heater_type == "None":
+    #         water_heater_t = ""
+    #         dhw_t = ""
+    #     else:
+    #         with open(water_heater_dict[water_heater_type], 'r') as f:
+    #             water_heater_t = f.read()
+    #         with open(os.path.join(set_dir, building_block_dir, dhw_main_dir, 'OtherDHW.txt'), 'r') as f:
+    #             dhw_t = f.read()
 
-        ## Simulation Parameters
-        with open(os.path.join(set_dir, building_block_dir, 'SimulationParameters.txt'), 'r') as f:
-            simparam_t = f"{f.read()}".format(**locals())
+    #     ## Simulation Parameters
+    #     with open(os.path.join(set_dir, building_block_dir, 'SimulationParameters.txt'), 'r') as f:
+    #         simparam_t = f"{f.read()}".format(**locals())
 
-        ## Windows
-        #... set U-value and SHGC
-        with open(os.path.join(set_dir, building_block_dir, window_main_dir, 'SimpleGlazingSystem.txt'), 'r') as f:
-            glazing_t = f"{f.read()}".format(**locals())
-        #... set window construction (i.e. with or without blinds)
-        if window_shades == "Yes":
-            with open(blinds_dict[window_shades], 'r') as f:
-                win_construction_t = f.read()
-        else:
-            with open(blinds_dict[window_shades], 'r') as f:
-                win_construction_t = f.read()
-        #... choose whether to add window overhangs
-        if window_overhangs == "Yes":
-            with open(os.path.join(set_dir, building_block_dir, window_main_dir, 'Overhangs.txt'), 'r') as f:
-                overhangs_t = f"{f.read()}".format(**locals())
-        else:
-            overhangs_t = ""
+    #     ## Windows
+    #     #... set U-value and SHGC
+    #     with open(os.path.join(set_dir, building_block_dir, window_main_dir, 'SimpleGlazingSystem.txt'), 'r') as f:
+    #         glazing_t = f"{f.read()}".format(**locals())
+    #     #... set window construction (i.e. with or without blinds)
+    #     if window_shades == "Yes":
+    #         with open(blinds_dict[window_shades], 'r') as f:
+    #             win_construction_t = f.read()
+    #     else:
+    #         with open(blinds_dict[window_shades], 'r') as f:
+    #             win_construction_t = f.read()
+    #     #... choose whether to add window overhangs
+    #     if window_overhangs == "Yes":
+    #         with open(os.path.join(set_dir, building_block_dir, window_main_dir, 'Overhangs.txt'), 'r') as f:
+    #             overhangs_t = f"{f.read()}".format(**locals())
+    #     else:
+    #         overhangs_t = ""
 
-        ## Locations and Climate
-        with open(location_dict[location_pull], 'r') as f: # our location & climate dictionary in action
-            locations_t = f.read()
+    #     ## Locations and Climate
+    #     with open(location_dict[location_pull], 'r') as f: # our location & climate dictionary in action
+    #         locations_t = f.read()
 
-        ## HVAC
-        #... get main HVAC type
-        with open(hvac_dict[hvac_type][0], 'r') as f:
-            hvac_type_t = f"{f.read()}".format(**locals())
-        #... get appropriate return duct location, which depends on foundation type
-        with open(os.path.join(set_dir, building_block_dir, hvac_main_dir, hvac_returnduct_dir, foundation_dict[foundation_key][2]), 'r') as f:
-            hvac_returnduct_t = f.read()
-        #... get duct leakage
-        with open(os.path.join(set_dir, building_block_dir, hvac_main_dir, 'DuctLeakage.txt'), 'r') as f:
-            duct_leak_t = f"{f.read()}".format(**locals())
-        #... get all other HVAC code
-        with open(os.path.join(set_dir, building_block_dir, hvac_main_dir, 'OtherHVAC.txt'), 'r') as f:
-            hvac_t = f.read()
+    #     ## HVAC
+    #     #... get main HVAC type
+    #     with open(hvac_dict[hvac_type][0], 'r') as f:
+    #         hvac_type_t = f"{f.read()}".format(**locals())
+    #     #... get appropriate return duct location, which depends on foundation type
+    #     with open(os.path.join(set_dir, building_block_dir, hvac_main_dir, hvac_returnduct_dir, foundation_dict[foundation_key][2]), 'r') as f:
+    #         hvac_returnduct_t = f.read()
+    #     #... get duct leakage
+    #     with open(os.path.join(set_dir, building_block_dir, hvac_main_dir, 'DuctLeakage.txt'), 'r') as f:
+    #         duct_leak_t = f"{f.read()}".format(**locals())
+    #     #... get all other HVAC code
+    #     with open(os.path.join(set_dir, building_block_dir, hvac_main_dir, 'OtherHVAC.txt'), 'r') as f:
+    #         hvac_t = f.read()
 
-        ## Materials
-        #... insert user-entered above-ground wall insulation
-        with open(above_ground_wall_dict[above_ground_wall_con], 'r') as f:
-            above_ground_wall_t = f.read()
-        #... insert user-entered ceiling/attic insulation
-        with open(ceiling_and_roof_dict[ceiling_and_roof_con], 'r') as f:
-            ceiling_attic_t = f.read()
-        with open(foundation_and_floor_dict[foundation_and_floor_con], 'r') as f:
-            foundation_floor_t = f.read()
-        #...insert all other materials
-        with open(os.path.join(set_dir, building_block_dir, materials_main_dir, 'OtherMaterials.txt'), 'r') as f:
-            mat_t = f.read()
+    #     ## Materials
+    #     #... insert user-entered above-ground wall insulation
+    #     with open(above_ground_wall_dict[above_ground_wall_con], 'r') as f:
+    #         above_ground_wall_t = f.read()
+    #     #... insert user-entered ceiling/attic insulation
+    #     with open(ceiling_and_roof_dict[ceiling_and_roof_con], 'r') as f:
+    #         ceiling_attic_t = f.read()
+    #     with open(foundation_and_floor_dict[foundation_and_floor_con], 'r') as f:
+    #         foundation_floor_t = f.read()
+    #     #...insert all other materials
+    #     with open(os.path.join(set_dir, building_block_dir, materials_main_dir, 'OtherMaterials.txt'), 'r') as f:
+    #         mat_t = f.read()
 
-        ## Performance Curves
-        with open(os.path.join(set_dir, building_block_dir, 'PerformanceCurves.txt'), 'r') as f:
-            perf_t = f.read()
+    #     ## Performance Curves
+    #     with open(os.path.join(set_dir, building_block_dir, 'PerformanceCurves.txt'), 'r') as f:
+    #         perf_t = f.read()
 
-        ## Schedules
-        # htg_sch_num = sched_list.index(htg_stpt_sch) + 1
-        # clg_sch_num = sched_list.index(clg_stpt_sch) + 1
-        # dhw_sch_num = sched_list.index(dhw_stpt_sch) + 1
-        with open(os.path.join(set_dir, building_block_dir, schedule_dir, 'Schedules.txt'), 'r') as f:
-            sched_t = f"{f.read()}".format(**locals())
+    #     ## Schedules
+    #     # htg_sch_num = sched_list.index(htg_stpt_sch) + 1
+    #     # clg_sch_num = sched_list.index(clg_stpt_sch) + 1
+    #     # dhw_sch_num = sched_list.index(dhw_stpt_sch) + 1
+    #     with open(os.path.join(set_dir, building_block_dir, schedule_dir, 'Schedules.txt'), 'r') as f:
+    #         sched_t = f"{f.read()}".format(**locals())
 
-        ## Zones and Surfaces
-        #... insert zones and surfaces specific to foundation types
-        with open(os.path.join(set_dir, building_block_dir, zones_surfaces_main_dir, zones_surfaces_foundation_dir, foundation_dict[foundation_key][1]), 'r') as f:
-            foundation_type_t = f"{f.read()}".format(**locals())
-        #... insert zones and surfaces in common across foundation types
-        with open(os.path.join(set_dir, building_block_dir, zones_surfaces_main_dir, 'OtherZonesAndSurfaces.txt'), 'r') as f:
-            otherzones_t = f.read()
+    #     ## Zones and Surfaces
+    #     #... insert zones and surfaces specific to foundation types
+    #     with open(os.path.join(set_dir, building_block_dir, zones_surfaces_main_dir, zones_surfaces_foundation_dir, foundation_dict[foundation_key][1]), 'r') as f:
+    #         foundation_type_t = f"{f.read()}".format(**locals())
+    #     #... insert zones and surfaces in common across foundation types
+    #     with open(os.path.join(set_dir, building_block_dir, zones_surfaces_main_dir, 'OtherZonesAndSurfaces.txt'), 'r') as f:
+    #         otherzones_t = f.read()
 
-        ## Output
-        with open(os.path.join(set_dir, building_block_dir, output_dir, 'OtherOutput.txt'), 'r') as f:
-            output_t = f.read()
-        with open(output_dict[output_lookup], 'r') as f:
-            user_output_t = f"{f.read()}".format(**locals())
+    #     ## Output
+    #     with open(os.path.join(set_dir, building_block_dir, output_dir, 'OtherOutput.txt'), 'r') as f:
+    #         output_t = f.read()
+    #     with open(output_dict[output_lookup], 'r') as f:
+    #         user_output_t = f"{f.read()}".format(**locals())
 
-        ## nests all the .txt files, now morphed into strings, in a listin the order they are to be written to the new idfs.
-        ## nesting them this way allows us to easily write the full idf file, because we can simply iterate over the list
-        master_tl = [simparam_t, locations_t, sched_t, mat_t, above_ground_wall_t, ceiling_attic_t, foundation_floor_t, glazing_t, win_construction_t, \
-            overhangs_t, construction_t, foundation_type_t, otherzones_t, range_t, dryer_t, clotheswasher_t, dishwasher_t, frig_t, misc_elec_t, misc_gas_t,\
-            people_t, lights_t, hvac_type_t, hvac_t, duct_leak_t, hvac_returnduct_t, water_heater_t, dhw_t, perf_t, output_t, user_output_t]
+    #     ## nests all the .txt files, now morphed into strings, in a listin the order they are to be written to the new idfs.
+    #     ## nesting them this way allows us to easily write the full idf file, because we can simply iterate over the list
+    #     master_tl = [simparam_t, locations_t, sched_t, mat_t, above_ground_wall_t, ceiling_attic_t, foundation_floor_t, glazing_t, win_construction_t, \
+    #         overhangs_t, construction_t, foundation_type_t, otherzones_t, range_t, dryer_t, clotheswasher_t, dishwasher_t, frig_t, misc_elec_t, misc_gas_t,\
+    #         people_t, lights_t, hvac_type_t, hvac_t, duct_leak_t, hvac_returnduct_t, water_heater_t, dhw_t, perf_t, output_t, user_output_t]
 
-        #the idf writing actually begins here
-        fullidf = "" # the full idf begins as a blank string
-        for bigstring in master_tl:
-            fullidf += bigstring # every stringified .txt file gets added to the idf
-        filename = f"{run_label}.idf" # then it gets named after the harvested runlabel
-        path = os.path.join(get_data_dict["master_directory"], run_label, filename) # the path gets set for the new idf
-        with open(path, 'w') as newfile:
-                newfile.write(fullidf) # and voila! the idf gets written for the present runlabel, and the loop begins again
+    #     #the idf writing actually begins here
+    #     fullidf = "" # the full idf begins as a blank string
+    #     for bigstring in master_tl:
+    #         fullidf += bigstring # every stringified .txt file gets added to the idf
+    #     filename = f"{run_label}.idf" # then it gets named after the harvested runlabel
+    #     path = os.path.join(get_data_dict["master_directory"], run_label, filename) # the path gets set for the new idf
+    #     with open(path, 'w') as newfile:
+    #             newfile.write(fullidf) # and voila! the idf gets written for the present runlabel, and the loop begins again
 
-        i = i + 1
-        get_data_dict["runlog"].write("... successfully built EnergyPlus model at " +  path + " \n")
+    #     i = i + 1
+    #     get_data_dict["runlog"].write("... successfully built EnergyPlus model at " +  path + " \n")
 
-    # Update simulation status box in REEDR.xlsm...
-    #sht1['D16'] = "Starting model build... Model build complete."
-    print("...model build complete.")
-    print()
+    # # Update simulation status box in REEDR.xlsm...
+    # #sht1['D16'] = "Starting model build... Model build complete."
+    # print("...model build complete.")
+    # print()
 
-    get_data_dict["runlog"].write("... \n")
+    # get_data_dict["runlog"].write("... \n")
 
     ##########################################################################################################################

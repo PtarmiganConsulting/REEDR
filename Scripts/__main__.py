@@ -53,9 +53,9 @@ def main(gui_params):
 
     # runmodels(gui_params, get_data_dict) # for debugging
 
-    if hit_error == False:
-        #try:
-        runmodels(gui_params, get_data_dict)
+    # if hit_error == False:
+    #     #try:
+    #     runmodels(gui_params, get_data_dict)
 
         # except Exception as e:
         #     get_data_dict["runlog"].write("!!! REEDR experienced the following error during model runs: " + str(e) + " \n")
@@ -71,9 +71,9 @@ def main(gui_params):
     #Run genoutputs.py
 
     # genoutputs(gui_params, get_data_dict) # for debugging
-    if hit_error == False:
-        #try:
-        genoutputs(gui_params, get_data_dict)
+    # if hit_error == False:
+    #     #try:
+    #     genoutputs(gui_params, get_data_dict)
 
         # except Exception as e:
         #     get_data_dict["runlog"].write("!!! REEDR experienced the following error during model output generation: " + str(e) + " \n")
