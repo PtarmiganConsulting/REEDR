@@ -793,156 +793,209 @@ def genmodels(gui_params, get_data_dict):
         ## this section imports all the necessary text from .txt files and turns them into strings
         ## the ones with changeable variables are turned into f-strings so that their values can be properly adjusted.
 
-    #     ## Gains
-    #     if range_type == "None":
-    #         range_t = ""
-    #     else:
-    #         with open(range_dict[range_type], 'r') as f:
-    #             range_t = f.read()
-    #     if dryer_type == "None":
-    #         dryer_t = ""
-    #     else:
-    #         with open(dryer_dict[dryer_type], 'r') as f:
-    #             dryer_t = f.read()
-    #     if clotheswasher == "None":
-    #         clotheswasher_t = ""
-    #     else:
-    #         with open(os.path.join(set_dir, building_block_dir, gains_main_dir, 'ClothesWasher.txt'), 'r') as f:
-    #             clotheswasher_t = f.read()
-    #     if dishwasher == "None":
-    #         dishwasher_t = ""
-    #     else:
-    #         with open(os.path.join(set_dir, building_block_dir, gains_main_dir, 'Dishwasher.txt'), 'r') as f:
-    #             dishwasher_t = f.read()
-    #     if frig == "None":
-    #         frig_t = ""
-    #     else:
-    #         with open(os.path.join(set_dir, building_block_dir, gains_main_dir, 'Refrigerator.txt'), 'r') as f:
-    #             frig_t = f.read()
-    #     with open(os.path.join(set_dir, building_block_dir, gains_main_dir, 'MiscElectric.txt'), 'r') as f:
-    #         misc_elec_t = f"{f.read()}".format(**locals())
-    #     with open(os.path.join(set_dir, building_block_dir, gains_main_dir, 'MiscGas.txt'), 'r') as f:
-    #         misc_gas_t = f"{f.read()}".format(**locals())
-    #     with open(os.path.join(set_dir, building_block_dir, gains_main_dir, 'People.txt'), 'r') as f:
-    #         people_t = f"{f.read()}".format(**locals())
-    #     with open(os.path.join(set_dir, building_block_dir, gains_main_dir, 'Lights.txt'), 'r') as f:
-    #         lights_t = f"{f.read()}".format(**locals())
+        ## Gains
+        if range_type == "None":
+            range_t = ""
+        else:
+            with open(range_dict[range_type], 'r') as f:
+                range_t = f.read()
+        if dryer_type == "None":
+            dryer_t = ""
+        else:
+            with open(dryer_dict[dryer_type], 'r') as f:
+                dryer_t = f.read()
+        if clotheswasher == "None":
+            clotheswasher_t = ""
+        else:
+            with open(os.path.join(set_dir, building_block_dir, gains_main_dir, 'ClothesWasher.txt'), 'r') as f:
+                clotheswasher_t = f.read()
+        if dishwasher == "None":
+            dishwasher_t = ""
+        else:
+            with open(os.path.join(set_dir, building_block_dir, gains_main_dir, 'Dishwasher.txt'), 'r') as f:
+                dishwasher_t = f.read()
+        if frig == "None":
+            frig_t = ""
+        else:
+            with open(os.path.join(set_dir, building_block_dir, gains_main_dir, 'Refrigerator.txt'), 'r') as f:
+                frig_t = f.read()
+        with open(os.path.join(set_dir, building_block_dir, gains_main_dir, 'MiscElectric.txt'), 'r') as f:
+            misc_elec_t = f"{f.read()}".format(**locals())
+        with open(os.path.join(set_dir, building_block_dir, gains_main_dir, 'MiscGas.txt'), 'r') as f:
+            misc_gas_t = f"{f.read()}".format(**locals())
+        with open(os.path.join(set_dir, building_block_dir, gains_main_dir, 'People.txt'), 'r') as f:
+            people_t = f"{f.read()}".format(**locals())
+        with open(os.path.join(set_dir, building_block_dir, gains_main_dir, 'Lights.txt'), 'r') as f:
+            lights_t = f"{f.read()}".format(**locals())
 
-    #     ## Constructions
-    #     with open(os.path.join(set_dir, building_block_dir, 'Constructions.txt'), 'r') as f:
-    #         construction_t = f.read()
+        ## Constructions
+        with open(os.path.join(set_dir, building_block_dir, 'Constructions.txt'), 'r') as f:
+            construction_t = f.read()
 
-    #     ## DHW
-    #     if water_heater_type == "None":
-    #         water_heater_t = ""
-    #         dhw_t = ""
-    #     else:
-    #         with open(water_heater_dict[water_heater_type], 'r') as f:
-    #             water_heater_t = f.read()
-    #         with open(os.path.join(set_dir, building_block_dir, dhw_main_dir, 'OtherDHW.txt'), 'r') as f:
-    #             dhw_t = f.read()
+        ## DHW
+        if water_heater_type == "None":
+            water_heater_t = ""
+            dhw_t = ""
+        else:
+            with open(water_heater_dict[water_heater_type], 'r') as f:
+                water_heater_t = f.read()
+            with open(os.path.join(set_dir, building_block_dir, dhw_main_dir, 'OtherDHW.txt'), 'r') as f:
+                dhw_t = f.read()
 
-    #     ## Simulation Parameters
-    #     with open(os.path.join(set_dir, building_block_dir, 'SimulationParameters.txt'), 'r') as f:
-    #         simparam_t = f"{f.read()}".format(**locals())
+        ## Simulation Parameters
+        with open(os.path.join(set_dir, building_block_dir, 'SimulationParameters.txt'), 'r') as f:
+            simparam_t = f"{f.read()}".format(**locals())
 
-    #     ## Windows
-    #     #... set U-value and SHGC
-    #     with open(os.path.join(set_dir, building_block_dir, window_main_dir, 'SimpleGlazingSystem.txt'), 'r') as f:
-    #         glazing_t = f"{f.read()}".format(**locals())
-    #     #... set window construction (i.e. with or without blinds)
-    #     if window_shades == "Yes":
-    #         with open(blinds_dict[window_shades], 'r') as f:
-    #             win_construction_t = f.read()
-    #     else:
-    #         with open(blinds_dict[window_shades], 'r') as f:
-    #             win_construction_t = f.read()
-    #     #... choose whether to add window overhangs
-    #     if window_overhangs == "Yes":
-    #         with open(os.path.join(set_dir, building_block_dir, window_main_dir, 'Overhangs.txt'), 'r') as f:
-    #             overhangs_t = f"{f.read()}".format(**locals())
-    #     else:
-    #         overhangs_t = ""
+        ## Windows
+        #... set U-value and SHGC
+        with open(os.path.join(set_dir, building_block_dir, window_main_dir, 'SimpleGlazingSystem.txt'), 'r') as f:
+            glazing_t = f"{f.read()}".format(**locals())
+        #... set window construction (i.e. with or without blinds)
+        if window_shades == "Yes":
+            with open(blinds_dict[window_shades], 'r') as f:
+                win_construction_t = f.read()
+        else:
+            with open(blinds_dict[window_shades], 'r') as f:
+                win_construction_t = f.read()
+        #... choose whether to add window overhangs
+        if window_overhangs == "Yes":
+            with open(os.path.join(set_dir, building_block_dir, window_main_dir, 'Overhangs.txt'), 'r') as f:
+                overhangs_t = f"{f.read()}".format(**locals())
+        else:
+            overhangs_t = ""
 
-    #     ## Locations and Climate
-    #     with open(location_dict[location_pull], 'r') as f: # our location & climate dictionary in action
-    #         locations_t = f.read()
+        ## Locations and Climate
+        with open(location_dict[location_pull], 'r') as f: # our location & climate dictionary in action
+            locations_t = f.read()
 
-    #     ## HVAC
-    #     #... get main HVAC type
-    #     with open(hvac_dict[hvac_type][0], 'r') as f:
-    #         hvac_type_t = f"{f.read()}".format(**locals())
-    #     #... get appropriate return duct location, which depends on foundation type
-    #     with open(os.path.join(set_dir, building_block_dir, hvac_main_dir, hvac_returnduct_dir, foundation_dict[foundation_key][2]), 'r') as f:
-    #         hvac_returnduct_t = f.read()
-    #     #... get duct leakage
-    #     with open(os.path.join(set_dir, building_block_dir, hvac_main_dir, 'DuctLeakage.txt'), 'r') as f:
-    #         duct_leak_t = f"{f.read()}".format(**locals())
-    #     #... get all other HVAC code
-    #     with open(os.path.join(set_dir, building_block_dir, hvac_main_dir, 'OtherHVAC.txt'), 'r') as f:
-    #         hvac_t = f.read()
+        ## HVAC
+        #... get main HVAC type
+        with open(hvac_dict[hvac_type][0], 'r') as f:
+            hvac_type_t = f"{f.read()}".format(**locals())
+        #... get appropriate return duct location, which depends on foundation type
+        with open(os.path.join(set_dir, building_block_dir, hvac_main_dir, hvac_returnduct_dir, foundation_dict[foundation_key][2]), 'r') as f:
+            hvac_returnduct_t = f.read()
+        #... get duct leakage
+        with open(os.path.join(set_dir, building_block_dir, hvac_main_dir, 'DuctLeakage.txt'), 'r') as f:
+            duct_leak_t = f"{f.read()}".format(**locals())
+        #... get all other HVAC code
+        with open(os.path.join(set_dir, building_block_dir, hvac_main_dir, 'OtherHVAC.txt'), 'r') as f:
+            hvac_t = f.read()
 
-    #     ## Materials
-    #     #... insert user-entered above-ground wall insulation
-    #     with open(above_ground_wall_dict[above_ground_wall_con], 'r') as f:
-    #         above_ground_wall_t = f.read()
-    #     #... insert user-entered ceiling/attic insulation
-    #     with open(ceiling_and_roof_dict[ceiling_and_roof_con], 'r') as f:
-    #         ceiling_attic_t = f.read()
-    #     with open(foundation_and_floor_dict[foundation_and_floor_con], 'r') as f:
-    #         foundation_floor_t = f.read()
-    #     #...insert all other materials
-    #     with open(os.path.join(set_dir, building_block_dir, materials_main_dir, 'OtherMaterials.txt'), 'r') as f:
-    #         mat_t = f.read()
+        ## Materials
+        #... insert user-entered above-ground wall insulation
+        with open(above_ground_wall_dict[above_ground_wall_con], 'r') as f:
+            above_ground_wall_t = f.read()
+        #... insert user-entered ceiling/attic insulation
+        with open(ceiling_and_roof_dict[ceiling_and_roof_con], 'r') as f:
+            ceiling_attic_t = f.read()
+        with open(foundation_and_floor_dict[foundation_and_floor_con], 'r') as f:
+            foundation_floor_t = f.read()
+        #...insert all other materials
+        with open(os.path.join(set_dir, building_block_dir, materials_main_dir, 'OtherMaterials.txt'), 'r') as f:
+            mat_t = f.read()
 
-    #     ## Performance Curves
-    #     with open(os.path.join(set_dir, building_block_dir, 'PerformanceCurves.txt'), 'r') as f:
-    #         perf_t = f.read()
+        ## Performance Curves
+        with open(os.path.join(set_dir, building_block_dir, 'PerformanceCurves.txt'), 'r') as f:
+            perf_t = f.read()
 
-    #     ## Schedules
-    #     # htg_sch_num = sched_list.index(htg_stpt_sch) + 1
-    #     # clg_sch_num = sched_list.index(clg_stpt_sch) + 1
-    #     # dhw_sch_num = sched_list.index(dhw_stpt_sch) + 1
-    #     with open(os.path.join(set_dir, building_block_dir, schedule_dir, 'Schedules.txt'), 'r') as f:
-    #         sched_t = f"{f.read()}".format(**locals())
+        ## Schedules
+        # htg_sch_num = sched_list.index(htg_stpt_sch) + 1
+        # clg_sch_num = sched_list.index(clg_stpt_sch) + 1
+        # dhw_sch_num = sched_list.index(dhw_stpt_sch) + 1
+        with open(os.path.join(set_dir, building_block_dir, schedule_dir, 'Schedules.txt'), 'r') as f:
+            sched_t = f"{f.read()}".format(**locals())
 
-    #     ## Zones and Surfaces
-    #     #... insert zones and surfaces specific to foundation types
-    #     with open(os.path.join(set_dir, building_block_dir, zones_surfaces_main_dir, zones_surfaces_foundation_dir, foundation_dict[foundation_key][1]), 'r') as f:
-    #         foundation_type_t = f"{f.read()}".format(**locals())
-    #     #... insert zones and surfaces in common across foundation types
-    #     with open(os.path.join(set_dir, building_block_dir, zones_surfaces_main_dir, 'OtherZonesAndSurfaces.txt'), 'r') as f:
-    #         otherzones_t = f.read()
+        ## Zones and Surfaces
+        #... insert zones and surfaces specific to foundation types
+        #with open(os.path.join(set_dir, building_block_dir, zones_surfaces_main_dir, zones_surfaces_foundation_dir, foundation_dict[foundation_key][1]), 'r') as f:
+            #foundation_type_t = f"{f.read()}".format(**locals())
+        #... insert zones and surfaces in common across foundation types
+        # with open(os.path.join(set_dir, building_block_dir, zones_surfaces_main_dir, 'OtherZonesAndSurfaces.txt'), 'r') as f:
+        #     otherzones_t = f.read()
 
-    #     ## Output
-    #     with open(os.path.join(set_dir, building_block_dir, output_dir, 'OtherOutput.txt'), 'r') as f:
-    #         output_t = f.read()
-    #     with open(output_dict[output_lookup], 'r') as f:
-    #         user_output_t = f"{f.read()}".format(**locals())
+        ## Add foundation
+        with open(os.path.join(set_dir, building_block_dir, 'Foundation.txt'), 'r') as f:
+            foundation_type_t = f"{f.read()}".format(**locals())
 
-    #     ## nests all the .txt files, now morphed into strings, in a listin the order they are to be written to the new idfs.
-    #     ## nesting them this way allows us to easily write the full idf file, because we can simply iterate over the list
-    #     master_tl = [simparam_t, locations_t, sched_t, mat_t, above_ground_wall_t, ceiling_attic_t, foundation_floor_t, glazing_t, win_construction_t, \
-    #         overhangs_t, construction_t, foundation_type_t, otherzones_t, range_t, dryer_t, clotheswasher_t, dishwasher_t, frig_t, misc_elec_t, misc_gas_t,\
-    #         people_t, lights_t, hvac_type_t, hvac_t, duct_leak_t, hvac_returnduct_t, water_heater_t, dhw_t, perf_t, output_t, user_output_t]
+        ## Add geometry files
+        with open(os.path.join(set_dir, building_block_dir, geometry_main_dir, 'GlobalGeometryRules.txt'), 'r') as f:
+            geom_rules_t = f.read()
+        with open(os.path.join(set_dir, building_block_dir, geometry_main_dir, 'InternalMass.txt'), 'r') as f:
+            internal_mass_t = f.read()
+        with open(os.path.join(set_dir, building_block_dir, geometry_main_dir, geometry_envelope_dir, 'MainGeometry.txt'), 'r') as f:
+            geom_main_envelope_t = f"{f.read()}".format(**locals())
+        if foundation_dict[foundation_key][0] == "Slab":
+            geom_nonslab_adder_t = ""
+        else:   
+            with open(os.path.join(set_dir, building_block_dir, geometry_main_dir, geometry_envelope_dir, 'NonSlabGeometryAdder.txt'), 'r') as f:
+                geom_nonslab_adder_t = f"{f.read()}".format(**locals())
+        with open(os.path.join(set_dir, building_block_dir, geometry_main_dir, geometry_window_dir, 'MainWindows.txt'), 'r') as f:
+            geom_main_windows_t = f"{f.read()}".format(**locals())
+        with open(os.path.join(set_dir, building_block_dir, geometry_main_dir, geometry_zone_dir, 'living.txt'), 'r') as f:
+            living_zone_t = f.read()
+        with open(os.path.join(set_dir, building_block_dir, geometry_main_dir, geometry_zone_dir, 'attic.txt'), 'r') as f:
+            attic_zone_t = f.read()
+        if foundation_dict[foundation_key][0] == "Slab" or foundation_dict[foundation_key][0] == "Heated Basement":
+            unheatedbsmt_zone_t = ""
+            crawlspace_zone_t = ""
+        elif foundation_dict[foundation_key][0] == "Vented Crawlspace":
+            unheatedbsmt_zone_t = ""
+            with open(os.path.join(set_dir, building_block_dir, geometry_main_dir, geometry_zone_dir, 'crawlspace.txt'), 'r') as f:
+                crawlspace_zone_t = f.read()
+        else: # foundation type is unheated basement
+            with open(os.path.join(set_dir, building_block_dir, geometry_main_dir, geometry_envelope_dir, 'unheatedbsmt.txt'), 'r') as f:
+                unheatedbsmt_zone_t = f.read()
 
-    #     #the idf writing actually begins here
-    #     fullidf = "" # the full idf begins as a blank string
-    #     for bigstring in master_tl:
-    #         fullidf += bigstring # every stringified .txt file gets added to the idf
-    #     filename = f"{run_label}.idf" # then it gets named after the harvested runlabel
-    #     path = os.path.join(get_data_dict["master_directory"], run_label, filename) # the path gets set for the new idf
-    #     with open(path, 'w') as newfile:
-    #             newfile.write(fullidf) # and voila! the idf gets written for the present runlabel, and the loop begins again
+        ## Add AirFlow Network
+        with open(os.path.join(set_dir, building_block_dir, hvac_afn_main_dir, hvac_afn_zone_dir, 'AFN_MainZones.txt'), 'r') as f:
+            AFN_main_zones_t = f.read()
+        with open(os.path.join(set_dir, building_block_dir, hvac_afn_main_dir, hvac_afn_leakage_dir, 'AFN_MainLeakage.txt'), 'r') as f:
+            AFN_main_leakage_t = f.read()
+        if foundation_dict[foundation_key][0] == "Slab" or foundation_dict[foundation_key][0] == "Heated Basement":
+            AFN_crawl_zone_t = ""
+            AFN_unheatedbsmt_zone_t = ""
+            AFN_crawl_unheatedbsmt_leakage_adder_t = ""
+        elif foundation_dict[foundation_key][0] == "Vented Crawlspace":
+            with open(os.path.join(set_dir, building_block_dir, hvac_afn_main_dir, hvac_afn_zone_dir, 'AFN_CrawlZoneAdder.txt'), 'r') as f:
+                AFN_crawl_zone_t = f.read()
+            with open(os.path.join(set_dir, building_block_dir, hvac_afn_main_dir, hvac_afn_leakage_dir, 'AFN_CrawlUnheatedBsmtLeakageAdder.txt'), 'r') as f:
+                AFN_crawl_unheatedbsmt_leakage_adder_t = f.read()
+        else: # foundation type is unheated basement
+            with open(os.path.join(set_dir, building_block_dir, hvac_afn_main_dir, hvac_afn_zone_dir, 'AFN_UnheatedbsmtZoneAdder.txt'), 'r') as f:
+                AFN_unheatedbsmt_zone_t = f.read()
+            with open(os.path.join(set_dir, building_block_dir, hvac_afn_main_dir, hvac_afn_leakage_dir, 'AFN_CrawlUnheatedBsmtLeakageAdder.txt'), 'r') as f:
+                AFN_crawl_unheatedbsmt_leakage_adder_t = f.read()
 
-    #     i = i + 1
-    #     get_data_dict["runlog"].write("... successfully built EnergyPlus model at " +  path + " \n")
+        ## Output
+        with open(os.path.join(set_dir, building_block_dir, output_dir, 'OtherOutput.txt'), 'r') as f:
+            output_t = f.read()
+        with open(output_dict[output_lookup], 'r') as f:
+            user_output_t = f"{f.read()}".format(**locals())
 
-    # # Update simulation status box in REEDR.xlsm...
-    # #sht1['D16'] = "Starting model build... Model build complete."
-    # print("...model build complete.")
-    # print()
+        ## nests all the .txt files, now morphed into strings, in a listin the order they are to be written to the new idfs.
+        ## nesting them this way allows us to easily write the full idf file, because we can simply iterate over the list
+        master_tl = [simparam_t, locations_t, sched_t, mat_t, above_ground_wall_t, ceiling_attic_t, foundation_floor_t, glazing_t, win_construction_t, \
+            overhangs_t, construction_t, foundation_type_t, otherzones_t, range_t, dryer_t, clotheswasher_t, dishwasher_t, frig_t, misc_elec_t, misc_gas_t,\
+            people_t, lights_t, hvac_type_t, hvac_t, duct_leak_t, hvac_returnduct_t, water_heater_t, dhw_t, perf_t, output_t, user_output_t]
 
-    # get_data_dict["runlog"].write("... \n")
+        #the idf writing actually begins here
+        fullidf = "" # the full idf begins as a blank string
+        for bigstring in master_tl:
+            fullidf += bigstring # every stringified .txt file gets added to the idf
+        filename = f"{run_label}.idf" # then it gets named after the harvested runlabel
+        path = os.path.join(get_data_dict["master_directory"], run_label, filename) # the path gets set for the new idf
+        with open(path, 'w') as newfile:
+                newfile.write(fullidf) # and voila! the idf gets written for the present runlabel, and the loop begins again
+
+        i = i + 1
+        get_data_dict["runlog"].write("... successfully built EnergyPlus model at " +  path + " \n")
+
+    # Update simulation status box in REEDR.xlsm...
+    #sht1['D16'] = "Starting model build... Model build complete."
+    print("...model build complete.")
+    print()
+
+    get_data_dict["runlog"].write("... \n")
 
     ##########################################################################################################################
