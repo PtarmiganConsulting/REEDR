@@ -383,8 +383,8 @@ def genmodels(gui_params, get_data_dict):
         0.2, # wall_ht_above_grade
         0.3, # wall_ht_below_slab
         "Fiberglass_Batt_R0", # floor insulation layer material name
-        "Zone", # floor_main outside boundary condition
-        "living", # floor_main outside boundary condition object
+        "Adiabatic", # floor_main outside boundary condition
+        "", # floor_main outside boundary condition object
         "living", # foundation_zone_name
         ],
     "Heated Basement - R5 Exterior Insulation": [
@@ -400,8 +400,8 @@ def genmodels(gui_params, get_data_dict):
         0.2, # wall_ht_above_grade
         0.3, # wall_ht_below_slab
         "Fiberglass_Batt_R0", # floor insulation layer material name
-        "Zone", # floor_main outside boundary condition
-        "living", # floor_main outside boundary condition object
+        "Adiabatic", # floor_main outside boundary condition
+        "", # floor_main outside boundary condition object
         "living", # foundation_zone_name
         ],
     "Heated Basement - R10 Exterior Insulation": [
@@ -417,8 +417,8 @@ def genmodels(gui_params, get_data_dict):
         0.2, # wall_ht_above_grade
         0.3, # wall_ht_below_slab
         "Fiberglass_Batt_R0", # floor insulation layer material name
-        "Zone", # floor_main outside boundary condition
-        "living", # floor_main outside boundary condition object
+        "Adiabatic", # floor_main outside boundary condition
+        "", # floor_main outside boundary condition object
         "living", # foundation_zone_name
         ],
     "Heated Basement - R15 Exterior Insulation": [
@@ -434,8 +434,8 @@ def genmodels(gui_params, get_data_dict):
         0.2, # wall_ht_above_grade
         0.3, # wall_ht_below_slab
         "Fiberglass_Batt_R0", # floor insulation layer material name
-        "Zone", # floor_main outside boundary condition
-        "living", # floor_main outside boundary condition object
+        "Adiabatic", # floor_main outside boundary condition
+        "", # floor_main outside boundary condition object
         "living", # foundation_zone_name
         ],
     "Unheated Basement - Uninsulated": [
@@ -623,7 +623,7 @@ def genmodels(gui_params, get_data_dict):
         ceiling_and_roof_con = dictionary["Ceiling And Roof Construction"]
         foundation_and_floor_con = dictionary["Foundation And Floor Construction"]
         foundationwall_ht_AG = round(convert_ft_to_m(dictionary["Foundation Wall Height Above Ground [ft]"]),10)
-        foundationwall_ht_BG = round(convert_ft_to_m(dictionary["Foundation Wall Height Below Ground [ft]"]),10)
+        foundationwall_ht_BG = -1 * round(convert_ft_to_m(dictionary["Foundation Wall Height Below Ground [ft]"]),10)
         windowu_val = round(convert_IP_Uvalue_to_SI_Uvalue(dictionary["Window U-Value [Btu/h/ft^2/F]"]),2)
         window_shgc = dictionary["Window SHGC"]
         window_shades = dictionary["Window Shades"]
@@ -925,27 +925,41 @@ def genmodels(gui_params, get_data_dict):
             internal_mass_t = f.read()
         with open(os.path.join(set_dir, building_block_dir, geometry_main_dir, geometry_envelope_dir, 'MainGeometry.txt'), 'r') as f:
             geom_main_envelope_t = f"{f.read()}".format(**locals())
-        if foundation_dict[foundation_key][0] == "Slab":
-            geom_nonslab_adder_t = ""
-        else:   
-            with open(os.path.join(set_dir, building_block_dir, geometry_main_dir, geometry_envelope_dir, 'NonSlabGeometryAdder.txt'), 'r') as f:
-                geom_nonslab_adder_t = f"{f.read()}".format(**locals())
         with open(os.path.join(set_dir, building_block_dir, geometry_main_dir, geometry_window_dir, 'MainWindows.txt'), 'r') as f:
             geom_main_windows_t = f"{f.read()}".format(**locals())
         with open(os.path.join(set_dir, building_block_dir, geometry_main_dir, geometry_zone_dir, 'living.txt'), 'r') as f:
             living_zone_t = f.read()
         with open(os.path.join(set_dir, building_block_dir, geometry_main_dir, geometry_zone_dir, 'attic.txt'), 'r') as f:
             attic_zone_t = f.read()
-        if foundation_dict[foundation_key][0] == "Slab" or foundation_dict[foundation_key][0] == "Heated Basement":
+        
+        if foundation_type == "Slab":
+            geom_nonslab_adder_t = ""
             unheatedbsmt_zone_t = ""
             crawlspace_zone_t = ""
-        elif foundation_dict[foundation_key][0] == "Vented Crawlspace":
+            with open(os.path.join(set_dir, building_block_dir, geometry_main_dir, geometry_envelope_dir, 'NonHeatedBsmtGeometryAdder.txt'), 'r') as f:
+                geom_nonhtdbsmt_adder_t = f"{f.read()}".format(**locals())
+        elif foundation_type == "Heated Basement":
+            unheatedbsmt_zone_t = ""
+            crawlspace_zone_t = ""
+            geom_nonhtdbsmt_adder_t = ""
+            with open(os.path.join(set_dir, building_block_dir, geometry_main_dir, geometry_envelope_dir, 'NonSlabGeometryAdder.txt'), 'r') as f:
+                geom_nonslab_adder_t = f"{f.read()}".format(**locals())
+        elif foundation_type == "Vented Crawlspace":
             unheatedbsmt_zone_t = ""
             with open(os.path.join(set_dir, building_block_dir, geometry_main_dir, geometry_zone_dir, 'crawlspace.txt'), 'r') as f:
                 crawlspace_zone_t = f.read()
+            with open(os.path.join(set_dir, building_block_dir, geometry_main_dir, geometry_envelope_dir, 'NonSlabGeometryAdder.txt'), 'r') as f:
+                geom_nonslab_adder_t = f"{f.read()}".format(**locals())
+            with open(os.path.join(set_dir, building_block_dir, geometry_main_dir, geometry_envelope_dir, 'NonHeatedBsmtGeometryAdder.txt'), 'r') as f:
+                geom_nonhtdbsmt_adder_t = f"{f.read()}".format(**locals()) 
         else: # foundation type is unheated basement
-            with open(os.path.join(set_dir, building_block_dir, geometry_main_dir, geometry_envelope_dir, 'unheatedbsmt.txt'), 'r') as f:
+            crawlspace_zone_t = ""
+            with open(os.path.join(set_dir, building_block_dir, geometry_main_dir, geometry_zone_dir, 'unheatedbsmt.txt'), 'r') as f:
                 unheatedbsmt_zone_t = f.read()
+            with open(os.path.join(set_dir, building_block_dir, geometry_main_dir, geometry_envelope_dir, 'NonSlabGeometryAdder.txt'), 'r') as f:
+                geom_nonslab_adder_t = f"{f.read()}".format(**locals())
+            with open(os.path.join(set_dir, building_block_dir, geometry_main_dir, geometry_envelope_dir, 'NonHeatedBsmtGeometryAdder.txt'), 'r') as f:
+                geom_nonhtdbsmt_adder_t = f"{f.read()}".format(**locals())
 
         ## Add AirFlow Network
         with open(os.path.join(set_dir, building_block_dir, hvac_afn_main_dir, hvac_afn_zone_dir, 'AFN_MainZones.txt'), 'r') as f:
@@ -990,7 +1004,7 @@ def genmodels(gui_params, get_data_dict):
             simparam_t, locations_t, sched_t, mat_t, above_ground_wall_t, ceiling_attic_t, glazing_t, win_construction_t, \
             overhangs_t, construction_t, range_t, dryer_t, clotheswasher_t, dishwasher_t, frig_t, misc_elec_t, misc_gas_t, people_t, lights_t, \
             foundation_type_t, geom_rules_t, internal_mass_t, geom_main_envelope_t, geom_nonslab_adder_t, geom_main_windows_t, \
-            living_zone_t, attic_zone_t, unheatedbsmt_zone_t, crawlspace_zone_t, \
+            living_zone_t, attic_zone_t, unheatedbsmt_zone_t, crawlspace_zone_t, geom_nonhtdbsmt_adder_t, \
             AFN_main_zones_t, AFN_main_leakage_t, AFN_main_surfaces_t, \
             AFN_crawl_zone_t, AFN_unheatedbsmt_zone_t, AFN_crawl_unheatedbsmt_leakage_adder_t, AFN_crawl_unheatedbsmt_surface_adder_t, \
             hvac_type_t, hvac_t, duct_leak_t, hvac_returnduct_t, water_heater_t, dhw_t, perf_t, output_t, user_output_t
