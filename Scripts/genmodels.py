@@ -622,8 +622,8 @@ def genmodels(gui_params, get_data_dict):
         above_ground_wall_con = dictionary["Exterior Non-Foundation Wall Construction"]
         ceiling_and_roof_con = dictionary["Ceiling And Roof Construction"]
         foundation_and_floor_con = dictionary["Foundation And Floor Construction"]
-        foundation_wall_ht_AG = round(convert_ft_to_m(dictionary["Foundation Wall Height Above Ground [ft]"]),10)
-        foundation_wall_ht_BG = round(convert_ft_to_m(dictionary["Foundation Wall Height Below Ground [ft]"]),10)
+        foundationwall_ht_AG = round(convert_ft_to_m(dictionary["Foundation Wall Height Above Ground [ft]"]),10)
+        foundationwall_ht_BG = round(convert_ft_to_m(dictionary["Foundation Wall Height Below Ground [ft]"]),10)
         windowu_val = round(convert_IP_Uvalue_to_SI_Uvalue(dictionary["Window U-Value [Btu/h/ft^2/F]"]),2)
         window_shgc = dictionary["Window SHGC"]
         window_shades = dictionary["Window Shades"]
@@ -684,7 +684,7 @@ def genmodels(gui_params, get_data_dict):
         print("int_vert_ins_depth = " + str(int_vert_ins_depth))
         dict_row += 1                           
         ext_vert_ins_mat_name = foundation_and_floor_dict[foundation_and_floor_con][dict_row]
-        print("ext_vert_ins_mat_name = " + ext_vert_ins_mat_name)
+        #print("ext_vert_ins_mat_name = " + ext_vert_ins_mat_name)
         dict_row += 1   
         ext_vert_ins_depth = foundation_and_floor_dict[foundation_and_floor_con][dict_row]
         print("ext_vert_ins_depth = " + str(ext_vert_ins_depth))
@@ -717,7 +717,7 @@ def genmodels(gui_params, get_data_dict):
         # Calculate intermediate geometry variables
         avg_conditioned_envelope_ht = round(total_conditioned_volume / conditioned_footprint_area, 10)
 
-        first_flr_ht_AG = round(foundation_wall_ht_AG + avg_conditioned_envelope_ht, 10)
+        first_flr_ht_AG = round(foundationwall_ht_AG + avg_conditioned_envelope_ht, 10)
         print("first_flr_ht_AG = " + str(first_flr_ht_AG))
         top_flr_ht_AG = round(first_flr_ht_AG, 10)
         print("top_flr_ht_AG = " + str(top_flr_ht_AG))
@@ -830,7 +830,7 @@ def genmodels(gui_params, get_data_dict):
 
         ## Constructions
         with open(os.path.join(set_dir, building_block_dir, 'Constructions.txt'), 'r') as f:
-            construction_t = f.read()
+            construction_t = f"{f.read()}".format(**locals())
 
         ## DHW
         if water_heater_type == "None":
@@ -889,8 +889,8 @@ def genmodels(gui_params, get_data_dict):
         #... insert user-entered ceiling/attic insulation
         with open(ceiling_and_roof_dict[ceiling_and_roof_con], 'r') as f:
             ceiling_attic_t = f.read()
-        with open(foundation_and_floor_dict[foundation_and_floor_con], 'r') as f:
-            foundation_floor_t = f.read()
+        #with open(foundation_and_floor_dict[foundation_and_floor_con], 'r') as f:
+        #    foundation_floor_t = f.read()
         #...insert all other materials
         with open(os.path.join(set_dir, building_block_dir, materials_main_dir, 'OtherMaterials.txt'), 'r') as f:
             mat_t = f.read()
@@ -952,20 +952,31 @@ def genmodels(gui_params, get_data_dict):
             AFN_main_zones_t = f.read()
         with open(os.path.join(set_dir, building_block_dir, hvac_afn_main_dir, hvac_afn_leakage_dir, 'AFN_MainLeakage.txt'), 'r') as f:
             AFN_main_leakage_t = f.read()
+        with open(os.path.join(set_dir, building_block_dir, hvac_afn_main_dir, hvac_afn_surface_dir, 'AFN_MainSurfaces.txt'), 'r') as f:
+            AFN_main_surfaces_t = f.read()
+        
         if foundation_dict[foundation_key][0] == "Slab" or foundation_dict[foundation_key][0] == "Heated Basement":
             AFN_crawl_zone_t = ""
             AFN_unheatedbsmt_zone_t = ""
             AFN_crawl_unheatedbsmt_leakage_adder_t = ""
+            AFN_crawl_unheatedbsmt_surface_adder_t = ""
         elif foundation_dict[foundation_key][0] == "Vented Crawlspace":
+            AFN_unheatedbsmt_zone_t = ""
             with open(os.path.join(set_dir, building_block_dir, hvac_afn_main_dir, hvac_afn_zone_dir, 'AFN_CrawlZoneAdder.txt'), 'r') as f:
                 AFN_crawl_zone_t = f.read()
             with open(os.path.join(set_dir, building_block_dir, hvac_afn_main_dir, hvac_afn_leakage_dir, 'AFN_CrawlUnheatedBsmtLeakageAdder.txt'), 'r') as f:
                 AFN_crawl_unheatedbsmt_leakage_adder_t = f.read()
+            with open(os.path.join(set_dir, building_block_dir, hvac_afn_main_dir, hvac_afn_surface_dir, 'AFN_CrawlUnheatedBsmtSurfaceAdder.txt'), 'r') as f:
+                AFN_crawl_unheatedbsmt_surface_adder_t = f.read()
+
         else: # foundation type is unheated basement
+            AFN_crawl_zone_t = ""
             with open(os.path.join(set_dir, building_block_dir, hvac_afn_main_dir, hvac_afn_zone_dir, 'AFN_UnheatedbsmtZoneAdder.txt'), 'r') as f:
                 AFN_unheatedbsmt_zone_t = f.read()
             with open(os.path.join(set_dir, building_block_dir, hvac_afn_main_dir, hvac_afn_leakage_dir, 'AFN_CrawlUnheatedBsmtLeakageAdder.txt'), 'r') as f:
                 AFN_crawl_unheatedbsmt_leakage_adder_t = f.read()
+            with open(os.path.join(set_dir, building_block_dir, hvac_afn_main_dir, hvac_afn_surface_dir, 'AFN_CrawlUnheatedBsmtSurfaceAdder.txt'), 'r') as f:
+                AFN_crawl_unheatedbsmt_surface_adder_t = f.read()
 
         ## Output
         with open(os.path.join(set_dir, building_block_dir, output_dir, 'OtherOutput.txt'), 'r') as f:
@@ -975,9 +986,15 @@ def genmodels(gui_params, get_data_dict):
 
         ## nests all the .txt files, now morphed into strings, in a listin the order they are to be written to the new idfs.
         ## nesting them this way allows us to easily write the full idf file, because we can simply iterate over the list
-        master_tl = [simparam_t, locations_t, sched_t, mat_t, above_ground_wall_t, ceiling_attic_t, foundation_floor_t, glazing_t, win_construction_t, \
-            overhangs_t, construction_t, foundation_type_t, otherzones_t, range_t, dryer_t, clotheswasher_t, dishwasher_t, frig_t, misc_elec_t, misc_gas_t,\
-            people_t, lights_t, hvac_type_t, hvac_t, duct_leak_t, hvac_returnduct_t, water_heater_t, dhw_t, perf_t, output_t, user_output_t]
+        master_tl = [
+            simparam_t, locations_t, sched_t, mat_t, above_ground_wall_t, ceiling_attic_t, glazing_t, win_construction_t, \
+            overhangs_t, construction_t, range_t, dryer_t, clotheswasher_t, dishwasher_t, frig_t, misc_elec_t, misc_gas_t, people_t, lights_t, \
+            foundation_type_t, geom_rules_t, internal_mass_t, geom_main_envelope_t, geom_nonslab_adder_t, geom_main_windows_t, \
+            living_zone_t, attic_zone_t, unheatedbsmt_zone_t, crawlspace_zone_t, \
+            AFN_main_zones_t, AFN_main_leakage_t, AFN_main_surfaces_t, \
+            AFN_crawl_zone_t, AFN_unheatedbsmt_zone_t, AFN_crawl_unheatedbsmt_leakage_adder_t, AFN_crawl_unheatedbsmt_surface_adder_t, \
+            hvac_type_t, hvac_t, duct_leak_t, hvac_returnduct_t, water_heater_t, dhw_t, perf_t, output_t, user_output_t
+            ]
 
         #the idf writing actually begins here
         fullidf = "" # the full idf begins as a blank string

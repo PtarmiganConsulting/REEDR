@@ -33,10 +33,10 @@ def main(gui_params):
     hit_error = False
 
     #Run genmodels.py
-    # genmodels(gui_params, get_data_dict) # for debugging
+    genmodels(gui_params, get_data_dict) # for debugging
 
     #try:
-    genmodels(gui_params, get_data_dict)
+        #genmodels(gui_params, get_data_dict)
 
     # except Exception as e:
     #     get_data_dict["runlog"].write("!!! REEDR experienced the following error during model build: " + str(e) + " \n")
@@ -51,7 +51,7 @@ def main(gui_params):
 
     #Run runmodels.py
 
-    # runmodels(gui_params, get_data_dict) # for debugging
+    runmodels(gui_params, get_data_dict) # for debugging
 
     # if hit_error == False:
     #     #try:
@@ -70,7 +70,7 @@ def main(gui_params):
 
     #Run genoutputs.py
 
-    # genoutputs(gui_params, get_data_dict) # for debugging
+    genoutputs(gui_params, get_data_dict) # for debugging
     # if hit_error == False:
     #     #try:
     #     genoutputs(gui_params, get_data_dict)
