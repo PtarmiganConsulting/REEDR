@@ -1,0 +1,37 @@
+!-   ===========  ALL OBJECTS IN CLASS: ZoneHVAC:EnergyRecoveryVentilator ===========
+
+ZoneHVAC:EnergyRecoveryVentilator,
+    ERV,                     !- Name
+    always_avail,            !- Availability Schedule Name
+    OA_Heat_Recovery,  !- Heat Exchanger Name
+    0.0283168464628752,       !- Supply Air Flow Rate {m3/s}
+    0.0283168464628752,       !- Exhaust Air Flow Rate {m3/s}
+    OASupplyFan,       !- Supply Air Fan Name
+    OAExhaustFan;      !- Exhaust Air Fan Name
+
+!-   ===========  ALL OBJECTS IN CLASS: HEATEXCHANGER:AIRTOAIR:SENSIBLEANDLATENT ===========
+
+HeatExchanger:AirToAir:SensibleAndLatent,
+    OA_Heat_Recovery,  !- Name
+    always_avail,            !- Availability Schedule Name
+    0.0283168464628752,       !- Nominal Supply Air Flow Rate {m3/s}
+    0.65,                     !- Sensible Effectiveness at 100% Heating Air Flow {dimensionless}
+    0,                       !- Latent Effectiveness at 100% Heating Air Flow {dimensionless}
+    0.65,                    !- Sensible Effectiveness at 75% Heating Air Flow {dimensionless}
+    0,                       !- Latent Effectiveness at 75% Heating Air Flow {dimensionless}
+    0.65,                     !- Sensible Effectiveness at 100% Cooling Air Flow {dimensionless}
+    0,                       !- Latent Effectiveness at 100% Cooling Air Flow {dimensionless}
+    0.65,                    !- Sensible Effectiveness at 75% Cooling Air Flow {dimensionless}
+    0,                       !- Latent Effectiveness at 75% Cooling Air Flow {dimensionless}
+    Outdoor Air Node,  !- Supply Air Inlet Node Name
+    OA Fan Inlet Node, !- Supply Air Outlet Node Name
+    Zone Exhaust Node, !- Exhaust Air Inlet Node Name
+    ERVexhaustnode,    !- Exhaust Air Outlet Node Name
+    0,                       !- Nominal Electric Power {W}
+    No,                      !- Supply Air Outlet Temperature Control
+    Plate,                   !- Heat Exchanger Type
+    None,                    !- Frost Control Type
+    -16.8333337792644,       !- Threshold Temperature {C}
+    0.083,                   !- Initial Defrost Time Fraction {dimensionless}
+    2.15999989700318E-02,    !- Rate of Defrost Time Fraction Increase {1/K}
+    No;                      !- Economizer Lockout

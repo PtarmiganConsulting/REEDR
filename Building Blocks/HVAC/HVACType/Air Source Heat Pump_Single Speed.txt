@@ -49,7 +49,7 @@ AirLoopHVAC:UnitaryHeatPump:AirToAir,
     autosize,               		!- Supply Air Flow Rate During Cooling Operation {{m3/s}}
     autosize,               		!- Supply Air Flow Rate During Heating Operation {{m3/s}}
     0.0,                    		!- Supply Air Flow Rate When No Cooling or Heating is Needed {{m3/s}}
-    living_unit1,                 	!- Controlling Zone or Thermostat Location
+    living,                 	!- Controlling Zone or Thermostat Location
     Fan:OnOff,              		!- Supply Air Fan Object Type
     Supply Fan_unit1,             	!- Supply Air Fan Name
     Coil:Heating:DX:SingleSpeed,    	!- Heating Coil Object Type
@@ -82,6 +82,57 @@ Coil:Cooling:DX:SingleSpeed,
     HPACCOOLEIRFFF,             !- Energy Input Ratio Function of Flow Fraction Curve Name
     HPACCOOLPLFFPLR;            !- Part Load Fraction Correlation Curve Name
 
+Curve:Biquadratic,
+    HPACCoolCapFT,           !- Name
+    0.766956,                !- Coefficient1 Constant
+    0.0107756,               !- Coefficient2 x
+    -0.0000414703,           !- Coefficient3 x**2
+    0.00134961,              !- Coefficient4 y
+    -0.000261144,            !- Coefficient5 y**2
+    0.000457488,             !- Coefficient6 x*y
+    12.77778,                !- Minimum Value of x
+    23.88889,                !- Maximum Value of x
+    21.11111,                !- Minimum Value of y
+    46.11111;                !- Maximum Value of y
+
+Curve:Quadratic,
+    HPACCoolCapFFF,          !- Name
+    0.8,                     !- Coefficient1 Constant
+    0.2,                     !- Coefficient2 x
+    0.0,                     !- Coefficient3 x**2
+    0.5,                     !- Minimum Value of x
+    1.5;                     !- Maximum Value of x
+
+Curve:Biquadratic,
+    HPACCOOLEIRFT,           !- Name
+    0.297145,                !- Coefficient1 Constant
+    0.0430933,               !- Coefficient2 x
+    -0.000748766,            !- Coefficient3 x**2
+    0.00597727,              !- Coefficient4 y
+    0.000482112,             !- Coefficient5 y**2
+    -0.000956448,            !- Coefficient6 x*y
+    12.77778,                !- Minimum Value of x
+    23.88889,                !- Maximum Value of x
+    21.11111,                !- Minimum Value of y
+    46.11111;                !- Maximum Value of y
+
+Curve:Quadratic,
+    HPACCOOLEIRFFF,          !- Name
+    1.156,                   !- Coefficient1 Constant
+    -0.1816,                 !- Coefficient2 x
+    0.0256,                  !- Coefficient3 x**2
+    0.5,                     !- Minimum Value of x
+    1.5;                     !- Maximum Value of x
+
+Curve:Quadratic,
+    HPACCOOLPLFFPLR,         !- Name
+    0.85,                    !- Coefficient1 Constant
+    0.15,                    !- Coefficient2 x
+    0.0,                     !- Coefficient3 x**2
+    0.0,                     !- Minimum Value of x
+    1.0;                     !- Maximum Value of x
+
+
 !-   ===========  ALL OBJECTS IN CLASS: COIL:HEATING ===========
 
 Coil:Heating:DX:SingleSpeed,
@@ -111,6 +162,54 @@ Coil:Heating:DX:SingleSpeed,
     ,					!- Region number for calculating HSPF
     ;					!- Evaporator Air Inlet Node Name
 
+Curve:Cubic,
+    HPACHeatCapFT,           !- Name
+    0.758746,                !- Coefficient1 Constant
+    0.027626,                !- Coefficient2 x
+    0.000148716,             !- Coefficient3 x**2
+    0.0000034992,            !- Coefficient4 x**3
+    -20.0,                   !- Minimum Value of x
+    20.0;                    !- Maximum Value of x
+
+Curve:Cubic,
+    HPACHeatCapFFF,          !- Name
+    0.84,                    !- Coefficient1 Constant
+    0.16,                    !- Coefficient2 x
+    0.0,                     !- Coefficient3 x**2
+    0.0,                     !- Coefficient4 x**3
+    0.5,                     !- Minimum Value of x
+    1.5;                     !- Maximum Value of x
+
+Curve:Cubic,
+    HPACHeatEIRFT,           !- Name
+    1.19248,                 !- Coefficient1 Constant
+    -0.0300438,              !- Coefficient2 x
+    0.00103745,              !- Coefficient3 x**2
+    -0.000023328,            !- Coefficient4 x**3
+    -20.0,                   !- Minimum Value of x
+    20.0;                    !- Maximum Value of x
+
+Curve:Quadratic,
+    HPACHeatEIRFFF,          !- Name
+    1.3824,                  !- Coefficient1 Constant
+    -0.4336,                 !- Coefficient2 x
+    0.0512,                  !- Coefficient3 x**2
+    0.0,                     !- Minimum Value of x
+    1.0;                     !- Maximum Value of x
+
+Curve:Biquadratic,
+    Defrost_EIR_FT,             !- Name
+    1,                       !- Coefficient1 Constant
+    0,                       !- Coefficient2 x
+    0,                       !- Coefficient3 x**2
+    0,                       !- Coefficient4 y
+    0,                       !- Coefficient5 y**2
+    0,                       !- Coefficient6 x*y
+    0,                       !- Minimum Value of x
+    100,                     !- Maximum Value of x
+    0,                       !- Minimum Value of y
+    100;                     !- Maximum Value of y
+
 Coil:Heating:Electric,
     Supp Heating Coil_unit1,  		!- Name
     always_avail,             		!- Availability Schedule Name
@@ -118,6 +217,7 @@ Coil:Heating:Electric,
     autosize,                 		!- Nominal Capacity {{W}}
     Supp Heating Coil Air Inlet Node_unit1,   !- Air Inlet Node Name
     Air Loop Outlet Node_unit1;     	!- Air Outlet Node Name
+
 
 !-   ===========  ALL OBJECTS IN CLASS: BRANCH ===========
 

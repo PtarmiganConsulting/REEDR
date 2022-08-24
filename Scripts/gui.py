@@ -34,8 +34,25 @@ def gui(func):
         }
         # print(gui_params.values()) # for debugging
         func(gui_params)
-        # input("\n Thanks for using REEDR.  Press enter to terminate program.")
-        root.quit()
+        root.quit() # enable this to make program auto-term after one run
+
+
+    def update(*args):
+        if path_input.get() != "C:\EnergyPlusV9-5-0\energyplus.exe":
+            path_entry.config(foreground="black")
+        if project_input.get() != "New Project":
+            project_entry.config(foreground="black")
+        if sim_input.get() != "Annual":
+            simperiod_entry.config(foreground="black")
+        if outgran_input.get() != "Annual":
+            outgran_entry.config(foreground="black")
+        if outenduses_input.get() != "All_End_Uses":
+            outenduses_entry.config(foreground="black")
+
+        
+
+
+###################################################################################
 
 
     #GUI
@@ -58,21 +75,56 @@ def gui(func):
 
 
     path_input = StringVar()
-    path_entry = ttk.Entry(frm, width=60, style='Body.TEntry', textvariable=path_input) # path entry
+    path_input.set("C:\EnergyPlusV9-5-0\energyplus.exe")
+    path_input.trace_add("write", update)
+    path_entry = ttk.Entry(frm, width=60, style='Body.TEntry', textvariable=path_input, foreground="gray") # path entry
     path_entry.grid(sticky=W, column=1, row=2, padx=10, pady=25, columnspan=2) # for whatever bizarre reason, unless the grid parameters are declared on their own line, path_entry is not recognized as an Entry object by py and the browse function doesn't work
 
     ttk.Label(frm, text="Project Name: ", style='Body.TLabel').grid(sticky=W, column=0, row=3, padx=10, pady=20)
     project_input = StringVar()
-    project_entry = ttk.Entry(frm, width=48, style='Body.TEntry', textvariable=project_input,).grid(sticky=W, column=1, row=3, padx=10, pady=20, columnspan=2) # project entry
+    project_input.set("New Project")
+    project_entry = ttk.Entry(frm, width=48, style='Body.TEntry', textvariable=project_input, foreground="gray")
+    project_entry.grid(sticky=W, column=1, row=3, padx=10, pady=20, columnspan=2)
+
+     # project entry
+    # project_entry.config(foreground="red")
+
+
+
+
+    #####################3 Trace Test ###########################
+
+    project_input.trace_add("write", update) # move to sensible spot later
+
+
+
+
+
+    
     ttk.Label(frm, text="Simulation Run Period: ", style='Body.TLabel').grid(sticky=W, column=0, row=5, padx=10, pady=0)
     sim_input = StringVar()
-    simperiod_entry = ttk.Combobox(frm, width=45, textvariable=sim_input, values=sim_select, state="readonly").grid(sticky=W, column=1, row=5, padx=10, pady=0) # simulation run period
+    sim_input.set("Annual")
+    sim_input.trace_add("write", update)
+    simperiod_entry = ttk.Combobox(frm, width=45, textvariable=sim_input, values=sim_select, state="readonly", foreground="gray") # simulation run period
+    simperiod_entry.grid(sticky=W, column=1, row=5, padx=10, pady=0)
+
+
     ttk.Label(frm, text="Output Granularity: ", style='Body.TLabel').grid(sticky=W, column=0, row=7, padx=10, pady=25)
     outgran_input = StringVar()
-    outgran_entry = ttk.Combobox(frm, width=45, textvariable=outgran_input, values=gran_select, state="readonly").grid(sticky=W, column=1, row=7, padx=10, pady=25) # output granularity
+    outgran_input.set("Annual")
+    outgran_input.trace_add("write", update)
+    outgran_entry = ttk.Combobox(frm, width=45, textvariable=outgran_input, values=gran_select, state="readonly", foreground="gray")
+    outgran_entry.grid(sticky=W, column=1, row=7, padx=10, pady=25) # output granularity
+    
+    
     ttk.Label(frm, text="Output End Uses: ", style='Body.TLabel').grid(sticky=W, column=0, row=8, padx=10, pady=0)
     outenduses_input = StringVar()
-    outenduses_entry = ttk.Combobox(frm, width=45, textvariable=outenduses_input, values=end_select, state="readonly").grid(sticky=W, column=1, row=8, padx=10, pady=0) # output end uses
+    outenduses_input.set("All_End_Uses")
+    outgran_input.trace_add("write", update)
+    outenduses_entry = ttk.Combobox(frm, width=45, textvariable=outenduses_input, values=end_select, state="readonly", foreground="gray")
+    outenduses_entry.grid(sticky=W, column=1, row=8, padx=10, pady=0) # output end uses
+
+
     ttk.Button(frm, text="Browse", style='Browse.TButton', command=browse).grid(column=3, row=2, columnspan=2)
 
     ttk.Label(frm, text="Begin: ", style='Body.TLabel').grid(column=2, row=5, sticky=E)
@@ -91,4 +143,9 @@ def gui(func):
 
     ttk.Button(frm, text="RUN", style='Run.TButton', width=15, command=exe_main).grid(column=2, row=9, columnspan=3, padx=10, pady=15) # run button, idle rn
 
+    
+    
+    
+    
+    
     root.mainloop()

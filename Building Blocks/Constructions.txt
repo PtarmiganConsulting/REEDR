@@ -2,7 +2,7 @@
 
 Construction,
     Exterior Floor,          !- Name
-    floor_consol_layer,                !- Outside Layer
+    {floor_insulation_layer},                !- Outside Layer
     Plywood_3/4in,           !- Layer 2
     Carpet_n_pad;            !- Layer 3
 
@@ -12,7 +12,7 @@ Construction,
     Carpet_n_pad;            !- Layer 2
 
 Construction,
-    Interior Ceiling,        !- Name
+    ceiling construction,        !- Name
     ceil_consol_layer,              !- Outside Layer
     Drywall_1/2in;           !- Layer 2
 
@@ -40,7 +40,7 @@ Construction,
     Drywall_1/2in;           !- Layer 3
 
 Construction,
-    Exterior Roof,           !- Name
+    roof construction,           !- Name
     Asphalt_shingle,         !- Outside Layer
     OSB_1/2in;               !- Layer 2
 
@@ -57,7 +57,7 @@ Construction,
     door_const;              !- Outside Layer
 
 Construction,
-    Gable_end,               !- Name
+    gable construction,               !- Name
     cement_stucco,              !- Outside Layer
     Bldg_paper_felt,         !- Layer 2
     OSB_5/8in,               !- Layer 3
@@ -103,9 +103,28 @@ Construction,
     Lumber_2x4;              !- Outside Layer
 
 Construction,
-    Exterior Wall,
+    ag wall construction,
     syn_stucco,
     sheathing_consol_layer,
     OSB_7/16in,
     wall_consol_layer,
     Drywall_1/2in;
+
+Construction,
+    foundation wall construction,  !- Name
+    Basement Wall Material;  !- Outside Layer
+
+Construction,
+    Slab Construction,   !- Name
+    Slab Material;       !- Outside Layer
+
+Construction,
+    Slab Construction w Full R10 Insulation,     !- Name
+    XPS_R10,                                     !- Outside Layer
+    Slab Material;                               !- Layer 2
+
+Construction,
+    Slab Construction w Full R5 Insulation,      !- Name
+    XPS_R5,                                      !- Outside Layer
+    Slab Material;                               !- Layer 2
+

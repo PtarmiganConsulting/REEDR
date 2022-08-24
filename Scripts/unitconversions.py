@@ -25,3 +25,19 @@ def convert_J_to_therm(J):
 def convert_W_to_Btuh(W):
     Btuh = W*3.41
     return Btuh
+
+def convert_Btuh_to_W(Btuh):
+    W = Btuh/3.41
+    return W
+
+def convert_ft_to_m(ft):
+    m = ft/3.281
+    return m
+
+def convert_ft2_to_m2(ft2):
+    m2 = ft2/10.764
+    return m2
+
+def convert_ft3_to_m3(ft3):
+    m3 = ft3/35.315
+    return m3
