@@ -1,4 +1,4 @@
-Program Version,EnergyPlus, Version 9.5.0-de239b2e5f, YMD=2022.08.24 13:35
+Program Version,EnergyPlus, Version 9.5.0-de239b2e5f, YMD=2022.08.24 16:12
 ! This file shows details about the branches, nodes, and other
 ! elements of the flow connections.
 ! This file is intended for use in "debugging" potential problems
@@ -8,16 +8,23 @@ Program Version,EnergyPlus, Version 9.5.0-de239b2e5f, YMD=2022.08.24 13:35
 ! schematic diagram of the HVAC system.
 ! ===============================================================
 ! #Nodes,<Number of Unique Nodes>
- #Nodes,2
+ #Nodes,8
 ! <Node>,<NodeNumber>,<Node Name>,<Node Fluid Type>,<# Times Node Referenced After Definition>
- Node,1,ZONE NODE,Air,0
- Node,2,(ZONERETURNAIRNODENAME),Air,0
+ Node,1,WINDOWAC OUTLET NODE,Air,3
+ Node,2,WINDOWAC INLET NODE,Air,3
+ Node,3,ZONE NODE,Air,0
+ Node,4,(ZONERETURNAIRNODENAME),Air,0
+ Node,5,MIXER OUTDOOR AIR NODE,Air,1
+ Node,6,MIXER MIXED AIR NODE,Air,1
+ Node,7,MIXER RELIEF NODE,Air,0
+ Node,8,WINDOWAC FAN OUTLET NODE,Air,1
 ! ===============================================================
 ! Suspicious nodes have 0 references.  It is normal for some nodes, however.
 ! Listing nodes with 0 references (culled from previous list):
 ! <Suspicious Node>,<NodeNumber>,<Node Name>,<Node Fluid Type>,<# Times Node Referenced After Definition>
- Suspicious Node,1,ZONE NODE,Air,0
- Suspicious Node,2,(ZONERETURNAIRNODENAME),Air,0
+ Suspicious Node,3,ZONE NODE,Air,0
+ Suspicious Node,4,(ZONERETURNAIRNODENAME),Air,0
+ Suspicious Node,7,MIXER RELIEF NODE,Air,0
 ! ===============================================================
 ! <#Branch Lists>,<Number of Branch Lists>
  #Branch Lists,0
@@ -41,11 +48,16 @@ Program Version,EnergyPlus, Version 9.5.0-de239b2e5f, YMD=2022.08.24 13:35
 ! <Return Air Path Component Nodes>,<Node Count>,<Component Type>,<Component Name>,<Inlet Node Name>,<Outlet Node Name>,<AirLoopHVAC Name>
 ! ===============================================================
 ! #Outdoor Air Nodes,<Number of Outdoor Air Nodes>
- #Outdoor Air Nodes,0
+ #Outdoor Air Nodes,1
+! <Outdoor Air Node>,<NodeNumber>,<Node Name>
+ Outdoor Air Node,5,MIXER OUTDOOR AIR NODE
 ! ===============================================================
 ! <#Component Sets>,<Number of Component Sets>
- #Component Sets,0
+ #Component Sets,3
 ! <Component Set>,<Component Set Count>,<Parent Object Type>,<Parent Object Name>,<Component Type>,<Component Name>,<Inlet Node ID>,<Outlet Node ID>,<Description>
+ Component Set,1,ZONEHVAC:WINDOWAIRCONDITIONER,WINDOW AC,OUTDOORAIR:MIXER,WINDOWAC MIXER,MIXER OUTDOOR AIR NODE,MIXER MIXED AIR NODE,Air Nodes
+ Component Set,2,ZONEHVAC:WINDOWAIRCONDITIONER,WINDOW AC,FAN:ONOFF,WINDOWAC FAN,MIXER MIXED AIR NODE,WINDOWAC FAN OUTLET NODE,Air Nodes
+ Component Set,3,ZONEHVAC:WINDOWAIRCONDITIONER,WINDOW AC,COIL:COOLING:DX:SINGLESPEED,WINDOWAC COIL,WINDOWAC FAN OUTLET NODE,WINDOWAC OUTLET NODE,Air Nodes
 ! ===============================================================
 ! <# Plant Loops>,<Number of Plant Loops>
  #Plant Loops,0
@@ -70,15 +82,18 @@ Program Version,EnergyPlus, Version 9.5.0-de239b2e5f, YMD=2022.08.24 13:35
 ! <Controlled Zone>,<Controlled Zone Name>,<Equip List Name>,<Control List Name>,<Zone Node Name>,<# Inlet Nodes>,<# Exhaust Nodes>,<# Return Nodes>
 ! <Controlled Zone Inlet>,<Inlet Node Count>,<Controlled Zone Name>,<Supply Air Inlet Node Name>,<SD Sys:Cooling/Heating [DD:Cooling] Inlet Node Name>,<DD Sys:Heating Inlet Node Name>
 ! <Controlled Zone Exhaust>,<Exhaust Node Count>,<Controlled Zone Name>,<Exhaust Air Node Name>
- Controlled Zone,LIVING,ZONEEQUIPMENT,,ZONE NODE,0,0,1
+ Controlled Zone,LIVING,ZONEEQUIPMENT,,ZONE NODE,1,1,1
+   Controlled Zone Inlet,1,LIVING,WINDOWAC OUTLET NODE,Undefined,N/A
+   Controlled Zone Exhaust,1,LIVING,WINDOWAC INLET NODE
    Controlled Zone Return,1,LIVING,(ZONERETURNAIRNODENAME)
 ! ===============================================================
 ! <#Zone Equipment Lists>,<Number of Zone Equipment Lists>
  #Zone Equipment Lists,1
 ! <Zone Equipment List>,<Zone Equipment List Count>,<Zone Equipment List Name>,<Zone Name>,<Number of Components>
 ! <Zone Equipment Component>,<Component Count>,<Component Type>,<Component Name>,<Zone Name>,<Heating Priority>,<Cooling Priority>
- Zone Equipment List,1,ZONEEQUIPMENT,LIVING,1
-   Zone Equipment Component,1,ZONEHVAC:BASEBOARD:CONVECTIVE:ELECTRIC,BASEBOARDELECTRIC,LIVING,1,1
+ Zone Equipment List,1,ZONEEQUIPMENT,LIVING,2
+   Zone Equipment Component,1,ZONEHVAC:BASEBOARD:CONVECTIVE:ELECTRIC,BASEBOARDELECTRIC,LIVING,2,1
+   Zone Equipment Component,2,ZONEHVAC:WINDOWAIRCONDITIONER,WINDOW AC,LIVING,1,2
 ! ===============================================================
 ! <#AirLoopHVACs>,<Number of AirLoopHVACs>
  #AirLoopHVACs,0
@@ -93,11 +108,24 @@ Program Version,EnergyPlus, Version 9.5.0-de239b2e5f, YMD=2022.08.24 13:35
 ! <AirLoopHVAC Connector Nodes>,<Connector Node Count>,<Connector Type>,<Connector Name>,<Inlet Node>,<Outlet Node>,<Loop Name>,<Loop Type>
 ! ===============================================================
 ! <#Parent Node Connections>,<Number of Parent Node Connections>
- #Parent Node Connections,0
+ #Parent Node Connections,2
 ! <Parent Node Connection>,<Node Name>,<Node ObjectType>,<Node ObjectName>,<Node ConnectionType>,<Node FluidStream>
+ Parent Node Connection,WINDOWAC INLET NODE,ZONEHVAC:WINDOWAIRCONDITIONER,WINDOW AC,Inlet,1
+ Parent Node Connection,WINDOWAC OUTLET NODE,ZONEHVAC:WINDOWAIRCONDITIONER,WINDOW AC,Outlet,1
 ! ===============================================================
 ! <#Non-Parent Node Connections>,<Number of Non-Parent Node Connections>
- #Non-Parent Node Connections,2
+ #Non-Parent Node Connections,13
 ! <Non-Parent Node Connection>,<Node Name>,<Node ObjectType>,<Node ObjectName>,<Node ConnectionType>,<Node FluidStream>
  Non-Parent Node Connection,ZONE NODE,ZONEHVAC:EQUIPMENTCONNECTIONS,LIVING,ZoneNode,1
+ Non-Parent Node Connection,WINDOWAC OUTLET NODE,ZONEHVAC:EQUIPMENTCONNECTIONS,LIVING,ZoneInlet,1
+ Non-Parent Node Connection,WINDOWAC INLET NODE,ZONEHVAC:EQUIPMENTCONNECTIONS,LIVING,ZoneExhaust,1
  Non-Parent Node Connection,(ZONERETURNAIRNODENAME),ZONEHVAC:EQUIPMENTCONNECTIONS,LIVING,ZoneReturn,1
+ Non-Parent Node Connection,MIXER OUTDOOR AIR NODE,OUTDOORAIR:NODE,OutdoorAir:Node,OutdoorAir,1
+ Non-Parent Node Connection,MIXER MIXED AIR NODE,OUTDOORAIR:MIXER,WINDOWAC MIXER,Outlet,1
+ Non-Parent Node Connection,MIXER OUTDOOR AIR NODE,OUTDOORAIR:MIXER,WINDOWAC MIXER,Inlet,1
+ Non-Parent Node Connection,MIXER RELIEF NODE,OUTDOORAIR:MIXER,WINDOWAC MIXER,ReliefAir,1
+ Non-Parent Node Connection,WINDOWAC INLET NODE,OUTDOORAIR:MIXER,WINDOWAC MIXER,Inlet,1
+ Non-Parent Node Connection,MIXER MIXED AIR NODE,FAN:ONOFF,WINDOWAC FAN,Inlet,1
+ Non-Parent Node Connection,WINDOWAC FAN OUTLET NODE,FAN:ONOFF,WINDOWAC FAN,Outlet,1
+ Non-Parent Node Connection,WINDOWAC FAN OUTLET NODE,COIL:COOLING:DX:SINGLESPEED,WINDOWAC COIL,Inlet,1
+ Non-Parent Node Connection,WINDOWAC OUTLET NODE,COIL:COOLING:DX:SINGLESPEED,WINDOWAC COIL,Outlet,1

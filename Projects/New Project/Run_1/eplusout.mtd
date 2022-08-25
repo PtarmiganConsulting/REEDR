@@ -97,36 +97,59 @@
   OnMeter=Cogeneration:ElectricityNet [J]
   OnMeter=General:Cogeneration:ElectricityNet [J]
 
- Meters for 529,BASEBOARDELECTRIC:Baseboard Total Heating Energy [J]
+ Meters for 529,WINDOWAC FAN:Fan Electricity Energy [J]
+  OnMeter=Electricity:Facility [J]
+  OnMeter=Electricity:HVAC [J]
+  OnMeter=Fans:Electricity [J]
+  OnMeter=General:Fans:Electricity [J]
+
+ Meters for 566,WINDOWAC COIL:Cooling Coil Total Cooling Energy [J]
+  OnMeter=EnergyTransfer:Facility [J]
+  OnMeter=EnergyTransfer:HVAC [J]
+  OnMeter=CoolingCoils:EnergyTransfer [J]
+
+ Meters for 591,WINDOWAC COIL:Cooling Coil Electricity Energy [J]
+  OnMeter=Electricity:Facility [J]
+  OnMeter=Electricity:HVAC [J]
+  OnMeter=Cooling:Electricity [J]
+  OnMeter=General:Cooling:Electricity [J]
+
+ Meters for 616,BASEBOARDELECTRIC:Baseboard Total Heating Energy [J]
   OnMeter=EnergyTransfer:Facility [J]
   OnMeter=EnergyTransfer:HVAC [J]
   OnMeter=Baseboard:EnergyTransfer [J]
 
- Meters for 554,BASEBOARDELECTRIC:Baseboard Electricity Energy [J]
+ Meters for 629,BASEBOARDELECTRIC:Baseboard Electricity Energy [J]
   OnMeter=Electricity:Facility [J]
   OnMeter=Electricity:HVAC [J]
   OnMeter=Heating:Electricity [J]
   OnMeter=General:Heating:Electricity [J]
 
- Meters for 591,EXTERIOR-LIGHTS_UNIT1:Exterior Lights Electricity Energy [J]
+ Meters for 654,EXTERIOR-LIGHTS_UNIT1:Exterior Lights Electricity Energy [J]
   OnMeter=Electricity:Facility [J]
   OnMeter=ExteriorLights:Electricity [J]
   OnMeter=Exterior-Lights:ExteriorLights:Electricity [J]
 
- Meters for 616,GARAGE-LIGHTS_UNIT1:Exterior Lights Electricity Energy [J]
+ Meters for 679,GARAGE-LIGHTS_UNIT1:Exterior Lights Electricity Energy [J]
   OnMeter=Electricity:Facility [J]
   OnMeter=ExteriorLights:Electricity [J]
   OnMeter=Garage-Lights:ExteriorLights:Electricity [J]
 
- Meters for 629,Site:Environmental Impact Total N2O Emissions Carbon Equivalent Mass [kg]
+ Meters for 692,WINDOWAC COIL:Cooling Coil Crankcase Heater Electricity Energy [J]
+  OnMeter=Electricity:Facility [J]
+  OnMeter=Electricity:HVAC [J]
+  OnMeter=Cooling:Electricity [J]
+  OnMeter=General:Cooling:Electricity [J]
+
+ Meters for 693,Site:Environmental Impact Total N2O Emissions Carbon Equivalent Mass [kg]
   OnMeter=Carbon Equivalent:Facility [kg]
   OnMeter=CarbonEquivalentEmissions:Carbon Equivalent [kg]
 
- Meters for 654,Site:Environmental Impact Total CH4 Emissions Carbon Equivalent Mass [kg]
+ Meters for 718,Site:Environmental Impact Total CH4 Emissions Carbon Equivalent Mass [kg]
   OnMeter=Carbon Equivalent:Facility [kg]
   OnMeter=CarbonEquivalentEmissions:Carbon Equivalent [kg]
 
- Meters for 655,Site:Environmental Impact Total CO2 Emissions Carbon Equivalent Mass [kg]
+ Meters for 719,Site:Environmental Impact Total CO2 Emissions Carbon Equivalent Mass [kg]
   OnMeter=Carbon Equivalent:Facility [kg]
   OnMeter=CarbonEquivalentEmissions:Carbon Equivalent [kg]
 
@@ -134,9 +157,12 @@
   LIVING HARDWIRED LIGHTING1:Lights Electricity Energy
   LIVING PLUG-IN LIGHTING1:Lights Electricity Energy
   ELECTRIC_MELS1:Electric Equipment Electricity Energy
+  WINDOWAC FAN:Fan Electricity Energy
+  WINDOWAC COIL:Cooling Coil Electricity Energy
   BASEBOARDELECTRIC:Baseboard Electricity Energy
   EXTERIOR-LIGHTS_UNIT1:Exterior Lights Electricity Energy
   GARAGE-LIGHTS_UNIT1:Exterior Lights Electricity Energy
+  WINDOWAC COIL:Cooling Coil Crankcase Heater Electricity Energy
 
  For Meter=Electricity:Building [J], ResourceType=Electricity, Group=Building, contents are:
   LIVING HARDWIRED LIGHTING1:Lights Electricity Energy
@@ -194,6 +220,7 @@
   ATTIC:Zone Air System Sensible Cooling Energy
   CRAWLSPACE:Zone Air System Sensible Heating Energy
   CRAWLSPACE:Zone Air System Sensible Cooling Energy
+  WINDOWAC COIL:Cooling Coil Total Cooling Energy
   BASEBOARDELECTRIC:Baseboard Total Heating Energy
 
  For Meter=EnergyTransfer:Building [J], ResourceType=EnergyTransfer, Group=Building, contents are:
@@ -290,14 +317,35 @@
  For Meter=General:Cogeneration:ElectricityNet [J], ResourceType=ElectricityNet, EndUse=Cogeneration, contents are:
   Whole Building:Facility Net Purchased Electricity Energy
 
+ For Meter=Electricity:HVAC [J], ResourceType=Electricity, Group=HVAC, contents are:
+  WINDOWAC FAN:Fan Electricity Energy
+  WINDOWAC COIL:Cooling Coil Electricity Energy
+  BASEBOARDELECTRIC:Baseboard Electricity Energy
+  WINDOWAC COIL:Cooling Coil Crankcase Heater Electricity Energy
+
+ For Meter=Fans:Electricity [J], ResourceType=Electricity, EndUse=Fans, contents are:
+  WINDOWAC FAN:Fan Electricity Energy
+
+ For Meter=General:Fans:Electricity [J], ResourceType=Electricity, EndUse=Fans, contents are:
+  WINDOWAC FAN:Fan Electricity Energy
+
  For Meter=EnergyTransfer:HVAC [J], ResourceType=EnergyTransfer, Group=HVAC, contents are:
+  WINDOWAC COIL:Cooling Coil Total Cooling Energy
   BASEBOARDELECTRIC:Baseboard Total Heating Energy
+
+ For Meter=CoolingCoils:EnergyTransfer [J], ResourceType=EnergyTransfer, EndUse=CoolingCoils, contents are:
+  WINDOWAC COIL:Cooling Coil Total Cooling Energy
+
+ For Meter=Cooling:Electricity [J], ResourceType=Electricity, EndUse=Cooling, contents are:
+  WINDOWAC COIL:Cooling Coil Electricity Energy
+  WINDOWAC COIL:Cooling Coil Crankcase Heater Electricity Energy
+
+ For Meter=General:Cooling:Electricity [J], ResourceType=Electricity, EndUse=Cooling, contents are:
+  WINDOWAC COIL:Cooling Coil Electricity Energy
+  WINDOWAC COIL:Cooling Coil Crankcase Heater Electricity Energy
 
  For Meter=Baseboard:EnergyTransfer [J], ResourceType=EnergyTransfer, EndUse=Baseboard, contents are:
   BASEBOARDELECTRIC:Baseboard Total Heating Energy
-
- For Meter=Electricity:HVAC [J], ResourceType=Electricity, Group=HVAC, contents are:
-  BASEBOARDELECTRIC:Baseboard Electricity Energy
 
  For Meter=Heating:Electricity [J], ResourceType=Electricity, EndUse=Heating, contents are:
   BASEBOARDELECTRIC:Baseboard Electricity Energy

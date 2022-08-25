@@ -1,4 +1,4 @@
-Program Version,EnergyPlus, Version 9.5.0-de239b2e5f, YMD=2022.08.24 13:35,
+Program Version,EnergyPlus, Version 9.5.0-de239b2e5f, YMD=2022.08.24 16:12,
    ** Warning ** Timestep: Requested number (1) is less than the suggested minimum of 4.
    **   ~~~   ** Please see entry for Timestep in Input/Output Reference for discussion of considerations.
    ************* Beginning Zone Sizing Calculations
@@ -26,8 +26,16 @@ Program Version,EnergyPlus, Version 9.5.0-de239b2e5f, YMD=2022.08.24 13:35,
    **   ~~~   ** The AirflowNetwork model provides wind pressure coefficients for 4 vertical exterior orientations and 1 horizontal roof.
    **   ~~~   **  There are only 4 exterior surface orientations defined in this input file using AirflowNetwork:MultiZone:Surface objects.
    **   ~~~   ** Reconsider if this is your modeling intent. Simulation continues.
-   ** Warning ** Output:Meter: invalid Key Name="COOLING:ELECTRICITY" - not found.
-   ** Warning ** Output:Meter: invalid Key Name="FANS:ELECTRICITY" - not found.
+   ** Warning ** GetDXCoils: Coil:Cooling:DX:SingleSpeed="WINDOWAC COIL" curve values
+   **   ~~~   ** ... Energy Input Ratio Function of Flow Fraction Curve Name = ROOMAC-EIR-FFF output is not equal to 1.0 (+ or - 10%) at rated conditions.
+   **   ~~~   ** ... Curve output at rated conditions = 1.154
+   ** Warning ** SizeDXCoil Coil:Cooling:DX:SingleSpeed WINDOWAC COIL
+   **   ~~~   ** ...Gross Rated Total Cooling Capacity [W] will be limited by the maximum rated volume flow per rated total capacity ratio.
+   **   ~~~   ** ...DX coil volume flow rate ( m3/s ) = 0.422091
+   **   ~~~   ** ...Requested capacity ( W ) = 6934.224
+   **   ~~~   ** ...Requested flow/capacity ratio ( m3/s/W ) = 6.087E-005
+   **   ~~~   ** ...Maximum flow/capacity ratio ( m3/s/W ) = 6.041E-005
+   **   ~~~   ** ...Adjusted capacity ( W ) = 6987.119
    ** Warning ** Output:Meter: invalid Key Name="PUMPS:ELECTRICITY" - not found.
    ** Warning ** Output:Meter: invalid Key Name="WATERSYSTEMS:ELECTRICITY" - not found.
    ** Warning ** Output:Meter: invalid Key Name="HEATRECOVERY:ELECTRICITY" - not found.
@@ -44,9 +52,7 @@ Program Version,EnergyPlus, Version 9.5.0-de239b2e5f, YMD=2022.08.24 13:35,
    ************* No node connection errors were found.
    ************* Beginning Simulation
    ************* Simulation Error Summary *************
-   ************* There are 54 unused objects in input.
-   ************* Use Output:Diagnostics,DisplayUnusedObjects; to see them.
-   ************* There are 41 unused schedules in input.
+   ************* There are 40 unused schedules in input.
    ************* There are 30 unused week schedules in input.
    ************* There are 44 unused day schedules in input.
    ************* Use Output:Diagnostics,DisplayUnusedSchedules; to see them.
@@ -59,5 +65,5 @@ Program Version,EnergyPlus, Version 9.5.0-de239b2e5f, YMD=2022.08.24 13:35,
    ************* ..object. You may remove the constructions indicated (when you use the DisplayExtraWarnings option).
    *************
    ************* EnergyPlus Warmup Error Summary. During Warmup: 0 Warning; 0 Severe Errors.
-   ************* EnergyPlus Sizing Error Summary. During Sizing: 2 Warning; 0 Severe Errors.
-   ************* EnergyPlus Completed Successfully-- 12 Warning; 0 Severe Errors; Elapsed Time=00hr 00min 14.89sec
+   ************* EnergyPlus Sizing Error Summary. During Sizing: 3 Warning; 0 Severe Errors.
+   ************* EnergyPlus Completed Successfully-- 12 Warning; 0 Severe Errors; Elapsed Time=00hr 00min 13.86sec
