@@ -568,35 +568,36 @@ def genmodels(gui_params, get_data_dict):
     hvac_dict = {
     "Air Source Heat Pump_Single Speed": [
         "Central", # Central or Zonal HVAC
-        "ZoneHVAC:Baseboard:Convective:Electric", # ZoneEquipment1ObjectType
-        "BaseboardElectric", # ZoneEquipment1Name
-        "2", # ZoneEquipment1CoolingSequence
+        "", # ZoneEquipment1ObjectType
+        "", # ZoneEquipment1Name
+        "1", # ZoneEquipment1CoolingSequence
         "1", # ZoneEquipment1HeatingSequence
-        "ZoneHVAC:WindowAirConditioner", # ZoneEquipment2ObjectType
-        "Window AC", # ZoneEquipment2Name
-        "1", # ZoneEquipment2CoolingSequence
-        "2", # ZoneEquipment2HeatingSequence
-        "Zone Inlet Nodes", # ZoneAirInletNodeName
-        "Zone Exhaust Nodes", # ZoneAirExhaustNodeName
-        "Zone Outlet Node", # ZoneReturnAirNodeName
+        "!-", # ZoneEquipment2ObjectType
+        "!-", # ZoneEquipment2Name
+        "!-", # ZoneEquipment2CoolingSequence
+        "!-", # ZoneEquipment2HeatingSequence
+        "", # ZoneAirInletNodeName
+        "", # ZoneAirExhaustNodeName
+        "", # ZoneReturnAirNodeName
+        os.path.join(set_dir, building_block_dir, hvac_zone_main_dir, hvac_zone_hvac_dir, 'BaseboardElectric.txt'), # HVAC equipment text file 1
+        "NA", # HVAC equipment text file 2
+        "NA", # additional heating coil text file
+        "NA", # additional cooling coil text file
+        "NA", # additional fan text file
         ],
     "Electric Furnace with CAC": [
-        "Central", 
-        1
+
         ],
     "Electric Furnace with No CAC": [
-        "Central",
-        1
+
         ],
     "Gas Furnace with CAC": [
-        "Central",
-        1
+
         ],
     "Gas Furnace with No CAC": [
-        "Central",
-        1
+
         ],
-    "Zonal Resistance Heat with No AC": [
+    "Zonal Resistance Baseboard Heat with No AC": [
         "Zonal", # Central or Zonal HVAC
         "ZoneHVAC:Baseboard:Convective:Electric", # ZoneEquipment1ObjectType
         "BaseboardElectric", # ZoneEquipment1Name
@@ -609,13 +610,13 @@ def genmodels(gui_params, get_data_dict):
         "", # ZoneAirInletNodeName
         "", # ZoneAirExhaustNodeName
         "", # ZoneReturnAirNodeName
-        os.path.join(set_dir, building_block_dir, hvac_zone_main_dir, hvac_zone_hvac_dir, 'BaseboardElectric.txt'), # unitary/packaged equipment text file 1
-        "NA", # unitary/packaged equipment text file 2
+        os.path.join(set_dir, building_block_dir, hvac_zone_main_dir, hvac_zone_hvac_dir, 'BaseboardElectric.txt'), # HVAC equipment text file 1
+        "NA", # HVAC equipment text file 2
         "NA", # additional heating coil text file
         "NA", # additional cooling coil text file
         "NA", # additional fan text file
         ],
-    "Zonal Resistance Heat with Window AC": [
+    "Zonal Resistance Baseboard Heat with Window AC": [
         "Zonal", # Central or Zonal HVAC
         "ZoneHVAC:Baseboard:Convective:Electric", # ZoneEquipment1ObjectType
         "BaseboardElectric", # ZoneEquipment1Name
@@ -628,8 +629,8 @@ def genmodels(gui_params, get_data_dict):
         "Zone Inlet Nodes", # ZoneAirInletNodeName
         "Zone Exhaust Nodes", # ZoneAirExhaustNodeName
         "Zone Outlet Node", # ZoneReturnAirNodeName
-        os.path.join(set_dir, building_block_dir, hvac_zone_main_dir, hvac_zone_hvac_dir, 'BaseboardElectric.txt'), # unitary/packaged equipment text file 1
-        os.path.join(set_dir, building_block_dir, hvac_zone_main_dir, hvac_zone_hvac_dir, 'WindowAC.txt'), # unitary/packaged equipment text file 2
+        os.path.join(set_dir, building_block_dir, hvac_zone_main_dir, hvac_zone_hvac_dir, 'BaseboardElectric.txt'), # HVAC equipment text file 1
+        os.path.join(set_dir, building_block_dir, hvac_zone_main_dir, hvac_zone_hvac_dir, 'WindowAC.txt'), # HVAC equipment text file 2
         "NA", # additional heating coil text file
         "NA", # additional cooling coil text file
         "NA", # additional fan text file
@@ -639,10 +640,10 @@ def genmodels(gui_params, get_data_dict):
     ## foundation type dictionary
     # contents of dictionary: foundation type name, text file required in ZonesAndSurfaces --> FoundationType, text file required in HVAC --> ReturnDuctLocation
     foundation_dict = {
-        "Vent": ["Vented Crawlspace", 'Vented Crawl.txt', 'CrawlReturn.txt'],
-        "Slab": ["Slab", 'Slab.txt', 'AtticReturn.txt'],
-        "Heat": ["Heated Basement", 'Heated Basement.txt', 'InsideReturn.txt'],
-        "Unhe": ["Unheated Basement", 'Unheated Basement.txt', 'UnheatedBasementReturn.txt'],
+        "Vent": ["Vented Crawlspace", "crawlspace"],
+        "Slab": ["Slab", "attic"],
+        "Heat": ["Heated Basement", "living"],
+        "Unhe": ["Unheated Basement", "unheatedbsmt"],
     }
 
     ## IDF WRITER LOOP BEGINS HERE
@@ -707,6 +708,7 @@ def genmodels(gui_params, get_data_dict):
         chars = 4
         foundation_key = foundation_and_floor_con[:chars]
         foundation_type = foundation_dict[foundation_key][0]
+        returnduct_location = foundation_dict[foundation_key][1]
 
         # Set foundation parameters based on foundation type
         dict_row = 0
@@ -865,20 +867,6 @@ def genmodels(gui_params, get_data_dict):
         with open(location_dict[location_pull], 'r') as f: # our location & climate dictionary in action
             locations_t = f.read()
 
-        ## HVAC
-        #... get main HVAC type
-        #with open(hvac_dict[hvac_type][0], 'r') as f:
-        #    hvac_type_t = f"{f.read()}".format(**locals())
-        #... get appropriate return duct location, which depends on foundation type
-        #with open(os.path.join(set_dir, building_block_dir, hvac_main_dir, hvac_returnduct_dir, foundation_dict[foundation_key][2]), 'r') as f:
-        #    hvac_returnduct_t = f.read()
-        #... get duct leakage
-        #with open(os.path.join(set_dir, building_block_dir, hvac_main_dir, 'DuctLeakage.txt'), 'r') as f:
-        #    duct_leak_t = f"{f.read()}".format(**locals())
-        #... get all other HVAC code
-        #with open(os.path.join(set_dir, building_block_dir, hvac_main_dir, 'OtherHVAC.txt'), 'r') as f:
-        #    hvac_t = f.read()
-
         ## Materials
         #... insert user-entered above-ground wall insulation
         with open(above_ground_wall_dict[above_ground_wall_con], 'r') as f:
@@ -886,8 +874,6 @@ def genmodels(gui_params, get_data_dict):
         #... insert user-entered ceiling/attic insulation
         with open(ceiling_and_roof_dict[ceiling_and_roof_con], 'r') as f:
             ceiling_attic_t = f.read()
-        #with open(foundation_and_floor_dict[foundation_and_floor_con], 'r') as f:
-        #    foundation_floor_t = f.read()
         #...insert all other materials
         with open(os.path.join(set_dir, building_block_dir, materials_main_dir, 'OtherMaterials.txt'), 'r') as f:
             mat_t = f.read()
@@ -902,14 +888,6 @@ def genmodels(gui_params, get_data_dict):
         # dhw_sch_num = sched_list.index(dhw_stpt_sch) + 1
         with open(os.path.join(set_dir, building_block_dir, schedule_dir, 'Schedules.txt'), 'r') as f:
             sched_t = f"{f.read()}".format(**locals())
-
-        ## Zones and Surfaces
-        #... insert zones and surfaces specific to foundation types
-        #with open(os.path.join(set_dir, building_block_dir, zones_surfaces_main_dir, zones_surfaces_foundation_dir, foundation_dict[foundation_key][1]), 'r') as f:
-            #foundation_type_t = f"{f.read()}".format(**locals())
-        #... insert zones and surfaces in common across foundation types
-        # with open(os.path.join(set_dir, building_block_dir, zones_surfaces_main_dir, 'OtherZonesAndSurfaces.txt'), 'r') as f:
-        #     otherzones_t = f.read()
 
         ## Add foundation
         with open(os.path.join(set_dir, building_block_dir, 'Foundation.txt'), 'r') as f:
@@ -958,16 +936,45 @@ def genmodels(gui_params, get_data_dict):
             with open(os.path.join(set_dir, building_block_dir, geometry_main_dir, geometry_envelope_dir, 'NonHeatedBsmtGeometryAdder.txt'), 'r') as f:
                 geom_nonhtdbsmt_adder_t = f"{f.read()}".format(**locals())
 
-        if hvac_dict[hvac_type][0] == "Zonal":
-            AFN_control = "MultizoneWithoutDistribution"
-        else:
-            AFN_control = "MultizoneWithDistribution"
-        
         DesignSpecificationOutdoorAirObjectName = ""
+        ZoneEquipment1ObjectType = hvac_dict[hvac_type][1]
+        ZoneEquipment1Name = hvac_dict[hvac_type][2]
+        ZoneEquipment1CoolingSequence = hvac_dict[hvac_type][3]
+        ZoneEquipment1HeatingSequence = hvac_dict[hvac_type][4]
+        ZoneEquipment2ObjectType = hvac_dict[hvac_type][5]
+        ZoneEquipment2Name = hvac_dict[hvac_type][6]
+        ZoneEquipment2CoolingSequence = hvac_dict[hvac_type][7]
+        ZoneEquipment2HeatingSequence = hvac_dict[hvac_type][8]
+        ZoneAirInletNodeName = hvac_dict[hvac_type][9]
+        ZoneAirExhaustNodeName = hvac_dict[hvac_type][10]
+        ZoneReturnAirNodeName = hvac_dict[hvac_type][11]
+        
+        main_heating_coil_outlet = "HeatingOutletNode"
+        airloopsupply_duct_inlet = "HeatingOutletNode"
         ZoneEquipment3ObjectType = "!-"
         ZoneEquipment3Name = "!-"
         ZoneEquipment3CoolingSequence = "!-"
         ZoneEquipment3HeatingSequence = "!-"
+
+        if hvac_dict[hvac_type][0] == "Zonal":
+            AFN_control = "MultizoneWithoutDistribution"
+            system_sizing_t = ""
+            airloop_t = ""
+            AFN_ducts_t = ""
+            AFN_supplyfan_t = ""
+            AFN_nodes_main_t = ""
+        else:
+            AFN_control = "MultizoneWithDistribution"
+            with open(os.path.join(set_dir, building_block_dir, hvac_airloop_main_dir, 'SystemSizing.txt'), 'r') as f:
+                system_sizing_t = f.read()
+            with open(os.path.join(set_dir, building_block_dir, hvac_airloop_main_dir, 'AirLoop.txt'), 'r') as f:
+                airloop_t = f"{f.read()}".format(**locals())
+            with open(os.path.join(set_dir, building_block_dir, hvac_afn_main_dir, 'AFN_Ducts.txt'), 'r') as f:
+                AFN_ducts_t = f"{f.read()}".format(**locals())
+            with open(os.path.join(set_dir, building_block_dir, hvac_afn_main_dir, 'AFN_SupplyFan.txt'), 'r') as f:
+                AFN_supplyfan_t = f"{f.read()}".format(**locals())
+            with open(os.path.join(set_dir, building_block_dir, hvac_afn_main_dir, hvac_afn_node_dir, 'AFN_MainNodes.txt'), 'r') as f:
+                AFN_nodes_main_t = f"{f.read()}".format(**locals())    
         
         ## Add AirFlow Network
         with open(os.path.join(set_dir, building_block_dir, hvac_afn_main_dir, 'AFN_SimulationControl.txt'), 'r') as f:
@@ -1001,7 +1008,7 @@ def genmodels(gui_params, get_data_dict):
                 AFN_crawl_unheatedbsmt_leakage_adder_t = f.read()
             with open(os.path.join(set_dir, building_block_dir, hvac_afn_main_dir, hvac_afn_surface_dir, 'AFN_CrawlUnheatedBsmtSurfaceAdder.txt'), 'r') as f:
                 AFN_crawl_unheatedbsmt_surface_adder_t = f.read()
-
+        
         ## Add T-stat
         with open(os.path.join(set_dir, building_block_dir, hvac_tstat_dir, 'Thermostat.txt'), 'r') as f:
             thermostat_t = f.read()
@@ -1011,20 +1018,32 @@ def genmodels(gui_params, get_data_dict):
         with open(os.path.join(set_dir, building_block_dir, hvac_zone_main_dir, 'EquipListAndConnections.txt'), 'r') as f:
             zone_equip_list_t = f"{f.read()}".format(**locals())
         # unitary/packaged equipment text file 1
-        with open(os.path.join(set_dir, building_block_dir, hvac_dict[hvac_type][13]), 'r') as f:
-            unitary_equip_1_t = f"{f.read()}".format(**locals())
+        with open(hvac_dict[hvac_type][12], 'r') as f:
+            HVAC_equip_1_t = f"{f.read()}".format(**locals())
         # unitary/packaged equipment text file 2
-        with open(os.path.join(set_dir, building_block_dir, hvac_dict[hvac_type][14]), 'r') as f:
-            unitary_equip_2_t = f"{f.read()}".format(**locals())
+        if hvac_dict[hvac_type][13] == "NA":
+            HVAC_equip_2_t = ""
+        else:
+            with open(hvac_dict[hvac_type][13], 'r') as f:
+                HVAC_equip_2_t = f"{f.read()}".format(**locals())
         # additional heating coil text file
-        with open(os.path.join(set_dir, building_block_dir, hvac_dict[hvac_type][15]), 'r') as f:
-            heating_coil_t = f"{f.read()}".format(**locals())
+        if hvac_dict[hvac_type][14] == "NA":
+            heating_coil_t = ""
+        else:
+            with open(hvac_dict[hvac_type][14], 'r') as f:
+                heating_coil_t = f"{f.read()}".format(**locals())
         # additional cooling coil text file
-        with open(os.path.join(set_dir, building_block_dir, hvac_dict[hvac_type][16]), 'r') as f:
-            cooling_coil_t = f"{f.read()}".format(**locals())
+        if hvac_dict[hvac_type][15] == "NA":    
+            cooling_coil_t = ""
+        else:
+            with open(hvac_dict[hvac_type][15], 'r') as f:
+                cooling_coil_t = f"{f.read()}".format(**locals())
         # additional fan text file
-        with open(os.path.join(set_dir, building_block_dir, hvac_dict[hvac_type][17]), 'r') as f:
-            fan_t = f"{f.read()}".format(**locals())
+        if hvac_dict[hvac_type][16] == "NA":    
+            fan_t = ""
+        else:
+            with open(hvac_dict[hvac_type][16], 'r') as f:
+                fan_t = f"{f.read()}".format(**locals())
 
         ## Output
         with open(os.path.join(set_dir, building_block_dir, output_dir, 'OtherOutput.txt'), 'r') as f:
@@ -1039,8 +1058,9 @@ def genmodels(gui_params, get_data_dict):
             overhangs_t, construction_t, range_t, dryer_t, clotheswasher_t, dishwasher_t, frig_t, misc_elec_t, misc_gas_t, people_t, lights_t, \
             foundation_type_t, geom_rules_t, internal_mass_t, geom_main_envelope_t, geom_nonslab_adder_t, geom_main_windows_t, \
             living_zone_t, attic_zone_t, unheatedbsmt_zone_t, crawlspace_zone_t, geom_nonhtdbsmt_adder_t, \
-            AFN_sim_control_t, AFN_main_zones_t, AFN_main_leakage_t, AFN_main_surfaces_t, zone_equip_list_t, baseboard_electric_t, window_AC_t, \
+            AFN_sim_control_t, AFN_main_zones_t, AFN_main_leakage_t, AFN_main_surfaces_t, zone_equip_list_t, \
             AFN_crawl_zone_t, AFN_unheatedbsmt_zone_t, AFN_crawl_unheatedbsmt_leakage_adder_t, AFN_crawl_unheatedbsmt_surface_adder_t, \
+            HVAC_equip_1_t, HVAC_equip_2_t, heating_coil_t, cooling_coil_t, fan_t, \
             thermostat_t, zone_sizing_t, water_heater_t, dhw_t, perf_t, output_t, user_output_t
             ]
 
