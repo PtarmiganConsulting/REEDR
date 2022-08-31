@@ -567,28 +567,28 @@ def genmodels(gui_params, get_data_dict):
     hvac_dict = {
     "Air Source Heat Pump_Single Speed": [
         "Central", # Central or Zonal HVAC
-        "", # ZoneEquipment1ObjectType
-        "", # ZoneEquipment1Name
+        "ZoneHVAC:AirDistributionUnit", # ZoneEquipment1ObjectType
+        "ZoneDirectAir ADU", # ZoneEquipment1Name
         "1", # ZoneEquipment1CoolingSequence
         "1", # ZoneEquipment1HeatingSequence
         "!-", # ZoneEquipment2ObjectType
         "!-", # ZoneEquipment2Name
         "!-", # ZoneEquipment2CoolingSequence
         "!-", # ZoneEquipment2HeatingSequence
-        "", # ZoneAirInletNodeName
+        "Zone Inlet Node", # ZoneAirInletNodeName
         "", # ZoneAirExhaustNodeName
-        "", # ZoneReturnAirNodeName
+        "Zone Outlet Node", # ZoneReturnAirNodeName
         os.path.join(set_dir, building_block_dir, hvac_airloop_main_dir, hvac_airloop_hvac_dir, 'UnitaryHeatPump.txt'), # HVAC equipment text file 1
-        "NA", # HVAC equipment text file 2
-        "NA", # additional heating coil text file
-        "NA", # additional cooling coil text file
-        "NA", # additional fan text file
-        "",
-        "",
-        "",
-        "",
-        "AirLoopHVAC:UnitaryHeatOnly", # AirLoopHVAC_Unitary_ObjectType
-        "Furnace", # AirLoopHVAC_Unitary_ObjectName
+        os.path.join(set_dir, building_block_dir, hvac_zone_main_dir, hvac_zone_hvac_dir, 'ADU.txt'), # HVAC equipment text file 2
+        os.path.join(set_dir, building_block_dir, hvac_coil_dir, 'Heating_ASHP_SS.txt'), # additional heating coil text file
+        os.path.join(set_dir, building_block_dir, hvac_coil_dir, 'Cooling_ASHP_SS.txt'), # additional cooling coil text file
+        os.path.join(set_dir, building_block_dir, hvac_fan_dir, 'UnitarySupplyFan.txt'), # additional fan text file
+        "Coil:Heating:DX:SingleSpeed", # AirLoopHVAC_HeatingCoil_ObjectType
+        "Heating_ASHP_SS", # AirLoopHVAC_HeatingCoil_Name
+        "Coil:Cooling:DX:SingleSpeed", # AirLoopHVAC_CoolingCoil_ObjectType
+        "Cooling_ASHP_SS", # AirLoopHVAC_CoolingCoil_Name
+        "AirLoopHVAC:UnitaryHeatPump:AirtoAir", # AirLoopHVAC_Unitary_ObjectType
+        "Heat Pump", # AirLoopHVAC_Unitary_ObjectName
         ],
     "Electric Furnace with CAC": [
         "Central", # Central or Zonal HVAC
@@ -708,12 +708,12 @@ def genmodels(gui_params, get_data_dict):
         "NA", # additional heating coil text file
         "NA", # additional cooling coil text file
         "NA", # additional fan text file
-        "",
-        "",
-        "",
-        "",
-        "AirLoopHVAC:UnitaryHeatOnly", # AirLoopHVAC_Unitary_ObjectType
-        "Furnace", # AirLoopHVAC_Unitary_ObjectName
+        "NA",
+        "NA",
+        "NA",
+        "NA",
+        "NA", # AirLoopHVAC_Unitary_ObjectType
+        "NA", # AirLoopHVAC_Unitary_ObjectName
         ],
     "Zonal Resistance Baseboard Heat with Window AC": [
         "Zonal", # Central or Zonal HVAC
@@ -725,7 +725,7 @@ def genmodels(gui_params, get_data_dict):
         "Window AC", # ZoneEquipment2Name
         "1", # ZoneEquipment2CoolingSequence
         "2", # ZoneEquipment2HeatingSequence
-        "Zone Inlet Node", # ZoneAirInletNodeName
+        "Zone Inlet Nodes", # ZoneAirInletNodeName
         "Zone Exhaust Nodes", # ZoneAirExhaustNodeName
         "Zone Outlet Node", # ZoneReturnAirNodeName
         os.path.join(set_dir, building_block_dir, hvac_zone_main_dir, hvac_zone_hvac_dir, 'BaseboardElectric.txt'), # HVAC equipment text file 1
@@ -733,12 +733,12 @@ def genmodels(gui_params, get_data_dict):
         "NA", # additional heating coil text file
         "NA", # additional cooling coil text file
         "NA", # additional fan text file
-        "",
-        "",
-        "",
-        "",
-        "AirLoopHVAC:UnitaryHeatOnly", # AirLoopHVAC_Unitary_ObjectType
-        "Furnace", # AirLoopHVAC_Unitary_ObjectName
+        "NA",
+        "NA",
+        "NA",
+        "NA",
+        "NA", # AirLoopHVAC_Unitary_ObjectType
+        "NA", # AirLoopHVAC_Unitary_ObjectName
         ],
     }
 
@@ -791,8 +791,9 @@ def genmodels(gui_params, get_data_dict):
         clg_stpt_sch = dictionary["Clg StPt Sch"]
         supply_leak = dictionary["Supply Duct Leakage [%]"]
         return_leak = dictionary["Return Duct Leakage [%]"]
-        hp_max_resistance_temp = convert_degF_to_degC(dictionary["HP Max Resistance Temp [deg F]"])
-        hp_min_compressor_temp = convert_degF_to_degC(dictionary["HP Min Compressor Temp [deg F]"])
+        hp_supp_heat_type = dictionary["ASHP Supp Heat Type"]
+        hp_max_resistance_temp = convert_degF_to_degC(dictionary["ASHP Max Supp Heat Temp [deg F]"])
+        hp_min_compressor_temp = convert_degF_to_degC(dictionary["ASHP Min Compressor Temp [deg F]"])
         water_heater_type = dictionary["Water Heater Type"]
         dhw_stpt_sch = dictionary["DHW StPt Sch"]
         people = dictionary["Number Of People"]
@@ -1064,11 +1065,24 @@ def genmodels(gui_params, get_data_dict):
         ZoneEquipment3Name = "!-"
         ZoneEquipment3CoolingSequence = "!-"
         ZoneEquipment3HeatingSequence = "!-"
-
-        AFN_main_heating_coil_outlet_node = "HeatingOutletNode"
-        AFN_airloopsupply_duct_inlet_node = "HeatingOutletNode"
         
         ## Add AirFlow Network and AirLoop, if needed
+        if AirLoopHVAC_Unitary_ObjectType == "AirLoopHVAC:UnitaryHeatPump:AirtoAir" and hp_supp_heat_type == "Gas":
+            AirLoopHVAC_SuppHeatingCoil_ObjectType = "Coil:Heating:Fuel"
+            AirLoopHVAC_SuppHeatingCoil_Name = "Heating_Fuel_Backup"
+            AFN_main_heating_coil_outlet_node = "SuppHeatingInletNode"
+            with open(os.path.join(set_dir, building_block_dir, hvac_coil_dir, 'Heating_Fuel_Backup.txt'), 'r') as f:
+                supp_heating_coil_t = f.read()
+        elif AirLoopHVAC_Unitary_ObjectType == "AirLoopHVAC:UnitaryHeatPump:AirtoAir":
+            AirLoopHVAC_SuppHeatingCoil_ObjectType = "Coil:Heating:Electric"
+            AirLoopHVAC_SuppHeatingCoil_Name = "Heating_Resistance_Backup"
+            AFN_main_heating_coil_outlet_node = "SuppHeatingInletNode"
+            with open(os.path.join(set_dir, building_block_dir, hvac_coil_dir, 'Heating_Resistance_Backup.txt'), 'r') as f:
+                supp_heating_coil_t = f.read()
+        else:
+            supp_heating_coil_t = ""
+            AFN_main_heating_coil_outlet_node = "HeatingOutletNode"
+        
         if hvac_dict[hvac_type][0] == "Central" and AirLoopHVAC_CoolingCoil_ObjectType == "NA":
             airloop_main_fan_coil_outlet_node = "Heating Coil Air Inlet Node"
             AFN_main_fan_coil_outlet_node = "HeatingInletNode"
@@ -1081,8 +1095,11 @@ def genmodels(gui_params, get_data_dict):
                 AFN_nodes_coolingcoiladder_t = f.read()
             with open(os.path.join(set_dir, building_block_dir, hvac_afn_main_dir, hvac_afn_linkage_dir, 'AFN_CoolingCoilLinkageAdder.txt'), 'r') as f:
                 AFN_linkage_coolingcoiladder_t = f"{f.read()}".format(**locals())
+        else:
+            AFN_nodes_coolingcoiladder_t = ""
+            AFN_linkage_coolingcoiladder_t = ""
 
-        airloop_main_heating_coil_outlet_node = "Air Loop Outlet Node"
+        #airloop_main_heating_coil_outlet_node = "Air Loop Outlet Node"
 
         if hvac_dict[hvac_type][0] == "Zonal":
             AFN_control = "MultizoneWithoutDistribution"
@@ -1188,7 +1205,7 @@ def genmodels(gui_params, get_data_dict):
             AFN_sim_control_t, AFN_main_zones_t, AFN_main_leakage_t, AFN_main_surfaces_t, AFN_nodes_main_t, AFN_linkage_main_t, \
             AFN_crawl_zone_t, AFN_unheatedbsmt_zone_t, AFN_crawl_unheatedbsmt_leakage_adder_t, AFN_crawl_unheatedbsmt_surface_adder_t, \
             AFN_ducts_t, system_sizing_t, airloop_t, AFN_linkage_coolingcoiladder_t, AFN_nodes_coolingcoiladder_t, \
-            zone_equip_list_t, HVAC_equip_1_t, HVAC_equip_2_t, heating_coil_t, cooling_coil_t, fan_t, \
+            zone_equip_list_t, HVAC_equip_1_t, HVAC_equip_2_t, heating_coil_t, supp_heating_coil_t, cooling_coil_t, fan_t, \
             thermostat_t, zone_sizing_t, water_heater_t, dhw_t, perf_t, output_t, user_output_t
             ]
 
