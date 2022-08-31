@@ -1,10 +1,10 @@
 Coil:Heating:Electric,
-    Heating_Resistance_Backup,  		!- Name
-    always_avail,             		!- Availability Schedule Name
-    1,                        		!- Efficiency
-    autosize,                 		!- Nominal Capacity {{W}}
-    {heating_coil_inlet_node},      !- Air Inlet Node Name
-    Air Loop Outlet Node;     	    !- Air Outlet Node Name
+    Heating_Resistance_Backup,  		    !- Name
+    always_avail,             		        !- Availability Schedule Name
+    1,                        		        !- Efficiency
+    autosize,                 		        !- Nominal Capacity {{W}}
+    Supp Heating Coil Air Inlet Node,      !- Air Inlet Node Name
+    Air Loop Outlet Node;     	            !- Air Outlet Node Name
 
 !-   ===========  ALL OBJECTS IN CLASS: AIRFLOWNETWORK:DISTRIBUTION:COMPONENT:COIL ===========
 
@@ -15,10 +15,10 @@ AirflowNetwork:Distribution:Component:Coil,
     1.000;
 
 AirflowNetwork:Distribution:Linkage,
-    SuppHeatingCoilLink,        !- Name
-    SuppHeatingInletNode,       !- Node 1 Name
-    HeatingOutletNode,          !- Node 2 Name
-    Heating_Resistance_Backup;   !- Component Name
+    SuppHeatingCoilLink,            !- Name
+    SuppHeatingInletNode,           !- Node 1 Name
+    HeatingOutletNode,              !- Node 2 Name
+    Heating_Resistance_Backup;      !- Component Name
 
 AirflowNetwork:Distribution:Node,
     SuppHeatingInletNode,         	    !- Name

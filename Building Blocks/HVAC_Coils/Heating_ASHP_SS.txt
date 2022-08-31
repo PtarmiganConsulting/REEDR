@@ -1,31 +1,31 @@
 !-   ===========  ALL OBJECTS IN CLASS: COIL:HEATING ===========
 
 Coil:Heating:DX:SingleSpeed,
-  Heating_ASHP_SS,   	            !- Name
-  always_avail,           		          !-Availability Schedule Name
-  autosize,               		          !- Rated Total Heating Capacity {{W}}
-  3.69308080013886,           	        !- Rated COP
-  autosize,               		          !- Rated Air Flow Rate {{m3/s}}
-  ,					                            !- Rated Evaporator Fan Power Per Volume Flow Rate {{W/(m3/s)}}
-  Heating Coil Air Inlet Node,          !- Air Inlet Node Name
-  Supp Heating Coil Air Inlet Node,     !- Air Outlet Node Name
-  HPACHeatCapFT,          		          !- Total Heating Capacity Function of Temperature Curve Name
-  HPACHeatCapFFF,         		          !- Total Heating Capacity Function of Flow Fraction Curve Name
-  HPACHeatEIRFT,          		          !- Energy Input Ratio Function of Temperature Curve Name
-  HPACHeatEIRFFF,         		          !- Energy Input Ratio Function of Flow Fraction Curve Name
-  HPACHeatPLFFPLR,        		          !- Part Load Fraction Correlation Curve Name
-  Defrost_EIR_FT,         		          !- Defrost Energy Input Ratio Function of Temperature Curve Name
-  {hp_min_compressor_temp},             !- Minimum Outdoor Dry-Bulb Temperature for Compressor Operation {{C}}
-  ,					                            !- Outdoor Dry-Bulb Temperature to Turn On Compressor
-  5.0,                    		          !- Maximum Outdoor Dry-Bulb Temperature for Defrost Operation {{C}}
-  200.0,                  		          !- Crankcase Heater Capacity {{W}}
-  10.0,                   		          !- Maximum Outdoor Dry-Bulb Temperature for Crankcase Heater Operation {{C}}
-  ReverseCycle,           		          !- Defrost Strategy
-  OnDemand,               		          !- Defrost Control
-  , 			    		                      !- Defrost Time Period Fraction
-  , 			    		                      !- Resistive Defrost Heater Capacity {{W}}
-  ,					                            !- Region number for calculating HSPF
-  ;					                            !- Evaporator Air Inlet Node Name
+  Heating_ASHP_SS,   	                      !- Name
+  always_avail,           		              !-Availability Schedule Name
+  autosize,               		              !- Rated Total Heating Capacity {{W}}
+  3.69308080013886,           	            !- Rated COP
+  autosize,               		              !- Rated Air Flow Rate {{m3/s}}
+  ,					                                !- Rated Evaporator Fan Power Per Volume Flow Rate {{W/(m3/s)}}
+  Heating Coil Air Inlet Node,              !- Air Inlet Node Name
+  {airloop_main_heating_coil_outlet_node},  !- Air Outlet Node Name
+  HPACHeatCapFT,          		              !- Total Heating Capacity Function of Temperature Curve Name
+  HPACHeatCapFFF,         		              !- Total Heating Capacity Function of Flow Fraction Curve Name
+  HPACHeatEIRFT,          		              !- Energy Input Ratio Function of Temperature Curve Name
+  HPACHeatEIRFFF,         		              !- Energy Input Ratio Function of Flow Fraction Curve Name
+  HPACHeatPLFFPLR,        		              !- Part Load Fraction Correlation Curve Name
+  Defrost_EIR_FT,         		              !- Defrost Energy Input Ratio Function of Temperature Curve Name
+  {hp_min_compressor_temp},                 !- Minimum Outdoor Dry-Bulb Temperature for Compressor Operation {{C}}
+  ,					                                !- Outdoor Dry-Bulb Temperature to Turn On Compressor
+  5.0,                    		              !- Maximum Outdoor Dry-Bulb Temperature for Defrost Operation {{C}}
+  200.0,                  		              !- Crankcase Heater Capacity {{W}}
+  10.0,                   		              !- Maximum Outdoor Dry-Bulb Temperature for Crankcase Heater Operation {{C}}
+  ReverseCycle,           		              !- Defrost Strategy
+  OnDemand,               		              !- Defrost Control
+  , 			    		                          !- Defrost Time Period Fraction
+  , 			    		                          !- Resistive Defrost Heater Capacity {{W}}
+  ,					                                !- Region number for calculating HSPF
+  ;					                                !- Evaporator Air Inlet Node Name
 
 AirflowNetwork:Distribution:Component:Coil,
   Heating_ASHP_SS,                      !- Coil Name

@@ -78,26 +78,20 @@ AirflowNetwork:Distribution:Linkage,
     AirLoopReturn;     !- Component Name
 
 AirflowNetwork:Distribution:Linkage,
-    SupplyFanLink,      !- Name
-    MainInletNode,      !- Node 1 Name
-    FanOutletNode,      !- Node 2 Name
-    Supply Fan;         !- Component Name
-
-AirflowNetwork:Distribution:Linkage,
-    CoolingCoilLink,    !- Name
-    FanOutletNode,      !- Node 1 Name
-    HeatingInletNode,   !- Node 2 Name
-    Main Cooling Coil;  !- Component Name
+    SupplyFanLink,                          !- Name
+    MainInletNode,                          !- Node 1 Name
+    {AFN_main_fan_coil_outlet_node},        !- Node 2 Name
+    Supply Fan;                             !- Component Name
 
 AirflowNetwork:Distribution:Linkage,
     HeatingCoilLink,                            !- Name
     HeatingInletNode,                           !- Node 1 Name
     {AFN_main_heating_coil_outlet_node},        !- Node 2 Name
-    Main Heating Coil;                          !- Component Name
+    {AirLoopHVAC_HeatingCoil_Name};             !- Component Name
 
 AirflowNetwork:Distribution:Linkage,
     EquipmentAirLoopLink,                       !- Name
-    HeatingOutletNode,        !- Node 1 Name
+    HeatingOutletNode,                          !- Node 1 Name
     EquipmentInletNode,                         !- Node 2 Name
     AirLoopSupply;                              !- Component Name
 
