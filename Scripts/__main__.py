@@ -70,7 +70,7 @@ def main(gui_params):
 
     #Run genoutputs.py
 
-    #genoutputs(gui_params, get_data_dict) # for debugging
+    genoutputs(gui_params, get_data_dict) # for debugging
     # if hit_error == False:
     #     #try:
     #     genoutputs(gui_params, get_data_dict)
