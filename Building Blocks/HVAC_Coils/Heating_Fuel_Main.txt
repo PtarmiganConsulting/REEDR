@@ -1,9 +1,17 @@
 Coil:Heating:Fuel,
-    Fuel Heating Coil,	            !- Name
+    Heating_Fuel_Main,	            !- Name
     always_avail,                   !- Availability Schedule Name
     NaturalGas,					    !- Fuel Type
     0.8,          			        !- Efficiency
     autosize,                       !- Nominal Capacity {{W}}
     {heating_coil_inlet_node},      !- Air Inlet Node Name
     Air Loop Outlet Node;       	!- Air Outlet Node Name
+
+!-   ===========  ALL OBJECTS IN CLASS: AIRFLOWNETWORK:DISTRIBUTION:COMPONENT:COIL ===========
+
+AirflowNetwork:Distribution:Component:Coil,
+    Heating_Fuel_Main,
+    Coil:Heating:Fuel,
+    0.1,
+    1.000;
 

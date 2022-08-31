@@ -1,7 +1,7 @@
 !-   ===========  ALL OBJECTS IN CLASS: COIL:COOLING:DX:SINGLESPEED ===========
 
 Coil:Cooling:DX:SingleSpeed,
-  DX Cooling Coil,              !- Name
+  Cooling_ASHP_SS,              !- Name
   always_avail,             	  !- Availability Schedule Name
   autosize,                     !- Gross Rated Total Cooling Capacity {{W}}
   autosize,                     !- Gross Rated Sensible Heat Ratio
@@ -15,6 +15,12 @@ Coil:Cooling:DX:SingleSpeed,
   HPACCOOLEIRFT,                !- Energy Input Ratio Function of Temperature Curve Name
   HPACCOOLEIRFFF,               !- Energy Input Ratio Function of Flow Fraction Curve Name
   HPACCOOLPLFFPLR;              !- Part Load Fraction Correlation Curve Name
+
+AirflowNetwork:Distribution:Component:Coil,
+  Cooling_ASHP_SS,                   !- Coil Name
+  Coil:Cooling:DX:SingleSpeed,              !- Coil Object Type
+  0.1,                                      !- Air Path Length {{m}}
+  1.000;                                    !- Air Path Hydraulic Diameter {{m}}
 
 Curve:Biquadratic,
   HPACCoolCapFT,           !- Name

@@ -579,7 +579,7 @@ def genmodels(gui_params, get_data_dict):
         "", # ZoneAirInletNodeName
         "", # ZoneAirExhaustNodeName
         "", # ZoneReturnAirNodeName
-        os.path.join(set_dir, building_block_dir, hvac_zone_main_dir, hvac_zone_hvac_dir, 'BaseboardElectric.txt'), # HVAC equipment text file 1
+        os.path.join(set_dir, building_block_dir, hvac_airloop_main_dir, hvac_airloop_hvac_dir, 'UnitaryHeatPump.txt'), # HVAC equipment text file 1
         "NA", # HVAC equipment text file 2
         "NA", # additional heating coil text file
         "NA", # additional cooling coil text file
@@ -589,7 +589,27 @@ def genmodels(gui_params, get_data_dict):
 
         ],
     "Electric Furnace with No CAC": [
-
+        "Central", # Central or Zonal HVAC
+        "ZoneHVAC:AirDistributionUnit", # ZoneEquipment1ObjectType
+        "ZoneDirectAir ADU", # ZoneEquipment1Name
+        "1", # ZoneEquipment1CoolingSequence
+        "1", # ZoneEquipment1HeatingSequence
+        "!-", # ZoneEquipment2ObjectType
+        "!-", # ZoneEquipment2Name
+        "!-", # ZoneEquipment2CoolingSequence
+        "!-", # ZoneEquipment2HeatingSequence
+        "Zone Inlet Nodes", # ZoneAirInletNodeName
+        "Zone Exhaust Nodes", # ZoneAirExhaustNodeName
+        "Zone Outlet Node", # ZoneReturnAirNodeName
+        os.path.join(set_dir, building_block_dir, hvac_airloop_main_dir, hvac_airloop_hvac_dir, 'UnitaryHeatOnly.txt'), # HVAC equipment text file 1
+        os.path.join(set_dir, building_block_dir, hvac_zone_main_dir, hvac_zone_hvac_dir, 'ADU.txt'), # HVAC equipment text file 2
+        os.path.join(set_dir, building_block_dir, hvac_coil_dir, 'Heating_Resistance_Main.txt'), # additional heating coil text file
+        "NA", # additional cooling coil text file
+        os.path.join(set_dir, building_block_dir, hvac_fan_dir, 'UnitarySupplyFan.txt'), # additional fan text file
+        "Coil:Heating:Electric", # AirLoopHVAC_HeatingCoil_ObjectType
+        "Heating_Resistance_Main", # AirLoopHVAC_HeatingCoil_Name
+        "NA", # AirLoopHVAC_CoolingCoil_ObjectType
+        "NA", # AirLoopHVAC_CoolingCoil_Name
         ],
     "Gas Furnace with CAC": [
 
@@ -949,19 +969,21 @@ def genmodels(gui_params, get_data_dict):
         ZoneAirExhaustNodeName = hvac_dict[hvac_type][10]
         ZoneReturnAirNodeName = hvac_dict[hvac_type][11]
         
-        main_heating_coil_outlet = "HeatingOutletNode"
-        airloopsupply_duct_inlet = "HeatingOutletNode"
         ZoneEquipment3ObjectType = "!-"
         ZoneEquipment3Name = "!-"
         ZoneEquipment3CoolingSequence = "!-"
         ZoneEquipment3HeatingSequence = "!-"
+
+        AFN_main_heating_coil_outlet_node = "HeatingOutletNode"
+        AFN_airloopsupply_duct_inlet_node = "HeatingOutletNode"
+
+
 
         if hvac_dict[hvac_type][0] == "Zonal":
             AFN_control = "MultizoneWithoutDistribution"
             system_sizing_t = ""
             airloop_t = ""
             AFN_ducts_t = ""
-            AFN_supplyfan_t = ""
             AFN_nodes_main_t = ""
         else:
             AFN_control = "MultizoneWithDistribution"
@@ -971,8 +993,6 @@ def genmodels(gui_params, get_data_dict):
                 airloop_t = f"{f.read()}".format(**locals())
             with open(os.path.join(set_dir, building_block_dir, hvac_afn_main_dir, 'AFN_Ducts.txt'), 'r') as f:
                 AFN_ducts_t = f"{f.read()}".format(**locals())
-            with open(os.path.join(set_dir, building_block_dir, hvac_afn_main_dir, 'AFN_SupplyFan.txt'), 'r') as f:
-                AFN_supplyfan_t = f"{f.read()}".format(**locals())
             with open(os.path.join(set_dir, building_block_dir, hvac_afn_main_dir, hvac_afn_node_dir, 'AFN_MainNodes.txt'), 'r') as f:
                 AFN_nodes_main_t = f"{f.read()}".format(**locals())    
         
@@ -1017,10 +1037,10 @@ def genmodels(gui_params, get_data_dict):
             zone_sizing_t = f"{f.read()}".format(**locals())
         with open(os.path.join(set_dir, building_block_dir, hvac_zone_main_dir, 'EquipListAndConnections.txt'), 'r') as f:
             zone_equip_list_t = f"{f.read()}".format(**locals())
-        # unitary/packaged equipment text file 1
+        # HVAC equipment text file 1
         with open(hvac_dict[hvac_type][12], 'r') as f:
             HVAC_equip_1_t = f"{f.read()}".format(**locals())
-        # unitary/packaged equipment text file 2
+        # HVAC equipment text file 2
         if hvac_dict[hvac_type][13] == "NA":
             HVAC_equip_2_t = ""
         else:

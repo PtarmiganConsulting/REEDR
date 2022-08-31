@@ -1,7 +1,7 @@
 !-   ===========  ALL OBJECTS IN CLASS: COIL:HEATING ===========
 
 Coil:Heating:DX:SingleSpeed,
-  Main DX Heating Coil,   	            !- Name
+  Heating_ASHP_SS,   	            !- Name
   always_avail,           		          !-Availability Schedule Name
   autosize,               		          !- Rated Total Heating Capacity {{W}}
   3.69308080013886,           	        !- Rated COP
@@ -26,6 +26,12 @@ Coil:Heating:DX:SingleSpeed,
   , 			    		                      !- Resistive Defrost Heater Capacity {{W}}
   ,					                            !- Region number for calculating HSPF
   ;					                            !- Evaporator Air Inlet Node Name
+
+AirflowNetwork:Distribution:Component:Coil,
+  Heating_ASHP_SS,                      !- Coil Name
+  Coil:Heating:DX:SingleSpeed,          !- Coil Object Type
+  0.1,                                  !- Air Path Length {{m}}
+  1.000;                                !- Air Path Hydraulic Diameter {{m}}
 
 Curve:Cubic,
   HPACHeatCapFT,           !- Name
