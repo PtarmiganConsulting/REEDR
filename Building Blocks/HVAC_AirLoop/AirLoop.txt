@@ -1,10 +1,10 @@
 !-   ===========  ALL OBJECTS IN CLASS: AIRLOOPHVAC ===========
 
 AirLoopHVAC,
-    Central System, !- Name
+    Central System,             !- Name
     ,                           !- Controller List Name
     availability list,      	!- Availability Manager List Name
-    autosize,                   !- Design Supply Air Flow Rate {m3/s}
+    autosize,                   !- Design Supply Air Flow Rate {{m3/s}}
     Air Loop Branches,          !- Branch List Name
     ,                           !- Connector List Name
     Air Loop Inlet Node,        !- Supply Side Inlet Node Name
@@ -51,10 +51,10 @@ BranchList,
 !-   ===========  ALL OBJECTS IN CLASS: BRANCH ===========
 
 Branch,
-    Air Loop Main Branch,    	    !- Name
-    ,                        		!- Pressure Drop Curve Name
-    {unitaryHVAC_type},             !- Component 1 Object Type
-    {unitaryHVAC_name},             !- Component 1 Name
-    Air Loop Inlet Node,     	    !- Component 1 Inlet Node Name
-    Air Loop Outlet Node;    	    !- Component 1 Outlet Node Name
-    
+    Air Loop Main Branch,    	        !- Name
+    ,                        		    !- Pressure Drop Curve Name
+    {AirLoopHVAC_Unitary_ObjectType},   !- Component 1 Object Type
+    {AirLoopHVAC_Unitary_ObjectName},   !- Component 1 Name
+    Air Loop Inlet Node,     	        !- Component 1 Inlet Node Name
+    Air Loop Outlet Node;    	        !- Component 1 Outlet Node Name
+

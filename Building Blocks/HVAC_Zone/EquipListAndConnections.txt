@@ -1,10 +1,20 @@
+!-   ===========  ALL OBJECTS IN CLASS: ZONEHVAC:EQUIPMENTCONNECTIONS ===========
+
+ZoneHVAC:EquipmentConnections,
+    living,                                 !- Zone Name
+    ZoneEquipment,                          !- Zone Conditioning Equipment List Name
+    {ZoneAirInletNodeName},                 !- Zone Air Inlet Node or NodeList Name (e.g. Zone Inlet Nodes)
+    {ZoneAirExhaustNodeName},               !- Zone Air Exhaust Node or NodeList Name (e.g. Zone Exhaust Nodes)
+    Zone Node,                              !- Zone Air Node Name
+    {ZoneReturnAirNodeName};                !- Zone Return Air Node Name (e.g. Zone Outlet Node)
+
 !-   ===========  ALL OBJECTS IN CLASS: ZoneHVAC:EquipmentList ===========
 
 ZoneHVAC:EquipmentList,
     ZoneEquipment,                      !- Name
     SequentialLoad,                     !- Load Distribution Scheme
-    ZoneHVAC:AirDistributionUnit,       !- Zone Equipment 1 Object Type
-    ZoneDirectAir ADU,                  !- Zone Equipment 1 Name
+    {ZoneEquipment1ObjectType},         !- Zone Equipment 1 Object Type (e.g. ZoneHVAC:AirDistributionUnit)
+    {ZoneEquipment1Name},               !- Zone Equipment 1 Name (e.g. ZoneDirectAir ADU)
     {ZoneEquipment1CoolingSequence},    !- Zone Equipment 1 Cooling Sequence
     {ZoneEquipment1HeatingSequence},    !- Zone Equipment 1 Heating or No-Load Sequence
     ,                                   !- Zone Equipment 1 Sequential Cooling Fraction Schedule Name
@@ -14,14 +24,11 @@ ZoneHVAC:EquipmentList,
     {ZoneEquipment2CoolingSequence},    !- Zone Equipment 2 Cooling Sequence
     {ZoneEquipment2HeatingSequence},    !- Zone Equipment 2 Heating or No-Load Sequence
     ,                                   !- Zone Equipment 2 Sequential Cooling Fraction Schedule Name
-    ;                                   !- Zone Equipment 2 Sequential Heating Fraction Schedule Name
+    ,                                   !- Zone Equipment 2 Sequential Heating Fraction Schedule Name
+    {ZoneEquipment3ObjectType},         !- Zone Equipment 3 Object Type (e.g. ZoneHVAC:EnergyRecoveryVentilator)
+    {ZoneEquipment3Name},               !- Zone Equipment 3 Name
+    {ZoneEquipment3CoolingSequence},    !- Zone Equipment 3 Cooling Sequence
+    {ZoneEquipment3HeatingSequence},    !- Zone Equipment 3 Heating or No-Load Sequence
+    ,                                   !- Zone Equipment 3 Sequential Cooling Fraction Schedule Name
+    ;                                   !- Zone Equipment 3 Sequential Heating Fraction Schedule Name
 
-!-   ===========  ALL OBJECTS IN CLASS: ZONEHVAC:EQUIPMENTCONNECTIONS ===========
-
-ZoneHVAC:EquipmentConnections,
-    living,            !- Zone Name
-    ZoneEquipment,     !- Zone Conditioning Equipment List Name
-    Zone Inlet Nodes,  !- Zone Air Inlet Node or NodeList Name
-    Zone Exhaust Node, !- Zone Air Exhaust Node or NodeList Name
-    Zone Node,         !- Zone Air Node Name
-    Zone Outlet Node;  !- Zone Return Air Node Name
