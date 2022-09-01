@@ -1,40 +1,31 @@
-## module imports...
+### --- Import modules. --- ###
 import pandas as pd # to import xcel, some initial data manipulation
 import os # for making paths and directories and removing files
 import shutil # for removing full directories
-import math
+import math # used for functions like square root
 from pprint import pprint # for debugging
-
-## Note: when exe'ing, must add "Python." in front of each file name
 from unitconversions import convert_WperFt2_to_WperM2, convert_degF_to_degC, convert_IP_Uvalue_to_SI_Uvalue, convert_ft_to_m, convert_ft2_to_m2, convert_ft3_to_m3, \
     convert_Btuh_to_W
 
 def genmodels(gui_params, get_data_dict):
 
-    # Sets the directory. When calling from __main__, needs to be set to "parent". When calling from entry exe script, needs to be set to "cwd".
+    ### --- Set the main working directory. When calling from __main__, needs to be set to "parent". When calling from entry exe script, needs to be set to "cwd". --- ###
     set_dir = get_data_dict["parent"]
 
-    #Set directory and file names as variables, so they can be established only once here, and flow throughout.
+    ### --- Define building block directory and file names as variables, so they can be established only once here, and flow throughout. --- ###
     building_block_dir = "Building Blocks"
     schedule_dir = "Schedules"
     schedule_file = "Schedules.csv"
     location_and_climate_dir = "LocationAndClimate"
     materials_main_dir = "Materials"
-    materials_wall_ins_dir = "AGWallInsulation"
+    materials_wall_ins_dir = "AGWallInsulation" # Note: AG = Above Ground
     materials_attic_ins_dir = "AtticInsulation"
-    materials_floor_ins_dir = "FloorInsulation"
-    materials_slab_ins_dir = "SlabInsulation"
-    materials_basement_ins_dir = "BasementInsulation"
     dhw_main_dir = "DHW"
     dhw_wh_type_dir = "WaterHeaterType"
     gains_main_dir = "Gains"
     gains_dryertype_dir = "DryerType"
     gains_rangetype_dir = "RangeType"
-    hvac_main_dir = "HVAC"
-    hvac_type_dir = "HVACType"
-    hvac_returnduct_dir = "ReturnDuctLocation"
-    hvac_afn_main_dir = "HVAC_AirFlowNetwork"
-    hvac_afn_coil_dir = "AFN_Coils"
+    hvac_afn_main_dir = "HVAC_AirFlowNetwork" # Note: AFN = Air Flow Network
     hvac_afn_leakage_dir = "AFN_Leakage"
     hvac_afn_linkage_dir = "AFN_Linkage"
     hvac_afn_node_dir = "AFN_Nodes"
@@ -50,8 +41,6 @@ def genmodels(gui_params, get_data_dict):
     output_dir = "Output"
     window_main_dir = "Windows"
     window_blinds_dir = "Blinds"
-    zones_surfaces_main_dir = "ZonesAndSurfaces"
-    zones_surfaces_foundation_dir = "FoundationType"
     geometry_main_dir = "Geometry"
     geometry_envelope_dir = "Envelope"
     geometry_window_dir = "Windows"
@@ -65,8 +54,7 @@ def genmodels(gui_params, get_data_dict):
     output_gran = gui_params["output_gran"]
     output_enduses = gui_params["output_enduses"]
 
-
-    # Update simulation status box in REEDR.xlsm...
+    ### --- Update simulation status in command prompt. --- ###
     print("Starting model build...")
 
     # # Create Schedules.csv file and store headers in a list
@@ -85,17 +73,15 @@ def genmodels(gui_params, get_data_dict):
     #
     # sched_list = (list(read_file.columns))
 
-    # gathers the subdirectory names for each runlabel by skimming them from the excel file
-    # Note: df is a dataframe that contains user inputs from the "Model_Inputs" tab in REEDR.xlsm
+    ### --- Gather the run labels from the user specified runs, and create subdirectories that will house each run's input and output. --- ###
     directory_names = []
-    for i in range(len(get_data_dict["df"])):
+    for i in range(len(get_data_dict["df"])): # Note: df is a Pandas dataframe that contains user inputs from the "Model_Inputs" tab in REEDR.xlsm
         directory_names.append(get_data_dict["df"].loc[i][0])
 
-    # Creates subdirectories for each model under the main project directory.
     get_data_dict["runlog"].write("Starting to build subdirectories under " + os.path.join(get_data_dict["master_directory"]) + ". \n")
 
     for name in directory_names:
-        path = os.path.join(get_data_dict["master_directory"], name)
+        path = os.path.join(get_data_dict["master_directory"], name) # Note: the "master directory" is the user-defined "Project" folder
         try:
             os.mkdir(path)
             get_data_dict["runlog"].write("... subdirectory successfully created at " + path + ". \n")
@@ -107,463 +93,459 @@ def genmodels(gui_params, get_data_dict):
 
     get_data_dict["runlog"].write("... \n")
 
-    # Set output end uses and granularity based on user input...
+    ### --- Set output end uses and granularity based on user input. --- ###
     if gui_params["output_gran"] == "Annual":
         output_type = "Energy"
     else:
         output_type = "Demand"
+
     output_lookup = output_type + "_" + gui_params["output_enduses"]
 
-        ## locations & climate dictionary
-    ## this determines what location and climate file will later be pulled to the idf
+    ### --- Define dictionaries needed for REEDR user inputs. --- ###
+    # locations & climate dictionary - this determines what location and climate file will later be pulled to the idf
     location_dict = {
-    "USA_OR_Portland.Intl.AP.726980_TMY3": os.path.join(set_dir, building_block_dir, location_and_climate_dir, 'USA_OR_Portland.Intl.AP.726980_TMY3.txt'),
-    "USA_WA_Seattle-Tacoma.Intl.AP.727930_TMY3": os.path.join(set_dir, building_block_dir, location_and_climate_dir, 'USA_WA_Seattle-Tacoma.Intl.AP.727930_TMY3.txt'),
-    "USA_WA_Spokane.Intl.AP.727850_TMY3": os.path.join(set_dir, building_block_dir, location_and_climate_dir, 'USA_WA_Spokane.Intl.AP.727850_TMY3.txt'),
-    "USA_ID_Boise.AP-Gowen.Field.ANGB.726810_TMY3": os.path.join(set_dir, building_block_dir, location_and_climate_dir, 'USA_ID_Boise.AP-Gowen.Field.ANGB.726810_TMY3.txt'),
-    "USA_MT_Kalispell-Glacier.Park.Intl.AP.727790_TMY3": os.path.join(set_dir, building_block_dir, location_and_climate_dir, 'USA_MT_Kalispell-Glacier.Park.Intl.AP.727790_TMY3.txt'),
-    "USA_ID_Coeur.dAlene.AP-Boyington.Field.727834_TMYx.2004-2018": os.path.join(set_dir, building_block_dir, location_and_climate_dir, 'USA_ID_Coeur.dAlene.AP-Boyington.Field.727834_TMYx.2004-2018.txt'),
-    "USA_ID_Craters.of.the.Moon.Natl.Monument.725790_TMYx.2004-2018": os.path.join(set_dir, building_block_dir, location_and_climate_dir, 'USA_ID_Craters.of.the.Moon.Natl.Monument.725790_TMYx.2004-2018.txt'),
-    "USA_ID_Jerome.County.AP.726816_TMYx.2004-2018": os.path.join(set_dir, building_block_dir, location_and_climate_dir, 'USA_ID_Jerome.County.AP.726816_TMYx.2004-2018.txt'),
-    "USA_MT_Baker.Muni.AP.726777_TMYx.2004-2018": os.path.join(set_dir, building_block_dir, location_and_climate_dir, 'USA_MT_Baker.Muni.AP.726777_TMYx.2004-2018.txt'),
-    "USA_MT_Kalispell-Glacier.Park.Intl.AP.727790_TMYx.2004-2018": os.path.join(set_dir, building_block_dir, location_and_climate_dir, 'USA_MT_Kalispell-Glacier.Park.Intl.AP.727790_TMYx.2004-2018.txt'),
-    "USA_OR_Baker.City.Muni.AP.726886_TMYx.2004-2018": os.path.join(set_dir, building_block_dir, location_and_climate_dir, 'USA_OR_Baker.City.Muni.AP.726886_TMYx.2004-2018.txt'),
-    "USA_OR_Salem.Muni.AP-McNary.Field.726940_TMYx.2004-2018": os.path.join(set_dir, building_block_dir, location_and_climate_dir, 'USA_OR_Salem.Muni.AP-McNary.Field.726940_TMYx.2004-2018.txt'),
-    "USA_WA_Pasco-Tri.Cities.AP.727845_TMYx.2004-2018": os.path.join(set_dir, building_block_dir, location_and_climate_dir, 'USA_WA_Pasco-Tri.Cities.AP.727845_TMYx.2004-2018.txt'),
-    "USA_WA_Tacoma-JB.Lewis-McChord-Gray.AAF.742070_TMYx.2004-2018": os.path.join(set_dir, building_block_dir, location_and_climate_dir, 'USA_WA_Tacoma-JB.Lewis-McChord-Gray.AAF.742070_TMYx.2004-2018.txt'),
+        "USA_OR_Portland.Intl.AP.726980_TMY3": os.path.join(set_dir, building_block_dir, location_and_climate_dir, 'USA_OR_Portland.Intl.AP.726980_TMY3.txt'),
+        "USA_WA_Seattle-Tacoma.Intl.AP.727930_TMY3": os.path.join(set_dir, building_block_dir, location_and_climate_dir, 'USA_WA_Seattle-Tacoma.Intl.AP.727930_TMY3.txt'),
+        "USA_WA_Spokane.Intl.AP.727850_TMY3": os.path.join(set_dir, building_block_dir, location_and_climate_dir, 'USA_WA_Spokane.Intl.AP.727850_TMY3.txt'),
+        "USA_ID_Boise.AP-Gowen.Field.ANGB.726810_TMY3": os.path.join(set_dir, building_block_dir, location_and_climate_dir, 'USA_ID_Boise.AP-Gowen.Field.ANGB.726810_TMY3.txt'),
+        "USA_MT_Kalispell-Glacier.Park.Intl.AP.727790_TMY3": os.path.join(set_dir, building_block_dir, location_and_climate_dir, 'USA_MT_Kalispell-Glacier.Park.Intl.AP.727790_TMY3.txt'),
+        "USA_ID_Coeur.dAlene.AP-Boyington.Field.727834_TMYx.2004-2018": os.path.join(set_dir, building_block_dir, location_and_climate_dir, 'USA_ID_Coeur.dAlene.AP-Boyington.Field.727834_TMYx.2004-2018.txt'),
+        "USA_ID_Craters.of.the.Moon.Natl.Monument.725790_TMYx.2004-2018": os.path.join(set_dir, building_block_dir, location_and_climate_dir, 'USA_ID_Craters.of.the.Moon.Natl.Monument.725790_TMYx.2004-2018.txt'),
+        "USA_ID_Jerome.County.AP.726816_TMYx.2004-2018": os.path.join(set_dir, building_block_dir, location_and_climate_dir, 'USA_ID_Jerome.County.AP.726816_TMYx.2004-2018.txt'),
+        "USA_MT_Baker.Muni.AP.726777_TMYx.2004-2018": os.path.join(set_dir, building_block_dir, location_and_climate_dir, 'USA_MT_Baker.Muni.AP.726777_TMYx.2004-2018.txt'),
+        "USA_MT_Kalispell-Glacier.Park.Intl.AP.727790_TMYx.2004-2018": os.path.join(set_dir, building_block_dir, location_and_climate_dir, 'USA_MT_Kalispell-Glacier.Park.Intl.AP.727790_TMYx.2004-2018.txt'),
+        "USA_OR_Baker.City.Muni.AP.726886_TMYx.2004-2018": os.path.join(set_dir, building_block_dir, location_and_climate_dir, 'USA_OR_Baker.City.Muni.AP.726886_TMYx.2004-2018.txt'),
+        "USA_OR_Salem.Muni.AP-McNary.Field.726940_TMYx.2004-2018": os.path.join(set_dir, building_block_dir, location_and_climate_dir, 'USA_OR_Salem.Muni.AP-McNary.Field.726940_TMYx.2004-2018.txt'),
+        "USA_WA_Pasco-Tri.Cities.AP.727845_TMYx.2004-2018": os.path.join(set_dir, building_block_dir, location_and_climate_dir, 'USA_WA_Pasco-Tri.Cities.AP.727845_TMYx.2004-2018.txt'),
+        "USA_WA_Tacoma-JB.Lewis-McChord-Gray.AAF.742070_TMYx.2004-2018": os.path.join(set_dir, building_block_dir, location_and_climate_dir, 'USA_WA_Tacoma-JB.Lewis-McChord-Gray.AAF.742070_TMYx.2004-2018.txt'),
     }
 
-    ## above ground wall construction dictionary
-    ## this determines what above ground wall insulation layer will later be pulled to the idf
+    # above ground wall construction dictionary - this determines what above ground wall insulation layer will later be pulled to the idf
     above_ground_wall_dict = {
-    "Wood-Framed - 2x4 - 16 in OC - R-0 Cavity": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_wall_ins_dir, 'Wood-Framed - 2x4 - 16 in OC - R-0 Cavity.txt'),
-    "Wood-Framed - 2x4 - 16 in OC - R-11 Cavity": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_wall_ins_dir, 'Wood-Framed - 2x4 - 16 in OC - R-11 Cavity.txt'),
-    "Wood-Framed - 2x4 - 16 in OC - R-13 Cavity": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_wall_ins_dir, 'Wood-Framed - 2x4 - 16 in OC - R-13 Cavity.txt'),
-    "Wood-Framed - 2x4 - 16 in OC - R-15 Cavity": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_wall_ins_dir, 'Wood-Framed - 2x4 - 16 in OC - R-15 Cavity.txt'),
-    "Wood-Framed - 2x6 - 16 in OC - R-0 Cavity": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_wall_ins_dir, 'Wood-Framed - 2x6 - 16 in OC - R-0 Cavity.txt'),
-    "Wood-Framed - 2x6 - 16 in OC - R-19 Cavity - R-10 Header": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_wall_ins_dir, 'Wood-Framed - 2x6 - 16 in OC - R-19 Cavity - R-10 Header.txt'),
-    "Wood-Framed - 2x6 - 16 in OC - R-19 Cavity": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_wall_ins_dir, 'Wood-Framed - 2x6 - 16 in OC - R-19 Cavity.txt'),
-    "Wood-Framed - 2x6 - 16 in OC - R-21 Cavity - R-10 Header": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_wall_ins_dir, 'Wood-Framed - 2x6 - 16 in OC - R-21 Cavity - R-10 Header.txt'),
-    "Wood-Framed - 2x6 - 16 in OC - R-21 Cavity": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_wall_ins_dir, 'Wood-Framed - 2x6 - 16 in OC - R-21 Cavity.txt'),
-    "Wood-Framed - 2x6 - 24 in OC - R-0 Cavity": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_wall_ins_dir, 'Wood-Framed - 2x6 - 24 in OC - R-0 Cavity.txt'),
-    "Wood-Framed - 2x6 - 24 in OC - R-19 Cavity - R-10 Header": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_wall_ins_dir, 'Wood-Framed - 2x6 - 24 in OC - R-19 Cavity - R-10 Header.txt'),
-    "Wood-Framed - 2x6 - 24 in OC - R-19 Cavity": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_wall_ins_dir, 'Wood-Framed - 2x6 - 24 in OC - R-19 Cavity.txt'),
-    "Wood-Framed - 2x6 - 24 in OC - R-21 Cavity - R-10 Header": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_wall_ins_dir, 'Wood-Framed - 2x6 - 24 in OC - R-21 Cavity - R-10 Header.txt'),
-    "Wood-Framed - 2x6 - 24 in OC - R-21 Cavity": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_wall_ins_dir, 'Wood-Framed - 2x6 - 24 in OC - R-21 Cavity.txt'),
+        "Wood-Framed - 2x4 - 16 in OC - R-0 Cavity": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_wall_ins_dir, 'Wood-Framed - 2x4 - 16 in OC - R-0 Cavity.txt'),
+        "Wood-Framed - 2x4 - 16 in OC - R-11 Cavity": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_wall_ins_dir, 'Wood-Framed - 2x4 - 16 in OC - R-11 Cavity.txt'),
+        "Wood-Framed - 2x4 - 16 in OC - R-13 Cavity": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_wall_ins_dir, 'Wood-Framed - 2x4 - 16 in OC - R-13 Cavity.txt'),
+        "Wood-Framed - 2x4 - 16 in OC - R-15 Cavity": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_wall_ins_dir, 'Wood-Framed - 2x4 - 16 in OC - R-15 Cavity.txt'),
+        "Wood-Framed - 2x6 - 16 in OC - R-0 Cavity": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_wall_ins_dir, 'Wood-Framed - 2x6 - 16 in OC - R-0 Cavity.txt'),
+        "Wood-Framed - 2x6 - 16 in OC - R-19 Cavity - R-10 Header": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_wall_ins_dir, 'Wood-Framed - 2x6 - 16 in OC - R-19 Cavity - R-10 Header.txt'),
+        "Wood-Framed - 2x6 - 16 in OC - R-19 Cavity": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_wall_ins_dir, 'Wood-Framed - 2x6 - 16 in OC - R-19 Cavity.txt'),
+        "Wood-Framed - 2x6 - 16 in OC - R-21 Cavity - R-10 Header": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_wall_ins_dir, 'Wood-Framed - 2x6 - 16 in OC - R-21 Cavity - R-10 Header.txt'),
+        "Wood-Framed - 2x6 - 16 in OC - R-21 Cavity": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_wall_ins_dir, 'Wood-Framed - 2x6 - 16 in OC - R-21 Cavity.txt'),
+        "Wood-Framed - 2x6 - 24 in OC - R-0 Cavity": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_wall_ins_dir, 'Wood-Framed - 2x6 - 24 in OC - R-0 Cavity.txt'),
+        "Wood-Framed - 2x6 - 24 in OC - R-19 Cavity - R-10 Header": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_wall_ins_dir, 'Wood-Framed - 2x6 - 24 in OC - R-19 Cavity - R-10 Header.txt'),
+        "Wood-Framed - 2x6 - 24 in OC - R-19 Cavity": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_wall_ins_dir, 'Wood-Framed - 2x6 - 24 in OC - R-19 Cavity.txt'),
+        "Wood-Framed - 2x6 - 24 in OC - R-21 Cavity - R-10 Header": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_wall_ins_dir, 'Wood-Framed - 2x6 - 24 in OC - R-21 Cavity - R-10 Header.txt'),
+        "Wood-Framed - 2x6 - 24 in OC - R-21 Cavity": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_wall_ins_dir, 'Wood-Framed - 2x6 - 24 in OC - R-21 Cavity.txt'),
     }
 
-    ## ceiling/attic construction dictionary
-    ## this determines what ceiling/attic insulation layer will later be pulled to the idf
+    # ceiling/attic construction dictionary - this determines what ceiling/attic insulation layer will later be pulled to the idf
     ceiling_and_roof_dict = {
-    "Attic - R0 Cavity Insulation": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_attic_ins_dir, 'Attic - R0 Cavity Insulation.txt'),
-    "Attic - R30 Cavity Insulation": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_attic_ins_dir, 'Attic - R30 Cavity Insulation.txt'),
-    "Attic - R38 Cavity Insulation": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_attic_ins_dir, 'Attic - R38 Cavity Insulation.txt'),
-    "Attic - R49 Cavity Insulation": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_attic_ins_dir, 'Attic - R49 Cavity Insulation.txt'),
-    "Attic - R60 Cavity Insulation": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_attic_ins_dir, 'Attic - R60 Cavity Insulation.txt'),
+        "Attic - R0 Cavity Insulation": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_attic_ins_dir, 'Attic - R0 Cavity Insulation.txt'),
+        "Attic - R30 Cavity Insulation": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_attic_ins_dir, 'Attic - R30 Cavity Insulation.txt'),
+        "Attic - R38 Cavity Insulation": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_attic_ins_dir, 'Attic - R38 Cavity Insulation.txt'),
+        "Attic - R49 Cavity Insulation": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_attic_ins_dir, 'Attic - R49 Cavity Insulation.txt'),
+        "Attic - R60 Cavity Insulation": os.path.join(set_dir, building_block_dir, materials_main_dir, materials_attic_ins_dir, 'Attic - R60 Cavity Insulation.txt'),
     }
 
-    ## floor and foundation construction dictionary
-    ## this determines what ceiling/attic insulation layer will later be pulled to the idf
+    # floor and foundation construction dictionary - this determines what ceiling/attic insulation layer will later be pulled to the idf
     foundation_and_floor_dict = {
-    "Vented Crawlspace - R0 Cavity Insulation": [
-        "Exterior Floor", # main_floor_construction
-        "floor_foundation", # foundation_surface
-        "", # int_horiz_ins_mat_name 
-        "", # int_horiz_ins_depth 
-        "", # int_horiz_ins_width 
-        "", # int_vert_ins_mat_name 
-        "", # int_vert_ins_depth               
-        "", # ext_vert_ins_mat_name 
-        "", # ext_vert_ins_depth 
-        0.2, # wall_ht_above_grade 
-        0.3, # wall_ht_below_slab
-        "Fiberglass_Batt_R0", # floor insulation layer material name
-        "Zone", # floor_main outside boundary condition
-        "crawlspace", # floor_main outside boundary condition object
-        "crawlspace", # foundation_zone_name
-        ],
-    "Vented Crawlspace - R13 Cavity Insulation": [
-        "Exterior Floor", # main_floor_construction
-        "floor_foundation", # foundation_surface
-        "", # int_horiz_ins_mat_name 
-        "", # int_horiz_ins_depth 
-        "", # int_horiz_ins_width 
-        "", # int_vert_ins_mat_name 
-        "", # int_vert_ins_depth               
-        "", # ext_vert_ins_mat_name 
-        "", # ext_vert_ins_depth 
-        0.2, # wall_ht_above_grade 
-        0.3, # wall_ht_below_slab
-        "Fiberglass_Batt_R13", # floor insulation layer material name
-        "Zone", # floor_main outside boundary condition
-        "crawlspace", # floor_main outside boundary condition object
-        "crawlspace", # foundation_zone_name
-        ],
-    "Vented Crawlspace - R19 Cavity Insulation": [
-        "Exterior Floor", # main_floor_construction
-        "floor_foundation", # foundation_surface
-        "", # int_horiz_ins_mat_name 
-        "", # int_horiz_ins_depth 
-        "", # int_horiz_ins_width 
-        "", # int_vert_ins_mat_name 
-        "", # int_vert_ins_depth               
-        "", # ext_vert_ins_mat_name 
-        "", # ext_vert_ins_depth 
-        0.2, # wall_ht_above_grade 
-        0.3, # wall_ht_below_slab
-        "Fiberglass_Batt_R19", # floor insulation layer material name
-        "Zone", # floor_main outside boundary condition
-        "crawlspace", # floor_main outside boundary condition object
-        "crawlspace", # foundation_zone_name
-        ],
-    "Vented Crawlspace - R30 Cavity Insulation": [
-        "Exterior Floor", # main_floor_construction
-        "floor_foundation", # foundation_surface
-        "", # int_horiz_ins_mat_name 
-        "", # int_horiz_ins_depth 
-        "", # int_horiz_ins_width 
-        "", # int_vert_ins_mat_name 
-        "", # int_vert_ins_depth               
-        "", # ext_vert_ins_mat_name 
-        "", # ext_vert_ins_depth 
-        0.2, # wall_ht_above_grade 
-        0.3, # wall_ht_below_slab
-        "Fiberglass_Batt_R30", # floor insulation layer material name
-        "Zone", # floor_main outside boundary condition
-        "crawlspace", # floor_main outside boundary condition object
-        "crawlspace", # foundation_zone_name
-        ],
-    "Vented Crawlspace - R38 Cavity Insulation": [
-        "Exterior Floor", # main_floor_construction
-        "floor_foundation", # foundation_surface
-        "", # int_horiz_ins_mat_name 
-        "", # int_horiz_ins_depth 
-        "", # int_horiz_ins_width 
-        "", # int_vert_ins_mat_name 
-        "", # int_vert_ins_depth               
-        "", # ext_vert_ins_mat_name 
-        "", # ext_vert_ins_depth 
-        0.2, # wall_ht_above_grade 
-        0.3, # wall_ht_below_slab
-        "Fiberglass_Batt_R38", # floor insulation layer material name
-        "Zone", # floor_main outside boundary condition
-        "crawlspace", # floor_main outside boundary condition object
-        "crawlspace", # foundation_zone_name
-        ],
-    "Slab - Uninsulated": [
-        "Slab Construction", # main_floor_construction
-        "floor_main", # foundation_surface
-        "", # int_horiz_ins_mat_name 
-        "", # int_horiz_ins_depth 
-        "", # int_horiz_ins_width 
-        "", # int_vert_ins_mat_name 
-        "", # int_vert_ins_depth               
-        "", # ext_vert_ins_mat_name 
-        "", # ext_vert_ins_depth 
-        0, # wall_ht_above_grade 
-        0, # wall_ht_below_slab
-        "Fiberglass_Batt_R0", # floor insulation layer material name
-        "Foundation", # floor_main outside boundary condition
-        "Kiva Foundation", # floor_main outside boundary condition object
-        "", # foundation_zone_name
-        ],
-    "Slab - R5 Perimeter with No Thermal Break": [
-        "Slab Construction", # main_floor_construction
-        "floor_main", # foundation_surface
-        "XPS_R5", # int_horiz_ins_mat_name 
-        0, # int_horiz_ins_depth 
-        0.6, # int_horiz_ins_width 
-        "", # int_vert_ins_mat_name 
-        "", # int_vert_ins_depth               
-        "", # ext_vert_ins_mat_name 
-        "", # ext_vert_ins_depth 
-        0, # wall_ht_above_grade 
-        0, # wall_ht_below_slab
-        "Fiberglass_Batt_R0", # floor insulation layer material name
-        "Foundation", # floor_main outside boundary condition
-        "Kiva Foundation", # floor_main outside boundary condition object
-        "", # foundation_zone_name
-        ],
-    "Slab - R10 Perimeter with No Thermal Break": [
-        "Slab Construction", # main_floor_construction
-        "floor_main", # foundation_surface
-        "XPS_R10", # int_horiz_ins_mat_name 
-        0, # int_horiz_ins_depth 
-        0.6, # int_horiz_ins_width 
-        "", # int_vert_ins_mat_name 
-        "", # int_vert_ins_depth               
-        "", # ext_vert_ins_mat_name 
-        "", # ext_vert_ins_depth 
-        0, # wall_ht_above_grade 
-        0, # wall_ht_below_slab
-        "Fiberglass_Batt_R0", # floor insulation layer material name
-        "Foundation", # floor_main outside boundary condition
-        "Kiva Foundation", # floor_main outside boundary condition object
-        "", # foundation_zone_name
-        ],
-    "Slab - R5 Perimeter with R5 Thermal Break": [
-        "Slab Construction", # main_floor_construction
-        "floor_main", # foundation_surface
-        "XPS_R5", # int_horiz_ins_mat_name 
-        0, # int_horiz_ins_depth 
-        0.6, # int_horiz_ins_width 
-        "XPS_R5", # int_vert_ins_mat_name 
-        0.25, # int_vert_ins_depth               
-        "", # ext_vert_ins_mat_name 
-        "", # ext_vert_ins_depth 
-        0, # wall_ht_above_grade 
-        0, # wall_ht_below_slab
-        "Fiberglass_Batt_R0", # floor insulation layer material name
-        "Foundation", # floor_main outside boundary condition
-        "Kiva Foundation", # floor_main outside boundary condition object
-        "", # foundation_zone_name
-        ],
-    "Slab - R10 Perimeter with R5 Thermal Break": [
-        "Slab Construction", # main_floor_construction
-        "floor_main", # foundation_surface
-        "XPS_R10", # int_horiz_ins_mat_name 
-        0, # int_horiz_ins_depth 
-        0.6, # int_horiz_ins_width 
-        "XPS_R5", # int_vert_ins_mat_name 
-        0.25, # int_vert_ins_depth               
-        "", # ext_vert_ins_mat_name 
-        "", # ext_vert_ins_depth 
-        0, # wall_ht_above_grade 
-        0, # wall_ht_below_slab
-        "Fiberglass_Batt_R0", # floor insulation layer material name
-        "Foundation", # floor_main outside boundary condition
-        "Kiva Foundation", # floor_main outside boundary condition object
-        "", # foundation_zone_name
-        ],
-    "Slab - R5 Under Full Slab with R5 Thermal Break": [
-        "Slab Construction w Full R5 Insulation", # main_floor_construction
-        "floor_main", # foundation_surface
-        "", # int_horiz_ins_mat_name 
-        "", # int_horiz_ins_depth 
-        "", # int_horiz_ins_width 
-        "XPS_R5", # int_vert_ins_mat_name 
-        0.25, # int_vert_ins_depth               
-        "", # ext_vert_ins_mat_name 
-        "", # ext_vert_ins_depth 
-        0, # wall_ht_above_grade 
-        0, # wall_ht_below_slab
-        "Fiberglass_Batt_R0", # floor insulation layer material name
-        "Foundation", # floor_main outside boundary condition
-        "Kiva Foundation", # floor_main outside boundary condition object
-        "", # foundation_zone_name
-        ],
-    "Slab - R10 Under Full Slab with R5 Thermal Break": [
-        "Slab Construction w Full R10 Insulation", # main_floor_construction
-        "floor_main", # foundation_surface
-        "", # int_horiz_ins_mat_name 
-        "", # int_horiz_ins_depth 
-        "", # int_horiz_ins_width 
-        "XPS_R5", # int_vert_ins_mat_name 
-        0.25, # int_vert_ins_depth               
-        "", # ext_vert_ins_mat_name 
-        "", # ext_vert_ins_depth 
-        0, # wall_ht_above_grade 
-        0, # wall_ht_below_slab
-        "Fiberglass_Batt_R0", # floor insulation layer material name
-        "Foundation", # floor_main outside boundary condition
-        "Kiva Foundation", # floor_main outside boundary condition object
-        "", # foundation_zone_name
-        ],
-    "Heated Basement - Uninsulated": [
-        "Interior Floor", # main_floor_construction
-        "floor_foundation", # foundation_surface
-        "", # int_horiz_ins_mat_name 
-        "", # int_horiz_ins_depth 
-        "", # int_horiz_ins_width 
-        "", # int_vert_ins_mat_name 
-        "", # int_vert_ins_depth               
-        "", # ext_vert_ins_mat_name 
-        "", # ext_vert_ins_depth
-        0.2, # wall_ht_above_grade
-        0.3, # wall_ht_below_slab
-        "Fiberglass_Batt_R0", # floor insulation layer material name
-        "Adiabatic", # floor_main outside boundary condition
-        "", # floor_main outside boundary condition object
-        "living", # foundation_zone_name
-        ],
-    "Heated Basement - R5 Exterior Insulation": [
-        "Interior Floor", # main_floor_construction
-        "floor_foundation", # foundation_surface
-        "", # int_horiz_ins_mat_name 
-        "", # int_horiz_ins_depth 
-        "", # int_horiz_ins_width 
-        "", # int_vert_ins_mat_name 
-        "", # int_vert_ins_depth               
-        "XPS_R5", # ext_vert_ins_mat_name 
-        2.9, # ext_vert_ins_depth
-        0.2, # wall_ht_above_grade
-        0.3, # wall_ht_below_slab
-        "Fiberglass_Batt_R0", # floor insulation layer material name
-        "Adiabatic", # floor_main outside boundary condition
-        "", # floor_main outside boundary condition object
-        "living", # foundation_zone_name
-        ],
-    "Heated Basement - R10 Exterior Insulation": [
-        "Interior Floor", # main_floor_construction
-        "floor_foundation", # foundation_surface
-        "", # int_horiz_ins_mat_name 
-        "", # int_horiz_ins_depth 
-        "", # int_horiz_ins_width 
-        "", # int_vert_ins_mat_name 
-        "", # int_vert_ins_depth               
-        "XPS_R10", # ext_vert_ins_mat_name 
-        2.9, # ext_vert_ins_depth
-        0.2, # wall_ht_above_grade
-        0.3, # wall_ht_below_slab
-        "Fiberglass_Batt_R0", # floor insulation layer material name
-        "Adiabatic", # floor_main outside boundary condition
-        "", # floor_main outside boundary condition object
-        "living", # foundation_zone_name
-        ],
-    "Heated Basement - R15 Exterior Insulation": [
-        "Interior Floor", # main_floor_construction
-        "floor_foundation", # foundation_surface
-        "", # int_horiz_ins_mat_name 
-        "", # int_horiz_ins_depth 
-        "", # int_horiz_ins_width 
-        "", # int_vert_ins_mat_name 
-        "", # int_vert_ins_depth               
-        "XPS_R15", # ext_vert_ins_mat_name 
-        2.9, # ext_vert_ins_depth
-        0.2, # wall_ht_above_grade
-        0.3, # wall_ht_below_slab
-        "Fiberglass_Batt_R0", # floor insulation layer material name
-        "Adiabatic", # floor_main outside boundary condition
-        "", # floor_main outside boundary condition object
-        "living", # foundation_zone_name
-        ],
-    "Unheated Basement - Uninsulated": [
-        "Exterior Floor", # main_floor_construction
-        "floor_foundation", # foundation_surface
-        "", # int_horiz_ins_mat_name 
-        "", # int_horiz_ins_depth 
-        "", # int_horiz_ins_width 
-        "", # int_vert_ins_mat_name 
-        "", # int_vert_ins_depth               
-        "", # ext_vert_ins_mat_name 
-        "", # ext_vert_ins_depth 
-        0.2, # wall_ht_above_grade 
-        0.3, # wall_ht_below_slab
-        "Fiberglass_Batt_R0", # floor insulation layer material name
-        "Zone", # floor_main outside boundary condition
-        "unheatedbsmt", # floor_main outside boundary condition object
-        "unheatedbsmt", # foundation_zone_name
-        ],
-    "Unheated Basement - R13 Cavity Insulation": [
-        "Exterior Floor", # main_floor_construction
-        "floor_foundation", # foundation_surface
-        "", # int_horiz_ins_mat_name 
-        "", # int_horiz_ins_depth 
-        "", # int_horiz_ins_width 
-        "", # int_vert_ins_mat_name 
-        "", # int_vert_ins_depth               
-        "", # ext_vert_ins_mat_name 
-        "", # ext_vert_ins_depth 
-        0.2, # wall_ht_above_grade 
-        0.3, # wall_ht_below_slab
-        "Fiberglass_Batt_R13", # floor insulation layer material name
-        "Zone", # floor_main outside boundary condition
-        "unheatedbsmt", # floor_main outside boundary condition object
-        "unheatedbsmt", # foundation_zone_name
-        ],
-    "Unheated Basement - R19 Cavity Insulation": [
-        "Exterior Floor", # main_floor_construction
-        "floor_foundation", # foundation_surface
-        "", # int_horiz_ins_mat_name 
-        "", # int_horiz_ins_depth 
-        "", # int_horiz_ins_width 
-        "", # int_vert_ins_mat_name 
-        "", # int_vert_ins_depth               
-        "", # ext_vert_ins_mat_name 
-        "", # ext_vert_ins_depth 
-        0.2, # wall_ht_above_grade 
-        0.3, # wall_ht_below_slab
-        "Fiberglass_Batt_R19", # floor insulation layer material name
-        "Zone", # floor_main outside boundary condition
-        "unheatedbsmt", # floor_main outside boundary condition object
-        "unheatedbsmt", # foundation_zone_name
-        ],
-    "Unheated Basement - R30 Cavity Insulation": [
-        "Exterior Floor", # main_floor_construction
-        "floor_foundation", # foundation_surface
-        "", # int_horiz_ins_mat_name 
-        "", # int_horiz_ins_depth 
-        "", # int_horiz_ins_width 
-        "", # int_vert_ins_mat_name 
-        "", # int_vert_ins_depth               
-        "", # ext_vert_ins_mat_name 
-        "", # ext_vert_ins_depth 
-        0.2, # wall_ht_above_grade 
-        0.3, # wall_ht_below_slab
-        "Fiberglass_Batt_R30", # floor insulation layer material name
-        "Zone", # floor_main outside boundary condition
-        "unheatedbsmt", # floor_main outside boundary condition object
-        "unheatedbsmt", # foundation_zone_name
-        ],
-    "Unheated Basement - R38 Cavity Insulation": [
-        "Exterior Floor", # main_floor_construction
-        "floor_foundation", # foundation_surface
-        "", # int_horiz_ins_mat_name 
-        "", # int_horiz_ins_depth 
-        "", # int_horiz_ins_width 
-        "", # int_vert_ins_mat_name 
-        "", # int_vert_ins_depth               
-        "", # ext_vert_ins_mat_name 
-        "", # ext_vert_ins_depth 
-        0.2, # wall_ht_above_grade 
-        0.3, # wall_ht_below_slab
-        "Fiberglass_Batt_R38", # floor insulation layer material name
-        "Zone", # floor_main outside boundary condition
-        "unheatedbsmt", # floor_main outside boundary condition object
-        "unheatedbsmt", # foundation_zone_name    
-        ],
+        "Vented Crawlspace - R0 Cavity Insulation": [
+            "Exterior Floor", # main_floor_construction
+            "floor_foundation", # foundation_surface
+            "", # int_horiz_ins_mat_name 
+            "", # int_horiz_ins_depth 
+            "", # int_horiz_ins_width 
+            "", # int_vert_ins_mat_name 
+            "", # int_vert_ins_depth               
+            "", # ext_vert_ins_mat_name 
+            "", # ext_vert_ins_depth 
+            0.2, # wall_ht_above_grade 
+            0.3, # wall_ht_below_slab
+            "Fiberglass_Batt_R0", # floor insulation layer material name
+            "Zone", # floor_main outside boundary condition
+            "crawlspace", # floor_main outside boundary condition object
+            "crawlspace", # foundation_zone_name
+            ],
+        "Vented Crawlspace - R13 Cavity Insulation": [
+            "Exterior Floor", # main_floor_construction
+            "floor_foundation", # foundation_surface
+            "", # int_horiz_ins_mat_name 
+            "", # int_horiz_ins_depth 
+            "", # int_horiz_ins_width 
+            "", # int_vert_ins_mat_name 
+            "", # int_vert_ins_depth               
+            "", # ext_vert_ins_mat_name 
+            "", # ext_vert_ins_depth 
+            0.2, # wall_ht_above_grade 
+            0.3, # wall_ht_below_slab
+            "Fiberglass_Batt_R13", # floor insulation layer material name
+            "Zone", # floor_main outside boundary condition
+            "crawlspace", # floor_main outside boundary condition object
+            "crawlspace", # foundation_zone_name
+            ],
+        "Vented Crawlspace - R19 Cavity Insulation": [
+            "Exterior Floor", # main_floor_construction
+            "floor_foundation", # foundation_surface
+            "", # int_horiz_ins_mat_name 
+            "", # int_horiz_ins_depth 
+            "", # int_horiz_ins_width 
+            "", # int_vert_ins_mat_name 
+            "", # int_vert_ins_depth               
+            "", # ext_vert_ins_mat_name 
+            "", # ext_vert_ins_depth 
+            0.2, # wall_ht_above_grade 
+            0.3, # wall_ht_below_slab
+            "Fiberglass_Batt_R19", # floor insulation layer material name
+            "Zone", # floor_main outside boundary condition
+            "crawlspace", # floor_main outside boundary condition object
+            "crawlspace", # foundation_zone_name
+            ],
+        "Vented Crawlspace - R30 Cavity Insulation": [
+            "Exterior Floor", # main_floor_construction
+            "floor_foundation", # foundation_surface
+            "", # int_horiz_ins_mat_name 
+            "", # int_horiz_ins_depth 
+            "", # int_horiz_ins_width 
+            "", # int_vert_ins_mat_name 
+            "", # int_vert_ins_depth               
+            "", # ext_vert_ins_mat_name 
+            "", # ext_vert_ins_depth 
+            0.2, # wall_ht_above_grade 
+            0.3, # wall_ht_below_slab
+            "Fiberglass_Batt_R30", # floor insulation layer material name
+            "Zone", # floor_main outside boundary condition
+            "crawlspace", # floor_main outside boundary condition object
+            "crawlspace", # foundation_zone_name
+            ],
+        "Vented Crawlspace - R38 Cavity Insulation": [
+            "Exterior Floor", # main_floor_construction
+            "floor_foundation", # foundation_surface
+            "", # int_horiz_ins_mat_name 
+            "", # int_horiz_ins_depth 
+            "", # int_horiz_ins_width 
+            "", # int_vert_ins_mat_name 
+            "", # int_vert_ins_depth               
+            "", # ext_vert_ins_mat_name 
+            "", # ext_vert_ins_depth 
+            0.2, # wall_ht_above_grade 
+            0.3, # wall_ht_below_slab
+            "Fiberglass_Batt_R38", # floor insulation layer material name
+            "Zone", # floor_main outside boundary condition
+            "crawlspace", # floor_main outside boundary condition object
+            "crawlspace", # foundation_zone_name
+            ],
+        "Slab - Uninsulated": [
+            "Slab Construction", # main_floor_construction
+            "floor_main", # foundation_surface
+            "", # int_horiz_ins_mat_name 
+            "", # int_horiz_ins_depth 
+            "", # int_horiz_ins_width 
+            "", # int_vert_ins_mat_name 
+            "", # int_vert_ins_depth               
+            "", # ext_vert_ins_mat_name 
+            "", # ext_vert_ins_depth 
+            0, # wall_ht_above_grade 
+            0, # wall_ht_below_slab
+            "Fiberglass_Batt_R0", # floor insulation layer material name
+            "Foundation", # floor_main outside boundary condition
+            "Kiva Foundation", # floor_main outside boundary condition object
+            "", # foundation_zone_name
+            ],
+        "Slab - R5 Perimeter with No Thermal Break": [
+            "Slab Construction", # main_floor_construction
+            "floor_main", # foundation_surface
+            "XPS_R5", # int_horiz_ins_mat_name 
+            0, # int_horiz_ins_depth 
+            0.6, # int_horiz_ins_width 
+            "", # int_vert_ins_mat_name 
+            "", # int_vert_ins_depth               
+            "", # ext_vert_ins_mat_name 
+            "", # ext_vert_ins_depth 
+            0, # wall_ht_above_grade 
+            0, # wall_ht_below_slab
+            "Fiberglass_Batt_R0", # floor insulation layer material name
+            "Foundation", # floor_main outside boundary condition
+            "Kiva Foundation", # floor_main outside boundary condition object
+            "", # foundation_zone_name
+            ],
+        "Slab - R10 Perimeter with No Thermal Break": [
+            "Slab Construction", # main_floor_construction
+            "floor_main", # foundation_surface
+            "XPS_R10", # int_horiz_ins_mat_name 
+            0, # int_horiz_ins_depth 
+            0.6, # int_horiz_ins_width 
+            "", # int_vert_ins_mat_name 
+            "", # int_vert_ins_depth               
+            "", # ext_vert_ins_mat_name 
+            "", # ext_vert_ins_depth 
+            0, # wall_ht_above_grade 
+            0, # wall_ht_below_slab
+            "Fiberglass_Batt_R0", # floor insulation layer material name
+            "Foundation", # floor_main outside boundary condition
+            "Kiva Foundation", # floor_main outside boundary condition object
+            "", # foundation_zone_name
+            ],
+        "Slab - R5 Perimeter with R5 Thermal Break": [
+            "Slab Construction", # main_floor_construction
+            "floor_main", # foundation_surface
+            "XPS_R5", # int_horiz_ins_mat_name 
+            0, # int_horiz_ins_depth 
+            0.6, # int_horiz_ins_width 
+            "XPS_R5", # int_vert_ins_mat_name 
+            0.25, # int_vert_ins_depth               
+            "", # ext_vert_ins_mat_name 
+            "", # ext_vert_ins_depth 
+            0, # wall_ht_above_grade 
+            0, # wall_ht_below_slab
+            "Fiberglass_Batt_R0", # floor insulation layer material name
+            "Foundation", # floor_main outside boundary condition
+            "Kiva Foundation", # floor_main outside boundary condition object
+            "", # foundation_zone_name
+            ],
+        "Slab - R10 Perimeter with R5 Thermal Break": [
+            "Slab Construction", # main_floor_construction
+            "floor_main", # foundation_surface
+            "XPS_R10", # int_horiz_ins_mat_name 
+            0, # int_horiz_ins_depth 
+            0.6, # int_horiz_ins_width 
+            "XPS_R5", # int_vert_ins_mat_name 
+            0.25, # int_vert_ins_depth               
+            "", # ext_vert_ins_mat_name 
+            "", # ext_vert_ins_depth 
+            0, # wall_ht_above_grade 
+            0, # wall_ht_below_slab
+            "Fiberglass_Batt_R0", # floor insulation layer material name
+            "Foundation", # floor_main outside boundary condition
+            "Kiva Foundation", # floor_main outside boundary condition object
+            "", # foundation_zone_name
+            ],
+        "Slab - R5 Under Full Slab with R5 Thermal Break": [
+            "Slab Construction w Full R5 Insulation", # main_floor_construction
+            "floor_main", # foundation_surface
+            "", # int_horiz_ins_mat_name 
+            "", # int_horiz_ins_depth 
+            "", # int_horiz_ins_width 
+            "XPS_R5", # int_vert_ins_mat_name 
+            0.25, # int_vert_ins_depth               
+            "", # ext_vert_ins_mat_name 
+            "", # ext_vert_ins_depth 
+            0, # wall_ht_above_grade 
+            0, # wall_ht_below_slab
+            "Fiberglass_Batt_R0", # floor insulation layer material name
+            "Foundation", # floor_main outside boundary condition
+            "Kiva Foundation", # floor_main outside boundary condition object
+            "", # foundation_zone_name
+            ],
+        "Slab - R10 Under Full Slab with R5 Thermal Break": [
+            "Slab Construction w Full R10 Insulation", # main_floor_construction
+            "floor_main", # foundation_surface
+            "", # int_horiz_ins_mat_name 
+            "", # int_horiz_ins_depth 
+            "", # int_horiz_ins_width 
+            "XPS_R5", # int_vert_ins_mat_name 
+            0.25, # int_vert_ins_depth               
+            "", # ext_vert_ins_mat_name 
+            "", # ext_vert_ins_depth 
+            0, # wall_ht_above_grade 
+            0, # wall_ht_below_slab
+            "Fiberglass_Batt_R0", # floor insulation layer material name
+            "Foundation", # floor_main outside boundary condition
+            "Kiva Foundation", # floor_main outside boundary condition object
+            "", # foundation_zone_name
+            ],
+        "Heated Basement - Uninsulated": [
+            "Interior Floor", # main_floor_construction
+            "floor_foundation", # foundation_surface
+            "", # int_horiz_ins_mat_name 
+            "", # int_horiz_ins_depth 
+            "", # int_horiz_ins_width 
+            "", # int_vert_ins_mat_name 
+            "", # int_vert_ins_depth               
+            "", # ext_vert_ins_mat_name 
+            "", # ext_vert_ins_depth
+            0.2, # wall_ht_above_grade
+            0.3, # wall_ht_below_slab
+            "Fiberglass_Batt_R0", # floor insulation layer material name
+            "Adiabatic", # floor_main outside boundary condition
+            "", # floor_main outside boundary condition object
+            "living", # foundation_zone_name
+            ],
+        "Heated Basement - R5 Exterior Insulation": [
+            "Interior Floor", # main_floor_construction
+            "floor_foundation", # foundation_surface
+            "", # int_horiz_ins_mat_name 
+            "", # int_horiz_ins_depth 
+            "", # int_horiz_ins_width 
+            "", # int_vert_ins_mat_name 
+            "", # int_vert_ins_depth               
+            "XPS_R5", # ext_vert_ins_mat_name 
+            2.9, # ext_vert_ins_depth
+            0.2, # wall_ht_above_grade
+            0.3, # wall_ht_below_slab
+            "Fiberglass_Batt_R0", # floor insulation layer material name
+            "Adiabatic", # floor_main outside boundary condition
+            "", # floor_main outside boundary condition object
+            "living", # foundation_zone_name
+            ],
+        "Heated Basement - R10 Exterior Insulation": [
+            "Interior Floor", # main_floor_construction
+            "floor_foundation", # foundation_surface
+            "", # int_horiz_ins_mat_name 
+            "", # int_horiz_ins_depth 
+            "", # int_horiz_ins_width 
+            "", # int_vert_ins_mat_name 
+            "", # int_vert_ins_depth               
+            "XPS_R10", # ext_vert_ins_mat_name 
+            2.9, # ext_vert_ins_depth
+            0.2, # wall_ht_above_grade
+            0.3, # wall_ht_below_slab
+            "Fiberglass_Batt_R0", # floor insulation layer material name
+            "Adiabatic", # floor_main outside boundary condition
+            "", # floor_main outside boundary condition object
+            "living", # foundation_zone_name
+            ],
+        "Heated Basement - R15 Exterior Insulation": [
+            "Interior Floor", # main_floor_construction
+            "floor_foundation", # foundation_surface
+            "", # int_horiz_ins_mat_name 
+            "", # int_horiz_ins_depth 
+            "", # int_horiz_ins_width 
+            "", # int_vert_ins_mat_name 
+            "", # int_vert_ins_depth               
+            "XPS_R15", # ext_vert_ins_mat_name 
+            2.9, # ext_vert_ins_depth
+            0.2, # wall_ht_above_grade
+            0.3, # wall_ht_below_slab
+            "Fiberglass_Batt_R0", # floor insulation layer material name
+            "Adiabatic", # floor_main outside boundary condition
+            "", # floor_main outside boundary condition object
+            "living", # foundation_zone_name
+            ],
+        "Unheated Basement - Uninsulated": [
+            "Exterior Floor", # main_floor_construction
+            "floor_foundation", # foundation_surface
+            "", # int_horiz_ins_mat_name 
+            "", # int_horiz_ins_depth 
+            "", # int_horiz_ins_width 
+            "", # int_vert_ins_mat_name 
+            "", # int_vert_ins_depth               
+            "", # ext_vert_ins_mat_name 
+            "", # ext_vert_ins_depth 
+            0.2, # wall_ht_above_grade 
+            0.3, # wall_ht_below_slab
+            "Fiberglass_Batt_R0", # floor insulation layer material name
+            "Zone", # floor_main outside boundary condition
+            "unheatedbsmt", # floor_main outside boundary condition object
+            "unheatedbsmt", # foundation_zone_name
+            ],
+        "Unheated Basement - R13 Cavity Insulation": [
+            "Exterior Floor", # main_floor_construction
+            "floor_foundation", # foundation_surface
+            "", # int_horiz_ins_mat_name 
+            "", # int_horiz_ins_depth 
+            "", # int_horiz_ins_width 
+            "", # int_vert_ins_mat_name 
+            "", # int_vert_ins_depth               
+            "", # ext_vert_ins_mat_name 
+            "", # ext_vert_ins_depth 
+            0.2, # wall_ht_above_grade 
+            0.3, # wall_ht_below_slab
+            "Fiberglass_Batt_R13", # floor insulation layer material name
+            "Zone", # floor_main outside boundary condition
+            "unheatedbsmt", # floor_main outside boundary condition object
+            "unheatedbsmt", # foundation_zone_name
+            ],
+        "Unheated Basement - R19 Cavity Insulation": [
+            "Exterior Floor", # main_floor_construction
+            "floor_foundation", # foundation_surface
+            "", # int_horiz_ins_mat_name 
+            "", # int_horiz_ins_depth 
+            "", # int_horiz_ins_width 
+            "", # int_vert_ins_mat_name 
+            "", # int_vert_ins_depth               
+            "", # ext_vert_ins_mat_name 
+            "", # ext_vert_ins_depth 
+            0.2, # wall_ht_above_grade 
+            0.3, # wall_ht_below_slab
+            "Fiberglass_Batt_R19", # floor insulation layer material name
+            "Zone", # floor_main outside boundary condition
+            "unheatedbsmt", # floor_main outside boundary condition object
+            "unheatedbsmt", # foundation_zone_name
+            ],
+        "Unheated Basement - R30 Cavity Insulation": [
+            "Exterior Floor", # main_floor_construction
+            "floor_foundation", # foundation_surface
+            "", # int_horiz_ins_mat_name 
+            "", # int_horiz_ins_depth 
+            "", # int_horiz_ins_width 
+            "", # int_vert_ins_mat_name 
+            "", # int_vert_ins_depth               
+            "", # ext_vert_ins_mat_name 
+            "", # ext_vert_ins_depth 
+            0.2, # wall_ht_above_grade 
+            0.3, # wall_ht_below_slab
+            "Fiberglass_Batt_R30", # floor insulation layer material name
+            "Zone", # floor_main outside boundary condition
+            "unheatedbsmt", # floor_main outside boundary condition object
+            "unheatedbsmt", # foundation_zone_name
+            ],
+        "Unheated Basement - R38 Cavity Insulation": [
+            "Exterior Floor", # main_floor_construction
+            "floor_foundation", # foundation_surface
+            "", # int_horiz_ins_mat_name 
+            "", # int_horiz_ins_depth 
+            "", # int_horiz_ins_width 
+            "", # int_vert_ins_mat_name 
+            "", # int_vert_ins_depth               
+            "", # ext_vert_ins_mat_name 
+            "", # ext_vert_ins_depth 
+            0.2, # wall_ht_above_grade 
+            0.3, # wall_ht_below_slab
+            "Fiberglass_Batt_R38", # floor insulation layer material name
+            "Zone", # floor_main outside boundary condition
+            "unheatedbsmt", # floor_main outside boundary condition object
+            "unheatedbsmt", # foundation_zone_name    
+            ],
     }
 
-    ## water heater type dictionary
-    ## this determines what water heater type will later be pulled to the idf
+    # water heater type dictionary - this determines what water heater type will later be pulled to the idf
     water_heater_dict = {
-    "Electric Storage_50-gallon": os.path.join(set_dir, building_block_dir, dhw_main_dir, dhw_wh_type_dir, 'Electric Storage_50-gallon.txt'),
-    "Gas Storage_50-gallon": os.path.join(set_dir, building_block_dir, dhw_main_dir, dhw_wh_type_dir, 'Gas Storage_50-gallon.txt'),
+        "Electric Storage_50-gallon": os.path.join(set_dir, building_block_dir, dhw_main_dir, dhw_wh_type_dir, 'Electric Storage_50-gallon.txt'),
+        "Gas Storage_50-gallon": os.path.join(set_dir, building_block_dir, dhw_main_dir, dhw_wh_type_dir, 'Gas Storage_50-gallon.txt'),
     }
 
-    ## range type dictionary
+    # range type dictionary
     range_dict = {
-    "Electric": os.path.join(set_dir, building_block_dir, gains_main_dir, gains_rangetype_dir, 'ElectricRange.txt'),
-    "Gas": os.path.join(set_dir, building_block_dir, gains_main_dir, gains_rangetype_dir, 'GasRange.txt'),
+        "Electric": os.path.join(set_dir, building_block_dir, gains_main_dir, gains_rangetype_dir, 'ElectricRange.txt'),
+        "Gas": os.path.join(set_dir, building_block_dir, gains_main_dir, gains_rangetype_dir, 'GasRange.txt'),
     }
 
-    ## dryer type dictionary
+    # dryer type dictionary
     dryer_dict = {
-    "Electric": os.path.join(set_dir, building_block_dir, gains_main_dir, gains_dryertype_dir, 'ElectricDryer.txt'),
-    "Gas": os.path.join(set_dir, building_block_dir, gains_main_dir, gains_dryertype_dir, 'GasDryer.txt'),
+        "Electric": os.path.join(set_dir, building_block_dir, gains_main_dir, gains_dryertype_dir, 'ElectricDryer.txt'),
+        "Gas": os.path.join(set_dir, building_block_dir, gains_main_dir, gains_dryertype_dir, 'GasDryer.txt'),
     }
 
-    ## window blinds dictionary
+    # window blinds dictionary
     blinds_dict = {
-    "Yes": os.path.join(set_dir, building_block_dir, window_main_dir, window_blinds_dir, 'YesBlinds.txt'),
-    "No": os.path.join(set_dir, building_block_dir, window_main_dir, window_blinds_dir, 'NoBlinds.txt'),
+        "Yes": os.path.join(set_dir, building_block_dir, window_main_dir, window_blinds_dir, 'YesBlinds.txt'),
+        "No": os.path.join(set_dir, building_block_dir, window_main_dir, window_blinds_dir, 'NoBlinds.txt'),
     }
 
-    ## output dictionary
+    # output dictionary
     output_dict = {
-    "Energy_All_End_Uses": os.path.join(set_dir, building_block_dir, output_dir, 'Energy_All_End_Uses.txt'),
-    "Demand_All_End_Uses": os.path.join(set_dir, building_block_dir, output_dir, 'Demand_All_End_Uses.txt'),
-    "Demand_Total_Electric_HVAC": os.path.join(set_dir, building_block_dir, output_dir, 'Demand_Total_Electric_HVAC.txt'),
-    "Demand_Heating": os.path.join(set_dir, building_block_dir, output_dir, 'Demand_Heating.txt'),
-    "Demand_Cooling": os.path.join(set_dir, building_block_dir, output_dir, 'Demand_Cooling.txt'),
-    "Demand_Fan": os.path.join(set_dir, building_block_dir, output_dir, 'Demand_Fan.txt'),
-    "Demand_Lighting": os.path.join(set_dir, building_block_dir, output_dir, 'Demand_Lighting.txt'),
-    "Demand_Water_Heating": os.path.join(set_dir, building_block_dir, output_dir, 'Demand_Water_Heating.txt'),
-    "Demand_Other_Electric_Equipment": os.path.join(set_dir, building_block_dir, output_dir, 'Demand_Other_Electric_Equipment.txt'),
+        "Energy_All_End_Uses": os.path.join(set_dir, building_block_dir, output_dir, 'Energy_All_End_Uses.txt'),
+        "Demand_All_End_Uses": os.path.join(set_dir, building_block_dir, output_dir, 'Demand_All_End_Uses.txt'),
+        "Demand_Total_Electric_HVAC": os.path.join(set_dir, building_block_dir, output_dir, 'Demand_Total_Electric_HVAC.txt'),
+        "Demand_Heating": os.path.join(set_dir, building_block_dir, output_dir, 'Demand_Heating.txt'),
+        "Demand_Cooling": os.path.join(set_dir, building_block_dir, output_dir, 'Demand_Cooling.txt'),
+        "Demand_Fan": os.path.join(set_dir, building_block_dir, output_dir, 'Demand_Fan.txt'),
+        "Demand_Lighting": os.path.join(set_dir, building_block_dir, output_dir, 'Demand_Lighting.txt'),
+        "Demand_Water_Heating": os.path.join(set_dir, building_block_dir, output_dir, 'Demand_Water_Heating.txt'),
+        "Demand_Other_Electric_Equipment": os.path.join(set_dir, building_block_dir, output_dir, 'Demand_Other_Electric_Equipment.txt'),
     }
 
-    ## hvac type dictionary
-    ## this determines what water heater type will later be pulled to the idf
+    # hvac type dictionary
     hvac_dict = {
     "Air Source Heat Pump_Single Speed": [
         "Central", # Central or Zonal HVAC
@@ -720,11 +702,11 @@ def genmodels(gui_params, get_data_dict):
         "ZoneHVAC:Baseboard:Convective:Electric", # ZoneEquipment1ObjectType
         "BaseboardElectric", # ZoneEquipment1Name
         "2", # ZoneEquipment1CoolingSequence
-        "1", # ZoneEquipment1HeatingSequence
+        "2", # ZoneEquipment1HeatingSequence
         "ZoneHVAC:WindowAirConditioner", # ZoneEquipment2ObjectType
         "Window AC", # ZoneEquipment2Name
         "1", # ZoneEquipment2CoolingSequence
-        "2", # ZoneEquipment2HeatingSequence
+        "1", # ZoneEquipment2HeatingSequence
         "Zone Inlet Nodes", # ZoneAirInletNodeName
         "Zone Exhaust Nodes", # ZoneAirExhaustNodeName
         "Zone Outlet Node", # ZoneReturnAirNodeName
@@ -742,8 +724,7 @@ def genmodels(gui_params, get_data_dict):
         ],
     }
 
-    ## foundation type dictionary
-    # contents of dictionary: foundation type name, text file required in ZonesAndSurfaces --> FoundationType, text file required in HVAC --> ReturnDuctLocation
+    # foundation type dictionary
     foundation_dict = {
         "Vent": ["Vented Crawlspace", "crawlspace"],
         "Slab": ["Slab", "attic"],
@@ -1102,7 +1083,7 @@ def genmodels(gui_params, get_data_dict):
         #airloop_main_heating_coil_outlet_node = "Air Loop Outlet Node"
 
         if hvac_dict[hvac_type][0] == "Zonal":
-            AFN_control = "MultizoneWithoutDistribution"
+            AFN_control = "MultizoneWithoutDistribution" # Other option: MultizoneWithoutDistribution
             system_sizing_t = ""
             airloop_t = ""
             AFN_ducts_t = ""

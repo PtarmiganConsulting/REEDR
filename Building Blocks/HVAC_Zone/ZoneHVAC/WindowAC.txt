@@ -2,7 +2,7 @@
 
 ZoneHVAC:WindowAirConditioner,
    Window AC,                     !- Name
-   always_avail,                    !- Availability Schedule Name
+   summer_avail,                    !- Availability Schedule Name
    autosize,                        !- Maximum Supply Air Flow Rate {{m3/s}}
    autosize,                        !- Maximum Outdoor Air Flow Rate {{m3/s}}
    WindowAC Inlet Node,             !- Air Inlet Node Name
@@ -30,11 +30,11 @@ OutdoorAir:Node,
 
 Fan:OnOff,
    WindowAC Fan,                   !- Name
-   always_avail,             	    !- Availability Schedule Name
-   1,                              !- Fan Total Efficiency   
-   0,              		        !- Pressure Rise {{Pa}}   
+   summer_avail,             	    !- Availability Schedule Name
+   0.6,                              !- Fan Total Efficiency   
+   25,              		        !- Pressure Rise {{Pa}}   
    autosize,                       !- Maximum Flow Rate {{m3/s}}
-   1,        		                !- Motor Efficiency   
+   0.9,        		                !- Motor Efficiency   
    0,                              !- Motor In Airstream Fraction
    Mixer Mixed Air Node,           !- Air Inlet Node Name
    WindowAC Fan Outlet Node,       !- Air Outlet Node Name
@@ -52,7 +52,7 @@ NodeList,
 
 Coil:Cooling:DX:SingleSpeed,
   WindowAC Coil,                 !- Name
-  always_avail,             	   !- Availability Schedule Name
+  summer_avail,             	   !- Availability Schedule Name
   autosize,                      !- Gross Rated Total Cooling Capacity {{W}}
   autosize,                      !- Gross Rated Sensible Heat Ratio
   2.8723800000000006,            !- Gross Rated Cooling COP {{W/W}}
