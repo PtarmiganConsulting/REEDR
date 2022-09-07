@@ -57,21 +57,21 @@ def genmodels(gui_params, get_data_dict):
     ### --- Update simulation status in command prompt. --- ###
     print("Starting model build...")
 
-    # # Create Schedules.csv file and store headers in a list
-    # read_file = pd.read_excel (REEDR_wb, sheet_name="Schedules_8760")
-    # if os.path.exists(os.path.join(set_dir, building_block_dir, schedule_dir, schedule_file)) == True:
-    #     try:
-    #         os.remove(os.path.join(set_dir, building_block_dir, schedule_dir, schedule_file))
-    #         read_file.to_csv ((os.path.join(set_dir, building_block_dir, schedule_dir, schedule_file)), index = None, header=True)
-    #         runlog.write("Schedules.csv successfully overwritten at " + os.path.join(set_dir, building_block_dir, schedule_dir, schedule_file) + ". \n" + "... \n")
-    #     except Exception as e:
-    #         runlog.write("!!! Schedules.csv could not be made at " + os.path.join(set_dir, building_block_dir, schedule_dir, schedule_file) + ". \n")
-    #         runlog.write("!!! REEDR experienced the following error: " + str(e) + ". \n")
-    # else:
-    #     read_file.to_csv ((os.path.join(set_dir, building_block_dir, schedule_dir, schedule_file)), index = None, header=True)
-    #     runlog.write(schedule_file + " successfully created at " + os.path.join(set_dir, building_block_dir, schedule_dir, schedule_file) + ". \n" + "... \n")
-    #
-    # sched_list = (list(read_file.columns))
+    ### --- Create Schedules.csv file and store headers in a list --- ###
+    read_file = pd.read_excel (get_data_dict["REEDR_wb"], sheet_name="Schedules_8760")
+    if os.path.exists(os.path.join(set_dir, building_block_dir, schedule_dir, schedule_file)) == True:
+        try:
+            os.remove(os.path.join(set_dir, building_block_dir, schedule_dir, schedule_file))
+            read_file.to_csv ((os.path.join(set_dir, building_block_dir, schedule_dir, schedule_file)), index = None, header=True)
+            get_data_dict["runlog"].write("Schedules.csv successfully overwritten at " + os.path.join(set_dir, building_block_dir, schedule_dir, schedule_file) + ". \n" + "... \n")
+        except Exception as e:
+            get_data_dict["runlog"].write("!!! Schedules.csv could not be made at " + os.path.join(set_dir, building_block_dir, schedule_dir, schedule_file) + ". \n")
+            get_data_dict["runlog"].write("!!! REEDR experienced the following error: " + str(e) + ". \n")
+    else:
+        read_file.to_csv ((os.path.join(set_dir, building_block_dir, schedule_dir, schedule_file)), index = None, header=True)
+        get_data_dict["runlog"].write(schedule_file + " successfully created at " + os.path.join(set_dir, building_block_dir, schedule_dir, schedule_file) + ". \n" + "... \n")
+    
+    sched_list = (list(read_file.columns))
 
     ### --- Gather the run labels from the user specified runs, and create subdirectories that will house each run's input and output. --- ###
     directory_names = []
@@ -970,9 +970,9 @@ def genmodels(gui_params, get_data_dict):
             perf_t = f.read()
 
         ## Schedules
-        # htg_sch_num = sched_list.index(htg_stpt_sch) + 1
-        # clg_sch_num = sched_list.index(clg_stpt_sch) + 1
-        # dhw_sch_num = sched_list.index(dhw_stpt_sch) + 1
+        htg_sch_num = sched_list.index(htg_stpt_sch) + 1
+        clg_sch_num = sched_list.index(clg_stpt_sch) + 1
+        dhw_sch_num = sched_list.index(dhw_stpt_sch) + 1
         with open(os.path.join(set_dir, building_block_dir, schedule_dir, 'Schedules.txt'), 'r') as f:
             sched_t = f"{f.read()}".format(**locals())
 
