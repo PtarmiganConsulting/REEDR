@@ -1348,23 +1348,6 @@ Schedule:Compact,
     1;                      !- Field 4
 
 Schedule:Compact,
-    summer_avail,           !- Name
-    On/Off,                 !- Schedule Type Limits Name
-    Through: 5/15,          !- Field 1
-    For: AllDays,           !- Field 2
-    Until: 24:00,           !- Field 3
-    0,                      !- Field 4
-    Through: 9/15,          !- Field 5
-    For: AllDays,           !- Field 6
-    Until: 24:00,           !- Field 7
-    1,                      !- Field 8
-    Through: 12/31,          !- Field 9
-    For: AllDays,           !- Field 10
-    Until: 24:00,           !- Field 11
-    0;                      !- Field 12
-
-
-Schedule:Compact,
     always_off,           !- Name
     On/Off,                 !- Schedule Type Limits Name
     Through: 12/31,         !- Field 1
@@ -1479,20 +1462,52 @@ Schedule:Constant,
     Temperature,             !- Schedule Type Limits Name
     -60;                     !- Hourly Value
 
-Schedule:Constant,
+!- Schedule:Constant,
+!-    heating_sch,             !- Name
+!-    Temperature,             !- Schedule Type Limits Name
+!-    20.556;                     !- Hourly Value
+
+!- Schedule:Constant,
+!-    cooling_sch,             !- Name
+!-    Temperature,             !- Schedule Type Limits Name
+!-    25.556;                     !- Hourly Value
+
+!- Schedule:Constant,
+!-    dhw_setpt,             !- Name
+!-    Temperature,             !- Schedule Type Limits Name
+!-    53.333;                     !- Hourly Value
+
+!-   ===========  ALL OBJECTS IN CLASS: SCHEDULE:FILE ===========
+
+Schedule:File,
     heating_sch,             !- Name
     Temperature,             !- Schedule Type Limits Name
-    20.556;                     !- Hourly Value
+    ..\..\..\Building Blocks\Schedules\Schedules.csv,        !- File Name
+    {htg_sch_num},                       !- Column Number
+    1,                       !- Rows to Skip at Top
+    8760,                    !- Number of Hours of Data
+    Comma,                   !- Column Separator
+    Yes;                     !- Interpolate to Timestep
 
-Schedule:Constant,
+Schedule:File,
     cooling_sch,             !- Name
     Temperature,             !- Schedule Type Limits Name
-    25.556;                     !- Hourly Value
+    ..\..\..\Building Blocks\Schedules\Schedules.csv,        !- File Name
+    {clg_sch_num},                       !- Column Number
+    1,                       !- Rows to Skip at Top
+    8760,                    !- Number of Hours of Data
+    Comma,                   !- Column Separator
+    Yes;                     !- Interpolate to Timestep
 
-Schedule:Constant,
+Schedule:File,
     dhw_setpt,             !- Name
     Temperature,             !- Schedule Type Limits Name
-    53.333;                     !- Hourly Value
+    ..\..\..\Building Blocks\Schedules\Schedules.csv,        !- File Name
+    {dhw_sch_num},                       !- Column Number
+    1,                       !- Rows to Skip at Top
+    8760,                    !- Number of Hours of Data
+    Comma,                   !- Column Separator
+    Yes;                     !- Interpolate to Timestep
 
 
 !-   ===========  ALL OBJECTS IN CLASS: AVAILABILITYMANAGER:SCHEDULED ===========
@@ -1508,4 +1523,3 @@ AvailabilityManagerAssignmentList,
     availability list,          	!- Name
     AvailabilityManager:Scheduled,    	!- Availability Manager 1 Object Type
     System availability;        	!- Availability Manager 1 Name
-
