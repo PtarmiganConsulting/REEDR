@@ -562,13 +562,13 @@ def genmodels(gui_params, get_data_dict):
         "Zone Outlet Node", # ZoneReturnAirNodeName
         os.path.join(set_dir, building_block_dir, hvac_airloop_main_dir, hvac_airloop_hvac_dir, 'UnitaryHeatPump.txt'), # HVAC equipment text file 1
         os.path.join(set_dir, building_block_dir, hvac_zone_main_dir, hvac_zone_hvac_dir, 'ADU.txt'), # HVAC equipment text file 2
-        os.path.join(set_dir, building_block_dir, hvac_coil_dir, 'Heating_DX_SS_8.2HSPF.txt'), # additional heating coil text file
-        os.path.join(set_dir, building_block_dir, hvac_coil_dir, 'Cooling_DX_SS_14SEER.txt'), # additional cooling coil text file
+        os.path.join(set_dir, building_block_dir, hvac_coil_dir, 'Heating_ASHP_SS_8.2HSPF.txt'), # additional heating coil text file
+        os.path.join(set_dir, building_block_dir, hvac_coil_dir, 'Cooling_ASHP_SS_14SEER.txt'), # additional cooling coil text file
         os.path.join(set_dir, building_block_dir, hvac_fan_dir, 'CentralFan.txt'), # additional fan text file
         "Coil:Heating:DX:SingleSpeed", # AirLoopHVAC_HeatingCoil_ObjectType
-        "Heating_DX_SS_8.2HSPF", # AirLoopHVAC_HeatingCoil_Name
+        "Heating_ASHP_SS_8.2HSPF", # AirLoopHVAC_HeatingCoil_Name
         "Coil:Cooling:DX:SingleSpeed", # AirLoopHVAC_CoolingCoil_ObjectType
-        "Cooling_DX_SS_14SEER", # AirLoopHVAC_CoolingCoil_Name
+        "Cooling_ASHP_SS_14SEER", # AirLoopHVAC_CoolingCoil_Name
         "AirLoopHVAC:UnitaryHeatPump:AirtoAir", # AirLoopHVAC_Unitary_ObjectType
         "Heat Pump", # AirLoopHVAC_Unitary_ObjectName
         "Central Fan", # fan_name
@@ -588,13 +588,13 @@ def genmodels(gui_params, get_data_dict):
         "Zone Outlet Node", # ZoneReturnAirNodeName
         os.path.join(set_dir, building_block_dir, hvac_airloop_main_dir, hvac_airloop_hvac_dir, 'UnitaryHeatPump.txt'), # HVAC equipment text file 1
         os.path.join(set_dir, building_block_dir, hvac_zone_main_dir, hvac_zone_hvac_dir, 'ADU.txt'), # HVAC equipment text file 2
-        os.path.join(set_dir, building_block_dir, hvac_coil_dir, 'Heating_DX_SS_8.5HSPF.txt'), # additional heating coil text file
-        os.path.join(set_dir, building_block_dir, hvac_coil_dir, 'Cooling_DX_SS_15SEER.txt'), # additional cooling coil text file
+        os.path.join(set_dir, building_block_dir, hvac_coil_dir, 'Heating_ASHP_SS_8.5HSPF.txt'), # additional heating coil text file
+        os.path.join(set_dir, building_block_dir, hvac_coil_dir, 'Cooling_ASHP_SS_15SEER.txt'), # additional cooling coil text file
         os.path.join(set_dir, building_block_dir, hvac_fan_dir, 'CentralFan.txt'), # additional fan text file
         "Coil:Heating:DX:SingleSpeed", # AirLoopHVAC_HeatingCoil_ObjectType
-        "Heating_DX_SS_8.5HSPF", # AirLoopHVAC_HeatingCoil_Name
+        "Heating_ASHP_SS_8.5HSPF", # AirLoopHVAC_HeatingCoil_Name
         "Coil:Cooling:DX:SingleSpeed", # AirLoopHVAC_CoolingCoil_ObjectType
-        "Cooling_DX_SS_15SEER", # AirLoopHVAC_CoolingCoil_Name
+        "Cooling_ASHP_SS_15SEER", # AirLoopHVAC_CoolingCoil_Name
         "AirLoopHVAC:UnitaryHeatPump:AirtoAir", # AirLoopHVAC_Unitary_ObjectType
         "Heat Pump", # AirLoopHVAC_Unitary_ObjectName
         "Central Fan", # fan_name
@@ -615,12 +615,12 @@ def genmodels(gui_params, get_data_dict):
         os.path.join(set_dir, building_block_dir, hvac_airloop_main_dir, hvac_airloop_hvac_dir, 'UnitaryHeatCool.txt'), # HVAC equipment text file 1
         os.path.join(set_dir, building_block_dir, hvac_zone_main_dir, hvac_zone_hvac_dir, 'ADU.txt'), # HVAC equipment text file 2
         os.path.join(set_dir, building_block_dir, hvac_coil_dir, 'Heating_Resistance_Main.txt'), # additional heating coil text file
-        os.path.join(set_dir, building_block_dir, hvac_coil_dir, 'Cooling_ASHP_SS.txt'), # additional cooling coil text file
+        os.path.join(set_dir, building_block_dir, hvac_coil_dir, 'Cooling_ASHP_SS_14SEER.txt'), # additional cooling coil text file
         os.path.join(set_dir, building_block_dir, hvac_fan_dir, 'CentralFan.txt'), # additional fan text file
         "Coil:Heating:Electric", # AirLoopHVAC_HeatingCoil_ObjectType
         "Heating_Resistance_Main", # AirLoopHVAC_HeatingCoil_Name
         "Coil:Cooling:DX:SingleSpeed", # AirLoopHVAC_CoolingCoil_ObjectType
-        "Cooling_ASHP_SS", # AirLoopHVAC_CoolingCoil_Name
+        "Cooling_ASHP_SS_14SEER", # AirLoopHVAC_CoolingCoil_Name
         "AirLoopHVAC:UnitaryHeatCool", # AirLoopHVAC_Unitary_ObjectType
         "ACandFurnace", # AirLoopHVAC_Unitary_ObjectName
         "Central Fan", # fan_name
@@ -667,12 +667,12 @@ def genmodels(gui_params, get_data_dict):
         os.path.join(set_dir, building_block_dir, hvac_airloop_main_dir, hvac_airloop_hvac_dir, 'UnitaryHeatCool.txt'), # HVAC equipment text file 1
         os.path.join(set_dir, building_block_dir, hvac_zone_main_dir, hvac_zone_hvac_dir, 'ADU.txt'), # HVAC equipment text file 2
         os.path.join(set_dir, building_block_dir, hvac_coil_dir, 'Heating_Fuel_Main.txt'), # additional heating coil text file
-        os.path.join(set_dir, building_block_dir, hvac_coil_dir, 'Cooling_ASHP_SS.txt'), # additional cooling coil text file
+        os.path.join(set_dir, building_block_dir, hvac_coil_dir, 'Cooling_ASHP_SS_14SEER.txt'), # additional cooling coil text file
         os.path.join(set_dir, building_block_dir, hvac_fan_dir, 'CentralFan.txt'), # additional fan text file
         "Coil:Heating:Fuel", # AirLoopHVAC_HeatingCoil_ObjectType
         "Heating_Fuel_Main", # AirLoopHVAC_HeatingCoil_Name
         "Coil:Cooling:DX:SingleSpeed", # AirLoopHVAC_CoolingCoil_ObjectType
-        "Cooling_ASHP_SS", # AirLoopHVAC_CoolingCoil_Name
+        "Cooling_ASHP_SS_14SEER", # AirLoopHVAC_CoolingCoil_Name
         "AirLoopHVAC:UnitaryHeatCool", # AirLoopHVAC_Unitary_ObjectType
         "ACandFurnace", # AirLoopHVAC_Unitary_ObjectName
         "Central Fan", # fan_name
@@ -885,6 +885,7 @@ def genmodels(gui_params, get_data_dict):
         supply_leak = dictionary["Supply Duct Leakage [%]"]
         return_leak = dictionary["Return Duct Leakage [%]"]
         hp_supp_heat_type = dictionary["ASHP Supp Heat Type"]
+        gas_furnace_AFUE = dictionary["Gas Furnace AFUE [%]"]
         hp_max_resistance_temp = convert_degF_to_degC(dictionary["ASHP Max Supp Heat Temp [deg F]"])
         hp_min_compressor_temp = convert_degF_to_degC(dictionary["ASHP Min Compressor Temp [deg F]"])
         water_heater_type = dictionary["Water Heater Type"]
@@ -1166,13 +1167,13 @@ def genmodels(gui_params, get_data_dict):
             AirLoopHVAC_SuppHeatingCoil_Name = "Heating_Fuel_Backup"
             AFN_main_heating_coil_outlet_node = "SuppHeatingInletNode"
             with open(os.path.join(set_dir, building_block_dir, hvac_coil_dir, 'Heating_Fuel_Backup.txt'), 'r') as f:
-                supp_heating_coil_t = f.read()
+                supp_heating_coil_t = f"{f.read()}".format(**locals())
         elif AirLoopHVAC_Unitary_ObjectType == "AirLoopHVAC:UnitaryHeatPump:AirtoAir":
             AirLoopHVAC_SuppHeatingCoil_ObjectType = "Coil:Heating:Electric"
             AirLoopHVAC_SuppHeatingCoil_Name = "Heating_Resistance_Backup"
             AFN_main_heating_coil_outlet_node = "SuppHeatingInletNode"
             with open(os.path.join(set_dir, building_block_dir, hvac_coil_dir, 'Heating_Resistance_Backup.txt'), 'r') as f:
-                supp_heating_coil_t = f.read()
+                supp_heating_coil_t = f"{f.read()}".format(**locals())
         else:
             supp_heating_coil_t = ""
             AFN_main_heating_coil_outlet_node = "HeatingOutletNode"
