@@ -547,7 +547,7 @@ def genmodels(gui_params, get_data_dict):
 
     # hvac type dictionary
     hvac_dict = {
-    "ASHP_SS_8.2HSPF_14SEER": [
+    "ASHP_SingleSpeed_8.2HSPF_14SEER": [
         "Central", # Central or Zonal HVAC
         "ZoneHVAC:AirDistributionUnit", # ZoneEquipment1ObjectType
         "ZoneDirectAir ADU", # ZoneEquipment1Name
@@ -573,7 +573,7 @@ def genmodels(gui_params, get_data_dict):
         "Heat Pump", # AirLoopHVAC_Unitary_ObjectName
         "Central Fan", # fan_name
         ],
-    "ASHP_SS_8.5HSPF_15SEER": [
+    "ASHP_SingleSpeed_8.5HSPF_15SEER": [
         "Central", # Central or Zonal HVAC
         "ZoneHVAC:AirDistributionUnit", # ZoneEquipment1ObjectType
         "ZoneDirectAir ADU", # ZoneEquipment1Name
