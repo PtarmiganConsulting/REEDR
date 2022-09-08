@@ -330,17 +330,6 @@ Curve:Quadratic,
     Dimensionless,    !- Input Unit Type for X
     Dimensionless;    !- Output Unit Type
 
-!- Part Load Fraction curve as a function of Part Load Ratio is default curve
-!- from Table 6. BEopt AC Rated Value Inputs of NREL report NREL/TP-5500-56354
-
-Curve:Quadratic,
-     HPHeatPLFFPLR,    !- Name
-     0.90,             !- Coefficient1 Constant
-     0.10,             !- Coefficient2 x
-     0.0,              !- Coefficient3 x**2
-     0.0,              !- Minimum Value of x
-     1.0;              !- Maximum Value of x
-
 !- *************** Low Speed Heating ************
 Curve:Biquadratic,
     HPLowStageHeatingCAPFTemp,  !- Name
@@ -743,20 +732,6 @@ Curve:Quadratic,
     0.0,              !- Minimum Value of x
     1.0;              !- Maximum Value of x
 
-!-   ===========  ALL OBJECTS IN CLASS: CURVE:QUADRATIC ===========
-
-!- NREL benchmark Cool-PLF-fPLR
-Curve:Quadratic,
-    Cool-PLF-fPLR,           !- Name
-    0.80141423,              !- Coefficient1 Constant
-    0.23744685,              !- Coefficient2 x
-    -0.0393773,              !- Coefficient3 x**2
-    0,                       !- Minimum Value of x
-    1,                       !- Maximum Value of x
-    0.7,                     !- Minimum Curve Output
-    1;                       !- Maximum Curve Output
-
-
 !-   ===========  ALL OBJECTS IN CLASS: CURVE:CUBIC ===========
 
 Curve:Cubic,
@@ -780,32 +755,3 @@ Curve:Cubic,
     100;                     !- Maximum Value of x
 
 
-!-   ===========  ALL OBJECTS IN CLASS: CURVE:BIQUADRATIC ===========
-
-!- NREL benchmark Cool-CAP-FT
-Curve:Biquadratic,
-    Cool-Cap-fT,             !- Name
-    1.26489391,              !- Coefficient1 Constant
-    -0.035054982,            !- Coefficient2 x
-    0.00211086,              !- Coefficient3 x**2
-    -0.001526886,            !- Coefficient4 y
-    -0.0000070308,           !- Coefficient5 y**2
-    -0.0004691844,           !- Coefficient6 x*y
-    -100,                    !- Minimum Value of x
-    100,                     !- Maximum Value of x
-    -100,                    !- Minimum Value of y
-    100;                     !- Maximum Value of y
-
-!- NREL benchmark Cool-EIR-FT
-Curve:Biquadratic,
-    Cool-EIR-fT,             !- Name
-    0.38402403,              !- Coefficient1 Constant
-    0.029696724,             !- Coefficient2 x
-    -0.0011329308,           !- Coefficient3 x**2
-    0.006490674,             !- Coefficient4 y
-    0.0002626992,            !- Coefficient5 y**2
-    -0.0001207224,           !- Coefficient6 x*y
-    -100,                    !- Minimum Value of x
-    100,                     !- Maximum Value of x
-    -100,                    !- Minimum Value of y
-    100;                     !- Maximum Value of y

@@ -547,7 +547,7 @@ def genmodels(gui_params, get_data_dict):
 
     # hvac type dictionary
     hvac_dict = {
-    "Air Source Heat Pump_Single Speed": [
+    "ASHP_SS_8.2HSPF_14SEER": [
         "Central", # Central or Zonal HVAC
         "ZoneHVAC:AirDistributionUnit", # ZoneEquipment1ObjectType
         "ZoneDirectAir ADU", # ZoneEquipment1Name
@@ -562,13 +562,39 @@ def genmodels(gui_params, get_data_dict):
         "Zone Outlet Node", # ZoneReturnAirNodeName
         os.path.join(set_dir, building_block_dir, hvac_airloop_main_dir, hvac_airloop_hvac_dir, 'UnitaryHeatPump.txt'), # HVAC equipment text file 1
         os.path.join(set_dir, building_block_dir, hvac_zone_main_dir, hvac_zone_hvac_dir, 'ADU.txt'), # HVAC equipment text file 2
-        os.path.join(set_dir, building_block_dir, hvac_coil_dir, 'Heating_ASHP_SS.txt'), # additional heating coil text file
-        os.path.join(set_dir, building_block_dir, hvac_coil_dir, 'Cooling_ASHP_SS.txt'), # additional cooling coil text file
+        os.path.join(set_dir, building_block_dir, hvac_coil_dir, 'Heating_DX_SS_8.2HSPF.txt'), # additional heating coil text file
+        os.path.join(set_dir, building_block_dir, hvac_coil_dir, 'Cooling_DX_SS_14SEER.txt'), # additional cooling coil text file
         os.path.join(set_dir, building_block_dir, hvac_fan_dir, 'CentralFan.txt'), # additional fan text file
         "Coil:Heating:DX:SingleSpeed", # AirLoopHVAC_HeatingCoil_ObjectType
-        "Heating_ASHP_SS", # AirLoopHVAC_HeatingCoil_Name
+        "Heating_DX_SS_8.2HSPF", # AirLoopHVAC_HeatingCoil_Name
         "Coil:Cooling:DX:SingleSpeed", # AirLoopHVAC_CoolingCoil_ObjectType
-        "Cooling_ASHP_SS", # AirLoopHVAC_CoolingCoil_Name
+        "Cooling_DX_SS_14SEER", # AirLoopHVAC_CoolingCoil_Name
+        "AirLoopHVAC:UnitaryHeatPump:AirtoAir", # AirLoopHVAC_Unitary_ObjectType
+        "Heat Pump", # AirLoopHVAC_Unitary_ObjectName
+        "Central Fan", # fan_name
+        ],
+    "ASHP_SS_8.5HSPF_15SEER": [
+        "Central", # Central or Zonal HVAC
+        "ZoneHVAC:AirDistributionUnit", # ZoneEquipment1ObjectType
+        "ZoneDirectAir ADU", # ZoneEquipment1Name
+        "1", # ZoneEquipment1CoolingSequence
+        "1", # ZoneEquipment1HeatingSequence
+        "!-", # ZoneEquipment2ObjectType
+        "!-", # ZoneEquipment2Name
+        "!-", # ZoneEquipment2CoolingSequence
+        "!-", # ZoneEquipment2HeatingSequence
+        "Zone Inlet Node", # ZoneAirInletNodeName
+        "", # ZoneAirExhaustNodeName
+        "Zone Outlet Node", # ZoneReturnAirNodeName
+        os.path.join(set_dir, building_block_dir, hvac_airloop_main_dir, hvac_airloop_hvac_dir, 'UnitaryHeatPump.txt'), # HVAC equipment text file 1
+        os.path.join(set_dir, building_block_dir, hvac_zone_main_dir, hvac_zone_hvac_dir, 'ADU.txt'), # HVAC equipment text file 2
+        os.path.join(set_dir, building_block_dir, hvac_coil_dir, 'Heating_DX_SS_8.5HSPF.txt'), # additional heating coil text file
+        os.path.join(set_dir, building_block_dir, hvac_coil_dir, 'Cooling_DX_SS_15SEER.txt'), # additional cooling coil text file
+        os.path.join(set_dir, building_block_dir, hvac_fan_dir, 'CentralFan.txt'), # additional fan text file
+        "Coil:Heating:DX:SingleSpeed", # AirLoopHVAC_HeatingCoil_ObjectType
+        "Heating_DX_SS_8.5HSPF", # AirLoopHVAC_HeatingCoil_Name
+        "Coil:Cooling:DX:SingleSpeed", # AirLoopHVAC_CoolingCoil_ObjectType
+        "Cooling_DX_SS_15SEER", # AirLoopHVAC_CoolingCoil_Name
         "AirLoopHVAC:UnitaryHeatPump:AirtoAir", # AirLoopHVAC_Unitary_ObjectType
         "Heat Pump", # AirLoopHVAC_Unitary_ObjectName
         "Central Fan", # fan_name
@@ -677,7 +703,7 @@ def genmodels(gui_params, get_data_dict):
         "Furnace", # AirLoopHVAC_Unitary_ObjectName
         "Central Fan", # fan_name
         ],
-    "Zonal Resistance Baseboard Heat with No AC": [
+    "Zonal Resistance Heat with No AC": [
         "Zonal", # Central or Zonal HVAC
         "ZoneHVAC:AirDistributionUnit", # ZoneEquipment1ObjectType
         "ZoneDirectAir ADU", # ZoneEquipment1Name
@@ -703,7 +729,7 @@ def genmodels(gui_params, get_data_dict):
         "Furnace", # AirLoopHVAC_Unitary_ObjectName
         "Zonal Fan", # fan_name
         ],
-    "Zonal Resistance Baseboard Heat with Window AC": [
+     "Zonal Resistance Heat with Room AC (8.5 EER)": [
         "Zonal", # Central or Zonal HVAC
         "ZoneHVAC:AirDistributionUnit", # ZoneEquipment1ObjectType
         "ZoneDirectAir ADU", # ZoneEquipment1Name
@@ -719,12 +745,64 @@ def genmodels(gui_params, get_data_dict):
         os.path.join(set_dir, building_block_dir, hvac_airloop_main_dir, hvac_airloop_hvac_dir, 'UnitaryHeatCool.txt'), # HVAC equipment text file 1
         os.path.join(set_dir, building_block_dir, hvac_zone_main_dir, hvac_zone_hvac_dir, 'ADU.txt'), # HVAC equipment text file 2
         os.path.join(set_dir, building_block_dir, hvac_coil_dir, 'Heating_Resistance_Main.txt'), # additional heating coil text file
-        os.path.join(set_dir, building_block_dir, hvac_coil_dir, 'Cooling_WinAC_SS.txt'), # additional cooling coil text file
+        os.path.join(set_dir, building_block_dir, hvac_coil_dir, 'Cooling_WinAC_8.5EER.txt'), # additional cooling coil text file
         os.path.join(set_dir, building_block_dir, hvac_fan_dir, 'ZonalFan.txt'), # additional fan text file
         "Coil:Heating:Electric", # AirLoopHVAC_HeatingCoil_ObjectType
         "Heating_Resistance_Main", # AirLoopHVAC_HeatingCoil_Name
         "Coil:Cooling:DX:SingleSpeed", # AirLoopHVAC_CoolingCoil_ObjectType
-        "Cooling_WinAC_SS", # AirLoopHVAC_CoolingCoil_Name
+        "Cooling_WinAC_8.5EER", # AirLoopHVAC_CoolingCoil_Name
+        "AirLoopHVAC:UnitaryHeatCool", # AirLoopHVAC_Unitary_ObjectType
+        "ACandFurnace", # AirLoopHVAC_Unitary_ObjectName
+        "Zonal Fan", # fan_name
+        ],   
+    "Zonal Resistance Heat with Room AC (9.8 EER)": [
+        "Zonal", # Central or Zonal HVAC
+        "ZoneHVAC:AirDistributionUnit", # ZoneEquipment1ObjectType
+        "ZoneDirectAir ADU", # ZoneEquipment1Name
+        "1", # ZoneEquipment1CoolingSequence
+        "1", # ZoneEquipment1HeatingSequence
+        "!-", # ZoneEquipment2ObjectType
+        "!-", # ZoneEquipment2Name
+        "!-", # ZoneEquipment2CoolingSequence
+        "!-", # ZoneEquipment2HeatingSequence
+        "Zone Inlet Node", # ZoneAirInletNodeName
+        "", # ZoneAirExhaustNodeName
+        "Zone Outlet Node", # ZoneReturnAirNodeName
+        os.path.join(set_dir, building_block_dir, hvac_airloop_main_dir, hvac_airloop_hvac_dir, 'UnitaryHeatCool.txt'), # HVAC equipment text file 1
+        os.path.join(set_dir, building_block_dir, hvac_zone_main_dir, hvac_zone_hvac_dir, 'ADU.txt'), # HVAC equipment text file 2
+        os.path.join(set_dir, building_block_dir, hvac_coil_dir, 'Heating_Resistance_Main.txt'), # additional heating coil text file
+        os.path.join(set_dir, building_block_dir, hvac_coil_dir, 'Cooling_WinAC_9.8EER.txt'), # additional cooling coil text file
+        os.path.join(set_dir, building_block_dir, hvac_fan_dir, 'ZonalFan.txt'), # additional fan text file
+        "Coil:Heating:Electric", # AirLoopHVAC_HeatingCoil_ObjectType
+        "Heating_Resistance_Main", # AirLoopHVAC_HeatingCoil_Name
+        "Coil:Cooling:DX:SingleSpeed", # AirLoopHVAC_CoolingCoil_ObjectType
+        "Cooling_WinAC_9.8EER", # AirLoopHVAC_CoolingCoil_Name
+        "AirLoopHVAC:UnitaryHeatCool", # AirLoopHVAC_Unitary_ObjectType
+        "ACandFurnace", # AirLoopHVAC_Unitary_ObjectName
+        "Zonal Fan", # fan_name
+        ],
+    "Zonal Resistance Heat with Room AC (10.7 EER)": [
+        "Zonal", # Central or Zonal HVAC
+        "ZoneHVAC:AirDistributionUnit", # ZoneEquipment1ObjectType
+        "ZoneDirectAir ADU", # ZoneEquipment1Name
+        "1", # ZoneEquipment1CoolingSequence
+        "1", # ZoneEquipment1HeatingSequence
+        "!-", # ZoneEquipment2ObjectType
+        "!-", # ZoneEquipment2Name
+        "!-", # ZoneEquipment2CoolingSequence
+        "!-", # ZoneEquipment2HeatingSequence
+        "Zone Inlet Node", # ZoneAirInletNodeName
+        "", # ZoneAirExhaustNodeName
+        "Zone Outlet Node", # ZoneReturnAirNodeName
+        os.path.join(set_dir, building_block_dir, hvac_airloop_main_dir, hvac_airloop_hvac_dir, 'UnitaryHeatCool.txt'), # HVAC equipment text file 1
+        os.path.join(set_dir, building_block_dir, hvac_zone_main_dir, hvac_zone_hvac_dir, 'ADU.txt'), # HVAC equipment text file 2
+        os.path.join(set_dir, building_block_dir, hvac_coil_dir, 'Heating_Resistance_Main.txt'), # additional heating coil text file
+        os.path.join(set_dir, building_block_dir, hvac_coil_dir, 'Cooling_WinAC_10.7EER.txt'), # additional cooling coil text file
+        os.path.join(set_dir, building_block_dir, hvac_fan_dir, 'ZonalFan.txt'), # additional fan text file
+        "Coil:Heating:Electric", # AirLoopHVAC_HeatingCoil_ObjectType
+        "Heating_Resistance_Main", # AirLoopHVAC_HeatingCoil_Name
+        "Coil:Cooling:DX:SingleSpeed", # AirLoopHVAC_CoolingCoil_ObjectType
+        "Cooling_WinAC_10.7EER", # AirLoopHVAC_CoolingCoil_Name
         "AirLoopHVAC:UnitaryHeatCool", # AirLoopHVAC_Unitary_ObjectType
         "ACandFurnace", # AirLoopHVAC_Unitary_ObjectName
         "Zonal Fan", # fan_name
