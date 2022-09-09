@@ -572,6 +572,8 @@ def genmodels(gui_params, get_data_dict):
         "AirLoopHVAC:UnitaryHeatPump:AirtoAir", # AirLoopHVAC_Unitary_ObjectType
         "SS Heat Pump", # AirLoopHVAC_Unitary_ObjectName
         "Central Fan SS", # fan_name
+        1, # heating_speeds
+        1, # cooling_speeds
         ],
     "ASHP_SingleSpeed_8.5HSPF_15SEER": [
         "Central", # Central or Zonal HVAC
@@ -598,6 +600,8 @@ def genmodels(gui_params, get_data_dict):
         "AirLoopHVAC:UnitaryHeatPump:AirtoAir", # AirLoopHVAC_Unitary_ObjectType
         "SS Heat Pump", # AirLoopHVAC_Unitary_ObjectName
         "Central Fan SS", # fan_name
+        1, # heating_speeds
+        1, # cooling_speeds
         ],
     "ASHP_DualSpeed_9.5HSPF_19SEER": [
         "Central", # Central or Zonal HVAC
@@ -624,7 +628,37 @@ def genmodels(gui_params, get_data_dict):
         "AirLoopHVAC:UnitaryHeatPump:AirToAir:MultiSpeed", # AirLoopHVAC_Unitary_ObjectType
         "MS Heat Pump", # AirLoopHVAC_Unitary_ObjectName
         "Central Fan MS", # fan_name
-        ],    
+        2, # heating_speeds
+        2, # cooling_speeds
+        ],
+     "ASHP_VariableSpeed_10HSPF_22SEER": [
+        "Central", # Central or Zonal HVAC
+        "ZoneHVAC:AirDistributionUnit", # ZoneEquipment1ObjectType
+        "ZoneDirectAir ADU", # ZoneEquipment1Name
+        "1", # ZoneEquipment1CoolingSequence
+        "1", # ZoneEquipment1HeatingSequence
+        "!-", # ZoneEquipment2ObjectType
+        "!-", # ZoneEquipment2Name
+        "!-", # ZoneEquipment2CoolingSequence
+        "!-", # ZoneEquipment2HeatingSequence
+        "Zone Inlet Node", # ZoneAirInletNodeName
+        "", # ZoneAirExhaustNodeName
+        "Zone Outlet Node", # ZoneReturnAirNodeName
+        os.path.join(set_dir, building_block_dir, hvac_airloop_main_dir, hvac_airloop_hvac_dir, 'UnitaryHeatPumpMS.txt'), # HVAC equipment text file 1
+        os.path.join(set_dir, building_block_dir, hvac_zone_main_dir, hvac_zone_hvac_dir, 'ADU.txt'), # HVAC equipment text file 2
+        os.path.join(set_dir, building_block_dir, hvac_coil_dir, 'Heating_ASHP_VS_10HSPF.txt'), # additional heating coil text file
+        os.path.join(set_dir, building_block_dir, hvac_coil_dir, 'Cooling_ASHP_VS_22SEER.txt'), # additional cooling coil text file
+        os.path.join(set_dir, building_block_dir, hvac_fan_dir, 'CentralFanMS.txt'), # additional fan text file
+        "Coil:Heating:DX:MultiSpeed", # AirLoopHVAC_HeatingCoil_ObjectType
+        "Heating_ASHP_VS_10HSPF", # AirLoopHVAC_HeatingCoil_Name
+        "Coil:Cooling:DX:MultiSpeed", # AirLoopHVAC_CoolingCoil_ObjectType
+        "Cooling_ASHP_VS_22SEER", # AirLoopHVAC_CoolingCoil_Name
+        "AirLoopHVAC:UnitaryHeatPump:AirToAir:MultiSpeed", # AirLoopHVAC_Unitary_ObjectType
+        "MS Heat Pump", # AirLoopHVAC_Unitary_ObjectName
+        "Central Fan MS", # fan_name
+        4, # heating_speeds
+        4, # cooling_speeds
+        ],   
     "Electric Furnace with CAC": [
         "Central", # Central or Zonal HVAC
         "ZoneHVAC:AirDistributionUnit", # ZoneEquipment1ObjectType
@@ -650,6 +684,8 @@ def genmodels(gui_params, get_data_dict):
         "AirLoopHVAC:UnitaryHeatCool", # AirLoopHVAC_Unitary_ObjectType
         "ACandFurnace", # AirLoopHVAC_Unitary_ObjectName
         "Central Fan SS", # fan_name
+        1, # heating_speeds
+        1, # cooling_speeds
         ],
     "Electric Furnace with No CAC": [
         "Central", # Central or Zonal HVAC
@@ -676,6 +712,8 @@ def genmodels(gui_params, get_data_dict):
         "AirLoopHVAC:UnitaryHeatOnly", # AirLoopHVAC_Unitary_ObjectType
         "Furnace", # AirLoopHVAC_Unitary_ObjectName
         "Central Fan SS", # fan_name
+        1, # heating_speeds
+        1, # cooling_speeds
         ],
     "Gas Furnace with CAC": [
         "Central", # Central or Zonal HVAC
@@ -702,6 +740,8 @@ def genmodels(gui_params, get_data_dict):
         "AirLoopHVAC:UnitaryHeatCool", # AirLoopHVAC_Unitary_ObjectType
         "ACandFurnace", # AirLoopHVAC_Unitary_ObjectName
         "Central Fan SS", # fan_name
+        1, # heating_speeds
+        1, # cooling_speeds
         ],
     "Gas Furnace with No CAC": [
         "Central", # Central or Zonal HVAC
@@ -728,6 +768,8 @@ def genmodels(gui_params, get_data_dict):
         "AirLoopHVAC:UnitaryHeatOnly", # AirLoopHVAC_Unitary_ObjectType
         "Furnace", # AirLoopHVAC_Unitary_ObjectName
         "Central Fan SS", # fan_name
+        1, # heating_speeds
+        1, # cooling_speeds
         ],
     "Zonal Resistance Heat with No AC": [
         "Zonal", # Central or Zonal HVAC
@@ -754,6 +796,8 @@ def genmodels(gui_params, get_data_dict):
         "AirLoopHVAC:UnitaryHeatOnly", # AirLoopHVAC_Unitary_ObjectType
         "Furnace", # AirLoopHVAC_Unitary_ObjectName
         "Zonal Fan", # fan_name
+        1, # heating_speeds
+        1, # cooling_speeds
         ],
      "Zonal Resistance Heat with Room AC (8.5 EER)": [
         "Zonal", # Central or Zonal HVAC
@@ -780,6 +824,8 @@ def genmodels(gui_params, get_data_dict):
         "AirLoopHVAC:UnitaryHeatCool", # AirLoopHVAC_Unitary_ObjectType
         "ACandFurnace", # AirLoopHVAC_Unitary_ObjectName
         "Zonal Fan", # fan_name
+        1, # heating_speeds
+        1, # cooling_speeds
         ],   
     "Zonal Resistance Heat with Room AC (9.8 EER)": [
         "Zonal", # Central or Zonal HVAC
@@ -806,6 +852,8 @@ def genmodels(gui_params, get_data_dict):
         "AirLoopHVAC:UnitaryHeatCool", # AirLoopHVAC_Unitary_ObjectType
         "ACandFurnace", # AirLoopHVAC_Unitary_ObjectName
         "Zonal Fan", # fan_name
+        1, # heating_speeds
+        1, # cooling_speeds
         ],
     "Zonal Resistance Heat with Room AC (10.7 EER)": [
         "Zonal", # Central or Zonal HVAC
@@ -832,6 +880,8 @@ def genmodels(gui_params, get_data_dict):
         "AirLoopHVAC:UnitaryHeatCool", # AirLoopHVAC_Unitary_ObjectType
         "ACandFurnace", # AirLoopHVAC_Unitary_ObjectName
         "Zonal Fan", # fan_name
+        1, # heating_speeds
+        1, # cooling_speeds
         ],
     }
 
@@ -1181,6 +1231,8 @@ def genmodels(gui_params, get_data_dict):
         AirLoopHVAC_Unitary_ObjectType = hvac_dict[hvac_type][21]
         AirLoopHVAC_Unitary_ObjectName = hvac_dict[hvac_type][22]
         fan_name = hvac_dict[hvac_type][23]
+        heating_speeds = hvac_dict[hvac_type][24]
+        cooling_speeds = hvac_dict[hvac_type][25]
 
         ZoneEquipment3ObjectType = "!-"
         ZoneEquipment3Name = "!-"
