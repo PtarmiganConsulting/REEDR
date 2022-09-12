@@ -1,0 +1,39 @@
+!-   ===========  ALL OBJECTS IN CLASS: AIRLOOPHVAC:UNITARYHEATPUMP:AIRTOAIR:MultiSpeed ===========
+
+  AirLoopHVAC:UnitaryHeatPump:AirToAir:MultiSpeed,
+    MS Heat Pump,                                   !- Name
+    always_avail,                                   !- Availability Schedule Name
+    Air Loop Inlet Node,                            !- Air Inlet Node Name
+    Air Loop Outlet Node,                           !- Air Outlet Node Name
+    living,                                         !- Controlling Zone or Thermostat Location
+    Fan:OnOff,                                      !- Supply Air Fan Object Type
+    {fan_name},                                     !- Supply Air Fan Name
+    BlowThrough,                                    !- Supply Air Fan Placement
+    fan_cycle,                                      !- Supply Air Fan Operating Mode Schedule Name
+    {AirLoopHVAC_HeatingCoil_ObjectType},           !- Heating Coil Object Type
+    {AirLoopHVAC_HeatingCoil_Name},                 !- Heating Coil Name
+    {hp_min_compressor_temp},                       !- Minimum Outdoor Dry-Bulb Temperature for Compressor Operation {{C}}
+    {AirLoopHVAC_CoolingCoil_ObjectType},           !- Cooling Coil Object Type
+    {AirLoopHVAC_CoolingCoil_Name},                 !- Cooling Coil Name
+    {AirLoopHVAC_SuppHeatingCoil_ObjectType},       !- Supplemental Heating Coil Object Type
+    {AirLoopHVAC_SuppHeatingCoil_Name},             !- Supplemental Heating Coil Name
+    50,                                             !- Maximum Supply Air Temperature from Supplemental Heater {{C}}
+    {hp_max_resistance_temp},                       !- Maximum Outdoor Dry-Bulb Temperature for Supplemental Heater Operation {{C}}
+    0,                                              !- Auxiliary On-Cycle Electric Power {{W}}
+    0,                                              !- Auxiliary Off-Cycle Electric Power {{W}}
+    ,                                               !- Design Heat Recovery Water Flow Rate {{m3/s}}
+    ,                                               !- Maximum Temperature for Heat Recovery {{C}}
+    ,                                               !- Heat Recovery Water Inlet Node Name
+    ,                                               !- Heat Recovery Water Outlet Node Name
+    0,                                              !- No Load Supply Air Flow Rate {{m3/s}}
+    {heating_speeds},                                              !- Number of Speeds for Heating
+    {cooling_speeds},                                              !- Number of Speeds for Cooling
+    autosize,                                       !- Heating Speed 1 Supply Air Flow Rate {{m3/s}}
+    autosize,                                       !- Heating Speed 2 Supply Air Flow Rate {{m3/s}}
+    autosize,                                       !- Heating Speed 3 Supply Air Flow Rate {{m3/s}}
+    autosize,                                       !- Heating Speed 4 Supply Air Flow Rate {{m3/s}}
+    autosize,                                       !- Cooling Speed 1 Supply Air Flow Rate {{m3/s}}
+    autosize,                                       !- Cooling Speed 2 Supply Air Flow Rate {{m3/s}}
+    autosize,                                       !- Cooling Speed 3 Supply Air Flow Rate {{m3/s}}
+    autosize;                                     !- Cooling Speed 4 Supply Air Flow Rate {{m3/s}}
+
