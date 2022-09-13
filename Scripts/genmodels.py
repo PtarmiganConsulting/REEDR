@@ -547,7 +547,7 @@ def genmodels(gui_params, get_data_dict):
 
     # hvac type dictionary
     hvac_dict = {
-    "ASHP_SingleSpeed_8.2HSPF_14SEER": [
+    "Single Speed ASHP (8.2 HSPF 14 SEER)": [
         "Central", # Central or Zonal HVAC
         "ZoneHVAC:AirDistributionUnit", # ZoneEquipment1ObjectType
         "ZoneDirectAir ADU", # ZoneEquipment1Name
@@ -575,7 +575,7 @@ def genmodels(gui_params, get_data_dict):
         1, # heating_speeds
         1, # cooling_speeds
         ],
-    "ASHP_SingleSpeed_8.5HSPF_15SEER": [
+    "Single Speed ASHP (8.5 HSPF 15 SEER)": [
         "Central", # Central or Zonal HVAC
         "ZoneHVAC:AirDistributionUnit", # ZoneEquipment1ObjectType
         "ZoneDirectAir ADU", # ZoneEquipment1Name
@@ -603,7 +603,7 @@ def genmodels(gui_params, get_data_dict):
         1, # heating_speeds
         1, # cooling_speeds
         ],
-    "ASHP_DualSpeed_9.5HSPF_19SEER": [
+    "Dual Speed ASHP (9.5 HSPF 19 SEER)": [
         "Central", # Central or Zonal HVAC
         "ZoneHVAC:AirDistributionUnit", # ZoneEquipment1ObjectType
         "ZoneDirectAir ADU", # ZoneEquipment1Name
@@ -631,7 +631,7 @@ def genmodels(gui_params, get_data_dict):
         2, # heating_speeds
         2, # cooling_speeds
         ],
-     "ASHP_VariableSpeed_10HSPF_22SEER": [
+     "Variable Speed ASHP (10 HSPF 22 SEER)": [
         "Central", # Central or Zonal HVAC
         "ZoneHVAC:AirDistributionUnit", # ZoneEquipment1ObjectType
         "ZoneDirectAir ADU", # ZoneEquipment1Name
@@ -659,7 +659,7 @@ def genmodels(gui_params, get_data_dict):
         4, # heating_speeds
         4, # cooling_speeds
         ],   
-    "Electric Furnace with CAC": [
+    "Electric Furnace with CAC (15 SEER)": [
         "Central", # Central or Zonal HVAC
         "ZoneHVAC:AirDistributionUnit", # ZoneEquipment1ObjectType
         "ZoneDirectAir ADU", # ZoneEquipment1Name
@@ -675,12 +675,12 @@ def genmodels(gui_params, get_data_dict):
         os.path.join(set_dir, building_block_dir, hvac_airloop_main_dir, hvac_airloop_hvac_dir, 'UnitaryHeatCool.txt'), # HVAC equipment text file 1
         os.path.join(set_dir, building_block_dir, hvac_zone_main_dir, hvac_zone_hvac_dir, 'ADU.txt'), # HVAC equipment text file 2
         os.path.join(set_dir, building_block_dir, hvac_coil_dir, 'Heating_Resistance_Main.txt'), # additional heating coil text file
-        os.path.join(set_dir, building_block_dir, hvac_coil_dir, 'Cooling_ASHP_SS_14SEER.txt'), # additional cooling coil text file
+        os.path.join(set_dir, building_block_dir, hvac_coil_dir, 'Cooling_ASHP_SS_15SEER.txt'), # additional cooling coil text file
         os.path.join(set_dir, building_block_dir, hvac_fan_dir, 'CentralFanSS.txt'), # additional fan text file
         "Coil:Heating:Electric", # AirLoopHVAC_HeatingCoil_ObjectType
         "Heating_Resistance_Main", # AirLoopHVAC_HeatingCoil_Name
         "Coil:Cooling:DX:SingleSpeed", # AirLoopHVAC_CoolingCoil_ObjectType
-        "Cooling_ASHP_SS_14SEER", # AirLoopHVAC_CoolingCoil_Name
+        "Cooling_ASHP_SS_15SEER", # AirLoopHVAC_CoolingCoil_Name
         "AirLoopHVAC:UnitaryHeatCool", # AirLoopHVAC_Unitary_ObjectType
         "ACandFurnace", # AirLoopHVAC_Unitary_ObjectName
         "Central Fan SS", # fan_name
@@ -715,7 +715,7 @@ def genmodels(gui_params, get_data_dict):
         1, # heating_speeds
         1, # cooling_speeds
         ],
-    "Gas Furnace with CAC": [
+    "Gas Furnace with CAC (15 SEER)": [
         "Central", # Central or Zonal HVAC
         "ZoneHVAC:AirDistributionUnit", # ZoneEquipment1ObjectType
         "ZoneDirectAir ADU", # ZoneEquipment1Name
@@ -731,12 +731,12 @@ def genmodels(gui_params, get_data_dict):
         os.path.join(set_dir, building_block_dir, hvac_airloop_main_dir, hvac_airloop_hvac_dir, 'UnitaryHeatCool.txt'), # HVAC equipment text file 1
         os.path.join(set_dir, building_block_dir, hvac_zone_main_dir, hvac_zone_hvac_dir, 'ADU.txt'), # HVAC equipment text file 2
         os.path.join(set_dir, building_block_dir, hvac_coil_dir, 'Heating_Fuel_Main.txt'), # additional heating coil text file
-        os.path.join(set_dir, building_block_dir, hvac_coil_dir, 'Cooling_ASHP_SS_14SEER.txt'), # additional cooling coil text file
+        os.path.join(set_dir, building_block_dir, hvac_coil_dir, 'Cooling_ASHP_SS_15SEER.txt'), # additional cooling coil text file
         os.path.join(set_dir, building_block_dir, hvac_fan_dir, 'CentralFanSS.txt'), # additional fan text file
         "Coil:Heating:Fuel", # AirLoopHVAC_HeatingCoil_ObjectType
         "Heating_Fuel_Main", # AirLoopHVAC_HeatingCoil_Name
         "Coil:Cooling:DX:SingleSpeed", # AirLoopHVAC_CoolingCoil_ObjectType
-        "Cooling_ASHP_SS_14SEER", # AirLoopHVAC_CoolingCoil_Name
+        "Cooling_ASHP_SS_15SEER", # AirLoopHVAC_CoolingCoil_Name
         "AirLoopHVAC:UnitaryHeatCool", # AirLoopHVAC_Unitary_ObjectType
         "ACandFurnace", # AirLoopHVAC_Unitary_ObjectName
         "Central Fan SS", # fan_name
@@ -771,7 +771,7 @@ def genmodels(gui_params, get_data_dict):
         1, # heating_speeds
         1, # cooling_speeds
         ],
-    "Zonal Resistance Heat with No AC": [
+    "Resistance Heat with No AC": [
         "Zonal", # Central or Zonal HVAC
         "ZoneHVAC:AirDistributionUnit", # ZoneEquipment1ObjectType
         "ZoneDirectAir ADU", # ZoneEquipment1Name
@@ -799,7 +799,7 @@ def genmodels(gui_params, get_data_dict):
         1, # heating_speeds
         1, # cooling_speeds
         ],
-     "Zonal Resistance Heat with Room AC (8.5 EER)": [
+     "Resistance Heat with Room AC (8.5 EER)": [
         "Zonal", # Central or Zonal HVAC
         "ZoneHVAC:AirDistributionUnit", # ZoneEquipment1ObjectType
         "ZoneDirectAir ADU", # ZoneEquipment1Name
@@ -827,7 +827,7 @@ def genmodels(gui_params, get_data_dict):
         1, # heating_speeds
         1, # cooling_speeds
         ],   
-    "Zonal Resistance Heat with Room AC (9.8 EER)": [
+    "Resistance Heat with Room AC (9.8 EER)": [
         "Zonal", # Central or Zonal HVAC
         "ZoneHVAC:AirDistributionUnit", # ZoneEquipment1ObjectType
         "ZoneDirectAir ADU", # ZoneEquipment1Name
@@ -855,7 +855,7 @@ def genmodels(gui_params, get_data_dict):
         1, # heating_speeds
         1, # cooling_speeds
         ],
-    "Zonal Resistance Heat with Room AC (10.7 EER)": [
+    "Resistance Heat with Room AC (10.7 EER)": [
         "Zonal", # Central or Zonal HVAC
         "ZoneHVAC:AirDistributionUnit", # ZoneEquipment1ObjectType
         "ZoneDirectAir ADU", # ZoneEquipment1Name
