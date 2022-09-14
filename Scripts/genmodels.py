@@ -574,15 +574,15 @@ def genmodels(gui_params, get_data_dict):
             "Central Fan SS", # fan_name
             1, # heating_speeds
             1, # cooling_speeds
-            # fan_CFMperTon_max
-            # fan_CFMmult_spd_1
-            # fan_CFMmult_spd_2
-            # fan_CFMmult_spd_3
-            # fan_CFMmult_spd_4
-            # heating_capacitymult_spd_1
-            # heating_capacitymult_spd_2
-            # heating_capacitymult_spd_3
-            # heating_capacitymult_spd_4
+            400, # fan_CFMperTon_max
+            1, # fan_CFMmult_spd_1
+            -999, # fan_CFMmult_spd_2
+            -999, # fan_CFMmult_spd_3
+            -999, # fan_CFMmult_spd_4
+            1, # heating_capacitymult_spd_1
+            -999, # heating_capacitymult_spd_2
+            -999, # heating_capacitymult_spd_3
+            -999, # heating_capacitymult_spd_4
             ],
         "Single Speed ASHP (8.5 HSPF 15 SEER)": [
             "Central", # Central or Zonal HVAC
@@ -611,6 +611,15 @@ def genmodels(gui_params, get_data_dict):
             "Central Fan SS", # fan_name
             1, # heating_speeds
             1, # cooling_speeds
+            400, # fan_CFMperTon_max
+            1, # fan_CFMmult_spd_1
+            -999, # fan_CFMmult_spd_2
+            -999, # fan_CFMmult_spd_3
+            -999, # fan_CFMmult_spd_4
+            1, # heating_capacitymult_spd_1
+            -999, # heating_capacitymult_spd_2
+            -999, # heating_capacitymult_spd_3
+            -999, # heating_capacitymult_spd_4
             ],
         "Dual Speed ASHP (9.5 HSPF 19 SEER)": [
             "Central", # Central or Zonal HVAC
@@ -639,6 +648,15 @@ def genmodels(gui_params, get_data_dict):
             "Central Fan MS", # fan_name
             2, # heating_speeds
             2, # cooling_speeds
+            400, # fan_CFMperTon_max
+            0.86, # fan_CFMmult_spd_1
+            1, # fan_CFMmult_spd_2
+            -999, # fan_CFMmult_spd_3
+            -999, # fan_CFMmult_spd_4
+            0.72, # heating_capacitymult_spd_1
+            1, # heating_capacitymult_spd_2
+            -999, # heating_capacitymult_spd_3
+            -999, # heating_capacitymult_spd_4
             ],
         "Variable Speed ASHP (10 HSPF 22 SEER)": [
             "Central", # Central or Zonal HVAC
@@ -667,6 +685,15 @@ def genmodels(gui_params, get_data_dict):
             "Central Fan MS", # fan_name
             4, # heating_speeds
             4, # cooling_speeds
+            400, # fan_CFMperTon_max
+            0.7, # fan_CFMmult_spd_1
+            0.9, # fan_CFMmult_spd_2
+            1, # fan_CFMmult_spd_3
+            1.26, # fan_CFMmult_spd_4
+            0.49, # heating_capacitymult_spd_1
+            0.67, # heating_capacitymult_spd_2
+            1.0, # heating_capacitymult_spd_3
+            1.2, # heating_capacitymult_spd_4
             ],   
         "Electric Furnace with CAC (15 SEER)": [
             "Central", # Central or Zonal HVAC
@@ -695,6 +722,15 @@ def genmodels(gui_params, get_data_dict):
             "Central Fan SS", # fan_name
             1, # heating_speeds
             1, # cooling_speeds
+            400, # fan_CFMperTon_max
+            1, # fan_CFMmult_spd_1
+            -999, # fan_CFMmult_spd_2
+            -999, # fan_CFMmult_spd_3
+            -999, # fan_CFMmult_spd_4
+            1, # heating_capacitymult_spd_1
+            -999, # heating_capacitymult_spd_2
+            -999, # heating_capacitymult_spd_3
+            -999, # heating_capacitymult_spd_4
             ],
         "Electric Furnace with No CAC": [
             "Central", # Central or Zonal HVAC
@@ -723,6 +759,15 @@ def genmodels(gui_params, get_data_dict):
             "Central Fan SS", # fan_name
             1, # heating_speeds
             1, # cooling_speeds
+            400, # fan_CFMperTon_max
+            1, # fan_CFMmult_spd_1
+            -999, # fan_CFMmult_spd_2
+            -999, # fan_CFMmult_spd_3
+            -999, # fan_CFMmult_spd_4
+            1, # heating_capacitymult_spd_1
+            -999, # heating_capacitymult_spd_2
+            -999, # heating_capacitymult_spd_3
+            -999, # heating_capacitymult_spd_4
             ],
         "Gas Furnace with CAC (15 SEER)": [
             "Central", # Central or Zonal HVAC
@@ -751,6 +796,15 @@ def genmodels(gui_params, get_data_dict):
             "Central Fan SS", # fan_name
             1, # heating_speeds
             1, # cooling_speeds
+            400, # fan_CFMperTon_max
+            1, # fan_CFMmult_spd_1
+            -999, # fan_CFMmult_spd_2
+            -999, # fan_CFMmult_spd_3
+            -999, # fan_CFMmult_spd_4
+            1, # heating_capacitymult_spd_1
+            -999, # heating_capacitymult_spd_2
+            -999, # heating_capacitymult_spd_3
+            -999, # heating_capacitymult_spd_4
             ],
         "Gas Furnace with No CAC": [
             "Central", # Central or Zonal HVAC
@@ -779,6 +833,15 @@ def genmodels(gui_params, get_data_dict):
             "Central Fan SS", # fan_name
             1, # heating_speeds
             1, # cooling_speeds
+            400, # fan_CFMperTon_max
+            1, # fan_CFMmult_spd_1
+            -999, # fan_CFMmult_spd_2
+            -999, # fan_CFMmult_spd_3
+            -999, # fan_CFMmult_spd_4
+            1, # heating_capacitymult_spd_1
+            -999, # heating_capacitymult_spd_2
+            -999, # heating_capacitymult_spd_3
+            -999, # heating_capacitymult_spd_4
             ],
         "Resistance Heat with No AC": [
             "Zonal", # Central or Zonal HVAC
@@ -807,6 +870,15 @@ def genmodels(gui_params, get_data_dict):
             "Zonal Fan SS", # fan_name
             1, # heating_speeds
             1, # cooling_speeds
+            350, # fan_CFMperTon_max
+            1, # fan_CFMmult_spd_1
+            -999, # fan_CFMmult_spd_2
+            -999, # fan_CFMmult_spd_3
+            -999, # fan_CFMmult_spd_4
+            1, # heating_capacitymult_spd_1
+            -999, # heating_capacitymult_spd_2
+            -999, # heating_capacitymult_spd_3
+            -999, # heating_capacitymult_spd_4
             ],
         "Resistance Heat with Room AC (8.5 EER)": [
             "Zonal", # Central or Zonal HVAC
@@ -835,6 +907,15 @@ def genmodels(gui_params, get_data_dict):
             "Zonal Fan SS", # fan_name
             1, # heating_speeds
             1, # cooling_speeds
+            350, # fan_CFMperTon_max
+            1, # fan_CFMmult_spd_1
+            -999, # fan_CFMmult_spd_2
+            -999, # fan_CFMmult_spd_3
+            -999, # fan_CFMmult_spd_4
+            1, # heating_capacitymult_spd_1
+            -999, # heating_capacitymult_spd_2
+            -999, # heating_capacitymult_spd_3
+            -999, # heating_capacitymult_spd_4
             ],   
         "Resistance Heat with Room AC (9.8 EER)": [
             "Zonal", # Central or Zonal HVAC
@@ -863,6 +944,15 @@ def genmodels(gui_params, get_data_dict):
             "Zonal Fan SS", # fan_name
             1, # heating_speeds
             1, # cooling_speeds
+            350, # fan_CFMperTon_max
+            1, # fan_CFMmult_spd_1
+            -999, # fan_CFMmult_spd_2
+            -999, # fan_CFMmult_spd_3
+            -999, # fan_CFMmult_spd_4
+            1, # heating_capacitymult_spd_1
+            -999, # heating_capacitymult_spd_2
+            -999, # heating_capacitymult_spd_3
+            -999, # heating_capacitymult_spd_4
             ],
         "Resistance Heat with Room AC (10.7 EER)": [
             "Zonal", # Central or Zonal HVAC
@@ -891,6 +981,15 @@ def genmodels(gui_params, get_data_dict):
             "Zonal Fan SS", # fan_name
             1, # heating_speeds
             1, # cooling_speeds
+            350, # fan_CFMperTon_max
+            1, # fan_CFMmult_spd_1
+            -999, # fan_CFMmult_spd_2
+            -999, # fan_CFMmult_spd_3
+            -999, # fan_CFMmult_spd_4
+            1, # heating_capacitymult_spd_1
+            -999, # heating_capacitymult_spd_2
+            -999, # heating_capacitymult_spd_3
+            -999, # heating_capacitymult_spd_4
             ],
         "Ductless Heat Pump (10 HSPF 22 SEER)": [
             "Zonal", # Central or Zonal HVAC
@@ -919,6 +1018,15 @@ def genmodels(gui_params, get_data_dict):
             "Zonal Fan MS", # fan_name
             4, # heating_speeds
             4, # cooling_speeds
+            400, # fan_CFMperTon_max
+            0.5, # fan_CFMmult_spd_1
+            0.65, # fan_CFMmult_spd_2
+            0.85, # fan_CFMmult_spd_3
+            1, # fan_CFMmult_spd_4
+            0.3, # heating_capacitymult_spd_1
+            0.67, # heating_capacitymult_spd_2
+            1.0, # heating_capacitymult_spd_3
+            1.3, # heating_capacitymult_spd_4
             ],           
     }
 
@@ -1335,16 +1443,11 @@ def genmodels(gui_params, get_data_dict):
         heating_capacitymult_spd_3 = hvac_dict[hvac_type][33]
         heating_capacitymult_spd_4 = hvac_dict[hvac_type][34]
 
-        htg_fan_m3PerSec_max = convert_CFM_to_m3PerSec(fan_CFMperTon_max * convert_kW_to_ton(heating_capacity_primary))
-        htg_fan_m3PerSec_spd_1 = fan_CFMmult_spd_1 * htg_fan_m3PerSec_max
-        htg_fan_m3PerSec_spd_2 = fan_CFMmult_spd_2 * htg_fan_m3PerSec_max
-        htg_fan_m3PerSec_spd_3 = fan_CFMmult_spd_3 * htg_fan_m3PerSec_max
-        htg_fan_m3PerSec_spd_4 = fan_CFMmult_spd_4 * htg_fan_m3PerSec_max
-        clg_fan_m3PerSec_max = convert_CFM_to_m3PerSec(fan_CFMperTon_max * convert_kW_to_ton(heating_capacity_primary/heating_to_cooling_capacity))
-        clg_fan_m3PerSec_spd_1 = fan_CFMmult_spd_1 * clg_fan_m3PerSec_max
-        clg_fan_m3PerSec_spd_2 = fan_CFMmult_spd_2 * clg_fan_m3PerSec_max
-        clg_fan_m3PerSec_spd_3 = fan_CFMmult_spd_3 * clg_fan_m3PerSec_max
-        clg_fan_m3PerSec_spd_4 = fan_CFMmult_spd_4 * clg_fan_m3PerSec_max
+        fan_m3PerSec_max = convert_CFM_to_m3PerSec(fan_CFMperTon_max * convert_kW_to_ton(heating_capacity_primary/1000))
+        fan_m3PerSec_spd_1 = fan_CFMmult_spd_1 * fan_m3PerSec_max
+        fan_m3PerSec_spd_2 = fan_CFMmult_spd_2 * fan_m3PerSec_max
+        fan_m3PerSec_spd_3 = fan_CFMmult_spd_3 * fan_m3PerSec_max
+        fan_m3PerSec_spd_4 = fan_CFMmult_spd_4 * fan_m3PerSec_max
         htg_capacity_spd_1 = heating_capacitymult_spd_1 * heating_capacity_primary
         htg_capacity_spd_2 = heating_capacitymult_spd_2 * heating_capacity_primary
         htg_capacity_spd_3 = heating_capacitymult_spd_3 * heating_capacity_primary
@@ -1353,6 +1456,8 @@ def genmodels(gui_params, get_data_dict):
         clg_capacity_spd_2 = htg_capacity_spd_2/heating_to_cooling_capacity
         clg_capacity_spd_3 = htg_capacity_spd_3/heating_to_cooling_capacity
         clg_capacity_spd_4 = htg_capacity_spd_4/heating_to_cooling_capacity
+
+        fan_max_flow_allowed = 1.1 * fan_m3PerSec_max
 
         ZoneEquipment3ObjectType = "!-"
         ZoneEquipment3Name = "!-"
