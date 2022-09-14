@@ -5,7 +5,7 @@ import shutil # for removing full directories
 import math # used for functions like square root
 from pprint import pprint # for debugging
 from unitconversions import convert_WperFt2_to_WperM2, convert_degF_to_degC, convert_IP_Uvalue_to_SI_Uvalue, convert_ft_to_m, convert_ft2_to_m2, convert_ft3_to_m3, \
-    convert_Btuh_to_W
+    convert_Btuh_to_W, convert_kW_to_ton, convert_CFM_to_m3PerSec
 
 def genmodels(gui_params, get_data_dict):
 
@@ -1335,15 +1335,24 @@ def genmodels(gui_params, get_data_dict):
         heating_capacitymult_spd_3 = hvac_dict[hvac_type][33]
         heating_capacitymult_spd_4 = hvac_dict[hvac_type][34]
 
-        fan_CFM_max = hvac_dict[hvac_type][26]
-        fan_CFM_spd_1 = hvac_dict[hvac_type][27]
-        fan_CFM_spd_2 = hvac_dict[hvac_type][28]
-        fan_CFM_spd_3 = hvac_dict[hvac_type][29]
-        fan_CFM_spd_4 = hvac_dict[hvac_type][30]
-        heating_capacity_spd_1 = hvac_dict[hvac_type][31]
-        heating_capacity_spd_2 = hvac_dict[hvac_type][32]
-        heating_capacity_spd_3 = hvac_dict[hvac_type][33]
-        heating_capacity_spd_4 = hvac_dict[hvac_type][34]
+        htg_fan_m3PerSec_max = convert_CFM_to_m3PerSec(fan_CFMperTon_max * convert_kW_to_ton(heating_capacity_primary))
+        htg_fan_m3PerSec_spd_1 = fan_CFMmult_spd_1 * htg_fan_m3PerSec_max
+        htg_fan_m3PerSec_spd_2 = fan_CFMmult_spd_2 * htg_fan_m3PerSec_max
+        htg_fan_m3PerSec_spd_3 = fan_CFMmult_spd_3 * htg_fan_m3PerSec_max
+        htg_fan_m3PerSec_spd_4 = fan_CFMmult_spd_4 * htg_fan_m3PerSec_max
+        clg_fan_m3PerSec_max = convert_CFM_to_m3PerSec(fan_CFMperTon_max * convert_kW_to_ton(heating_capacity_primary/heating_to_cooling_capacity))
+        clg_fan_m3PerSec_spd_1 = fan_CFMmult_spd_1 * clg_fan_m3PerSec_max
+        clg_fan_m3PerSec_spd_2 = fan_CFMmult_spd_2 * clg_fan_m3PerSec_max
+        clg_fan_m3PerSec_spd_3 = fan_CFMmult_spd_3 * clg_fan_m3PerSec_max
+        clg_fan_m3PerSec_spd_4 = fan_CFMmult_spd_4 * clg_fan_m3PerSec_max
+        htg_capacity_spd_1 = heating_capacitymult_spd_1 * heating_capacity_primary
+        htg_capacity_spd_2 = heating_capacitymult_spd_2 * heating_capacity_primary
+        htg_capacity_spd_3 = heating_capacitymult_spd_3 * heating_capacity_primary
+        htg_capacity_spd_4 = heating_capacitymult_spd_4 * heating_capacity_primary
+        clg_capacity_spd_1 = htg_capacity_spd_1/heating_to_cooling_capacity
+        clg_capacity_spd_2 = htg_capacity_spd_2/heating_to_cooling_capacity
+        clg_capacity_spd_3 = htg_capacity_spd_3/heating_to_cooling_capacity
+        clg_capacity_spd_4 = htg_capacity_spd_4/heating_to_cooling_capacity
 
         ZoneEquipment3ObjectType = "!-"
         ZoneEquipment3Name = "!-"

@@ -41,3 +41,11 @@ def convert_ft2_to_m2(ft2):
 def convert_ft3_to_m3(ft3):
     m3 = ft3/35.315
     return m3
+
+def convert_kW_to_ton(kW):
+    ton = kW/3.517
+    return ton
+
+def convert_CFM_to_m3PerSec(CFM):
+    m3PerSec = CFM/2118.8799727596793
+    return m3PerSec
