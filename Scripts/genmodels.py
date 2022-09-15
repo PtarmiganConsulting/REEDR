@@ -648,8 +648,8 @@ def genmodels(gui_params, get_data_dict):
             "Central Fan MS", # fan_name
             2, # heating_speeds
             2, # cooling_speeds
-            375, # fan_CFMperTon_max
-            0.86, # fan_CFMmult_spd_1
+            380, # fan_CFMperTon_max
+            0.75, # fan_CFMmult_spd_1
             1, # fan_CFMmult_spd_2
             -999, # fan_CFMmult_spd_3
             -999, # fan_CFMmult_spd_4
@@ -685,8 +685,8 @@ def genmodels(gui_params, get_data_dict):
             "Central Fan MS", # fan_name
             4, # heating_speeds
             4, # cooling_speeds
-            310, # fan_CFMperTon_max
-            0.7, # fan_CFMmult_spd_1
+            320, # fan_CFMperTon_max
+            0.6, # fan_CFMmult_spd_1
             0.9, # fan_CFMmult_spd_2
             1, # fan_CFMmult_spd_3
             1.2, # fan_CFMmult_spd_4 #1.26
@@ -1018,15 +1018,15 @@ def genmodels(gui_params, get_data_dict):
             "Zonal Fan MS", # fan_name
             4, # heating_speeds
             4, # cooling_speeds
-            290, # fan_CFMperTon_max
-            0.5, # fan_CFMmult_spd_1
-            0.65, # fan_CFMmult_spd_2
+            285, # fan_CFMperTon_max
+            0.3, # fan_CFMmult_spd_1
+            0.67, # fan_CFMmult_spd_2
             0.85, # fan_CFMmult_spd_3
             1, # fan_CFMmult_spd_4
             0.3, # heating_capacitymult_spd_1
             0.67, # heating_capacitymult_spd_2
             1.0, # heating_capacitymult_spd_3
-            1.2, # heating_capacitymult_spd_4
+            1.26, # heating_capacitymult_spd_4
             ],           
     }
 
@@ -1457,7 +1457,7 @@ def genmodels(gui_params, get_data_dict):
         clg_capacity_spd_3 = htg_capacity_spd_3/heating_to_cooling_capacity
         clg_capacity_spd_4 = htg_capacity_spd_4/heating_to_cooling_capacity
 
-        fan_max_flow_allowed = 1.2 * fan_m3PerSec_max
+        fan_max_flow_allowed = 1 * fan_m3PerSec_max
 
         ZoneEquipment3ObjectType = "!-"
         ZoneEquipment3Name = "!-"
