@@ -4,7 +4,7 @@ Coil:Heating:DX:MultiSpeed,
     Heating Coil Air Inlet Node,                !- Air Inlet Node Name
     Supp Heating Coil Air Inlet Node,           !- Air Outlet Node Name
     {hp_min_compressor_temp},                   !- Minimum Outdoor Dry-Bulb Temperature for Compressor Operation {{C}}
-    ,                                           !- Outdoor Dry-Bulb Temperature to Turn On Compressor {{C}}
+    -8.8,                                       !- Outdoor Dry-Bulb Temperature to Turn On Compressor {{C}}
     200.0,                                      !- Crankcase Heater Capacity {{W}}
     10.0,                                       !- Maximum Outdoor Dry-Bulb Temperature for Crankcase Heater Operation {{C}}
     DefrostEIR,                                 !- Defrost Energy Input Ratio Function of Temperature Curve Name
@@ -17,9 +17,9 @@ Coil:Heating:DX:MultiSpeed,
     Electricity,                                !- Fuel Type
     ,                                           !- Region number for Calculating HSPF
     2,                                          !- Number of Speeds
-    7000,                                       !- Speed 1 Gross Rated Heating Capacity {{W}}
+    {htg_capacity_spd_1},                                       !- Speed 1 Gross Rated Heating Capacity {{W}}
     4.595107312833357,                          !- Speed 1 Gross Rated Heating COP {{W/W}}
-    autosize,                                        !- Speed 1 Rated Air Flow Rate {{m3/s}}
+    {fan_m3PerSec_spd_1},                                        !- Speed 1 Rated Air Flow Rate {{m3/s}}
     ,                                           !- Speed 1 Rated Supply Air Fan Power Per Volume Flow Rate {{W/(m3/s)}}
     HP_Heat-Cap-fT1,                            !- Speed 1 Heating Capacity Function of Temperature Curve Name
     HP_Heat-Cap-fFF1,                           !- Speed 1 Heating Capacity Function of Flow Fraction Curve Name
@@ -28,9 +28,9 @@ Coil:Heating:DX:MultiSpeed,
     HP_Heat-PLF-fPLR1,                          !- Speed 1 Part Load Fraction Correlation Curve Name
     ,                                           !- Speed 1 Rated Waste Heat Fraction of Power Input {{dimensionless}}
     ConstantBiquadratic,                        !- Speed 1 Waste Heat Function of Temperature Curve Name
-    10000,                                       !- Speed 2 Gross Rated Heating Capacity {{W}}
+    {htg_capacity_spd_2},                                       !- Speed 2 Gross Rated Heating Capacity {{W}}
     3.921721736935787,                          !- Speed 2 Gross Rated Heating COP {{W/W}}
-    autosize,                                        !- Speed 2 Rated Air Flow Rate {{m3/s}}
+    {fan_m3PerSec_spd_2},                                        !- Speed 2 Rated Air Flow Rate {{m3/s}}
     ,                                           !- Speed 2 Rated Supply Air Fan Power Per Volume Flow Rate {{W/(m3/s)}}
     HP_Heat-Cap-fT2,                            !- Speed 2 Heating Capacity Function of Temperature Curve Name
     HP_Heat-Cap-fFF2,                           !- Speed 2 Heating Capacity Function of Flow Fraction Curve Name

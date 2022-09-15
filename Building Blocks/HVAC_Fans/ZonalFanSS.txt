@@ -1,9 +1,9 @@
 Fan:OnOff,
-   Zonal Fan,                          !- Name
+   Zonal Fan SS,                          !- Name
    always_avail,             	            !- Availability Schedule Name
    0.6,                                   !- Fan Total Efficiency   
    25,              		                  !- Pressure Rise {{Pa}}   
-   autosize,                              !- Maximum Flow Rate {{m3/s}}
+   {fan_max_flow_allowed},                              !- Maximum Flow Rate {{m3/s}}
    0.9,        		                     !- Motor Efficiency   
    0,                                     !- Motor In Airstream Fraction
    Air Loop Inlet Node,                   !- Air Inlet Node Name
@@ -15,6 +15,6 @@ Fan:OnOff,
 !-   ===========  ALL OBJECTS IN CLASS: AIRFLOWNETWORK:DISTRIBUTION:COMPONENT:Fan ===========
 
 AirflowNetwork:Distribution:Component:Fan,
-    Zonal Fan,         !- Fan Name
+    Zonal Fan SS,         !- Fan Name
     Fan:OnOff;          !- Supply Fan Object Type
 
