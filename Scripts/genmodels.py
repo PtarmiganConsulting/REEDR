@@ -997,16 +997,16 @@ def genmodels(gui_params, get_data_dict):
             "ZoneDirectAir ADU", # ZoneEquipment1Name
             "1", # ZoneEquipment1CoolingSequence
             "1", # ZoneEquipment1HeatingSequence
-            "!-", # ZoneEquipment2ObjectType
-            "!-", # ZoneEquipment2Name
-            "!-", # ZoneEquipment2CoolingSequence
-            "!-", # ZoneEquipment2HeatingSequence
+            "ZoneHVAC:Baseboard:Convective:Electric", # ZoneEquipment2ObjectType
+            "BaseboardElectric", # ZoneEquipment2Name
+            "2", # ZoneEquipment2CoolingSequence
+            "2", # ZoneEquipment2HeatingSequence
             "Zone Inlet Node", # ZoneAirInletNodeName
             "", # ZoneAirExhaustNodeName
             "Zone Outlet Node", # ZoneReturnAirNodeName
             os.path.join(set_dir, building_block_dir, hvac_airloop_main_dir, hvac_airloop_hvac_dir, 'UnitaryHeatPumpMS.txt'), # HVAC equipment text file 1
             os.path.join(set_dir, building_block_dir, hvac_zone_main_dir, hvac_zone_hvac_dir, 'ADU.txt'), # HVAC equipment text file 2
-            os.path.join(set_dir, building_block_dir, hvac_coil_dir, 'Heating_ASHP_VS_10HSPF.txt'), # additional heating coil text file
+            os.path.join(set_dir, building_block_dir, hvac_coil_dir, 'Heating_DHP_VS_10HSPF.txt'), # additional heating coil text file
             os.path.join(set_dir, building_block_dir, hvac_coil_dir, 'Cooling_ASHP_VS_22SEER.txt'), # additional cooling coil text file
             os.path.join(set_dir, building_block_dir, hvac_fan_dir, 'ZonalFanMS.txt'), # additional fan text file
             "Coil:Heating:DX:MultiSpeed", # AirLoopHVAC_HeatingCoil_ObjectType
