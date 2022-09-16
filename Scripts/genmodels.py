@@ -1031,51 +1031,51 @@ def genmodels(gui_params, get_data_dict):
     }
 
     # primary heating capacity dictionary
-    heating_capacity_primary_dict = {
-        "6 kBtuh (1.8 kW or 0.5 ton)": 1800,
-        "12 kBtuh (3.5 kW or 1 ton)": 3500,
-        "18 kBtuh (5.3 kW or 1.5 ton)": 5300,
-        "24 kBtuh (7.0 kW or 2 ton)": 7000,
-        "30 kBtuh (8.8 kW or 2.5 ton)": 8800,
-        "36 kBtuh (10.6 kW or 3 ton)": 10600,
-        "42 kBtuh (12.3 kW or 3.5 ton)": 12300,
-        "48 kBtuh (14.1 kW or 4 ton)": 14100,
-        "54 kBtuh (15.8 kW or 4.5 ton)": 15800,
-        "60 kBtuh (17.6 kW or 5 ton)": 17600,
-        "66 kBtuh (19.3 kW or 5.5 ton)": 19300,
-        "72 kBtuh (21.1 kW or 6 ton)": 21100,
-        "78 kBtuh (22.9 kW or 6.5 ton)": 22900,
-        "84 kBtuh (24.6 kW or 7 ton)": 24600,
-        "90 kBtuh (26.4 kW or 7.5 ton)": 26400,
-        "96 kBtuh (28.1 kW or 8 ton)": 28100,
-        "102 kBtuh (29.9 kW or 8.5 ton)": 29900,
-        "108 kBtuh (31.7 kW or 9 ton)": 31700,
-        "114 kBtuh (33.4 kW or 9.5 ton)": 33400,
-        "120 kBtuh (35.2 kW or 10 ton)": 35200,
+    furnace_capacity_dict = {
+        "NA": 0,
+        "5 kW (17 kBtu)": 5000,
+        "7 kW (24 kBtu)": 7000,
+        "8 kW (27 kBtu)": 8000,
+        "10 kW (34 kBtu)": 10000,
+        "12 kW (41 kBtu)*": 12000,
+        "15 kW (51 kBtu)": 15000,
+        "17 kW (58 kBtu)*": 17000,
+        "20 kW (68 kBtu)": 20000,
+        "30 kW (102 kBtu)": 30000,
+        "40 kW (136 kBtu)": 40000,
+        "30 kBtu (8.8 kW)": 8792.1,
+        "40 kBtu (11.7 kW)": 11722.8,
+        "60 kBtu (17.6 kW)": 17584.3,
+        "80 kBtu (23.4 kW)": 23445.7,
+        "100 kBtu (29.3 kW)": 29307.1,
+        "120 kBtu (35.2 kW)": 35168.5,
     }
 
-    # supplemental heating capacity dictionary
-    heating_capacity_supp_dict = {
-        "6 kBtuh (1.8 kW)": 1800,
-        "12 kBtuh (3.5 kW)": 3500,
-        "18 kBtuh (5.3 kW)": 5300,
-        "24 kBtuh (7.0 kW)": 7000,
-        "30 kBtuh (8.8 kW)": 8800,
-        "36 kBtuh (10.6 kW)": 10600,
-        "42 kBtuh (12.3 kW)": 12300,
-        "48 kBtuh (14.1 kW)": 14100,
-        "54 kBtuh (15.8 kW)": 15800,
-        "60 kBtuh (17.6 kW)": 17600,
-        "66 kBtuh (19.3 kW)": 19300,
-        "72 kBtuh (21.1 kW)": 21100,
-        "78 kBtuh (22.9 kW)": 22900,
-        "84 kBtuh (24.6 kW)": 24600,
-        "90 kBtuh (26.4 kW)": 26400,
-        "96 kBtuh (28.1 kW)": 28100,
-        "102 kBtuh (29.9 kW)": 29900,
-        "108 kBtuh (31.7 kW)": 31700,
-        "114 kBtuh (33.4 kW)": 33400,
-        "120 kBtuh (35.2 kW)": 35200,
+    hpOrAC_capacity_dict = {
+        "NA": 0,
+        "6 kBtu (0.5 ton)": 1758.5,
+        "9 kBtu (0.75 ton)": 2637.7,
+        "12 kBtu (1 ton)": 3516.9,
+        "18 kBtu (1.5 ton)": 5275.4,
+        "24 kBtu (2 ton)": 7033.8,
+        "36 kBtu (3 ton)": 10550.7,
+        "48 kBtu (4 ton)": 14067.6,
+        "60 kBtu (5 ton)": 17584.5,
+        "72 kBtu (6 ton)": 21101.4,
+        "84 kBtu (7 ton)": 24618.3,
+        "96 kBtu (8 ton)": 28135.2,
+    }
+
+    baseboard_capacity_dict = {
+        "NA": 0,
+        "5 kW": 5000,
+        "10 kW": 10000,
+        "15 kW": 15000,
+        "20 kW": 20000,
+        "25 kW": 25000,
+        "30 kW": 30000,
+        "35 kW": 35000,
+        "40 kW": 40000,
     }
 
     # duct dictionary
@@ -1149,14 +1149,17 @@ def genmodels(gui_params, get_data_dict):
         wtw_ratio_left = dictionary["WtW Ratio Left [%]"]
         wtw_ratio_right = dictionary["WtW Ratio Right [%]"]
         hvac_type = dictionary["Primary HVAC Type"]
-        heating_capacity_primary = dictionary["Primary HVAC Type Rated Heating Capacity"]
-        heating_to_cooling_capacity = dictionary["Primary HVAC Type Rated Heating to Cooling Capacity Ratio"]
-        htg_stpt_sch = dictionary["Htg StPt Sch"]
-        clg_stpt_sch = dictionary["Clg StPt Sch"]
+        furnace_capacity_primary = dictionary["Primary HVAC Type Furnace Maximum Rated Capacity"]
+        hpOrAC_capacity_primary = dictionary["Primary HVAC Type Heat Pump or Central AC Max Rated Capacity"]
+        hp_supp_heat_type = dictionary["ASHP Supplemental Heat Type"]
+        hp_supp_heat_capacity = dictionary["ASHP Supplemental Heat Max Rated Capacity"]
+        hp_max_resistance_temp = convert_degF_to_degC(dictionary["ASHP Max Supp Heat Temp [deg F]"])
+        hp_min_compressor_temp = convert_degF_to_degC(dictionary["ASHP Min Compressor Temp [deg F]"])
+        baseboard_heat_capacity = dictionary["Backup Electric Baseboard Heat Capacity"]
         supply_leak = dictionary["Supply Duct Leakage [%]"]
         return_leak = dictionary["Return Duct Leakage [%]"]
-        hp_supp_heat_type = dictionary["Supplemental Heat Type"]
-        hp_supp_heat_capacity = dictionary["Supplemental Heat Capacity"]
+        htg_stpt_sch = dictionary["Htg StPt Sch"]
+        clg_stpt_sch = dictionary["Clg StPt Sch"]
         gas_furnace_AFUE = dictionary["Gas Furnace AFUE [%]"]
         hp_max_resistance_temp = convert_degF_to_degC(dictionary["ASHP Max Supp Heat Temp [deg F]"])
         hp_min_compressor_temp = convert_degF_to_degC(dictionary["ASHP Min Compressor Temp [deg F]"])
@@ -1452,10 +1455,10 @@ def genmodels(gui_params, get_data_dict):
         htg_capacity_spd_2 = heating_capacitymult_spd_2 * heating_capacity_primary
         htg_capacity_spd_3 = heating_capacitymult_spd_3 * heating_capacity_primary
         htg_capacity_spd_4 = heating_capacitymult_spd_4 * heating_capacity_primary
-        clg_capacity_spd_1 = htg_capacity_spd_1/heating_to_cooling_capacity
-        clg_capacity_spd_2 = htg_capacity_spd_2/heating_to_cooling_capacity
-        clg_capacity_spd_3 = htg_capacity_spd_3/heating_to_cooling_capacity
-        clg_capacity_spd_4 = htg_capacity_spd_4/heating_to_cooling_capacity
+        clg_capacity_spd_1 = htg_capacity_spd_1
+        clg_capacity_spd_2 = htg_capacity_spd_2
+        clg_capacity_spd_3 = htg_capacity_spd_3
+        clg_capacity_spd_4 = htg_capacity_spd_4
 
         fan_max_flow_allowed = 1 * fan_m3PerSec_max
 
