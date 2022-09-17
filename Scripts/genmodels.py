@@ -1411,8 +1411,10 @@ def genmodels(gui_params, get_data_dict):
             with open(os.path.join(set_dir, building_block_dir, geometry_main_dir, geometry_envelope_dir, 'NonHeatedBsmtGeometryAdder.txt'), 'r') as f:
                 geom_nonhtdbsmt_adder_t = f"{f.read()}".format(**locals())
 
-        heating_capacity_primary = heating_capacity_primary_dict[heating_capacity_primary]
-        heating_capacity_supp = heating_capacity_supp_dict[hp_supp_heat_capacity]
+        furnace_capacity = furnace_capacity_dict[furnace_capacity_primary]
+        hpOrAC_capacity = hpOrAC_capacity_dict[hpOrAC_capacity_primary]
+        supp_furnace_capacity = furnace_capacity_dict[hp_supp_heat_capacity]
+        baseboard_capacity = baseboard_capacity_dict[baseboard_heat_capacity]
         
         DesignSpecificationOutdoorAirObjectName = ""
 
