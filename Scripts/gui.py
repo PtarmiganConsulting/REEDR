@@ -18,7 +18,7 @@ def gui(func):
         file = filedialog.askopenfile(mode='r')
         if file:
             filepath = os.path.abspath(file.name)
-            path_entry.insert(0, filepath)
+            path_input.set(filepath)
 
     def exe_main(*args):
         gui_params={
