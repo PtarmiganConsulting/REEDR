@@ -6,8 +6,8 @@ import math # used for functions like square root
 from pprint import pprint # for debugging
 from unitconversions import convert_WperFt2_to_WperM2, convert_degF_to_degC, convert_IP_Uvalue_to_SI_Uvalue, convert_ft_to_m, convert_ft2_to_m2, convert_ft3_to_m3, \
     convert_Btuh_to_W, convert_kW_to_ton, convert_CFM_to_m3PerSec
-from dictionaries import make_location_dict, make_above_ground_wall_dict, make_ceiling_and_roof_dict, make_foundation_and_floor_dict, make_water_heater_dict, \
-    make_range_dict, make_dryer_dict, make_blinds_dict, make_output_dict, make_hvac_dict, make_furnace_capacity_dict, make_hpOrAC_capacity_dict, \
+from dictionaries import make_foundation_and_floor_dict, \
+    make_hvac_dict, make_furnace_capacity_dict, make_hpOrAC_capacity_dict, \
     make_baseboard_capacity_dict, make_duct_dict, make_foundation_dict
 
 def genmodels(gui_params, get_data_dict):
@@ -106,24 +106,8 @@ def genmodels(gui_params, get_data_dict):
     output_lookup = output_type + "_" + gui_params["output_enduses"]
 
     ### --- Define dictionaries needed for REEDR user inputs. --- ###
-    # locations & climate dictionary - this determines what location and climate file will later be pulled to the idf
-    location_dict = make_location_dict(set_dir, building_block_dir, location_and_climate_dir)
-    # above ground wall construction dictionary
-    above_ground_wall_dict = make_above_ground_wall_dict(set_dir, building_block_dir, materials_main_dir, materials_wall_ins_dir)
-    # ceiling/attic construction dictionary
-    ceiling_and_roof_dict = make_ceiling_and_roof_dict(set_dir, building_block_dir, materials_main_dir, materials_attic_ins_dir)
     # floor and foundation construction dictionary
     foundation_and_floor_dict = make_foundation_and_floor_dict()
-    # water heater type dictionary
-    water_heater_dict = make_water_heater_dict(set_dir, building_block_dir, dhw_main_dir, dhw_wh_type_dir)
-    # range type dictionary
-    range_dict = make_range_dict(set_dir, building_block_dir, gains_main_dir, gains_rangetype_dir)
-    # dryer type dictionary
-    dryer_dict = make_dryer_dict(set_dir, building_block_dir, gains_main_dir, gains_dryertype_dir)
-    # window blinds dictionary
-    blinds_dict = make_blinds_dict(set_dir, building_block_dir, window_main_dir, window_blinds_dir)
-    # output dictionary
-    output_dict = make_output_dict(set_dir, building_block_dir, output_dir)
     # hvac type dictionary
     hvac_dict = make_hvac_dict(set_dir, building_block_dir, hvac_airloop_main_dir, hvac_airloop_hvac_dir, hvac_zone_main_dir, hvac_zone_hvac_dir, hvac_coil_dir, hvac_fan_dir)
     # primary furnace heating capacity dictionary
@@ -272,37 +256,48 @@ def genmodels(gui_params, get_data_dict):
         # The ones with changeable variables are turned into f-strings so that their values can be properly adjusted.
 
         # Gains
+        #... add range
         if range_type == "None":
             range_t = ""
         else:
-            with open(range_dict[range_type], 'r') as f:
+            range_file = range_type + ".txt"
+            with open(os.path.join(set_dir, building_block_dir, gains_main_dir, gains_rangetype_dir, range_file), 'r') as f:
                 range_t = f.read()
+        #... add dryer
         if dryer_type == "None":
             dryer_t = ""
         else:
-            with open(dryer_dict[dryer_type], 'r') as f:
+            dryer_file = dryer_type + ".txt"
+            with open(os.path.join(set_dir, building_block_dir, gains_main_dir, gains_dryertype_dir, dryer_file), 'r') as f:
                 dryer_t = f.read()
+        #... add clotheswasher
         if clotheswasher == "None":
             clotheswasher_t = ""
         else:
             with open(os.path.join(set_dir, building_block_dir, gains_main_dir, 'ClothesWasher.txt'), 'r') as f:
                 clotheswasher_t = f.read()
+        #... add dishwasher
         if dishwasher == "None":
             dishwasher_t = ""
         else:
             with open(os.path.join(set_dir, building_block_dir, gains_main_dir, 'Dishwasher.txt'), 'r') as f:
                 dishwasher_t = f.read()
+        #... add refrigerator
         if frig == "None":
             frig_t = ""
         else:
             with open(os.path.join(set_dir, building_block_dir, gains_main_dir, 'Refrigerator.txt'), 'r') as f:
                 frig_t = f.read()
+        #... add miscellaneous electric gains
         with open(os.path.join(set_dir, building_block_dir, gains_main_dir, 'MiscElectric.txt'), 'r') as f:
             misc_elec_t = f"{f.read()}".format(**locals())
+        #... add miscellaneous gas gains
         with open(os.path.join(set_dir, building_block_dir, gains_main_dir, 'MiscGas.txt'), 'r') as f:
             misc_gas_t = f"{f.read()}".format(**locals())
+        #... add people
         with open(os.path.join(set_dir, building_block_dir, gains_main_dir, 'People.txt'), 'r') as f:
             people_t = f"{f.read()}".format(**locals())
+        #... add lights
         with open(os.path.join(set_dir, building_block_dir, gains_main_dir, 'Lights.txt'), 'r') as f:
             lights_t = f"{f.read()}".format(**locals())
 
@@ -315,7 +310,8 @@ def genmodels(gui_params, get_data_dict):
             water_heater_t = ""
             dhw_t = ""
         else:
-            with open(water_heater_dict[water_heater_type], 'r') as f:
+            water_heater_file = water_heater_type + ".txt"
+            with open(os.path.join(set_dir, building_block_dir, dhw_main_dir, dhw_wh_type_dir, water_heater_file), 'r') as f:
                 water_heater_t = f.read()
             with open(os.path.join(set_dir, building_block_dir, dhw_main_dir, 'OtherDHW.txt'), 'r') as f:
                 dhw_t = f.read()
@@ -329,30 +325,30 @@ def genmodels(gui_params, get_data_dict):
         with open(os.path.join(set_dir, building_block_dir, window_main_dir, 'SimpleGlazingSystem.txt'), 'r') as f:
             glazing_t = f"{f.read()}".format(**locals())
         #... set window construction (i.e. with or without blinds)
-        if window_shades == "Yes":
-            with open(blinds_dict[window_shades], 'r') as f:
-                win_construction_t = f.read()
-        else:
-            with open(blinds_dict[window_shades], 'r') as f:
-                win_construction_t = f.read()
+        window_con_file = window_shades + ".txt"
+        with open(os.path.join(set_dir, building_block_dir, window_main_dir, window_blinds_dir, window_con_file), 'r') as f:
+            win_construction_t = f.read()
         #... choose whether to add window overhangs - CURRENTLY NOT USED
         # if window_overhangs == "Yes":
         #     with open(os.path.join(set_dir, building_block_dir, window_main_dir, 'Overhangs.txt'), 'r') as f:
         #         overhangs_t = f"{f.read()}".format(**locals())
         # else:
         #     overhangs_t = ""
-        overhangs_t = ""
 
-        # Locations and Climate
-        with open(location_dict[location_pull], 'r') as f: # our location & climate dictionary in action
+        # Location & Climate
+        #... also includes design day 
+        location_design_day_file = location_pull + ".txt"
+        with open(os.path.join(set_dir, building_block_dir, location_and_climate_dir, location_design_day_file), 'r') as f: # our location & climate dictionary in action
             locations_t = f.read()
 
         # Materials
         #... insert user-entered above-ground wall insulation
-        with open(above_ground_wall_dict[above_ground_wall_con], 'r') as f:
+        wall_ins_file = above_ground_wall_con + ".txt"
+        with open(os.path.join(set_dir, building_block_dir, materials_main_dir, materials_wall_ins_dir, wall_ins_file), 'r') as f:
             above_ground_wall_t = f.read()
         #... insert user-entered ceiling/attic insulation
-        with open(ceiling_and_roof_dict[ceiling_and_roof_con], 'r') as f:
+        attic_ins_file = ceiling_and_roof_con + ".txt"
+        with open(os.path.join(set_dir, building_block_dir, materials_main_dir, materials_attic_ins_dir, attic_ins_file), 'r') as f:
             ceiling_attic_t = f.read()
         #...insert all other materials
         with open(os.path.join(set_dir, building_block_dir, materials_main_dir, 'OtherMaterials.txt'), 'r') as f:
@@ -672,19 +668,21 @@ def genmodels(gui_params, get_data_dict):
             with open(hvac_dict[hvac_type][16], 'r') as f:
                 fan_t = f"{f.read()}".format(**locals())
 
-        # Output text file
+        # Output text files
+        #... add user requested output file
+        user_output_file = output_lookup + ".txt"
+        with open(os.path.join(set_dir, building_block_dir, output_dir, user_output_file), 'r') as f:
+            user_output_t = f"{f.read()}".format(**locals())  
+        #... add general output
         with open(os.path.join(set_dir, building_block_dir, output_dir, 'OtherOutput.txt'), 'r') as f:
             output_t = f.read()
-        with open(output_dict[output_lookup], 'r') as f:
-            user_output_t = f"{f.read()}".format(**locals())
-
         
         ### --- Assemble Final IDF Text File --- ###
         # Nests all the .txt files, now morphed into strings, in a listin the order they are to be written to the new idfs.
         # Nesting them this way allows us to easily write the full idf file, because we can simply iterate over the list
         master_tl = [
             simparam_t, locations_t, sched_t, mat_t, above_ground_wall_t, ceiling_attic_t, glazing_t, win_construction_t, \
-            overhangs_t, construction_t, range_t, dryer_t, clotheswasher_t, dishwasher_t, frig_t, misc_elec_t, misc_gas_t, people_t, lights_t, \
+            construction_t, range_t, dryer_t, clotheswasher_t, dishwasher_t, frig_t, misc_elec_t, misc_gas_t, people_t, lights_t, \
             foundation_type_t, geom_rules_t, internal_mass_t, geom_main_envelope_t, geom_nonslab_adder_t, geom_main_windows_t, \
             living_zone_t, attic_zone_t, unheatedbsmt_zone_t, crawlspace_zone_t, geom_nonhtdbsmt_adder_t, \
             AFN_sim_control_t, AFN_main_zones_t, AFN_main_leakage_t, AFN_main_surfaces_t, AFN_nodes_main_t, AFN_linkage_main_t, \
