@@ -636,7 +636,7 @@ def genmodels(gui_params, get_data_dict):
             "Zone Outlet Node", # ZoneReturnAirNodeName
             os.path.join(set_dir, building_block_dir, hvac_airloop_main_dir, hvac_airloop_hvac_dir, 'UnitaryHeatPumpDS.txt'), # HVAC equipment text file 1
             os.path.join(set_dir, building_block_dir, hvac_zone_main_dir, hvac_zone_hvac_dir, 'ADU.txt'), # HVAC equipment text file 2
-            os.path.join(set_dir, building_block_dir, hvac_coil_dir, 'Heating_ASHP_DS_9.5HSPF_v2.txt'), # additional heating coil text file
+            os.path.join(set_dir, building_block_dir, hvac_coil_dir, 'Heating_ASHP_DS_9.5HSPF.txt'), # additional heating coil text file
             os.path.join(set_dir, building_block_dir, hvac_coil_dir, 'Cooling_ASHP_DS_19SEER.txt'), # additional cooling coil text file
             os.path.join(set_dir, building_block_dir, hvac_fan_dir, 'CentralFanMS.txt'), # additional fan text file
             "Coil:Heating:DX:MultiSpeed", # AirLoopHVAC_HeatingCoil_ObjectType
@@ -722,7 +722,7 @@ def genmodels(gui_params, get_data_dict):
             "Central Fan SS", # fan_name
             1, # heating_speeds
             1, # cooling_speeds
-            375, # fan_CFMperTon_max
+            250, # fan_CFMperTon_max
             1, # fan_CFMmult_spd_1
             -999, # fan_CFMmult_spd_2
             -999, # fan_CFMmult_spd_3
@@ -759,7 +759,7 @@ def genmodels(gui_params, get_data_dict):
             "Central Fan SS", # fan_name
             1, # heating_speeds
             1, # cooling_speeds
-            375, # fan_CFMperTon_max
+            250, # fan_CFMperTon_max
             1, # fan_CFMmult_spd_1
             -999, # fan_CFMmult_spd_2
             -999, # fan_CFMmult_spd_3
@@ -796,7 +796,7 @@ def genmodels(gui_params, get_data_dict):
             "Central Fan SS", # fan_name
             1, # heating_speeds
             1, # cooling_speeds
-            375, # fan_CFMperTon_max
+            200, # fan_CFMperTon_max
             1, # fan_CFMmult_spd_1
             -999, # fan_CFMmult_spd_2
             -999, # fan_CFMmult_spd_3
@@ -833,7 +833,7 @@ def genmodels(gui_params, get_data_dict):
             "Central Fan SS", # fan_name
             1, # heating_speeds
             1, # cooling_speeds
-            375, # fan_CFMperTon_max
+            200, # fan_CFMperTon_max
             1, # fan_CFMmult_spd_1
             -999, # fan_CFMmult_spd_2
             -999, # fan_CFMmult_spd_3
@@ -843,7 +843,7 @@ def genmodels(gui_params, get_data_dict):
             -999, # heating_capacitymult_spd_3
             -999, # heating_capacitymult_spd_4
             ],
-        "Resistance Heat with No AC": [
+        "Resistance Wall Heat with No AC": [
             "Zonal", # Central or Zonal HVAC
             "ZoneHVAC:AirDistributionUnit", # ZoneEquipment1ObjectType
             "ZoneDirectAir ADU", # ZoneEquipment1Name
@@ -870,7 +870,7 @@ def genmodels(gui_params, get_data_dict):
             "Zonal Fan SS", # fan_name
             1, # heating_speeds
             1, # cooling_speeds
-            350, # fan_CFMperTon_max
+            325, # fan_CFMperTon_max
             1, # fan_CFMmult_spd_1
             -999, # fan_CFMmult_spd_2
             -999, # fan_CFMmult_spd_3
@@ -880,7 +880,7 @@ def genmodels(gui_params, get_data_dict):
             -999, # heating_capacitymult_spd_3
             -999, # heating_capacitymult_spd_4
             ],
-        "Resistance Heat with Room AC (8.5 EER)": [
+        "Resistance Wall Heat with Room AC (8.5 EER)": [
             "Zonal", # Central or Zonal HVAC
             "ZoneHVAC:AirDistributionUnit", # ZoneEquipment1ObjectType
             "ZoneDirectAir ADU", # ZoneEquipment1Name
@@ -907,7 +907,7 @@ def genmodels(gui_params, get_data_dict):
             "Zonal Fan SS", # fan_name
             1, # heating_speeds
             1, # cooling_speeds
-            350, # fan_CFMperTon_max
+            325, # fan_CFMperTon_max
             1, # fan_CFMmult_spd_1
             -999, # fan_CFMmult_spd_2
             -999, # fan_CFMmult_spd_3
@@ -917,7 +917,7 @@ def genmodels(gui_params, get_data_dict):
             -999, # heating_capacitymult_spd_3
             -999, # heating_capacitymult_spd_4
             ],   
-        "Resistance Heat with Room AC (9.8 EER)": [
+        "Resistance Wall Heat with Room AC (9.8 EER)": [
             "Zonal", # Central or Zonal HVAC
             "ZoneHVAC:AirDistributionUnit", # ZoneEquipment1ObjectType
             "ZoneDirectAir ADU", # ZoneEquipment1Name
@@ -944,7 +944,7 @@ def genmodels(gui_params, get_data_dict):
             "Zonal Fan SS", # fan_name
             1, # heating_speeds
             1, # cooling_speeds
-            350, # fan_CFMperTon_max
+            325, # fan_CFMperTon_max
             1, # fan_CFMmult_spd_1
             -999, # fan_CFMmult_spd_2
             -999, # fan_CFMmult_spd_3
@@ -954,7 +954,7 @@ def genmodels(gui_params, get_data_dict):
             -999, # heating_capacitymult_spd_3
             -999, # heating_capacitymult_spd_4
             ],
-        "Resistance Heat with Room AC (10.7 EER)": [
+        "Resistance Wall Heat with Room AC (10.7 EER)": [
             "Zonal", # Central or Zonal HVAC
             "ZoneHVAC:AirDistributionUnit", # ZoneEquipment1ObjectType
             "ZoneDirectAir ADU", # ZoneEquipment1Name
@@ -981,7 +981,7 @@ def genmodels(gui_params, get_data_dict):
             "Zonal Fan SS", # fan_name
             1, # heating_speeds
             1, # cooling_speeds
-            350, # fan_CFMperTon_max
+            325, # fan_CFMperTon_max
             1, # fan_CFMmult_spd_1
             -999, # fan_CFMmult_spd_2
             -999, # fan_CFMmult_spd_3
@@ -997,10 +997,10 @@ def genmodels(gui_params, get_data_dict):
             "ZoneDirectAir ADU", # ZoneEquipment1Name
             "1", # ZoneEquipment1CoolingSequence
             "1", # ZoneEquipment1HeatingSequence
-            "ZoneHVAC:Baseboard:Convective:Electric", # ZoneEquipment2ObjectType
-            "BaseboardElectric", # ZoneEquipment2Name
-            "2", # ZoneEquipment2CoolingSequence
-            "2", # ZoneEquipment2HeatingSequence
+            "!-", # ZoneEquipment2ObjectType
+            "!-", # ZoneEquipment2Name
+            "!-", # ZoneEquipment2CoolingSequence
+            "!-", # ZoneEquipment2HeatingSequence
             "Zone Inlet Node", # ZoneAirInletNodeName
             "", # ZoneAirExhaustNodeName
             "Zone Outlet Node", # ZoneReturnAirNodeName
@@ -1032,7 +1032,6 @@ def genmodels(gui_params, get_data_dict):
 
     # primary heating capacity dictionary
     furnace_capacity_dict = {
-        "NA": 0,
         "5 kW (17 kBtu)": 5000,
         "7 kW (24 kBtu)": 7000,
         "8 kW (27 kBtu)": 8000,
@@ -1041,7 +1040,9 @@ def genmodels(gui_params, get_data_dict):
         "15 kW (51 kBtu)": 15000,
         "17 kW (58 kBtu)*": 17000,
         "20 kW (68 kBtu)": 20000,
+        "25 kW (85 kBtu)": 25000,
         "30 kW (102 kBtu)": 30000,
+        "35 kW (119 kBtu)": 35000,
         "40 kW (136 kBtu)": 40000,
         "30 kBtu (8.8 kW)": 8792.1,
         "40 kBtu (11.7 kW)": 11722.8,
@@ -1052,7 +1053,6 @@ def genmodels(gui_params, get_data_dict):
     }
 
     hpOrAC_capacity_dict = {
-        "NA": 0,
         "6 kBtu (0.5 ton)": 1758.5,
         "9 kBtu (0.75 ton)": 2637.7,
         "12 kBtu (1 ton)": 3516.9,
@@ -1067,7 +1067,6 @@ def genmodels(gui_params, get_data_dict):
     }
 
     baseboard_capacity_dict = {
-        "NA": 0,
         "5 kW": 5000,
         "10 kW": 10000,
         "15 kW": 15000,
@@ -1149,20 +1148,18 @@ def genmodels(gui_params, get_data_dict):
         wtw_ratio_left = dictionary["WtW Ratio Left [%]"]
         wtw_ratio_right = dictionary["WtW Ratio Right [%]"]
         hvac_type = dictionary["Primary HVAC Type"]
-        furnace_capacity_primary = dictionary["Primary HVAC Type Furnace Maximum Rated Capacity"]
-        hpOrAC_capacity_primary = dictionary["Primary HVAC Type Heat Pump or Central AC Max Rated Capacity"]
-        hp_supp_heat_type = dictionary["ASHP Supplemental Heat Type"]
-        hp_supp_heat_capacity = dictionary["ASHP Supplemental Heat Max Rated Capacity"]
-        hp_max_resistance_temp = convert_degF_to_degC(dictionary["ASHP Max Supp Heat Temp [deg F]"])
-        hp_min_compressor_temp = convert_degF_to_degC(dictionary["ASHP Min Compressor Temp [deg F]"])
+        furnace_capacity_primary = dictionary["Primary HVAC Furnace or Resistance Wall Heat Max Rated Capacity"]
+        hpOrAC_capacity_primary = dictionary["Primary HVAC Heat Pump or AC Max Rated Capacity"]
+        hp_supp_heat_type = dictionary["ASHP Backup Heat Type"]
+        hp_supp_heat_capacity = dictionary["ASHP Backup Max Rated Capacity"]
+        hp_max_resistance_temp = convert_degF_to_degC(dictionary["ASHP Backup Heat Lockout Temp [deg F]"])
+        hp_min_compressor_temp = convert_degF_to_degC(dictionary["ASHP Compressor Lockout Temp [deg F]"])
         baseboard_heat_capacity = dictionary["Backup Electric Baseboard Heat Capacity"]
         supply_leak = dictionary["Supply Duct Leakage [%]"]
         return_leak = dictionary["Return Duct Leakage [%]"]
         htg_stpt_sch = dictionary["Htg StPt Sch"]
         clg_stpt_sch = dictionary["Clg StPt Sch"]
         gas_furnace_AFUE = dictionary["Gas Furnace AFUE [%]"]
-        hp_max_resistance_temp = convert_degF_to_degC(dictionary["ASHP Max Supp Heat Temp [deg F]"])
-        hp_min_compressor_temp = convert_degF_to_degC(dictionary["ASHP Min Compressor Temp [deg F]"])
         water_heater_type = dictionary["Water Heater Type"]
         dhw_stpt_sch = dictionary["DHW StPt Sch"]
         people = dictionary["Number Of People"]
@@ -1410,11 +1407,23 @@ def genmodels(gui_params, get_data_dict):
                 geom_nonslab_adder_t = f"{f.read()}".format(**locals())
             with open(os.path.join(set_dir, building_block_dir, geometry_main_dir, geometry_envelope_dir, 'NonHeatedBsmtGeometryAdder.txt'), 'r') as f:
                 geom_nonhtdbsmt_adder_t = f"{f.read()}".format(**locals())
-
-        furnace_capacity = furnace_capacity_dict[furnace_capacity_primary]
-        hpOrAC_capacity = hpOrAC_capacity_dict[hpOrAC_capacity_primary]
-        supp_furnace_capacity = furnace_capacity_dict[hp_supp_heat_capacity]
-        baseboard_capacity = baseboard_capacity_dict[baseboard_heat_capacity]
+        
+        if furnace_capacity_primary in furnace_capacity_dict:
+            furnace_capacity = furnace_capacity_dict[furnace_capacity_primary]
+        else:
+            furnace_capacity = ""
+        if hpOrAC_capacity_primary in hpOrAC_capacity_dict:
+            hpOrAC_capacity = hpOrAC_capacity_dict[hpOrAC_capacity_primary]
+        else:
+            hpOrAC_capacity = ""
+        if hp_supp_heat_capacity in furnace_capacity_dict:
+            supp_furnace_capacity = furnace_capacity_dict[hp_supp_heat_capacity]
+        else:
+            supp_furnace_capacity = ""
+        if baseboard_heat_capacity in baseboard_capacity_dict:    
+            baseboard_capacity = baseboard_capacity_dict[baseboard_heat_capacity]
+        else:
+            baseboard_capacity = 0
         
         DesignSpecificationOutdoorAirObjectName = ""
 
@@ -1448,15 +1457,24 @@ def genmodels(gui_params, get_data_dict):
         heating_capacitymult_spd_3 = hvac_dict[hvac_type][33]
         heating_capacitymult_spd_4 = hvac_dict[hvac_type][34]
 
-        fan_m3PerSec_max = convert_CFM_to_m3PerSec(fan_CFMperTon_max * convert_kW_to_ton(heating_capacity_primary/1000))
+        # assume effectively no supplemental backup heat for DHP
+        if AirLoopHVAC_Unitary_ObjectType == "AirLoopHVAC:UnitaryHeatPump:AirToAir:MultiSpeed" and hvac_dict[hvac_type][0] == "Zonal":
+            hp_max_resistance_temp = convert_degF_to_degC(68)
+            hp_min_compressor_temp = convert_degF_to_degC(-20)
+
+        if AirLoopHVAC_Unitary_ObjectType == "AirLoopHVAC:UnitaryHeatPump:AirtoAir" or AirLoopHVAC_Unitary_ObjectType == "AirLoopHVAC:UnitaryHeatPump:AirToAir:MultiSpeed":
+            fan_m3PerSec_max = convert_CFM_to_m3PerSec(fan_CFMperTon_max * convert_kW_to_ton(hpOrAC_capacity/1000))
+        else:
+            fan_m3PerSec_max = convert_CFM_to_m3PerSec(fan_CFMperTon_max * convert_kW_to_ton(furnace_capacity/1000))
+        
         fan_m3PerSec_spd_1 = fan_CFMmult_spd_1 * fan_m3PerSec_max
         fan_m3PerSec_spd_2 = fan_CFMmult_spd_2 * fan_m3PerSec_max
         fan_m3PerSec_spd_3 = fan_CFMmult_spd_3 * fan_m3PerSec_max
         fan_m3PerSec_spd_4 = fan_CFMmult_spd_4 * fan_m3PerSec_max
-        htg_capacity_spd_1 = heating_capacitymult_spd_1 * heating_capacity_primary
-        htg_capacity_spd_2 = heating_capacitymult_spd_2 * heating_capacity_primary
-        htg_capacity_spd_3 = heating_capacitymult_spd_3 * heating_capacity_primary
-        htg_capacity_spd_4 = heating_capacitymult_spd_4 * heating_capacity_primary
+        htg_capacity_spd_1 = heating_capacitymult_spd_1 * hpOrAC_capacity
+        htg_capacity_spd_2 = heating_capacitymult_spd_2 * hpOrAC_capacity
+        htg_capacity_spd_3 = heating_capacitymult_spd_3 * hpOrAC_capacity
+        htg_capacity_spd_4 = heating_capacitymult_spd_4 * hpOrAC_capacity
         clg_capacity_spd_1 = htg_capacity_spd_1
         clg_capacity_spd_2 = htg_capacity_spd_2
         clg_capacity_spd_3 = htg_capacity_spd_3
@@ -1464,6 +1482,17 @@ def genmodels(gui_params, get_data_dict):
 
         fan_max_flow_allowed = 1 * fan_m3PerSec_max
 
+        # add baseboard capacity if defined
+        if baseboard_capacity != 0:
+            ZoneEquipment2ObjectType = "ZoneHVAC:Baseboard:Convective:Electric"
+            ZoneEquipment2Name = "BaseboardElectric"
+            ZoneEquipment2CoolingSequence = "2"
+            ZoneEquipment2HeatingSequence = "2"
+            with open(os.path.join(set_dir, building_block_dir, hvac_zone_main_dir, hvac_zone_hvac_dir, 'BaseboardHeat.txt'), 'r') as f:
+                baseboard_t = f"{f.read()}".format(**locals())
+        else:
+            baseboard_t = ""
+        
         ZoneEquipment3ObjectType = "!-"
         ZoneEquipment3Name = "!-"
         ZoneEquipment3CoolingSequence = "!-"
@@ -1617,7 +1646,7 @@ def genmodels(gui_params, get_data_dict):
             AFN_crawl_zone_t, AFN_unheatedbsmt_zone_t, AFN_crawl_unheatedbsmt_leakage_adder_t, AFN_crawl_unheatedbsmt_surface_adder_t, \
             AFN_ducts_t, system_sizing_t, airloop_t, AFN_linkage_coolingcoiladder_t, AFN_nodes_coolingcoiladder_t, \
             zone_equip_list_t, HVAC_equip_1_t, HVAC_equip_2_t, heating_coil_t, supp_heating_coil_t, cooling_coil_t, fan_t, \
-            thermostat_t, zone_sizing_t, water_heater_t, dhw_t, perf_t, output_t, user_output_t
+            baseboard_t, thermostat_t, zone_sizing_t, water_heater_t, dhw_t, perf_t, output_t, user_output_t
             ]
 
         #the idf writing actually begins here
