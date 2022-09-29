@@ -47,6 +47,7 @@ def genmodels(gui_params, get_data_dict):
     geometry_envelope_dir = "Envelope"
     geometry_window_dir = "Windows"
     geometry_zone_dir = "Zones"
+    performanceprecision_dir = "PerformancePrecisionTradeoffs"
 
     ### --- Get input variables from tkinter user interface. --- ###
     begin_mo = get_data_dict["begin_mo"]
@@ -92,7 +93,8 @@ def genmodels(gui_params, get_data_dict):
             get_data_dict["runlog"].write("!!! subdirectory could not be created at " + path + ". \n")
             get_data_dict["runlog"].write("!!! REEDR experienced the following error: " + str(e) + ". \n")
             get_data_dict["runlog"].close()
-            print(e)
+            print("\n*** ERROR: Subdirectory could not be created for the run: " + name + ". ***\nPlease ensure that ALL Run Labels are unique.\n")
+            return True
 
     get_data_dict["runlog"].write("... \n")
 
@@ -318,6 +320,14 @@ def genmodels(gui_params, get_data_dict):
         # Simulation Parameters
         with open(os.path.join(set_dir, building_block_dir, 'SimulationParameters.txt'), 'r') as f:
             simparam_t = f"{f.read()}".format(**locals())
+
+        # Performance Precision Tradeoffs
+        if sim_type == "Test Run":
+            with open(os.path.join(set_dir, building_block_dir, performanceprecision_dir, 'HighSpeed.txt'), 'r') as f:
+                performanceprecision_t = f"{f.read()}".format(**locals())
+        else:
+            with open(os.path.join(set_dir, building_block_dir, performanceprecision_dir, 'Normal.txt'), 'r') as f:
+                performanceprecision_t = f"{f.read()}".format(**locals())
 
         # Windows
         #... set U-value and SHGC
@@ -680,7 +690,7 @@ def genmodels(gui_params, get_data_dict):
         # Nests all the .txt files, now morphed into strings, in a listin the order they are to be written to the new idfs.
         # Nesting them this way allows us to easily write the full idf file, because we can simply iterate over the list
         master_tl = [
-            simparam_t, locations_t, sched_t, mat_t, above_ground_wall_t, ceiling_attic_t, glazing_t, win_construction_t, \
+            simparam_t, performanceprecision_t, locations_t, sched_t, mat_t, above_ground_wall_t, ceiling_attic_t, glazing_t, win_construction_t, \
             construction_t, range_t, dryer_t, clotheswasher_t, dishwasher_t, frig_t, misc_elec_t, misc_gas_t, people_t, lights_t, \
             foundation_type_t, geom_rules_t, internal_mass_t, geom_main_envelope_t, geom_nonslab_adder_t, geom_main_windows_t, \
             living_zone_t, attic_zone_t, unheatedbsmt_zone_t, crawlspace_zone_t, geom_nonhtdbsmt_adder_t, \
@@ -712,4 +722,5 @@ def genmodels(gui_params, get_data_dict):
 
     get_data_dict["runlog"].write("... \n")
 
+    return False
     ##########################################################################################################################

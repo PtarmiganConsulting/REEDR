@@ -140,6 +140,8 @@ def genoutputs(gui_params, get_data_dict):
     print("...model output complete.")
     print()
 
+    return False
+
 ## This is the main function ("sub-routine") that generates the actual custom report.
 ## It takes as arguments the working directory (set_dir), the proper output dictionary (output_dict),
 ## the proper report name (report_name), the requested output granularity (output_gran), and the output type (energy or demand: output_type).
