@@ -6,9 +6,8 @@ import math # used for functions like square root
 from pprint import pprint # for debugging
 from unitconversions import convert_WperFt2_to_WperM2, convert_degF_to_degC, convert_IP_Uvalue_to_SI_Uvalue, convert_ft_to_m, convert_ft2_to_m2, convert_ft3_to_m3, \
     convert_Btuh_to_W, convert_kW_to_ton, convert_CFM_to_m3PerSec
-from dictionaries import make_foundation_and_floor_dict, \
-    make_hvac_dict, make_furnace_capacity_dict, make_hpOrAC_capacity_dict, \
-    make_baseboard_capacity_dict, make_duct_dict, make_foundation_dict
+from dictionaries import make_foundation_and_floor_dict, make_hvac_dict, make_furnace_capacity_dict, make_hpOrAC_capacity_dict, make_baseboard_capacity_dict, \
+    make_duct_dict, make_foundation_dict
 
 def genmodels(gui_params, get_data_dict):
 
@@ -193,14 +192,14 @@ def genmodels(gui_params, get_data_dict):
         main_floor_construction = foundation_and_floor_dict[foundation_and_floor_con][0]
         foundation_surface = foundation_and_floor_dict[foundation_and_floor_con][1]
         int_horiz_ins_mat_name = foundation_and_floor_dict[foundation_and_floor_con][2]
-        int_horiz_ins_depth = foundation_and_floor_dict[foundation_and_floor_con][3]   
-        int_horiz_ins_width = foundation_and_floor_dict[foundation_and_floor_con][4]    
+        int_horiz_ins_depth = convert_ft_to_m(foundation_and_floor_dict[foundation_and_floor_con][3])
+        int_horiz_ins_width = convert_ft_to_m(foundation_and_floor_dict[foundation_and_floor_con][4])
         int_vert_ins_mat_name = foundation_and_floor_dict[foundation_and_floor_con][5]   
-        int_vert_ins_depth = foundation_and_floor_dict[foundation_and_floor_con][6]                          
+        int_vert_ins_depth = convert_ft_to_m(foundation_and_floor_dict[foundation_and_floor_con][6])
         ext_vert_ins_mat_name = foundation_and_floor_dict[foundation_and_floor_con][7]  
-        ext_vert_ins_depth = foundation_and_floor_dict[foundation_and_floor_con][8]
-        wall_ht_above_grade = foundation_and_floor_dict[foundation_and_floor_con][9]   
-        wall_ht_below_slab = foundation_and_floor_dict[foundation_and_floor_con][10]
+        ext_vert_ins_depth = convert_ft_to_m(foundation_and_floor_dict[foundation_and_floor_con][8])
+        wall_ht_above_grade = convert_ft_to_m(foundation_and_floor_dict[foundation_and_floor_con][9])
+        wall_ht_below_slab = convert_ft_to_m(foundation_and_floor_dict[foundation_and_floor_con][10])
         floor_insulation_layer = foundation_and_floor_dict[foundation_and_floor_con][11]
         floor_main_outside_boundary_condition = foundation_and_floor_dict[foundation_and_floor_con][12]
         floor_main_outside_boundary_condition_object = foundation_and_floor_dict[foundation_and_floor_con][13]

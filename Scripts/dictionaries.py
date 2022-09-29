@@ -14,8 +14,8 @@ def make_foundation_and_floor_dict():
             "", # int_vert_ins_depth               
             "", # ext_vert_ins_mat_name 
             "", # ext_vert_ins_depth 
-            0.2, # wall_ht_above_grade 
-            0.3, # wall_ht_below_slab
+            0.5, # wall_ht_above_grade 
+            1, # wall_ht_below_slab
             "Fiberglass_Batt_R0", # floor insulation layer material name
             "Zone", # floor_main outside boundary condition
             "crawlspace", # floor_main outside boundary condition object
@@ -31,8 +31,8 @@ def make_foundation_and_floor_dict():
             "", # int_vert_ins_depth               
             "", # ext_vert_ins_mat_name 
             "", # ext_vert_ins_depth 
-            0.2, # wall_ht_above_grade 
-            0.3, # wall_ht_below_slab
+            0.5, # wall_ht_above_grade 
+            1, # wall_ht_below_slab
             "Fiberglass_Batt_R13", # floor insulation layer material name
             "Zone", # floor_main outside boundary condition
             "crawlspace", # floor_main outside boundary condition object
@@ -48,8 +48,8 @@ def make_foundation_and_floor_dict():
             "", # int_vert_ins_depth               
             "", # ext_vert_ins_mat_name 
             "", # ext_vert_ins_depth 
-            0.2, # wall_ht_above_grade 
-            0.3, # wall_ht_below_slab
+            0.5, # wall_ht_above_grade 
+            1, # wall_ht_below_slab
             "Fiberglass_Batt_R19", # floor insulation layer material name
             "Zone", # floor_main outside boundary condition
             "crawlspace", # floor_main outside boundary condition object
@@ -65,8 +65,8 @@ def make_foundation_and_floor_dict():
             "", # int_vert_ins_depth               
             "", # ext_vert_ins_mat_name 
             "", # ext_vert_ins_depth 
-            0.2, # wall_ht_above_grade 
-            0.3, # wall_ht_below_slab
+            0.5, # wall_ht_above_grade 
+            1, # wall_ht_below_slab
             "Fiberglass_Batt_R30", # floor insulation layer material name
             "Zone", # floor_main outside boundary condition
             "crawlspace", # floor_main outside boundary condition object
@@ -82,8 +82,8 @@ def make_foundation_and_floor_dict():
             "", # int_vert_ins_depth               
             "", # ext_vert_ins_mat_name 
             "", # ext_vert_ins_depth 
-            0.2, # wall_ht_above_grade 
-            0.3, # wall_ht_below_slab
+            0.5, # wall_ht_above_grade 
+            1, # wall_ht_below_slab
             "Fiberglass_Batt_R38", # floor insulation layer material name
             "Zone", # floor_main outside boundary condition
             "crawlspace", # floor_main outside boundary condition object
@@ -111,7 +111,7 @@ def make_foundation_and_floor_dict():
             "floor_main", # foundation_surface
             "XPS_R5", # int_horiz_ins_mat_name 
             0, # int_horiz_ins_depth 
-            0.6, # int_horiz_ins_width 
+            2, # int_horiz_ins_width 
             "", # int_vert_ins_mat_name 
             "", # int_vert_ins_depth               
             "", # ext_vert_ins_mat_name 
@@ -128,7 +128,7 @@ def make_foundation_and_floor_dict():
             "floor_main", # foundation_surface
             "XPS_R10", # int_horiz_ins_mat_name 
             0, # int_horiz_ins_depth 
-            0.6, # int_horiz_ins_width 
+            2, # int_horiz_ins_width 
             "", # int_vert_ins_mat_name 
             "", # int_vert_ins_depth               
             "", # ext_vert_ins_mat_name 
@@ -145,9 +145,9 @@ def make_foundation_and_floor_dict():
             "floor_main", # foundation_surface
             "XPS_R5", # int_horiz_ins_mat_name 
             0, # int_horiz_ins_depth 
-            0.6, # int_horiz_ins_width 
+            2, # int_horiz_ins_width 
             "XPS_R5", # int_vert_ins_mat_name 
-            0.25, # int_vert_ins_depth               
+            0.5, # int_vert_ins_depth               
             "", # ext_vert_ins_mat_name 
             "", # ext_vert_ins_depth 
             0, # wall_ht_above_grade 
@@ -162,9 +162,9 @@ def make_foundation_and_floor_dict():
             "floor_main", # foundation_surface
             "XPS_R10", # int_horiz_ins_mat_name 
             0, # int_horiz_ins_depth 
-            0.6, # int_horiz_ins_width 
+            2, # int_horiz_ins_width 
             "XPS_R5", # int_vert_ins_mat_name 
-            0.25, # int_vert_ins_depth               
+            0.5, # int_vert_ins_depth               
             "", # ext_vert_ins_mat_name 
             "", # ext_vert_ins_depth 
             0, # wall_ht_above_grade 
