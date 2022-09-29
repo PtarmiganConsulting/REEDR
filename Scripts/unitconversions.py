@@ -31,7 +31,10 @@ def convert_Btuh_to_W(Btuh):
     return W
 
 def convert_ft_to_m(ft):
-    m = ft/3.281
+    if ft == "":
+        m = ""
+    else:
+        m = ft/3.281
     return m
 
 def convert_ft2_to_m2(ft2):

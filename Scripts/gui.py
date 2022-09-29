@@ -2,6 +2,7 @@ import os
 from tkinter import *
 from tkinter import ttk, filedialog
 from tkinter.filedialog import askopenfile
+import threading
 
 def gui(func):
 
@@ -141,11 +142,6 @@ def gui(func):
     ed_input = StringVar()
     ed = ttk.Combobox(frm, width=5, values=days, textvariable=ed_input, state="readonly").grid(column=4, row=6) # end day
 
-    ttk.Button(frm, text="RUN", style='Run.TButton', width=15, command=exe_main).grid(column=2, row=9, columnspan=3, padx=10, pady=15) # run button, idle rn
-
-    
-    
-    
-    
+    ttk.Button(frm, text="RUN", style='Run.TButton', width=15, command=threading.Thread(target=exe_main).start).grid(column=2, row=9, columnspan=3, padx=10, pady=15) # run button, idle rn
     
     root.mainloop()
