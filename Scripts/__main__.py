@@ -30,10 +30,9 @@ def main(gui_params):
     hit_error = False
     
     ### --- Run getdata --- ###
-    # Gets data from Excel input template.
-    # If an error is experienced, send back a dictionary with the key "error" equal to True.
+    #...get data from Excel input template.
     get_data_dict = getdata(gui_params)
-
+    #... if an error is experienced, send back a dictionary with the key "error" equal to True.
     if get_data_dict["error_status"] == True:
         hit_error = True
         

@@ -85,11 +85,19 @@ def getdata(gui_params):
         end_day = 31
         sim_type = "Annual"
     elif sim_runperiod == "Sub-Annual: enter start and end dates at right -->":
-        begin_mo = int(begin_mo_in)
-        begin_day = int(begin_day_in)
-        end_mo = int(end_mo_in)
-        end_day = int(end_day_in)
-        sim_type = "Sub-Annual"
+        try:
+            begin_mo = int(begin_mo_in)
+            begin_day = int(begin_day_in)
+            end_mo = int(end_mo_in)
+            end_day = int(end_day_in)
+            sim_type = "Sub-Annual"
+        except:
+            print("\n*** ERROR: Requested sub-annual simulation without valid start and end dates. ***")
+            print("Please enter a valid start month, start day, end month, and end day.\n")
+            get_data_d = {
+                "error_status":True,
+            }
+            return get_data_d
     else:
         sim_type = "Test Run"
         begin_mo = 1
@@ -114,7 +122,16 @@ def getdata(gui_params):
 
     ## Next block reads in user model inputs into a Pandas dataframe and creates a master list with a bunch of dictionaries in it.
     # ... read in "Model Input" sheet in "REEDR.xlsm" as a Pandas dataframe.
-    df = pd.read_excel(REEDR_wb, sheet_name=Model_Input_ws)
+    try:
+        df = pd.read_excel(REEDR_wb, sheet_name=Model_Input_ws)
+    except:
+        print("\n*** ERROR: Could not find necessary model input worksheet. ***")
+        print("Please ensure the worksheet \"" + Model_Input_ws + "\" is available in the file \"" + str(REEDR_wb) + "\".\n")
+        get_data_d = {
+            "error_status":True,
+        }
+        return get_data_d
+
     runlog.write("User inputs successfully read from " + Model_Input_ws + " sheet of " + REEDR_wb + " workbook. \n" + "... \n")
 
     #... creates one master list with a bunch of dictionaries in it

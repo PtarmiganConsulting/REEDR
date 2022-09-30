@@ -135,12 +135,12 @@ def genmodels(gui_params, get_data_dict):
         print(status)
 
         # Get user inputs from REEDR Excel input file. Each variable below maps to a field in the Excel input sheet.
-        run_label = dictionary["Run Label"]
+        run_label = str(dictionary["Run Label"])
         timestep = dictionary["Timesteps Per Hr"]
         location_pull = dictionary["Weather File"]
         bldg_orient = dictionary["Bldg Orient [deg]"]
         conditioned_footprint_area = round(convert_ft2_to_m2(dictionary["Conditioned Footprint Area [ft^2]"]),10)
-        total_conditioned_volume = round(convert_ft3_to_m3(dictionary["Total Conditioned Volume Above Foundation Walls  [ft^3]"]),10)
+        total_conditioned_volume = round(convert_ft3_to_m3(dictionary["Total Conditioned Volume Above Foundation Walls [ft^3]"]),10)
         ratio_width_to_depth = dictionary["Ratio Width to Depth"]
         above_ground_wall_con = dictionary["Exterior Non-Foundation Wall Construction"]
         ceiling_and_roof_con = dictionary["Ceiling And Roof Construction"]
