@@ -8,6 +8,8 @@ from unitconversions import convert_WperFt2_to_WperM2, convert_degF_to_degC, con
     convert_Btuh_to_W, convert_kW_to_ton, convert_CFM_to_m3PerSec
 from dictionaries import make_foundation_and_floor_dict, make_hvac_dict, make_furnace_capacity_dict, make_hpOrAC_capacity_dict, make_baseboard_capacity_dict, \
     make_duct_dict, make_foundation_dict
+from datavalidation import validate
+
 
 def genmodels(gui_params, get_data_dict):
 
@@ -136,7 +138,11 @@ def genmodels(gui_params, get_data_dict):
 
         # Get user inputs from REEDR Excel input file. Each variable below maps to a field in the Excel input sheet.
         run_label = str(dictionary["Run Label"])
-        timestep = dictionary["Timesteps Per Hr"]
+        try:
+            timestep = validate(dictionary["Timesteps Per Hr"], "Simulation timesteps per hour" , "integer" , 1 , 60)
+        except:
+            print("\n*** ERROR: Timstep must be...\n")
+            return True
         location_pull = dictionary["Weather File"]
         bldg_orient = dictionary["Bldg Orient [deg]"]
         conditioned_footprint_area = round(convert_ft2_to_m2(dictionary["Conditioned Footprint Area [ft^2]"]),10)
