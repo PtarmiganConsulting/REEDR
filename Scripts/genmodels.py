@@ -133,68 +133,212 @@ def genmodels(gui_params, get_data_dict):
     for dictionary in get_data_dict["master_dict_list"]:
 
         # Update simulation status...
-        status = "...building model " + str(i) + " of " + str(len(get_data_dict["df"])) + "..."
-        print(status)
+        print("...building model " + str(i) + " of " + str(len(get_data_dict["df"])) + "...")
+        # Create dummy list for cases where a validation list is not needed.
+        dummy_list = [999]
 
         # Get user inputs from REEDR Excel input file. Each variable below maps to a field in the Excel input sheet.
+        #... run_label
         run_label = str(dictionary["Run Label"])
+        #... run_label
+        valid_timesteps = ["1","2","3","4","5","6","10","12","15","20","30","60"]
+        valid_timesteps_string = ", ".join(valid_timesteps)
         try:
-            timestep = validate(dictionary["Timesteps Per Hr"], "Simulation timesteps per hour" , "integer" , 1 , 60)
+            timestep = validate(str(dictionary["Timesteps Per Hr"]), "list" , 999, 999, valid_timesteps)
         except:
-            print("\n*** ERROR: Timstep must be...\n")
+            print("\n*** ERROR: Timstep must be equal to one of the following values: " + valid_timesteps_string + " ***\n")
             return True
+        #... location/weather file
         location_pull = dictionary["Weather File"]
-        bldg_orient = dictionary["Bldg Orient [deg]"]
-        conditioned_footprint_area = round(convert_ft2_to_m2(dictionary["Conditioned Footprint Area [ft^2]"]),10)
-        total_conditioned_volume = round(convert_ft3_to_m3(dictionary["Total Conditioned Volume Above Foundation Walls [ft^3]"]),10)
-        ratio_width_to_depth = dictionary["Ratio Width to Depth"]
+        #... building orientation
+        bldg_orient_low = 0
+        bldg_orient_high = 359
+        try:
+            bldg_orient = validate(int(dictionary["Bldg Orient [deg]"]), "num_between", bldg_orient_low, bldg_orient_high, dummy_list)
+        except:
+            print("\n*** ERROR: Building orientation must be an integer between " + str(bldg_orient_low) + " and " + str(bldg_orient_high) + " ***\n")
+            return True
+        #... conditioned footprint area
+        try:
+            conditioned_footprint_area = float(validate(round(convert_ft2_to_m2(dictionary["Conditioned Footprint Area [ft^2]"]),10), "num_not_zero", 999, 999, dummy_list))
+        except:
+            print("\n*** ERROR: Conditioned footprint area must be numeric. ***\n")
+            return True
+        #... total conditioned volume
+        try:
+            total_conditioned_volume = float(validate(round(convert_ft3_to_m3(dictionary["Total Conditioned Volume Above Foundation Walls [ft^3]"]),10), "num_not_zero", 999, 999, dummy_list))
+        except:
+            print("\n*** ERROR: Total conditioned volume above foundation walls must be numeric. ***\n")
+            return True
+        #... Width to depth ratio
+        try:
+            ratio_width_to_depth = validate(dictionary["Ratio Width to Depth"], "num_not_zero", 999, 999, dummy_list)
+        except:
+            print("\n*** ERROR: Width to depth ratio must be numeric. ***\n")
+            return True
         above_ground_wall_con = dictionary["Exterior Non-Foundation Wall Construction"]
         ceiling_and_roof_con = dictionary["Ceiling And Roof Construction"]
         foundation_and_floor_con = dictionary["Foundation And Floor Construction"]
-        foundationwall_ht_AG = round(convert_ft_to_m(dictionary["Foundation Wall Height Above Ground [ft]"]),10)
-        foundationwall_ht_BG = -1 * round(convert_ft_to_m(dictionary["Foundation Wall Height Below Ground [ft]"]),10)
-        windowu_val = round(convert_IP_Uvalue_to_SI_Uvalue(dictionary["Window U-Value [Btu/h/ft^2/F]"]),2)
-        window_shgc = dictionary["Window SHGC"]
-        window_shades = dictionary["Window Shades"]
-        # window_overhangs = dictionary["Window Overhangs"] - CURRENTLY NOT USED
-        wtw_ratio_front = dictionary["WtW Ratio Front [%]"]
-        wtw_ratio_back = dictionary["WtW Ratio Back [%]"]
-        wtw_ratio_left = dictionary["WtW Ratio Left [%]"]
-        wtw_ratio_right = dictionary["WtW Ratio Right [%]"]
-        hvac_type = dictionary["Primary HVAC Type"]
-        furnace_capacity_primary = dictionary["Primary HVAC Furnace or Resistance Wall Heat Max Rated Capacity"]
-        hpOrAC_capacity_primary = dictionary["Primary HVAC Heat Pump or AC Max Rated Capacity"]
-        hp_supp_heat_type = dictionary["ASHP Backup Heat Type"]
-        hp_supp_heat_capacity = dictionary["ASHP Backup Max Rated Capacity"]
-        hp_max_resistance_temp = convert_degF_to_degC(dictionary["ASHP Backup Heat Lockout Temp [deg F]"])
-        hp_min_compressor_temp = convert_degF_to_degC(dictionary["ASHP Compressor Lockout Temp [deg F]"])
-        baseboard_heat_capacity = dictionary["Backup Electric Baseboard Heat Capacity"]
-        supply_leak = dictionary["Supply Duct Leakage [%]"]
-        return_leak = dictionary["Return Duct Leakage [%]"]
-        htg_stpt_sch = dictionary["Htg StPt Sch"]
-        clg_stpt_sch = dictionary["Clg StPt Sch"]
-        gas_furnace_AFUE = dictionary["Gas Furnace AFUE [%]"]
-        water_heater_type = dictionary["Water Heater Type"]
-        dhw_stpt_sch = dictionary["DHW StPt Sch"]
-        people = dictionary["Number Of People"]
-        interior_lpd = convert_WperFt2_to_WperM2(dictionary["Interior LPD [W/ft^2]"])/2 #divide total lpd by plug lights and hardwired lights
-        exterior_lp = dictionary["Exterior LP [W]"]/2 #divide total lp by garage lights and exterior facade lights
-        range_type = dictionary["Range"]
-        dryer_type = dictionary["Dryer"]
-        frig = dictionary["Refrigerator"]
-        clotheswasher = dictionary["ClothesWasher"]
-        dishwasher = dictionary["Dishwasher"]
-        misc_elec = dictionary["Misc Electric Gains [Max W]"]
-        misc_gas = convert_Btuh_to_W(dictionary["Misc Gas Gains [Max Btu/h]"])
-
-        ## Set window construction
-        win_construction = "Exterior Window"
-
         # Establish foundation type
         chars = 4
         foundation_key = foundation_and_floor_con[:chars]
         foundation_type = foundation_dict[foundation_key][0]
         returnduct_location = foundation_dict[foundation_key][1]
+        #... Foundation wall height above ground
+        if foundation_type == "Slab":
+            try:
+                foundationwall_ht_AG = float(validate(round(convert_ft_to_m(dictionary["Foundation Wall Height Above Ground [ft]"]),10), "any_num", 999, 999, dummy_list))
+            except:
+                print("\n*** ERROR: Foundation wall height above ground must be numeric. ***\n")
+                return True
+        else:
+            try:
+                foundationwall_ht_AG = float(validate(round(convert_ft_to_m(dictionary["Foundation Wall Height Above Ground [ft]"]),10), "num_not_zero", 999, 999, dummy_list))
+            except:
+                print("\n*** ERROR: For non-slab foundations, foundation wall height above ground must be numeric and greater than zero. ***\n")
+                return True
+        #... Foundation wall height below ground
+        if foundation_type == "Slab":
+            try:
+                foundationwall_ht_BG = float(validate(-1 * round(convert_ft_to_m(dictionary["Foundation Wall Height Below Ground [ft]"]),10), "any_num", 999, 999, dummy_list))
+            except:
+                print("\n*** ERROR: Foundation wall height below ground must be numeric. ***\n")
+                return True
+        else:
+            try:
+                foundationwall_ht_BG = float(validate(-1 * round(convert_ft_to_m(dictionary["Foundation Wall Height Below Ground [ft]"]),10), "num_not_zero", 999, 999, dummy_list))
+            except:
+                print("\n*** ERROR: For non-slab foundations, foundation wall height below ground must be numeric and greater than zero. ***\n")
+                return True
+        #... window U-value
+        u_lo = 0.1
+        u_hi = 1.2
+        try:
+            windowu_val = validate(convert_IP_Uvalue_to_SI_Uvalue(dictionary["Window U-Value [Btu/h/ft^2/F]"]), "num_between", \
+                convert_IP_Uvalue_to_SI_Uvalue(u_lo), convert_IP_Uvalue_to_SI_Uvalue(u_hi), dummy_list)
+        except:
+            print("\n*** ERROR: Window U-value must be a number between " + str(u_lo) + " and " + str(u_hi) + " ***\n")
+            return True
+        #... window SHGC
+        SHGC_lo = 0.01
+        SHGC_hi = 0.99
+        try:
+            window_shgc = validate(dictionary["Window SHGC"], "num_between", SHGC_lo, SHGC_hi, dummy_list)
+        except:
+            print("\n*** ERROR: Window SHGC must be a number between " + str(SHGC_lo) + " and " + str(SHGC_hi) + " ***\n")
+            return True
+        #... Window shades
+        window_shades = dictionary["Window Shades"]
+        # window_overhangs = dictionary["Window Overhangs"] - CURRENTLY NOT USED
+        #... window to wall ratio
+        wtw_lo = 0.01
+        wtw_hi = 0.99
+        try:
+            wtw_ratio_front = validate(dictionary["WtW Ratio Front [%]"], "num_between", wtw_lo, wtw_hi, dummy_list)
+        except:
+            print("\n*** ERROR: Window-to-wall ratios must be a number between " + str(wtw_lo) + " and " + str(wtw_hi) + " ***\n")
+            return True
+        #... window SHGC
+        try:          
+            wtw_ratio_back = validate(dictionary["WtW Ratio Back [%]"], "num_between", wtw_lo, wtw_hi, dummy_list)
+        except:
+            print("\n*** ERROR: Window-to-wall ratios must be a number between " + str(wtw_lo) + " and " + str(wtw_hi) + " ***\n")
+            return True
+        #... window SHGC
+        try:           
+            wtw_ratio_left = validate(dictionary["WtW Ratio Left [%]"], "num_between", wtw_lo, wtw_hi, dummy_list)
+        except:
+            print("\n*** ERROR: Window-to-wall ratios must be a number between " + str(wtw_lo) + " and " + str(wtw_hi) + " ***\n")
+            return True
+        #... window SHGC
+        try:         
+            wtw_ratio_right = validate(dictionary["WtW Ratio Right [%]"], "num_between", wtw_lo, wtw_hi, dummy_list)
+        except:
+            print("\n*** ERROR: Window-to-wall ratios must be a number between " + str(wtw_lo) + " and " + str(wtw_hi) + " ***\n")
+            return True
+        
+        hvac_type = dictionary["Primary HVAC Type"]
+        furnace_capacity_primary = dictionary["Primary HVAC Furnace or Resistance Wall Heat Max Rated Capacity"]
+        hpOrAC_capacity_primary = dictionary["Primary HVAC Heat Pump or AC Max Rated Capacity"]
+        hp_supp_heat_type = dictionary["ASHP Backup Heat Type"]
+        hp_supp_heat_capacity = dictionary["ASHP Backup Max Rated Capacity"]
+
+        #... backup heat lockout
+        try:
+            hp_max_resistance_temp = validate(convert_degF_to_degC(dictionary["ASHP Backup Heat Lockout Temp [deg F]"]), "any_num", 999, 999, dummy_list)
+        except:
+                print("\n*** ERROR: Backup heat lockout temperature must be numeric. ***\n")
+                return True
+        #... compressor lockout
+        try:
+            hp_min_compressor_temp = validate(convert_degF_to_degC(dictionary["ASHP Compressor Lockout Temp [deg F]"]), "any_num", 999, 999, dummy_list)
+        except:
+                print("\n*** ERROR: Compressor lockout temperature must be numeric. ***\n")
+                return True
+        #... baseboard heating capacity
+        baseboard_heat_capacity = dictionary["Backup Electric Baseboard Heat Capacity"]
+        #... supply duct leakage
+        duct_leak_lo = 0.0001
+        duct_leak_hi = 0.99
+        try:
+            supply_leak = validate(dictionary["Supply Duct Leakage [%]"], "num_between", duct_leak_lo, duct_leak_hi, dummy_list)
+        except:
+            print("\n*** ERROR: Supply duct leakage must be a number between " + str(duct_leak_lo) + " and " + str(duct_leak_hi) + " ***\n")
+            return True
+        #... return duct leakage
+        try:
+            return_leak = validate(dictionary["Return Duct Leakage [%]"], "num_between", duct_leak_lo, duct_leak_hi, dummy_list)
+        except:
+            print("\n*** ERROR: Return duct leakage must be a number between " + str(duct_leak_lo) + " and " + str(duct_leak_hi) + " ***\n")
+            return True
+        
+        htg_stpt_sch = dictionary["Htg StPt Sch"]
+        
+        clg_stpt_sch = dictionary["Clg StPt Sch"]
+        
+        #... gas furnace AFUE
+        AFUE_lo = 0.5
+        AFUE_hi = 0.999
+        try:
+            gas_furnace_AFUE = validate(dictionary["Gas Furnace AFUE [%]"], "num_between", AFUE_lo, AFUE_hi, dummy_list)
+        except:
+            print("\n*** ERROR: Gas furnace AFUE must be a number between " + str(AFUE_lo) + " and " + str(AFUE_hi) + " ***\n")
+            return True
+
+        water_heater_type = dictionary["Water Heater Type"]
+        dhw_stpt_sch = dictionary["DHW StPt Sch"]
+        
+        #... people
+        try:
+            people = validate(dictionary["Number Of People"], "any_num", 999, 999, dummy_list)
+        except:
+            print("\n*** ERROR: Number of People must be a numeric input value and cannot be blank. ***\n")
+            return True
+        #... interior lighting power density
+        try:
+            interior_lpd = convert_WperFt2_to_WperM2(dictionary["Interior LPD [W/ft^2]"])/2 #divide total lpd by plug lights and hardwired lights
+        except:
+            print("\n*** ERROR: Number of People must be a numeric input value and cannot be blank. ***\n")
+            return True
+        #... exterior lighting power
+        try:
+            exterior_lp = dictionary["Exterior LP [W]"]/2 #divide total lp by garage lights and exterior facade lights
+        except:
+            print("\n*** ERROR: Number of People must be a numeric input value and cannot be blank. ***\n")
+            return True
+        
+        range_type = dictionary["Range"]
+        dryer_type = dictionary["Dryer"]
+        frig = dictionary["Refrigerator"]
+        clotheswasher = dictionary["ClothesWasher"]
+        dishwasher = dictionary["Dishwasher"]
+        
+        misc_elec = dictionary["Misc Electric Gains [Max W]"]
+        
+        misc_gas = convert_Btuh_to_W(dictionary["Misc Gas Gains [Max Btu/h]"])
+
+        ## Set window construction
+        win_construction = "Exterior Window"
 
         # Set foundation parameters based on foundation type
         main_floor_construction = foundation_and_floor_dict[foundation_and_floor_con][0]
