@@ -51,6 +51,52 @@ def genmodels(gui_params, get_data_dict):
     geometry_zone_dir = "Zones"
     performanceprecision_dir = "PerformancePrecisionTradeoffs"
 
+    ### --- Define user input data field names --- ###
+    runLabel_fieldname = "Run Label"
+    timestep_fieldname = "Timesteps Per Hr"
+    weather_fieldname = "Weather File"
+    orient_fieldname = "Bldg Orient [deg]"
+    footprint_fieldname = "Conditioned Footprint Area [ft^2]"
+    volume_fieldname = "Total Conditioned Volume Above Foundation Walls [ft^3]"
+    bldgRatio_fieldname = "Ratio Width to Depth"
+    wallCon_fieldname = "Exterior Non-Foundation Wall Construction"
+    ceilingCon_fieldname = "Ceiling And Roof Construction"
+    floorCon_fieldname = "Foundation And Floor Construction"
+    foundWallHtAg_fieldname = "Foundation Wall Height Above Ground [ft]"
+    foundWallHtBg_fieldname = "Foundation Wall Height Below Ground [ft]"
+    windowuUvalue_fieldname = "Window U-Value [Btu/h/ft^2/F]"
+    windowSHGC_fieldname = "Window SHGC"
+    windowShade_fieldname = "Window Shades"
+    wtwFront_fieldname = "WtW Ratio Front [%]"
+    wtwBack_fieldname = "WtW Ratio Back [%]"
+    wtwLeft_fieldname = "WtW Ratio Left [%]"
+    wtwRight_fieldname = "WtW Ratio Right [%]"
+    primaryHVAC_fieldname = "Primary HVAC Type"
+    primFurnaceCapacity_fieldname = "Primary HVAC Furnace or Resistance Wall Heat Nominal Rated Capacity"
+    primHPCapacity_fieldname = "Primary HVAC Heat Pump or AC Nominal Rated Capacity"
+    hpBackupType_fieldname = "ASHP Backup Heat Type"
+    hpBackupCapacity_fieldname = "ASHP Backup Nominal Rated Capacity"
+    backupBaseboardCapacity_fieldname = "Backup Electric Baseboard Heat Capacity"
+    hpBackupLockout_fieldname = "ASHP Backup Heat Lockout Temp [deg F]"
+    hpCompressorLockout_fieldname = "ASHP Compressor Lockout Temp [deg F]"
+    AFUE_fieldname = "Gas Furnace AFUE [%]"
+    supplyLeakage_fieldname = "Supply Duct Leakage [%]"
+    returnLeakage_fieldname = "Return Duct Leakage [%]"
+    htgSched_fieldname = "Htg StPt Sch"
+    clgSched_fieldname = "Clg StPt Sch"
+    dhwType_fieldname = "Water Heater Type"
+    dhwSched_fieldname = "DHW StPt Sch"
+    numOfPeople_fieldname = "Number Of People"
+    intLPD_fieldname = "Interior LPD [W/ft^2]"
+    extLP_fieldname = "Exterior LP [W]"
+    range_fieldname = "Range"
+    dryer_fieldname = "Dryer"
+    frig_fieldname = "Refrigerator"
+    cw_fieldname = "ClothesWasher"
+    dw_fieldname = "Dishwasher"
+    miscElec_fieldname = "Misc Electric Gains [Max W]"
+    miscGas_fieldname = "Misc Gas Gains [Max Btu/h]"
+
     ### --- Get input variables from tkinter user interface. --- ###
     begin_mo = get_data_dict["begin_mo"]
     begin_day = get_data_dict["begin_day"]
@@ -87,7 +133,11 @@ def genmodels(gui_params, get_data_dict):
     get_data_dict["runlog"].write("Starting to build subdirectories under " + os.path.join(get_data_dict["master_directory"]) + ". \n")
 
     for name in directory_names:
-        path = os.path.join(get_data_dict["master_directory"], name) # Note: the "master directory" is the user-defined "Project" folder
+        try:
+            path = os.path.join(get_data_dict["master_directory"], name) # Note: the "master directory" is the user-defined "Project" folder
+        except:
+            print("\n*** ERROR: REEDR encountered an invalid Run Label name. Please ensure that all Run Labels are unique and non-blank.\n")
+            return True
         try:
             os.mkdir(path)
             get_data_dict["runlog"].write("... subdirectory successfully created at " + path + ". \n")
@@ -137,31 +187,30 @@ def genmodels(gui_params, get_data_dict):
 
         # Create dummy list for cases where a validation list is not needed.
         dummy_list = [999]
+        dummy_int = 999
 
         # Get user inputs from REEDR Excel input file. Each variable below maps to a field in the Excel input sheet.
         #... run_label
-        run_label = str(dictionary["Run Label"])
+        run_label = str(dictionary[runLabel_fieldname])
 
         #... timestep
         valid_timesteps = ["1","2","3","4","5","6","10","12","15","20","30","60"]
-        valid_timesteps_string = ", ".join(valid_timesteps)
         try:
-            timestep = validate(str(dictionary["Timesteps Per Hr"]), "list" , 999, 999, valid_timesteps)
+            timestep = validate(timestep_fieldname, str(dictionary[timestep_fieldname]), "list", dummy_int, dummy_int, valid_timesteps)
         except:
-            print("\n*** ERROR: Timstep must be equal to one of the following values: " + valid_timesteps_string + " ***\n")
             return True
 
         #... location/weather file
-        location_pull = str(dictionary["Weather File"])
+        location_pull = str(dictionary[weather_fieldname])
         location_path = os.path.join(set_dir, building_block_dir, location_and_climate_dir)
         if location_pull == "nan":
             print("\n*** ERROR: Weather File input cannot be blank. Please specify a valid weather file. ***\n")
             return True
         else:
             try:
-                location_pull = validate(dictionary["Weather File"], "file", 999, 999, dummy_list, location_path)
+                location_pull = validate(weather_fieldname, dictionary[weather_fieldname], "file", dummy_int, dummy_int, dummy_list, location_path)
             except:
-                print("\n*** ERROR: Could not find Weather File named: " + str(dictionary["Weather File"]) + ". ***")
+                print("\n*** ERROR: Could not find Weather File named: " + str(dictionary[weather_fieldname]) + ". ***")
                 print("Make sure Weather File name is valid and available at the path: " + str(location_path) + "\n")
                 return True
 
@@ -169,62 +218,62 @@ def genmodels(gui_params, get_data_dict):
         bldg_orient_lo = 0
         bldg_orient_hi = 359
         try:
-            bldg_orient = validate(int(dictionary["Bldg Orient [deg]"]), "num_between", bldg_orient_lo, bldg_orient_hi, dummy_list)
+            bldg_orient = validate(bldgRatio_fieldname, int(dictionary[bldgRatio_fieldname]), "num_between", bldg_orient_lo, bldg_orient_hi, dummy_list)
         except:
             print("\n*** ERROR: Building orientation must be an integer between " + str(bldg_orient_lo) + " and " + str(bldg_orient_hi) + " ***\n")
             return True
 
         #... conditioned footprint area
         try:
-            conditioned_footprint_area = float(validate(round(convert_ft2_to_m2(dictionary["Conditioned Footprint Area [ft^2]"]),10), "num_not_zero", 999, 999, dummy_list))
+            conditioned_footprint_area = float(validate(footprint_fieldname, round(convert_ft2_to_m2(dictionary[footprint_fieldname]),10), "num_not_zero", 999, 999, dummy_list))
         except:
             print("\n*** ERROR: Conditioned footprint area must be numeric. ***\n")
             return True
 
         #... total conditioned volume
         try:
-            total_conditioned_volume = float(validate(round(convert_ft3_to_m3(dictionary["Total Conditioned Volume Above Foundation Walls [ft^3]"]),10), "num_not_zero", 999, 999, dummy_list))
+            total_conditioned_volume = float(validate(volume_fieldname, round(convert_ft3_to_m3(dictionary[volume_fieldname]),10), "num_not_zero", 999, 999, dummy_list))
         except:
             print("\n*** ERROR: Total conditioned volume above foundation walls must be numeric. ***\n")
             return True
 
         #... Width to depth ratio
         try:
-            ratio_width_to_depth = validate(dictionary["Ratio Width to Depth"], "num_not_zero", 999, 999, dummy_list)
+            ratio_width_to_depth = validate(bldgRatio_fieldname, dictionary[bldgRatio_fieldname], "num_not_zero", 999, 999, dummy_list)
         except:
             print("\n*** ERROR: Width to depth ratio must be numeric. ***\n")
             return True
 
         #... above ground wall construction
-        above_ground_wall_con = str(dictionary["Exterior Non-Foundation Wall Construction"])
+        above_ground_wall_con = str(dictionary[wallCon_fieldname])
         above_ground_wall_con_path = os.path.join(set_dir, building_block_dir, materials_main_dir, materials_wall_ins_dir)
         if above_ground_wall_con == "nan":
             print("\n*** ERROR: Exterior Non-Foundation Wall Construction input cannot be blank. Please specify a valid construction. ***\n")
             return True
         else:
             try:
-                above_ground_wall_con = validate(dictionary["Exterior Non-Foundation Wall Construction"], "file", 999, 999, dummy_list, above_ground_wall_con_path)
+                above_ground_wall_con = validate(wallCon_fieldname, dictionary[wallCon_fieldname], "file", 999, 999, dummy_list, above_ground_wall_con_path)
             except:
-                print("\n*** ERROR: Could not find Exterior Non-Foundation Wall Construction named: " + str(dictionary["Exterior Non-Foundation Wall Construction"]) + ". ***")
+                print("\n*** ERROR: Could not find Exterior Non-Foundation Wall Construction named: " + str(dictionary[wallCon_fieldname]) + ". ***")
                 print("Make sure Exterior Non-Foundation Wall Construction name is valid and available at the path: " + str(above_ground_wall_con_path) + "\n")
                 return True
 
         #... ceiling and roof construction
-        ceiling_and_roof_con = str(dictionary["Ceiling And Roof Construction"])
+        ceiling_and_roof_con = str(dictionary[ceilingCon_fieldname])
         ceiling_and_roof_con_path = os.path.join(set_dir, building_block_dir, materials_main_dir, materials_attic_ins_dir)
         if ceiling_and_roof_con == "nan":
             print("\n*** ERROR: Ceiling And Roof Construction input cannot be blank. Please specify a valid construction. ***\n")
             return True
         else:
             try:
-                ceiling_and_roof_con = validate(dictionary["Ceiling And Roof Construction"], "file", 999, 999, dummy_list, ceiling_and_roof_con_path)
+                ceiling_and_roof_con = validate(ceilingCon_fieldname, dictionary[ceilingCon_fieldname], "file", 999, 999, dummy_list, ceiling_and_roof_con_path)
             except:
-                print("\n*** ERROR: Could not find Ceiling And Roof Construction named: " + str(dictionary["Ceiling And Roof Construction"]) + ". ***")
+                print("\n*** ERROR: Could not find Ceiling And Roof Construction named: " + str(dictionary[ceilingCon_fieldname]) + ". ***")
                 print("Make sure Ceiling And Roof Construction name is valid and available at the path: " + str(ceiling_and_roof_con_path) + "\n")
                 return True
 
         #... foundation and floor construction
-        foundation_and_floor_con = str(dictionary["Foundation And Floor Construction"])
+        foundation_and_floor_con = str(dictionary[floorCon_fieldname])
         foundation_list = foundation_and_floor_dict.keys()
         foundation_list_string = "\n".join(foundation_list)
         if foundation_and_floor_con == "nan":
@@ -232,7 +281,7 @@ def genmodels(gui_params, get_data_dict):
             return True
         else:
             try:
-                foundation_and_floor_con = validate(dictionary["Foundation And Floor Construction"], "list" , 999, 999, foundation_list)
+                foundation_and_floor_con = validate(floorCon_fieldname, dictionary[floorCon_fieldname], "list" , 999, 999, foundation_list)
             except:
                 print("\n*** ERROR: Could not find Foundation and Floor Construction entered. ***")
                 print("Please be sure to use one of the following valid Foundation and Floor Construction values:\n\n" + foundation_list_string)
@@ -248,13 +297,13 @@ def genmodels(gui_params, get_data_dict):
         #... Foundation wall height above ground
         if foundation_type == "Slab":
             try:
-                foundationwall_ht_AG = float(validate(round(convert_ft_to_m(dictionary["Foundation Wall Height Above Ground [ft]"]),10), "any_num", 999, 999, dummy_list))
+                foundationwall_ht_AG = float(validate(foundWallHtAg_fieldname, round(convert_ft_to_m(dictionary[foundWallHtAg_fieldname]),10), "any_num", 999, 999, dummy_list))
             except:
                 print("\n*** ERROR: Foundation wall height above ground must be numeric. ***\n")
                 return True
         else:
             try:
-                foundationwall_ht_AG = float(validate(round(convert_ft_to_m(dictionary["Foundation Wall Height Above Ground [ft]"]),10), "num_not_zero", 999, 999, dummy_list))
+                foundationwall_ht_AG = float(validate(foundWallHtAg_fieldname, round(convert_ft_to_m(dictionary[foundWallHtAg_fieldname]),10), "num_not_zero", 999, 999, dummy_list))
             except:
                 print("\n*** ERROR: For non-slab foundations, foundation wall height above ground must be numeric and greater than zero. ***\n")
                 return True
@@ -262,13 +311,13 @@ def genmodels(gui_params, get_data_dict):
         #... Foundation wall height below ground
         if foundation_type == "Slab":
             try:
-                foundationwall_ht_BG = float(validate(-1 * round(convert_ft_to_m(dictionary["Foundation Wall Height Below Ground [ft]"]),10), "any_num", 999, 999, dummy_list))
+                foundationwall_ht_BG = float(validate(foundWallHtBg_fieldname, -1 * round(convert_ft_to_m(dictionary[foundWallHtBg_fieldname]),10), "any_num", 999, 999, dummy_list))
             except:
                 print("\n*** ERROR: Foundation wall height below ground must be numeric. ***\n")
                 return True
         else:
             try:
-                foundationwall_ht_BG = float(validate(-1 * round(convert_ft_to_m(dictionary["Foundation Wall Height Below Ground [ft]"]),10), "num_not_zero", 999, 999, dummy_list))
+                foundationwall_ht_BG = float(validate(foundWallHtBg_fieldname, -1 * round(convert_ft_to_m(dictionary[foundWallHtBg_fieldname]),10), "num_not_zero", 999, 999, dummy_list))
             except:
                 print("\n*** ERROR: For non-slab foundations, foundation wall height below ground must be numeric and greater than zero. ***\n")
                 return True
@@ -277,7 +326,7 @@ def genmodels(gui_params, get_data_dict):
         u_lo = 0.1
         u_hi = 1.2
         try:
-            windowu_val = validate(convert_IP_Uvalue_to_SI_Uvalue(dictionary["Window U-Value [Btu/h/ft^2/F]"]), "num_between", \
+            windowu_val = validate(windowuUvalue_fieldname, convert_IP_Uvalue_to_SI_Uvalue(dictionary[windowuUvalue_fieldname]), "num_between", \
                 convert_IP_Uvalue_to_SI_Uvalue(u_lo), convert_IP_Uvalue_to_SI_Uvalue(u_hi), dummy_list)
         except:
             print("\n*** ERROR: Window U-value must be a number between " + str(u_lo) + " and " + str(u_hi) + " ***\n")
@@ -287,13 +336,13 @@ def genmodels(gui_params, get_data_dict):
         SHGC_lo = 0.01
         SHGC_hi = 0.99
         try:
-            window_shgc = validate(dictionary["Window SHGC"], "num_between", SHGC_lo, SHGC_hi, dummy_list)
+            window_shgc = validate(windowSHGC_fieldname, dictionary[windowSHGC_fieldname], "num_between", SHGC_lo, SHGC_hi, dummy_list)
         except:
             print("\n*** ERROR: Window SHGC must be a number between " + str(SHGC_lo) + " and " + str(SHGC_hi) + " ***\n")
             return True
 
-        #... Window shades (note: error handling is performed later on in code when REEDR attempts to open files)
-        window_shades = dictionary["Window Shades"]
+        #... Window shades
+        window_shades = dictionary[windowShade_fieldname]
 
         # window_overhangs = dictionary["Window Overhangs"] - CURRENTLY NOT USED
 
@@ -302,51 +351,51 @@ def genmodels(gui_params, get_data_dict):
         wtw_lo = 0.01
         wtw_hi = 0.99
         try:
-            wtw_ratio_front = validate(dictionary["WtW Ratio Front [%]"], "num_between", wtw_lo, wtw_hi, dummy_list)
+            wtw_ratio_front = validate(wtwFront_fieldname, dictionary[wtwFront_fieldname], "num_between", wtw_lo, wtw_hi, dummy_list)
         except:
             print("\n*** ERROR: Window-to-wall ratios must be a number between " + str(wtw_lo) + " and " + str(wtw_hi) + " ***\n")
             return True
         #... building back
         try:          
-            wtw_ratio_back = validate(dictionary["WtW Ratio Back [%]"], "num_between", wtw_lo, wtw_hi, dummy_list)
+            wtw_ratio_back = validate(wtwBack_fieldname, dictionary[wtwBack_fieldname], "num_between", wtw_lo, wtw_hi, dummy_list)
         except:
             print("\n*** ERROR: Window-to-wall ratios must be a number between " + str(wtw_lo) + " and " + str(wtw_hi) + " ***\n")
             return True
         #... building left
         try:           
-            wtw_ratio_left = validate(dictionary["WtW Ratio Left [%]"], "num_between", wtw_lo, wtw_hi, dummy_list)
+            wtw_ratio_left = validate(wtwLeft_fieldname, dictionary[wtwLeft_fieldname], "num_between", wtw_lo, wtw_hi, dummy_list)
         except:
             print("\n*** ERROR: Window-to-wall ratios must be a number between " + str(wtw_lo) + " and " + str(wtw_hi) + " ***\n")
             return True
         #... building right
         try:         
-            wtw_ratio_right = validate(dictionary["WtW Ratio Right [%]"], "num_between", wtw_lo, wtw_hi, dummy_list)
+            wtw_ratio_right = validate(wtwRight_fieldname, dictionary[wtwRight_fieldname], "num_between", wtw_lo, wtw_hi, dummy_list)
         except:
             print("\n*** ERROR: Window-to-wall ratios must be a number between " + str(wtw_lo) + " and " + str(wtw_hi) + " ***\n")
             return True
         
         #... HVAC inputs (note: error handling is performed later on in code when REEDR attempts to open files)
-        hvac_type = dictionary["Primary HVAC Type"]
-        furnace_capacity_primary = dictionary["Primary HVAC Furnace or Resistance Wall Heat Nominal Rated Capacity"]
-        hpOrAC_capacity_primary = dictionary["Primary HVAC Heat Pump or AC Nominal Rated Capacity"]
-        hp_supp_heat_type = dictionary["ASHP Backup Heat Type"]
-        hp_supp_heat_capacity = dictionary["ASHP Backup Nominal Rated Capacity"]
+        hvac_type = dictionary[primaryHVAC_fieldname]
+        furnace_capacity_primary = dictionary[primFurnaceCapacity_fieldname]
+        hpOrAC_capacity_primary = dictionary[primHPCapacity_fieldname]
+        hp_supp_heat_type = dictionary[hpBackupType_fieldname]
+        hp_supp_heat_capacity = dictionary[hpBackupCapacity_fieldname]
 
         #... baseboard heating capacity
-        baseboard_heat_capacity = dictionary["Backup Electric Baseboard Heat Capacity"]
+        baseboard_heat_capacity = dictionary[backupBaseboardCapacity_fieldname]
         
         #... heat pump specific inputs
         if hvac_dict[hvac_type][22] == "SS Heat Pump" or hvac_dict[hvac_type][22] == "DS Heat Pump" or hvac_dict[hvac_type][22] == "MS Heat Pump":
             #... backup heat lockout
             try:
-                hp_max_resistance_temp = validate(convert_degF_to_degC(dictionary["ASHP Backup Heat Lockout Temp [deg F]"]), "any_num", 999, 999, dummy_list)
+                hp_max_resistance_temp = validate(hpBackupLockout_fieldname, convert_degF_to_degC(dictionary[hpBackupLockout_fieldname]), "any_num", 999, 999, dummy_list)
             except:
                     print("\n*** ERROR: For ducted heat pumps, backup heat lockout temperature must be numeric and not blank. ***\n")
                     return True
 
             #... compressor lockout
             try:
-                hp_min_compressor_temp = validate(convert_degF_to_degC(dictionary["ASHP Compressor Lockout Temp [deg F]"]), "any_num", 999, 999, dummy_list)
+                hp_min_compressor_temp = validate(hpCompressorLockout_fieldname, convert_degF_to_degC(dictionary[hpCompressorLockout_fieldname]), "any_num", 999, 999, dummy_list)
             except:
                     print("\n*** ERROR: For ducted heat pumps, compressor lockout temperature must be numeric and not blank. ***\n")
                     return True
@@ -357,73 +406,73 @@ def genmodels(gui_params, get_data_dict):
             duct_leak_lo = 0.0001
             duct_leak_hi = 0.99
             try:
-                supply_leak = validate(dictionary["Supply Duct Leakage [%]"], "num_between", duct_leak_lo, duct_leak_hi, dummy_list)
+                supply_leak = validate(supplyLeakage_fieldname, dictionary[supplyLeakage_fieldname], "num_between", duct_leak_lo, duct_leak_hi, dummy_list)
             except:
                 print("\n*** ERROR: For ducted HVAC systems, supply duct leakage must be a number between " + str(duct_leak_lo) + " and " + str(duct_leak_hi) + " ***\n")
                 return True
             #... return duct leakage
             try:
-                return_leak = validate(dictionary["Return Duct Leakage [%]"], "num_between", duct_leak_lo, duct_leak_hi, dummy_list)
+                return_leak = validate(returnLeakage_fieldname, dictionary[returnLeakage_fieldname], "num_between", duct_leak_lo, duct_leak_hi, dummy_list)
             except:
                 print("\n*** ERROR: For ducted HVAC systems, return duct leakage must be a number between " + str(duct_leak_lo) + " and " + str(duct_leak_hi) + " ***\n")
                 return True
         
         #... heating and cooling setpoints (note: error handling is performed later on in code when REEDR attempts to open files)
-        htg_stpt_sch = dictionary["Htg StPt Sch"]
-        clg_stpt_sch = dictionary["Clg StPt Sch"]
+        htg_stpt_sch = dictionary[htgSched_fieldname]
+        clg_stpt_sch = dictionary[clgSched_fieldname]
         
         #... gas furnace AFUE
         if hvac_dict[hvac_type][18] == "Heating_Fuel_Main" or hp_supp_heat_type == "Gas":
             AFUE_lo = 0.5
             AFUE_hi = 0.999
             try:
-                gas_furnace_AFUE = validate(dictionary["Gas Furnace AFUE [%]"], "num_between", AFUE_lo, AFUE_hi, dummy_list)
+                gas_furnace_AFUE = validate(AFUE_fieldname, dictionary[AFUE_fieldname], "num_between", AFUE_lo, AFUE_hi, dummy_list)
             except:
                 print("\n*** ERROR: For HVAC systems with a gas furnace, AFUE cannot be blank and must be a number between " + str(AFUE_lo) + " and " + str(AFUE_hi) + " ***\n")
                 return True
 
         #... water heater inputs (note: error handling is performed later on in code when REEDR attempts to open files)
-        water_heater_type = dictionary["Water Heater Type"]
-        dhw_stpt_sch = dictionary["DHW StPt Sch"]
+        water_heater_type = dictionary[dhwType_fieldname]
+        dhw_stpt_sch = dictionary[dhwSched_fieldname]
         
         #... number of people
         try:
-            people = validate(dictionary["Number Of People"], "any_num", 999, 999, dummy_list)
+            people = validate(numOfPeople_fieldname, dictionary[numOfPeople_fieldname], "any_num", 999, 999, dummy_list)
         except:
             print("\n*** ERROR: Number of People must be a numeric input value and cannot be blank. ***\n")
             return True
 
         #... interior lighting power density
         try:
-            interior_lpd = validate(convert_WperFt2_to_WperM2(dictionary["Interior LPD [W/ft^2]"])/2, "any_num", 999, 999, dummy_list) #divide total lpd by plug lights and hardwired lights
+            interior_lpd = validate(intLPD_fieldname, convert_WperFt2_to_WperM2(dictionary[intLPD_fieldname])/2, "any_num", 999, 999, dummy_list) #divide total lpd by plug lights and hardwired lights
         except:
             print("\n*** ERROR: Interior LPD must be a numeric input value and cannot be blank. ***\n")
             return True
 
         #... exterior lighting power
         try:
-            exterior_lp = validate(dictionary["Exterior LP [W]"]/2, "any_num", 999, 999, dummy_list) #divide total lp by garage lights and exterior facade lights
+            exterior_lp = validate(extLP_fieldname, dictionary[extLP_fieldname]/2, "any_num", 999, 999, dummy_list) #divide total lp by garage lights and exterior facade lights
         except:
             print("\n*** ERROR: Exterior lighting power must be a numeric input value and cannot be blank. ***\n")
             return True
         
         #... applicance inputs (note: error handling is performed later on in code when REEDR attempts to open files)
-        range_type = dictionary["Range"]
-        dryer_type = dictionary["Dryer"]
-        frig = dictionary["Refrigerator"]
-        clotheswasher = dictionary["ClothesWasher"]
-        dishwasher = dictionary["Dishwasher"]
+        range_type = dictionary[range_fieldname]
+        dryer_type = dictionary[dryer_fieldname]
+        frig = dictionary[frig_fieldname]
+        clotheswasher = dictionary[cw_fieldname]
+        dishwasher = dictionary[dw_fieldname]
 
         #... miscellaneous electric power
         try:
-            misc_elec = validate(dictionary["Misc Electric Gains [Max W]"], "any_num", 999, 999, dummy_list)
+            misc_elec = validate(miscElec_fieldname, dictionary[miscElec_fieldname], "any_num", 999, 999, dummy_list)
         except:
             print("\n*** ERROR: Miscellaneous electric power must be a numeric input value and cannot be blank. ***\n")
             return True
 
         #... miscellaneous gas power
         try:
-            misc_gas = validate(convert_Btuh_to_W(dictionary["Misc Gas Gains [Max Btu/h]"]), "any_num", 999, 999, dummy_list)
+            misc_gas = validate(miscGas_fieldname, convert_Btuh_to_W(dictionary[miscGas_fieldname]), "any_num", 999, 999, dummy_list)
         except:
             print("\n*** ERROR: Miscellaneous gas load must be a numeric input value and cannot be blank. ***\n")
             return True
