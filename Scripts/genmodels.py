@@ -262,35 +262,38 @@ def genmodels(gui_params, get_data_dict):
         hpOrAC_capacity_primary = dictionary["Primary HVAC Heat Pump or AC Max Rated Capacity"]
         hp_supp_heat_type = dictionary["ASHP Backup Heat Type"]
         hp_supp_heat_capacity = dictionary["ASHP Backup Max Rated Capacity"]
-
-        #... backup heat lockout
-        try:
-            hp_max_resistance_temp = validate(convert_degF_to_degC(dictionary["ASHP Backup Heat Lockout Temp [deg F]"]), "any_num", 999, 999, dummy_list)
-        except:
-                print("\n*** ERROR: Backup heat lockout temperature must be numeric. ***\n")
-                return True
-        #... compressor lockout
-        try:
-            hp_min_compressor_temp = validate(convert_degF_to_degC(dictionary["ASHP Compressor Lockout Temp [deg F]"]), "any_num", 999, 999, dummy_list)
-        except:
-                print("\n*** ERROR: Compressor lockout temperature must be numeric. ***\n")
-                return True
         #... baseboard heating capacity
         baseboard_heat_capacity = dictionary["Backup Electric Baseboard Heat Capacity"]
-        #... supply duct leakage
-        duct_leak_lo = 0.0001
-        duct_leak_hi = 0.99
-        try:
-            supply_leak = validate(dictionary["Supply Duct Leakage [%]"], "num_between", duct_leak_lo, duct_leak_hi, dummy_list)
-        except:
-            print("\n*** ERROR: Supply duct leakage must be a number between " + str(duct_leak_lo) + " and " + str(duct_leak_hi) + " ***\n")
-            return True
-        #... return duct leakage
-        try:
-            return_leak = validate(dictionary["Return Duct Leakage [%]"], "num_between", duct_leak_lo, duct_leak_hi, dummy_list)
-        except:
-            print("\n*** ERROR: Return duct leakage must be a number between " + str(duct_leak_lo) + " and " + str(duct_leak_hi) + " ***\n")
-            return True
+        
+        if hvac_dict[hvac_type][22] == "SS Heat Pump" or hvac_dict[hvac_type][22] == "DS Heat Pump" or hvac_dict[hvac_type][22] == "MS Heat Pump":
+            #... backup heat lockout
+            try:
+                hp_max_resistance_temp = validate(convert_degF_to_degC(dictionary["ASHP Backup Heat Lockout Temp [deg F]"]), "any_num", 999, 999, dummy_list)
+            except:
+                    print("\n*** ERROR: For ducted heat pumps, backup heat lockout temperature must be numeric and not blank. ***\n")
+                    return True
+            #... compressor lockout
+            try:
+                hp_min_compressor_temp = validate(convert_degF_to_degC(dictionary["ASHP Compressor Lockout Temp [deg F]"]), "any_num", 999, 999, dummy_list)
+            except:
+                    print("\n*** ERROR: For ducted heat pumps, compressor lockout temperature must be numeric and not blank. ***\n")
+                    return True
+        
+        if hvac_dict[hvac_type][0] == "Central":
+            #... supply duct leakage
+            duct_leak_lo = 0.0001
+            duct_leak_hi = 0.99
+            try:
+                supply_leak = validate(dictionary["Supply Duct Leakage [%]"], "num_between", duct_leak_lo, duct_leak_hi, dummy_list)
+            except:
+                print("\n*** ERROR: For ducted HVAC systems, supply duct leakage must be a number between " + str(duct_leak_lo) + " and " + str(duct_leak_hi) + " ***\n")
+                return True
+            #... return duct leakage
+            try:
+                return_leak = validate(dictionary["Return Duct Leakage [%]"], "num_between", duct_leak_lo, duct_leak_hi, dummy_list)
+            except:
+                print("\n*** ERROR: For ducted HVAC systems, return duct leakage must be a number between " + str(duct_leak_lo) + " and " + str(duct_leak_hi) + " ***\n")
+                return True
         
         htg_stpt_sch = dictionary["Htg StPt Sch"]
         
@@ -316,15 +319,15 @@ def genmodels(gui_params, get_data_dict):
             return True
         #... interior lighting power density
         try:
-            interior_lpd = convert_WperFt2_to_WperM2(dictionary["Interior LPD [W/ft^2]"])/2 #divide total lpd by plug lights and hardwired lights
+            interior_lpd = validate(convert_WperFt2_to_WperM2(dictionary["Interior LPD [W/ft^2]"])/2, "any_num", 999, 999, dummy_list) #divide total lpd by plug lights and hardwired lights
         except:
-            print("\n*** ERROR: Number of People must be a numeric input value and cannot be blank. ***\n")
+            print("\n*** ERROR: Interior LPD must be a numeric input value and cannot be blank. ***\n")
             return True
         #... exterior lighting power
         try:
-            exterior_lp = dictionary["Exterior LP [W]"]/2 #divide total lp by garage lights and exterior facade lights
+            exterior_lp = validate(dictionary["Exterior LP [W]"]/2, "any_num", 999, 999, dummy_list) #divide total lp by garage lights and exterior facade lights
         except:
-            print("\n*** ERROR: Number of People must be a numeric input value and cannot be blank. ***\n")
+            print("\n*** ERROR: Exterior lighting power must be a numeric input value and cannot be blank. ***\n")
             return True
         
         range_type = dictionary["Range"]
@@ -332,10 +335,18 @@ def genmodels(gui_params, get_data_dict):
         frig = dictionary["Refrigerator"]
         clotheswasher = dictionary["ClothesWasher"]
         dishwasher = dictionary["Dishwasher"]
-        
-        misc_elec = dictionary["Misc Electric Gains [Max W]"]
-        
-        misc_gas = convert_Btuh_to_W(dictionary["Misc Gas Gains [Max Btu/h]"])
+        #... miscellaneous electric power
+        try:
+            misc_elec = validate(dictionary["Misc Electric Gains [Max W]"], "any_num", 999, 999, dummy_list)
+        except:
+            print("\n*** ERROR: Miscellaneous electric power must be a numeric input value and cannot be blank. ***\n")
+            return True
+        #... miscellaneous gas power
+        try:
+            misc_gas = validate(convert_Btuh_to_W(dictionary["Misc Gas Gains [Max Btu/h]"]), "any_num", 999, 999, dummy_list)
+        except:
+            print("\n*** ERROR: Miscellaneous gas load must be a numeric input value and cannot be blank. ***\n")
+            return True
 
         ## Set window construction
         win_construction = "Exterior Window"
