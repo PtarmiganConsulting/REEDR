@@ -304,7 +304,11 @@ def genmodels(gui_params, get_data_dict):
             return True
 
         #... Window shades
-        window_shades = dictionary[windowShade_fieldname]
+        window_shades_list = ["Yes", "No"]
+        try:
+            window_shades = validate(windowShade_fieldname, dictionary[windowShade_fieldname], "list", 999, 999, window_shades_list)
+        except:
+            return True
 
         # window_overhangs = dictionary["Window Overhangs"] - CURRENTLY NOT USED
 
@@ -332,18 +336,58 @@ def genmodels(gui_params, get_data_dict):
         except:
             return True
         
-        #... HVAC inputs (note: error handling is performed later on in code when REEDR attempts to open files)
-        hvac_type = dictionary[primaryHVAC_fieldname]
-        furnace_capacity_primary = dictionary[primFurnaceCapacity_fieldname]
-        hpOrAC_capacity_primary = dictionary[primHPCapacity_fieldname]
-        hp_supp_heat_type = dictionary[hpBackupType_fieldname]
-        hp_supp_heat_capacity = dictionary[hpBackupCapacity_fieldname]
+        #... primary HVAC type
+        hvac_type_list = hvac_dict.keys()
+        try:
+            hvac_type = validate(primaryHVAC_fieldname, dictionary[primaryHVAC_fieldname], "list", 999, 999, hvac_type_list)
+        except:
+            return True
+
+        #... primary furnace capacity
+        if hvac_dict[hvac_type][18] == "Heating_Fuel_Main" or hvac_dict[hvac_type][18] == "Heating_Resistance_Main":
+            furnace_capacity_primary_list = furnace_capacity_dict.keys()
+            try:
+                furnace_capacity_primary = validate(primFurnaceCapacity_fieldname, dictionary[primFurnaceCapacity_fieldname], "list", 999, 999, furnace_capacity_primary_list)
+            except:
+                return True
+            furnace_capacity = furnace_capacity_dict[furnace_capacity_primary]
+
+        #... heat pump or AC capacity
+        try:
+            hpOrAC_capacity_primary = dictionary[primHPCapacity_fieldname]
+        except:
+            return True
 
         #... baseboard heating capacity
-        baseboard_heat_capacity = dictionary[backupBaseboardCapacity_fieldname]
+        if str(dictionary[backupBaseboardCapacity_fieldname]) == "nan":
+            baseboard_capacity = 0
+        else:
+            baseboard_heat_capacity_list = baseboard_capacity_dict.keys()
+            try:
+                baseboard_heat_capacity = validate(backupBaseboardCapacity_fieldname, dictionary[backupBaseboardCapacity_fieldname], "list", 999, 999, baseboard_heat_capacity_list)
+            except:
+                return True
+            baseboard_capacity = baseboard_capacity_dict[baseboard_heat_capacity]
         
         #... heat pump specific inputs
-        if hvac_dict[hvac_type][22] == "SS Heat Pump" or hvac_dict[hvac_type][22] == "DS Heat Pump" or hvac_dict[hvac_type][22] == "MS Heat Pump":
+        if hvac_dict[hvac_type][22] == "SS Heat Pump" or hvac_dict[hvac_type][22] == "DS Heat Pump" or hvac_dict[hvac_type][22] == "MS Heat Pump" \
+        and hvac_dict[hvac_type][0] == "Central":
+            
+            #... ASHP backup heat type
+            hp_supp_heat_type_list = ["Electric", "Gas"]
+            try:
+                hp_supp_heat_type = validate(hpBackupType_fieldname, dictionary[hpBackupType_fieldname], "list", 999, 999, hp_supp_heat_type_list)
+            except:
+                return True
+
+            #... ASHP backup heat capacity
+            hp_supp_heat_capacity_list = furnace_capacity_dict.keys()
+            try:
+                hp_supp_heat_capacity = validate(hpBackupCapacity_fieldname, dictionary[hpBackupCapacity_fieldname], "list", 999, 999, hp_supp_heat_capacity_list)
+            except:
+                return True
+            supp_furnace_capacity = furnace_capacity_dict[hp_supp_heat_capacity]
+
             #... backup heat lockout
             try:
                 hp_max_resistance_temp = validate(hpBackupLockout_fieldname, convert_degF_to_degC(dictionary[hpBackupLockout_fieldname]), "any_num", 999, 999, dummy_list)
@@ -355,6 +399,10 @@ def genmodels(gui_params, get_data_dict):
                 hp_min_compressor_temp = validate(hpCompressorLockout_fieldname, convert_degF_to_degC(dictionary[hpCompressorLockout_fieldname]), "any_num", 999, 999, dummy_list)
             except:
                 return True
+
+        else:
+            hp_supp_heat_type = "None"
+            supp_furnace_capacity = 0
         
         #... duct inputs
         if hvac_dict[hvac_type][0] == "Central":
@@ -384,8 +432,10 @@ def genmodels(gui_params, get_data_dict):
             except:
                 return True
 
-        #... water heater inputs (note: error handling is performed later on in code when REEDR attempts to open files)
+        #... water heater type
         water_heater_type = dictionary[dhwType_fieldname]
+
+        #... DHW setpoint schedule
         dhw_stpt_sch = dictionary[dhwSched_fieldname]
         
         #... number of people
@@ -662,23 +712,10 @@ def genmodels(gui_params, get_data_dict):
                 geom_nonhtdbsmt_adder_t = f"{f.read()}".format(**locals())
         
         ### --- Adding building HVAC system --- ###
-        # Get HVAC capacities from Excel input sheet.
-        if furnace_capacity_primary in furnace_capacity_dict:
-            furnace_capacity = furnace_capacity_dict[furnace_capacity_primary]
-        else:
-            furnace_capacity = ""
         if hpOrAC_capacity_primary in hpOrAC_capacity_dict:
             hpOrAC_capacity = hpOrAC_capacity_dict[hpOrAC_capacity_primary]
         else:
             hpOrAC_capacity = ""
-        if hp_supp_heat_capacity in furnace_capacity_dict:
-            supp_furnace_capacity = furnace_capacity_dict[hp_supp_heat_capacity]
-        else:
-            supp_furnace_capacity = ""
-        if baseboard_heat_capacity in baseboard_capacity_dict:    
-            baseboard_capacity = baseboard_capacity_dict[baseboard_heat_capacity]
-        else:
-            baseboard_capacity = 0
         
         DesignSpecificationOutdoorAirObjectName = ""
 
