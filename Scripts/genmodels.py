@@ -312,7 +312,7 @@ def genmodels(gui_params, get_data_dict):
             else:
                 hp_supp_heat_type = "None"
                 supp_furnace_capacity = 0
-
+            
             #... duct inputs
             if hvac_dict[hvac_type][0] == "Central":
                 #... supply duct leakage
@@ -338,8 +338,8 @@ def genmodels(gui_params, get_data_dict):
             
             #... water heater type
             water_heater_type_list = ["Electric Storage_50-gallon", "Gas Storage_50-gallon", "None"]
-            water_heater_type = dictionary[dhwType_fieldname]
-
+            water_heater_type = validate(dhwType_fieldname, dictionary[dhwType_fieldname], "list", 999, 999, water_heater_type_list)
+            
             #... DHW setpoint schedule
             dhw_stpt_sch = validate(dhwSched_fieldname, dictionary[dhwSched_fieldname], "list", 999, 999, sched_list)
 
@@ -354,30 +354,30 @@ def genmodels(gui_params, get_data_dict):
 
             #... range type
             range_type_list = ["Electric", "Gas", "None"]
-            range_type = validate(dictionary[range_fieldname], "list", 999, 999, range_type_list)
+            range_type = validate(range_fieldname, dictionary[range_fieldname], "list", 999, 999, range_type_list)
 
             #... dryer type
             dryer_type_list = ["Electric", "Gas", "None"]
-            dryer_type = validate(dictionary[dryer_fieldname], "list", 999, 999, dryer_type_list)
+            dryer_type = validate(dryer_fieldname, dictionary[dryer_fieldname], "list", 999, 999, dryer_type_list)
 
             #... frig type
             frig_list = ["Yes", "None"]
-            frig = validate(dictionary[frig_fieldname], "list", 999, 999, frig_list)
+            frig = validate(frig_fieldname, dictionary[frig_fieldname], "list", 999, 999, frig_list)
 
             #... clotheswasher type
             clotheswasher_list = ["Yes", "None"]
-            clotheswasher = validate(dictionary[cw_fieldname], "list", 999, 999, clotheswasher_list)
+            clotheswasher = validate(cw_fieldname, dictionary[cw_fieldname], "list", 999, 999, clotheswasher_list)
 
             #... dishwasher type
             dishwasher_list = ["Yes", "None"]
-            dishwasher = validate(dictionary[dw_fieldname], "list", 999, 999, dishwasher_list)
+            dishwasher = validate(dw_fieldname, dictionary[dw_fieldname], "list", 999, 999, dishwasher_list)
 
             #... miscellaneous electric power
             misc_elec = validate(miscElec_fieldname, dictionary[miscElec_fieldname], "any_num", 999, 999, dummy_list)
 
             #... miscellaneous gas power
             misc_gas = validate(miscGas_fieldname, convert_Btuh_to_W(dictionary[miscGas_fieldname]), "any_num", 999, 999, dummy_list)
-
+            
         except:
             return True
         
