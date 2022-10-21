@@ -193,287 +193,172 @@ def genmodels(gui_params, get_data_dict):
         #... run_label
         run_label = str(dictionary[runLabel_fieldname])
 
-        #... timestep
-        valid_timesteps = ["1","2","3","4","5","6","10","12","15","20","30","60"]
         try:
+            #... timestep
+            valid_timesteps = ["1","2","3","4","5","6","10","12","15","20","30","60"]
             timestep = validate(timestep_fieldname, str(dictionary[timestep_fieldname]), "list", dummy_int, dummy_int, valid_timesteps)
-        except:
-            return True
 
-        #... location/weather file
-        location_path = os.path.join(set_dir, building_block_dir, location_and_climate_dir)
-        try:
+            #... location/weather file
+            location_path = os.path.join(set_dir, building_block_dir, location_and_climate_dir)
             location_pull = validate(weather_fieldname, dictionary[weather_fieldname], "file", dummy_int, dummy_int, dummy_list, location_path)
-        except:
-            return True
 
-        #... building orientation
-        bldg_orient_lo = 0
-        bldg_orient_hi = 359
-        try:
+             #... building orientation
+            bldg_orient_lo = 0
+            bldg_orient_hi = 359
             bldg_orient = validate(orient_fieldname, dictionary[orient_fieldname], "num_between", bldg_orient_lo, bldg_orient_hi, dummy_list)
-        except:
-            return True
 
-        #... conditioned footprint area
-        try:
+            #... conditioned footprint area
             conditioned_footprint_area = float(validate(footprint_fieldname, round(convert_ft2_to_m2(dictionary[footprint_fieldname]),10), "num_not_zero", 999, 999, dummy_list))
-        except:
-            return True
 
-        #... total conditioned volume
-        try:
+            #... total conditioned volume
             total_conditioned_volume = float(validate(volume_fieldname, round(convert_ft3_to_m3(dictionary[volume_fieldname]),10), "num_not_zero", 999, 999, dummy_list))
-        except:
-            return True
 
-        #... Width to depth ratio
-        try:
+            #... Width to depth ratio
             ratio_width_to_depth = validate(bldgRatio_fieldname, dictionary[bldgRatio_fieldname], "num_not_zero", 999, 999, dummy_list)
-        except:
-            return True
 
-        #... above ground wall construction
-        above_ground_wall_con_path = os.path.join(set_dir, building_block_dir, materials_main_dir, materials_wall_ins_dir)
-        try:
+            #... above ground wall construction
+            above_ground_wall_con_path = os.path.join(set_dir, building_block_dir, materials_main_dir, materials_wall_ins_dir)
             above_ground_wall_con = validate(wallCon_fieldname, dictionary[wallCon_fieldname], "file", 999, 999, dummy_list, above_ground_wall_con_path)
-        except:
-            return True
 
-        #... ceiling and roof construction
-        ceiling_and_roof_con_path = os.path.join(set_dir, building_block_dir, materials_main_dir, materials_attic_ins_dir)
-        try:
+            #... ceiling and roof construction
+            ceiling_and_roof_con_path = os.path.join(set_dir, building_block_dir, materials_main_dir, materials_attic_ins_dir)
             ceiling_and_roof_con = validate(ceilingCon_fieldname, dictionary[ceilingCon_fieldname], "file", 999, 999, dummy_list, ceiling_and_roof_con_path)
-        except:
-            return True
 
-        #... foundation and floor construction
-        foundation_and_floor_con = str(dictionary[floorCon_fieldname])
-        foundation_list = foundation_and_floor_dict.keys()
-        try:
+            #... foundation and floor construction
+            foundation_and_floor_con = str(dictionary[floorCon_fieldname])
+            foundation_list = foundation_and_floor_dict.keys()
             foundation_and_floor_con = validate(floorCon_fieldname, dictionary[floorCon_fieldname], "list" , 999, 999, foundation_list)
-        except:
-            return True
-        
-        # Establish foundation type
-        chars = 4
-        foundation_key = foundation_and_floor_con[:chars]
-        foundation_type = foundation_dict[foundation_key][0]
-        returnduct_location = foundation_dict[foundation_key][1]
 
-        #... Foundation wall height above ground
-        if foundation_type == "Slab":
-            try:
+            # Establish foundation type
+            chars = 4
+            foundation_key = foundation_and_floor_con[:chars]
+            foundation_type = foundation_dict[foundation_key][0]
+            returnduct_location = foundation_dict[foundation_key][1]
+
+            #... Foundation wall height above and below ground
+            if foundation_type == "Slab":
                 foundationwall_ht_AG = float(validate(foundWallHtAg_fieldname, round(convert_ft_to_m(dictionary[foundWallHtAg_fieldname]),10), "any_num", 999, 999, dummy_list))
-            except:
-                return True
-        else:
-            try:
-                foundationwall_ht_AG = float(validate(foundWallHtAg_fieldname, round(convert_ft_to_m(dictionary[foundWallHtAg_fieldname]),10), "num_not_zero", 999, 999, dummy_list))
-            except:
-                return True
-
-        #... Foundation wall height below ground
-        if foundation_type == "Slab":
-            try:
                 foundationwall_ht_BG = float(validate(foundWallHtBg_fieldname, -1 * round(convert_ft_to_m(dictionary[foundWallHtBg_fieldname]),10), "any_num", 999, 999, dummy_list))
-            except:
-                return True
-        else:
-            try:
+            else:
+                foundationwall_ht_AG = float(validate(foundWallHtAg_fieldname, round(convert_ft_to_m(dictionary[foundWallHtAg_fieldname]),10), "num_not_zero", 999, 999, dummy_list))
                 foundationwall_ht_BG = float(validate(foundWallHtBg_fieldname, -1 * round(convert_ft_to_m(dictionary[foundWallHtBg_fieldname]),10), "num_not_zero", 999, 999, dummy_list))
-            except:
-                return True
 
-        #... window U-value
-        u_lo = 0.1
-        u_hi = 1.2
-        try:
+            #... window U-value
+            u_lo = 0.1
+            u_hi = 1.2
             windowu_val = validate(windowuUvalue_fieldname, dictionary[windowuUvalue_fieldname], "num_between", u_lo, u_hi, dummy_list)
-            # if validation is passed, convert to SI units...
-            windowu_val = convert_IP_Uvalue_to_SI_Uvalue(dictionary[windowuUvalue_fieldname])
-        except:
-            return True
+            windowu_val = convert_IP_Uvalue_to_SI_Uvalue(dictionary[windowuUvalue_fieldname]) # once validated, convert units...
 
-        #... window SHGC
-        SHGC_lo = 0.10
-        SHGC_hi = 0.90
-        try:
+            #... window SHGC
+            SHGC_lo = 0.10
+            SHGC_hi = 0.90
             window_shgc = validate(windowSHGC_fieldname, dictionary[windowSHGC_fieldname], "num_between", SHGC_lo, SHGC_hi, dummy_list)
-        except:
-            return True
 
-        #... Window shades
-        window_shades_list = ["Yes", "No"]
-        try:
+            #... Window shades
+            window_shades_list = ["Yes", "No"]
             window_shades = validate(windowShade_fieldname, dictionary[windowShade_fieldname], "list", 999, 999, window_shades_list)
-        except:
-            return True
 
-        # window_overhangs = dictionary["Window Overhangs"] - CURRENTLY NOT USED
-
-        #... window to wall ratios
-        # ... building front
-        wtw_lo = 0.01
-        wtw_hi = 0.99
-        try:
+            #... window to wall ratios
+            wtw_lo = 0.01
+            wtw_hi = 0.99
             wtw_ratio_front = validate(wtwFront_fieldname, dictionary[wtwFront_fieldname], "num_between", wtw_lo, wtw_hi, dummy_list)
-        except:
-            return True
-        #... building back
-        try:          
             wtw_ratio_back = validate(wtwBack_fieldname, dictionary[wtwBack_fieldname], "num_between", wtw_lo, wtw_hi, dummy_list)
-        except:
-            return True
-        #... building left
-        try:           
             wtw_ratio_left = validate(wtwLeft_fieldname, dictionary[wtwLeft_fieldname], "num_between", wtw_lo, wtw_hi, dummy_list)
-        except:
-            return True
-        #... building right
-        try:         
             wtw_ratio_right = validate(wtwRight_fieldname, dictionary[wtwRight_fieldname], "num_between", wtw_lo, wtw_hi, dummy_list)
-        except:
-            return True
-        
-        #... primary HVAC type
-        hvac_type_list = hvac_dict.keys()
-        try:
+
+            #... primary HVAC type
+            hvac_type_list = hvac_dict.keys()
             hvac_type = validate(primaryHVAC_fieldname, dictionary[primaryHVAC_fieldname], "list", 999, 999, hvac_type_list)
-        except:
-            return True
 
-        #... primary furnace capacity
-        if hvac_dict[hvac_type][18] == "Heating_Fuel_Main" or hvac_dict[hvac_type][18] == "Heating_Resistance_Main":
-            furnace_capacity_primary_list = furnace_capacity_dict.keys()
-            try:
+            #... primary furnace capacity
+            if hvac_dict[hvac_type][18] == "Heating_Fuel_Main" or hvac_dict[hvac_type][18] == "Heating_Resistance_Main":
+                furnace_capacity_primary_list = furnace_capacity_dict.keys()
                 furnace_capacity_primary = validate(primFurnaceCapacity_fieldname, dictionary[primFurnaceCapacity_fieldname], "list", 999, 999, furnace_capacity_primary_list)
-            except:
-                return True
-            furnace_capacity = furnace_capacity_dict[furnace_capacity_primary]
+                furnace_capacity = furnace_capacity_dict[furnace_capacity_primary]
 
-        #... heat pump or AC capacity
-        try:
+            #... heat pump or AC capacity
             hpOrAC_capacity_primary = dictionary[primHPCapacity_fieldname]
-        except:
-            return True
 
-        #... baseboard heating capacity
-        if str(dictionary[backupBaseboardCapacity_fieldname]) == "nan":
-            baseboard_capacity = 0
-        else:
-            baseboard_heat_capacity_list = baseboard_capacity_dict.keys()
-            try:
+            #... baseboard heating capacity
+            if str(dictionary[backupBaseboardCapacity_fieldname]) == "nan":
+                baseboard_capacity = 0
+            else:
+                baseboard_heat_capacity_list = baseboard_capacity_dict.keys()
                 baseboard_heat_capacity = validate(backupBaseboardCapacity_fieldname, dictionary[backupBaseboardCapacity_fieldname], "list", 999, 999, baseboard_heat_capacity_list)
-            except:
-                return True
-            baseboard_capacity = baseboard_capacity_dict[baseboard_heat_capacity]
-        
-        #... heat pump specific inputs
-        if hvac_dict[hvac_type][22] == "SS Heat Pump" or hvac_dict[hvac_type][22] == "DS Heat Pump" or hvac_dict[hvac_type][22] == "MS Heat Pump" \
-        and hvac_dict[hvac_type][0] == "Central":
-            
-            #... ASHP backup heat type
-            hp_supp_heat_type_list = ["Electric", "Gas"]
-            try:
+                baseboard_capacity = baseboard_capacity_dict[baseboard_heat_capacity]
+
+            #... heat pump specific inputs
+            if hvac_dict[hvac_type][22] == "SS Heat Pump" or hvac_dict[hvac_type][22] == "DS Heat Pump" or hvac_dict[hvac_type][22] == "MS Heat Pump" \
+            and hvac_dict[hvac_type][0] == "Central":
+                #... ASHP backup heat type
+                hp_supp_heat_type_list = ["Electric", "Gas"]
                 hp_supp_heat_type = validate(hpBackupType_fieldname, dictionary[hpBackupType_fieldname], "list", 999, 999, hp_supp_heat_type_list)
-            except:
-                return True
-
-            #... ASHP backup heat capacity
-            hp_supp_heat_capacity_list = furnace_capacity_dict.keys()
-            try:
+                #... ASHP backup heat capacity
+                hp_supp_heat_capacity_list = furnace_capacity_dict.keys()
                 hp_supp_heat_capacity = validate(hpBackupCapacity_fieldname, dictionary[hpBackupCapacity_fieldname], "list", 999, 999, hp_supp_heat_capacity_list)
-            except:
-                return True
-            supp_furnace_capacity = furnace_capacity_dict[hp_supp_heat_capacity]
-
-            #... backup heat lockout
-            try:
+                supp_furnace_capacity = furnace_capacity_dict[hp_supp_heat_capacity]
+                #... backup heat lockout
                 hp_max_resistance_temp = validate(hpBackupLockout_fieldname, convert_degF_to_degC(dictionary[hpBackupLockout_fieldname]), "any_num", 999, 999, dummy_list)
-            except:
-                return True
-
-            #... compressor lockout
-            try:
+                #... compressor lockout
                 hp_min_compressor_temp = validate(hpCompressorLockout_fieldname, convert_degF_to_degC(dictionary[hpCompressorLockout_fieldname]), "any_num", 999, 999, dummy_list)
-            except:
-                return True
+            else:
+                hp_supp_heat_type = "None"
+                supp_furnace_capacity = 0
 
-        else:
-            hp_supp_heat_type = "None"
-            supp_furnace_capacity = 0
-        
-        #... duct inputs
-        if hvac_dict[hvac_type][0] == "Central":
-            #... supply duct leakage
-            duct_leak_lo = 0.0001
-            duct_leak_hi = 0.99
-            try:
+            #... duct inputs
+            if hvac_dict[hvac_type][0] == "Central":
+                #... supply duct leakage
+                duct_leak_lo = 0.0001
+                duct_leak_hi = 0.99
                 supply_leak = validate(supplyLeakage_fieldname, dictionary[supplyLeakage_fieldname], "num_between", duct_leak_lo, duct_leak_hi, dummy_list)
-            except:
-                return True
-            #... return duct leakage
-            try:
                 return_leak = validate(returnLeakage_fieldname, dictionary[returnLeakage_fieldname], "num_between", duct_leak_lo, duct_leak_hi, dummy_list)
-            except:
-                return True
-        
-        #... heating and cooling setpoints (note: error handling is performed later on in code when REEDR attempts to open files)
-        htg_stpt_sch = dictionary[htgSched_fieldname]
-        clg_stpt_sch = dictionary[clgSched_fieldname]
-        
-        #... gas furnace AFUE
-        if hvac_dict[hvac_type][18] == "Heating_Fuel_Main" or hp_supp_heat_type == "Gas":
-            AFUE_lo = 0.5
-            AFUE_hi = 0.99
-            try:
+            else:
+                supply_leak = duct_dict[hvac_dict[hvac_type][0]][8]
+                return_leak = duct_dict[hvac_dict[hvac_type][0]][9]
+
+            #... heating setpoint schedule
+            htg_stpt_sch = validate(htgSched_fieldname, dictionary[htgSched_fieldname], "list", 999, 999, sched_list)
+
+            #... cooling setpoint schedule
+            clg_stpt_sch = validate(clgSched_fieldname, dictionary[clgSched_fieldname], "list", 999, 999, sched_list)
+
+            #... gas furnace AFUE
+            if hvac_dict[hvac_type][18] == "Heating_Fuel_Main" or hp_supp_heat_type == "Gas":
+                AFUE_lo = 0.5
+                AFUE_hi = 0.99
                 gas_furnace_AFUE = validate(AFUE_fieldname, dictionary[AFUE_fieldname], "num_between", AFUE_lo, AFUE_hi, dummy_list)
-            except:
-                return True
+            
+            #... water heater type
+            water_heater_type = dictionary[dhwType_fieldname]
 
-        #... water heater type
-        water_heater_type = dictionary[dhwType_fieldname]
+            #... DHW setpoint schedule
+            dhw_stpt_sch = dictionary[dhwSched_fieldname]
 
-        #... DHW setpoint schedule
-        dhw_stpt_sch = dictionary[dhwSched_fieldname]
-        
-        #... number of people
-        try:
+            #... number of people
             people = validate(numOfPeople_fieldname, dictionary[numOfPeople_fieldname], "any_num", 999, 999, dummy_list)
-        except:
-            return True
 
-        #... interior lighting power density
-        try:
+            #... interior lighting power density
             interior_lpd = validate(intLPD_fieldname, convert_WperFt2_to_WperM2(dictionary[intLPD_fieldname])/2, "any_num", 999, 999, dummy_list) #divide total lpd by plug lights and hardwired lights
-        except:
-            return True
 
-        #... exterior lighting power
-        try:
+            #... exterior lighting power
             exterior_lp = validate(extLP_fieldname, dictionary[extLP_fieldname]/2, "any_num", 999, 999, dummy_list) #divide total lp by garage lights and exterior facade lights
+
+            #... applicance inputs
+            range_type = dictionary[range_fieldname]
+            dryer_type = dictionary[dryer_fieldname]
+            frig = dictionary[frig_fieldname]
+            clotheswasher = dictionary[cw_fieldname]
+            dishwasher = dictionary[dw_fieldname]
+
+            #... miscellaneous electric power
+            misc_elec = validate(miscElec_fieldname, dictionary[miscElec_fieldname], "any_num", 999, 999, dummy_list)
+
+            #... miscellaneous gas power
+            misc_gas = validate(miscGas_fieldname, convert_Btuh_to_W(dictionary[miscGas_fieldname]), "any_num", 999, 999, dummy_list)
+
         except:
             return True
         
-        #... applicance inputs (note: error handling is performed later on in code when REEDR attempts to open files)
-        range_type = dictionary[range_fieldname]
-        dryer_type = dictionary[dryer_fieldname]
-        frig = dictionary[frig_fieldname]
-        clotheswasher = dictionary[cw_fieldname]
-        dishwasher = dictionary[dw_fieldname]
-
-        #... miscellaneous electric power
-        try:
-            misc_elec = validate(miscElec_fieldname, dictionary[miscElec_fieldname], "any_num", 999, 999, dummy_list)
-        except:
-            return True
-
-        #... miscellaneous gas power
-        try:
-            misc_gas = validate(miscGas_fieldname, convert_Btuh_to_W(dictionary[miscGas_fieldname]), "any_num", 999, 999, dummy_list)
-        except:
-            return True
 
         ## Set window construction
         win_construction = "Exterior Window"
@@ -899,11 +784,6 @@ def genmodels(gui_params, get_data_dict):
         zonereturn_duct_Ufactor = duct_dict[hvac_dict[hvac_type][0]][5]
         mainreturn_duct_length = duct_dict[hvac_dict[hvac_type][0]][6]
         mainreturn_duct_Ufactor = duct_dict[hvac_dict[hvac_type][0]][7]
-        
-        # If HVAC type is "zonal", overwrite user-entered supply and duct leakage and assume "perfect" ducts
-        if hvac_dict[hvac_type][0] == "Zonal":
-            supply_leak = duct_dict[hvac_dict[hvac_type][0]][8]
-            return_leak = duct_dict[hvac_dict[hvac_type][0]][9]
 
         # Add AFN ducts to all models
         with open(os.path.join(set_dir, building_block_dir, hvac_afn_main_dir, 'AFN_Ducts.txt'), 'r') as f:
