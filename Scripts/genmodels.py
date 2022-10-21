@@ -275,9 +275,17 @@ def genmodels(gui_params, get_data_dict):
                 furnace_capacity_primary_list = furnace_capacity_dict.keys()
                 furnace_capacity_primary = validate(primFurnaceCapacity_fieldname, dictionary[primFurnaceCapacity_fieldname], "list", 999, 999, furnace_capacity_primary_list)
                 furnace_capacity = furnace_capacity_dict[furnace_capacity_primary]
+            else:
+                furnace_capacity = 0
 
             #... heat pump or AC capacity
-            hpOrAC_capacity_primary = dictionary[primHPCapacity_fieldname]
+            if hvac_dict[hvac_type][22] == "SS Heat Pump" or hvac_dict[hvac_type][22] == "DS Heat Pump" or hvac_dict[hvac_type][22] == "MS Heat Pump" \
+            or hvac_dict[hvac_type][15] != "NA":
+                hpOrAC_capacity_primary_list = hpOrAC_capacity_dict.keys()
+                hpOrAC_capacity_primary = validate(primHPCapacity_fieldname, dictionary[primHPCapacity_fieldname], "list", 999, 999, hpOrAC_capacity_primary_list)
+                hpOrAC_capacity = hpOrAC_capacity_dict[hpOrAC_capacity_primary]
+            else:
+                hpOrAC_capacity = 0
 
             #... baseboard heating capacity
             if str(dictionary[backupBaseboardCapacity_fieldname]) == "nan":
@@ -329,10 +337,11 @@ def genmodels(gui_params, get_data_dict):
                 gas_furnace_AFUE = validate(AFUE_fieldname, dictionary[AFUE_fieldname], "num_between", AFUE_lo, AFUE_hi, dummy_list)
             
             #... water heater type
+            water_heater_type_list = ["Electric Storage_50-gallon", "Gas Storage_50-gallon", "None"]
             water_heater_type = dictionary[dhwType_fieldname]
 
             #... DHW setpoint schedule
-            dhw_stpt_sch = dictionary[dhwSched_fieldname]
+            dhw_stpt_sch = validate(dhwSched_fieldname, dictionary[dhwSched_fieldname], "list", 999, 999, sched_list)
 
             #... number of people
             people = validate(numOfPeople_fieldname, dictionary[numOfPeople_fieldname], "any_num", 999, 999, dummy_list)
@@ -343,12 +352,25 @@ def genmodels(gui_params, get_data_dict):
             #... exterior lighting power
             exterior_lp = validate(extLP_fieldname, dictionary[extLP_fieldname]/2, "any_num", 999, 999, dummy_list) #divide total lp by garage lights and exterior facade lights
 
-            #... applicance inputs
-            range_type = dictionary[range_fieldname]
-            dryer_type = dictionary[dryer_fieldname]
-            frig = dictionary[frig_fieldname]
-            clotheswasher = dictionary[cw_fieldname]
-            dishwasher = dictionary[dw_fieldname]
+            #... range type
+            range_type_list = ["Electric", "Gas", "None"]
+            range_type = validate(dictionary[range_fieldname], "list", 999, 999, range_type_list)
+
+            #... dryer type
+            dryer_type_list = ["Electric", "Gas", "None"]
+            dryer_type = validate(dictionary[dryer_fieldname], "list", 999, 999, dryer_type_list)
+
+            #... frig type
+            frig_list = ["Yes", "None"]
+            frig = validate(dictionary[frig_fieldname], "list", 999, 999, frig_list)
+
+            #... clotheswasher type
+            clotheswasher_list = ["Yes", "None"]
+            clotheswasher = validate(dictionary[cw_fieldname], "list", 999, 999, clotheswasher_list)
+
+            #... dishwasher type
+            dishwasher_list = ["Yes", "None"]
+            dishwasher = validate(dictionary[dw_fieldname], "list", 999, 999, dishwasher_list)
 
             #... miscellaneous electric power
             misc_elec = validate(miscElec_fieldname, dictionary[miscElec_fieldname], "any_num", 999, 999, dummy_list)
@@ -595,12 +617,6 @@ def genmodels(gui_params, get_data_dict):
                 geom_nonslab_adder_t = f"{f.read()}".format(**locals())
             with open(os.path.join(set_dir, building_block_dir, geometry_main_dir, geometry_envelope_dir, 'NonHeatedBsmtGeometryAdder.txt'), 'r') as f:
                 geom_nonhtdbsmt_adder_t = f"{f.read()}".format(**locals())
-        
-        ### --- Adding building HVAC system --- ###
-        if hpOrAC_capacity_primary in hpOrAC_capacity_dict:
-            hpOrAC_capacity = hpOrAC_capacity_dict[hpOrAC_capacity_primary]
-        else:
-            hpOrAC_capacity = ""
         
         DesignSpecificationOutdoorAirObjectName = ""
 
