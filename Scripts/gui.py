@@ -9,7 +9,7 @@ def gui(func):
     #combobox selection lists
     months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
     days = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31]
-    sim_select = ["Annual", "Sub-Annual: enter start and end dates at right -->"] # check with CD
+    sim_select = ["Annual", "Sub-Annual: enter start and end dates at right -->", "Test Run"]
     gran_select = ["Annual", "Hourly", "TimeStep"]
     end_select = ["All_End_Uses", "Total_Electric_HVAC", "Heating", "Cooling", "Fan", "Water-Heating", "Lighting", "Other_Electric_Equipment"]
 
@@ -33,6 +33,10 @@ def gui(func):
         "end_mo":em_input.get(),
         "end_day":ed_input.get(),
         }
+        # if test run, assume hardcoded input values; genmodels will later assume single day for simulation
+        if gui_params["sim_type"] == "Test Run":
+            gui_params["output_gran"] = "Hourly"
+            gui_params["output_enduses"] = "Heating"
         # print(gui_params.values()) # for debugging
         func(gui_params)
         root.quit() # enable this to make program auto-term after one run
@@ -91,15 +95,9 @@ def gui(func):
     # project_entry.config(foreground="red")
 
 
-
-
     #####################3 Trace Test ###########################
 
     project_input.trace_add("write", update) # move to sensible spot later
-
-
-
-
 
     
     ttk.Label(frm, text="Simulation Run Period: ", style='Body.TLabel').grid(sticky=W, column=0, row=5, padx=10, pady=0)

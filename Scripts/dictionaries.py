@@ -7,10 +7,10 @@ def make_foundation_and_floor_dict():
         "Vented Crawlspace - R0 Cavity Insulation": [
             "Exterior Floor", # main_floor_construction
             "floor_foundation", # foundation_surface
-            "", # int_horiz_ins_mat_name 
-            "", # int_horiz_ins_depth 
-            "", # int_horiz_ins_width 
-            "", # int_vert_ins_mat_name 
+            "", # int_horiz_ins_mat_name
+            "", # int_horiz_ins_depth
+            "", # int_horiz_ins_width
+            "", # int_vert_ins_mat_name
             "", # int_vert_ins_depth               
             "", # ext_vert_ins_mat_name 
             "", # ext_vert_ins_depth 
