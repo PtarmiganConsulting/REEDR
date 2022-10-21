@@ -98,6 +98,12 @@ def getdata(gui_params):
                 "error_status":True,
             }
             return get_data_d
+        if output_gran == "Annual":
+            print("\n*** ERROR: Cannot output Annual-level results for a Sub-Annual simulation. Please select hourly- or timestep-level output. ***\n")
+            get_data_d = {
+                "error_status":True,
+            }
+            return get_data_d
     else:
         sim_type = "Test Run"
         begin_mo = 1

@@ -52,9 +52,9 @@ def main(gui_params):
         hit_error = genoutputs(gui_params, get_data_dict) # for debugging
 
     if hit_error == False:
-        input("REEDR run successful! Please press enter to continue...")
+        input("REEDR run successful. Please press enter to continue...")
     else:
-        input("Please press enter to continue...")
+        input("REEDR experienced an error. Please press enter to continue...")
 
 # the gui function
 from gui import gui as gui
