@@ -112,11 +112,18 @@ def getdata(gui_params):
         end_day = 1
 
     # Creates the user-assigned project directory; removes it first if it exists.
-    if os.path.exists(master_directory) == True:
-        shutil.rmtree(master_directory) # first delete the directory if it already exists
-        os.mkdir(master_directory) # and then make new directory
-    else:
-        os.mkdir(master_directory) # if directory doesn't exist, just create it
+    try:
+        if os.path.exists(master_directory) == True:
+            shutil.rmtree(master_directory) # first delete the directory if it already exists
+            os.mkdir(master_directory) # and then make new directory
+        else:
+            os.mkdir(master_directory) # if directory doesn't exist, just create it
+    except:
+        print("\n*** ERROR: Could not create project folder. If trying to overwrite a previous project, please make sure all prior output files and reports are closed before running REEDR. ***\n")
+        get_data_d = {
+            "error_status":True,
+        }
+        return get_data_d
 
     #Create RunLog.txt...
     runlog_path = os.path.join(master_directory, "RunLog.txt")

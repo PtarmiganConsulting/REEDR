@@ -385,12 +385,12 @@ def make_hvac_dict(set_dir, building_block_dir, hvac_airloop_main_dir, hvac_airl
             os.path.join(set_dir, building_block_dir, hvac_coil_dir, 'Cooling_ASHP_SS_14SEER.txt'), # additional cooling coil text file
             os.path.join(set_dir, building_block_dir, hvac_fan_dir, 'CentralFanSS.txt'), # additional fan text file
             "Coil:Heating:DX:SingleSpeed", # AirLoopHVAC_HeatingCoil_ObjectType
-            "Heating_ASHP_SS_8.2HSPF", # AirLoopHVAC_HeatingCoil_Name
+            "DX_Heating_Coil", # AirLoopHVAC_HeatingCoil_Name
             "Coil:Cooling:DX:SingleSpeed", # AirLoopHVAC_CoolingCoil_ObjectType
-            "Cooling_ASHP_SS_14SEER", # AirLoopHVAC_CoolingCoil_Name
+            "DX_Cooling_Coil", # AirLoopHVAC_CoolingCoil_Name
             "AirLoopHVAC:UnitaryHeatPump:AirtoAir", # AirLoopHVAC_Unitary_ObjectType
             "SS Heat Pump", # AirLoopHVAC_Unitary_ObjectName
-            "Central Fan SS", # fan_name
+            "Fan", # fan_name
             1, # heating_speeds
             1, # cooling_speeds
             375, # fan_CFMperTon_max
@@ -422,12 +422,12 @@ def make_hvac_dict(set_dir, building_block_dir, hvac_airloop_main_dir, hvac_airl
             os.path.join(set_dir, building_block_dir, hvac_coil_dir, 'Cooling_ASHP_SS_15SEER.txt'), # additional cooling coil text file
             os.path.join(set_dir, building_block_dir, hvac_fan_dir, 'CentralFanSS.txt'), # additional fan text file
             "Coil:Heating:DX:SingleSpeed", # AirLoopHVAC_HeatingCoil_ObjectType
-            "Heating_ASHP_SS_8.5HSPF", # AirLoopHVAC_HeatingCoil_Name
+            "DX_Heating_Coil", # AirLoopHVAC_HeatingCoil_Name
             "Coil:Cooling:DX:SingleSpeed", # AirLoopHVAC_CoolingCoil_ObjectType
-            "Cooling_ASHP_SS_15SEER", # AirLoopHVAC_CoolingCoil_Name
+            "DX_Cooling_Coil", # AirLoopHVAC_CoolingCoil_Name
             "AirLoopHVAC:UnitaryHeatPump:AirtoAir", # AirLoopHVAC_Unitary_ObjectType
             "SS Heat Pump", # AirLoopHVAC_Unitary_ObjectName
-            "Central Fan SS", # fan_name
+            "Fan", # fan_name
             1, # heating_speeds
             1, # cooling_speeds
             375, # fan_CFMperTon_max
@@ -459,12 +459,12 @@ def make_hvac_dict(set_dir, building_block_dir, hvac_airloop_main_dir, hvac_airl
             os.path.join(set_dir, building_block_dir, hvac_coil_dir, 'Cooling_ASHP_DS_19SEER.txt'), # additional cooling coil text file
             os.path.join(set_dir, building_block_dir, hvac_fan_dir, 'CentralFanMS.txt'), # additional fan text file
             "Coil:Heating:DX:MultiSpeed", # AirLoopHVAC_HeatingCoil_ObjectType
-            "Heating_ASHP_DS_9.5HSPF", # AirLoopHVAC_HeatingCoil_Name
+            "DX_Heating_Coil", # AirLoopHVAC_HeatingCoil_Name
             "Coil:Cooling:DX:MultiSpeed", # AirLoopHVAC_CoolingCoil_ObjectType
-            "Cooling_ASHP_DS_19SEER", # AirLoopHVAC_CoolingCoil_Name
+            "DX_Cooling_Coil", # AirLoopHVAC_CoolingCoil_Name
             "AirLoopHVAC:UnitaryHeatPump:AirToAir:MultiSpeed", # AirLoopHVAC_Unitary_ObjectType
             "DS Heat Pump", # AirLoopHVAC_Unitary_ObjectName
-            "Central Fan MS", # fan_name
+            "Fan", # fan_name
             2, # heating_speeds
             2, # cooling_speeds
             380, # fan_CFMperTon_max
@@ -496,12 +496,12 @@ def make_hvac_dict(set_dir, building_block_dir, hvac_airloop_main_dir, hvac_airl
             os.path.join(set_dir, building_block_dir, hvac_coil_dir, 'Cooling_ASHP_VS_22SEER.txt'), # additional cooling coil text file
             os.path.join(set_dir, building_block_dir, hvac_fan_dir, 'CentralFanMS.txt'), # additional fan text file
             "Coil:Heating:DX:MultiSpeed", # AirLoopHVAC_HeatingCoil_ObjectType
-            "Heating_ASHP_VS_10HSPF", # AirLoopHVAC_HeatingCoil_Name
+            "DX_Heating_Coil", # AirLoopHVAC_HeatingCoil_Name
             "Coil:Cooling:DX:MultiSpeed", # AirLoopHVAC_CoolingCoil_ObjectType
-            "Cooling_ASHP_VS_22SEER", # AirLoopHVAC_CoolingCoil_Name
+            "DX_Cooling_Coil", # AirLoopHVAC_CoolingCoil_Name
             "AirLoopHVAC:UnitaryHeatPump:AirToAir:MultiSpeed", # AirLoopHVAC_Unitary_ObjectType
             "MS Heat Pump", # AirLoopHVAC_Unitary_ObjectName
-            "Central Fan MS", # fan_name
+            "Fan", # fan_name
             4, # heating_speeds
             4, # cooling_speeds
             320, # fan_CFMperTon_max
@@ -535,10 +535,10 @@ def make_hvac_dict(set_dir, building_block_dir, hvac_airloop_main_dir, hvac_airl
             "Coil:Heating:Electric", # AirLoopHVAC_HeatingCoil_ObjectType
             "Heating_Resistance_Main", # AirLoopHVAC_HeatingCoil_Name
             "Coil:Cooling:DX:SingleSpeed", # AirLoopHVAC_CoolingCoil_ObjectType
-            "Cooling_ASHP_SS_15SEER", # AirLoopHVAC_CoolingCoil_Name
+            "DX_Cooling_Coil", # AirLoopHVAC_CoolingCoil_Name
             "AirLoopHVAC:UnitaryHeatCool", # AirLoopHVAC_Unitary_ObjectType
             "ACandFurnace", # AirLoopHVAC_Unitary_ObjectName
-            "Central Fan SS", # fan_name
+            "Fan", # fan_name
             1, # heating_speeds
             1, # cooling_speeds
             250, # fan_CFMperTon_max
@@ -575,7 +575,7 @@ def make_hvac_dict(set_dir, building_block_dir, hvac_airloop_main_dir, hvac_airl
             "NA", # AirLoopHVAC_CoolingCoil_Name
             "AirLoopHVAC:UnitaryHeatOnly", # AirLoopHVAC_Unitary_ObjectType
             "Furnace", # AirLoopHVAC_Unitary_ObjectName
-            "Central Fan SS", # fan_name
+            "Fan", # fan_name
             1, # heating_speeds
             1, # cooling_speeds
             250, # fan_CFMperTon_max
@@ -609,10 +609,10 @@ def make_hvac_dict(set_dir, building_block_dir, hvac_airloop_main_dir, hvac_airl
             "Coil:Heating:Fuel", # AirLoopHVAC_HeatingCoil_ObjectType
             "Heating_Fuel_Main", # AirLoopHVAC_HeatingCoil_Name
             "Coil:Cooling:DX:SingleSpeed", # AirLoopHVAC_CoolingCoil_ObjectType
-            "Cooling_ASHP_SS_15SEER", # AirLoopHVAC_CoolingCoil_Name
+            "DX_Cooling_Coil", # AirLoopHVAC_CoolingCoil_Name
             "AirLoopHVAC:UnitaryHeatCool", # AirLoopHVAC_Unitary_ObjectType
             "ACandFurnace", # AirLoopHVAC_Unitary_ObjectName
-            "Central Fan SS", # fan_name
+            "Fan", # fan_name
             1, # heating_speeds
             1, # cooling_speeds
             200, # fan_CFMperTon_max
@@ -649,7 +649,7 @@ def make_hvac_dict(set_dir, building_block_dir, hvac_airloop_main_dir, hvac_airl
             "NA", # AirLoopHVAC_CoolingCoil_Name
             "AirLoopHVAC:UnitaryHeatOnly", # AirLoopHVAC_Unitary_ObjectType
             "Furnace", # AirLoopHVAC_Unitary_ObjectName
-            "Central Fan SS", # fan_name
+            "Fan", # fan_name
             1, # heating_speeds
             1, # cooling_speeds
             200, # fan_CFMperTon_max
@@ -686,7 +686,7 @@ def make_hvac_dict(set_dir, building_block_dir, hvac_airloop_main_dir, hvac_airl
             "NA", # AirLoopHVAC_CoolingCoil_Name
             "AirLoopHVAC:UnitaryHeatOnly", # AirLoopHVAC_Unitary_ObjectType
             "Furnace", # AirLoopHVAC_Unitary_ObjectName
-            "Zonal Fan SS", # fan_name
+            "Fan", # fan_name
             1, # heating_speeds
             1, # cooling_speeds
             325, # fan_CFMperTon_max
@@ -720,10 +720,10 @@ def make_hvac_dict(set_dir, building_block_dir, hvac_airloop_main_dir, hvac_airl
             "Coil:Heating:Electric", # AirLoopHVAC_HeatingCoil_ObjectType
             "Heating_Resistance_Main", # AirLoopHVAC_HeatingCoil_Name
             "Coil:Cooling:DX:SingleSpeed", # AirLoopHVAC_CoolingCoil_ObjectType
-            "Cooling_WinAC_8.5EER", # AirLoopHVAC_CoolingCoil_Name
+            "DX_Cooling_Coil", # AirLoopHVAC_CoolingCoil_Name
             "AirLoopHVAC:UnitaryHeatCool", # AirLoopHVAC_Unitary_ObjectType
             "ACandFurnace", # AirLoopHVAC_Unitary_ObjectName
-            "Zonal Fan SS", # fan_name
+            "Fan", # fan_name
             1, # heating_speeds
             1, # cooling_speeds
             325, # fan_CFMperTon_max
@@ -757,10 +757,10 @@ def make_hvac_dict(set_dir, building_block_dir, hvac_airloop_main_dir, hvac_airl
             "Coil:Heating:Electric", # AirLoopHVAC_HeatingCoil_ObjectType
             "Heating_Resistance_Main", # AirLoopHVAC_HeatingCoil_Name
             "Coil:Cooling:DX:SingleSpeed", # AirLoopHVAC_CoolingCoil_ObjectType
-            "Cooling_WinAC_9.8EER", # AirLoopHVAC_CoolingCoil_Name
+            "DX_Cooling_Coil", # AirLoopHVAC_CoolingCoil_Name
             "AirLoopHVAC:UnitaryHeatCool", # AirLoopHVAC_Unitary_ObjectType
             "ACandFurnace", # AirLoopHVAC_Unitary_ObjectName
-            "Zonal Fan SS", # fan_name
+            "Fan", # fan_name
             1, # heating_speeds
             1, # cooling_speeds
             325, # fan_CFMperTon_max
@@ -794,10 +794,10 @@ def make_hvac_dict(set_dir, building_block_dir, hvac_airloop_main_dir, hvac_airl
             "Coil:Heating:Electric", # AirLoopHVAC_HeatingCoil_ObjectType
             "Heating_Resistance_Main", # AirLoopHVAC_HeatingCoil_Name
             "Coil:Cooling:DX:SingleSpeed", # AirLoopHVAC_CoolingCoil_ObjectType
-            "Cooling_WinAC_10.7EER", # AirLoopHVAC_CoolingCoil_Name
+            "DX_Cooling_Coil", # AirLoopHVAC_CoolingCoil_Name
             "AirLoopHVAC:UnitaryHeatCool", # AirLoopHVAC_Unitary_ObjectType
             "ACandFurnace", # AirLoopHVAC_Unitary_ObjectName
-            "Zonal Fan SS", # fan_name
+            "Fan", # fan_name
             1, # heating_speeds
             1, # cooling_speeds
             325, # fan_CFMperTon_max
@@ -829,12 +829,12 @@ def make_hvac_dict(set_dir, building_block_dir, hvac_airloop_main_dir, hvac_airl
             os.path.join(set_dir, building_block_dir, hvac_coil_dir, 'Cooling_ASHP_VS_22SEER.txt'), # additional cooling coil text file
             os.path.join(set_dir, building_block_dir, hvac_fan_dir, 'ZonalFanMS.txt'), # additional fan text file
             "Coil:Heating:DX:MultiSpeed", # AirLoopHVAC_HeatingCoil_ObjectType
-            "Heating_ASHP_VS_10HSPF", # AirLoopHVAC_HeatingCoil_Name
+            "DX_Heating_Coil", # AirLoopHVAC_HeatingCoil_Name
             "Coil:Cooling:DX:MultiSpeed", # AirLoopHVAC_CoolingCoil_ObjectType
-            "Cooling_ASHP_VS_22SEER", # AirLoopHVAC_CoolingCoil_Name
+            "DX_Cooling_Coil", # AirLoopHVAC_CoolingCoil_Name
             "AirLoopHVAC:UnitaryHeatPump:AirToAir:MultiSpeed", # AirLoopHVAC_Unitary_ObjectType
             "MS Heat Pump", # AirLoopHVAC_Unitary_ObjectName
-            "Zonal Fan MS", # fan_name
+            "Fan", # fan_name
             4, # heating_speeds
             4, # cooling_speeds
             285, # fan_CFMperTon_max
