@@ -390,7 +390,7 @@ def make_hvac_dict(set_dir, building_block_dir, hvac_airloop_main_dir, hvac_airl
             "DX_Cooling_Coil", # AirLoopHVAC_CoolingCoil_Name
             "AirLoopHVAC:UnitaryHeatPump:AirtoAir", # AirLoopHVAC_Unitary_ObjectType
             "SS Heat Pump", # AirLoopHVAC_Unitary_ObjectName
-            "Central Fan SS", # fan_name
+            "Fan", # fan_name
             1, # heating_speeds
             1, # cooling_speeds
             375, # fan_CFMperTon_max
@@ -427,7 +427,7 @@ def make_hvac_dict(set_dir, building_block_dir, hvac_airloop_main_dir, hvac_airl
             "DX_Cooling_Coil", # AirLoopHVAC_CoolingCoil_Name
             "AirLoopHVAC:UnitaryHeatPump:AirtoAir", # AirLoopHVAC_Unitary_ObjectType
             "SS Heat Pump", # AirLoopHVAC_Unitary_ObjectName
-            "Central Fan SS", # fan_name
+            "Fan", # fan_name
             1, # heating_speeds
             1, # cooling_speeds
             375, # fan_CFMperTon_max
@@ -464,7 +464,7 @@ def make_hvac_dict(set_dir, building_block_dir, hvac_airloop_main_dir, hvac_airl
             "DX_Cooling_Coil", # AirLoopHVAC_CoolingCoil_Name
             "AirLoopHVAC:UnitaryHeatPump:AirToAir:MultiSpeed", # AirLoopHVAC_Unitary_ObjectType
             "DS Heat Pump", # AirLoopHVAC_Unitary_ObjectName
-            "Central Fan MS", # fan_name
+            "Fan", # fan_name
             2, # heating_speeds
             2, # cooling_speeds
             380, # fan_CFMperTon_max
@@ -501,7 +501,7 @@ def make_hvac_dict(set_dir, building_block_dir, hvac_airloop_main_dir, hvac_airl
             "DX_Cooling_Coil", # AirLoopHVAC_CoolingCoil_Name
             "AirLoopHVAC:UnitaryHeatPump:AirToAir:MultiSpeed", # AirLoopHVAC_Unitary_ObjectType
             "MS Heat Pump", # AirLoopHVAC_Unitary_ObjectName
-            "Central Fan MS", # fan_name
+            "Fan", # fan_name
             4, # heating_speeds
             4, # cooling_speeds
             320, # fan_CFMperTon_max
@@ -538,7 +538,7 @@ def make_hvac_dict(set_dir, building_block_dir, hvac_airloop_main_dir, hvac_airl
             "DX_Cooling_Coil", # AirLoopHVAC_CoolingCoil_Name
             "AirLoopHVAC:UnitaryHeatCool", # AirLoopHVAC_Unitary_ObjectType
             "ACandFurnace", # AirLoopHVAC_Unitary_ObjectName
-            "Central Fan SS", # fan_name
+            "Fan", # fan_name
             1, # heating_speeds
             1, # cooling_speeds
             250, # fan_CFMperTon_max
@@ -575,7 +575,7 @@ def make_hvac_dict(set_dir, building_block_dir, hvac_airloop_main_dir, hvac_airl
             "NA", # AirLoopHVAC_CoolingCoil_Name
             "AirLoopHVAC:UnitaryHeatOnly", # AirLoopHVAC_Unitary_ObjectType
             "Furnace", # AirLoopHVAC_Unitary_ObjectName
-            "Central Fan SS", # fan_name
+            "Fan", # fan_name
             1, # heating_speeds
             1, # cooling_speeds
             250, # fan_CFMperTon_max
@@ -612,7 +612,7 @@ def make_hvac_dict(set_dir, building_block_dir, hvac_airloop_main_dir, hvac_airl
             "DX_Cooling_Coil", # AirLoopHVAC_CoolingCoil_Name
             "AirLoopHVAC:UnitaryHeatCool", # AirLoopHVAC_Unitary_ObjectType
             "ACandFurnace", # AirLoopHVAC_Unitary_ObjectName
-            "Central Fan SS", # fan_name
+            "Fan", # fan_name
             1, # heating_speeds
             1, # cooling_speeds
             200, # fan_CFMperTon_max
@@ -649,7 +649,7 @@ def make_hvac_dict(set_dir, building_block_dir, hvac_airloop_main_dir, hvac_airl
             "NA", # AirLoopHVAC_CoolingCoil_Name
             "AirLoopHVAC:UnitaryHeatOnly", # AirLoopHVAC_Unitary_ObjectType
             "Furnace", # AirLoopHVAC_Unitary_ObjectName
-            "Central Fan SS", # fan_name
+            "Fan", # fan_name
             1, # heating_speeds
             1, # cooling_speeds
             200, # fan_CFMperTon_max
@@ -686,7 +686,7 @@ def make_hvac_dict(set_dir, building_block_dir, hvac_airloop_main_dir, hvac_airl
             "NA", # AirLoopHVAC_CoolingCoil_Name
             "AirLoopHVAC:UnitaryHeatOnly", # AirLoopHVAC_Unitary_ObjectType
             "Furnace", # AirLoopHVAC_Unitary_ObjectName
-            "Zonal Fan SS", # fan_name
+            "Fan", # fan_name
             1, # heating_speeds
             1, # cooling_speeds
             325, # fan_CFMperTon_max
@@ -723,7 +723,7 @@ def make_hvac_dict(set_dir, building_block_dir, hvac_airloop_main_dir, hvac_airl
             "DX_Cooling_Coil", # AirLoopHVAC_CoolingCoil_Name
             "AirLoopHVAC:UnitaryHeatCool", # AirLoopHVAC_Unitary_ObjectType
             "ACandFurnace", # AirLoopHVAC_Unitary_ObjectName
-            "Zonal Fan SS", # fan_name
+            "Fan", # fan_name
             1, # heating_speeds
             1, # cooling_speeds
             325, # fan_CFMperTon_max
@@ -760,7 +760,7 @@ def make_hvac_dict(set_dir, building_block_dir, hvac_airloop_main_dir, hvac_airl
             "DX_Cooling_Coil", # AirLoopHVAC_CoolingCoil_Name
             "AirLoopHVAC:UnitaryHeatCool", # AirLoopHVAC_Unitary_ObjectType
             "ACandFurnace", # AirLoopHVAC_Unitary_ObjectName
-            "Zonal Fan SS", # fan_name
+            "Fan", # fan_name
             1, # heating_speeds
             1, # cooling_speeds
             325, # fan_CFMperTon_max
@@ -797,7 +797,7 @@ def make_hvac_dict(set_dir, building_block_dir, hvac_airloop_main_dir, hvac_airl
             "DX_Cooling_Coil", # AirLoopHVAC_CoolingCoil_Name
             "AirLoopHVAC:UnitaryHeatCool", # AirLoopHVAC_Unitary_ObjectType
             "ACandFurnace", # AirLoopHVAC_Unitary_ObjectName
-            "Zonal Fan SS", # fan_name
+            "Fan", # fan_name
             1, # heating_speeds
             1, # cooling_speeds
             325, # fan_CFMperTon_max
@@ -834,7 +834,7 @@ def make_hvac_dict(set_dir, building_block_dir, hvac_airloop_main_dir, hvac_airl
             "DX_Cooling_Coil", # AirLoopHVAC_CoolingCoil_Name
             "AirLoopHVAC:UnitaryHeatPump:AirToAir:MultiSpeed", # AirLoopHVAC_Unitary_ObjectType
             "MS Heat Pump", # AirLoopHVAC_Unitary_ObjectName
-            "Zonal Fan MS", # fan_name
+            "Fan", # fan_name
             4, # heating_speeds
             4, # cooling_speeds
             285, # fan_CFMperTon_max

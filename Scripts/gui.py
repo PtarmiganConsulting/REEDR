@@ -11,7 +11,7 @@ def gui(func):
     days = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31]
     sim_select = ["Annual", "Sub-Annual: enter start and end dates at right -->", "Test Run"]
     gran_select = ["Annual", "Hourly", "TimeStep"]
-    end_select = ["All_End_Uses", "Total_Electric_HVAC", "Heating", "Cooling", "Fan", "Water-Heating", "Lighting", "Other_Electric_Equipment"]
+    end_select = ["All_End_Uses", "All_HVAC", "Heating", "Cooling", "Fan", "Water_Heating", "Lighting", "Other_Equipment"]
 
 
     # functions
