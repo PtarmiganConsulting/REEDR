@@ -2,6 +2,8 @@
 import pandas as pd # used to handle data tables, i.e. "dataframes", or "dfs"
 import os # used to remove files
 from pprint import pprint # used to print dataframes to command prompt in more legible way for debugging
+import datetime
+import pytz
 
 ## Import "internal" modules needed for REEDR...
 from unitconversions import convert_J_to_kWh, convert_J_to_therm, convert_W_to_Btuh, convert_degC_to_degF
@@ -162,7 +164,7 @@ def genoutputs(gui_params, get_data_dict):
     ## the proper report name (report_name), and the requested output granularity (output_gran).
     ## From there, it takes the proper outputs from the individual EnergyPlus-generated output files
     ## and creates a new, custom report in Excel that combines all runs.
-    produce_output_report(set_dir, output_dict, report_name, gui_params["output_gran"], output_type, get_data_dict)
+    produce_output_report(set_dir, output_dict, report_name, gui_params["output_gran"], output_type, get_data_dict, gui_params["output_enduses"])
 
     # Update simulation status box in REEDR.xlsm...
     #sht1.range('status_line_3').value = "Generating model output... Model output complete."
@@ -180,7 +182,7 @@ def genoutputs(gui_params, get_data_dict):
 ## the proper report name (report_name), the requested output granularity (output_gran), and the output type (energy or demand: output_type).
 ## From there, it takes the proper outputs from the individual EnergyPlus-generated output files
 ## and creates a new, custom report in Excel that combines all runs.
-def produce_output_report(set_dir, output_dict, end_use_report_name, output_gran, output_type, get_data_dict):
+def produce_output_report(set_dir, output_dict, end_use_report_name, output_gran, output_type, get_data_dict, output_enduses):
 
     # Get run labels for output table
     df_for_run_labels = pd.read_excel(get_data_dict["REEDR_wb"], sheet_name=get_data_dict["Model_Input_ws"]) # This is the sheet with the model inputs
@@ -260,7 +262,9 @@ def produce_output_report(set_dir, output_dict, end_use_report_name, output_gran
         i = i + 1
 
     # Create path string for new custom report
-    out_path = get_data_dict["master_directory"] + '/' + end_use_report_name + ".xlsx"
+    #out_path = get_data_dict["master_directory"] + '/' + end_use_report_name + ".xlsx"
+    out_path = get_data_dict["master_directory"] + "/RunReport.xlsx"
+
     # If path already exists, remove it, to be overwritten
     if os.path.exists(out_path) == True:
         try:
@@ -291,9 +295,39 @@ def produce_output_report(set_dir, output_dict, end_use_report_name, output_gran
                 except:
                     pass
 
+    # Create Pandas Excel writer so that we can write to multiple Excel sheets
+    writer = pd.ExcelWriter(out_path, engine='xlsxwriter')
+    
     # Paste output dataframe (custom report) to the path created just above.
-    df_out.to_excel(out_path, sheet_name="Sheet1", float_format="%.2f", header=True, index=False, startrow=0, startcol=0)
+    df_out.to_excel(writer, sheet_name="Model Out", float_format="%.2f", header=True, index=False, startrow=0, startcol=0)
 
+    # write model inputs to output report as well
+    df_in = get_data_dict["df"]
+    df_in.to_excel(writer, sheet_name="Model In", float_format="%.2f", header=True, index=False, startrow=0, startcol=0)
+
+    # get current time
+    current_time = datetime.datetime.now(pytz.timezone('US/Pacific'))
+    current_time_w_zone = str(current_time) + " US Pacific Time"
+
+    # write run characteristics
+    run_chars_dict = {
+        "EnergyPlus Directory": [get_data_dict["eplus_directory"]],
+        "Model Input Template Directory": [get_data_dict["REEDR_wb"]],
+        "Simulation Type": [get_data_dict["sim_type"]],
+        "Simulation Begin Month": [get_data_dict["begin_mo"]],
+        "Simulation Begin Day": [get_data_dict["begin_day"]],
+        "Simulation End Month": [get_data_dict["end_mo"]],
+        "Simulation End Day": [get_data_dict["end_day"]],
+        "Output Granularity": [output_gran],
+        "Output End Uses": [output_enduses],
+        "Run Complete Timestamp": [current_time_w_zone],
+    }
+    run_chars_df = pd.DataFrame.from_dict(run_chars_dict)
+    run_chars_df_transposed = run_chars_df.T
+    run_chars_df_transposed.to_excel(writer, sheet_name="Run Characteristics", header=False, index=True, startrow=0, startcol=0)
+
+    # Close the Pandas Excel writer and output the Excel file.
+    writer.save()
 
 # getList is a function that takes a dictionary and returns the keys of that dictionary as a list.
 def getList(dict):
