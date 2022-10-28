@@ -49,6 +49,10 @@ def convert_kW_to_ton(kW):
     ton = kW/3.517
     return ton
 
+def convert_W_to_ton(W):
+    ton = W/3516.8528420667
+    return ton
+
 def convert_CFM_to_m3PerSec(CFM):
     m3PerSec = CFM/2118.8799727596793
     return m3PerSec

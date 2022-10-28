@@ -1,7 +1,9 @@
 import os
 
 def validate(input_name, input_value, input_type, value_low, value_high, valid_list, file_path=None):
-        
+    
+    #print(input_name) for debugging
+
     #First check if string is empty
     if str(input_value) == "nan":
         print("\n*** ERROR: " + str(input_name) + " field cannot be blank. Please specify a valid " + str(input_name) + ". ***\n")
@@ -56,3 +58,17 @@ def validate(input_name, input_value, input_type, value_low, value_high, valid_l
         else:
             print("\n*** ERROR: " + str(input_name) + " must be numeric. ***\n")
             raise Exception
+
+def convert_capacity(input_units, input_value):
+
+    if input_units == "kW":
+        capacity_in_W = 1000 * input_value
+    elif input_units == "kBtu/h":
+        capacity_in_W = 293.07107 * input_value
+    elif input_units == "ton":
+        capacity_in_W = 3516.8528421 * input_value
+    else:
+        print("\n*** ERROR: Could not convert capacity to Watts. ***\n")
+        raise Exception
+    
+    return capacity_in_W

@@ -3,12 +3,11 @@ import pandas as pd # to import xcel, some initial data manipulation
 import os # for making paths and directories and removing files
 import shutil # for removing full directories
 import math # used for functions like square root
-from pprint import pprint # for debugging
+from pprint import pprint
 from unitconversions import convert_WperFt2_to_WperM2, convert_degF_to_degC, convert_IP_Uvalue_to_SI_Uvalue, convert_ft_to_m, convert_ft2_to_m2, convert_ft3_to_m3, \
-    convert_Btuh_to_W, convert_kW_to_ton, convert_CFM_to_m3PerSec
-from dictionaries import make_foundation_and_floor_dict, make_hvac_dict, make_furnace_capacity_dict, make_hpOrAC_capacity_dict, make_baseboard_capacity_dict, \
-    make_duct_dict, make_foundation_dict
-from datavalidation import validate
+    convert_Btuh_to_W, convert_CFM_to_m3PerSec, convert_W_to_ton
+from dictionaries import make_foundation_and_floor_dict, make_hvac_dict, make_duct_dict, make_foundation_dict
+from datavalidation import validate, convert_capacity
 
 
 def genmodels(gui_params, get_data_dict):
@@ -72,11 +71,17 @@ def genmodels(gui_params, get_data_dict):
     wtwLeft_fieldname = "WtW Ratio Left [%]"
     wtwRight_fieldname = "WtW Ratio Right [%]"
     primaryHVAC_fieldname = "Primary HVAC Type"
-    primFurnaceCapacity_fieldname = "Primary HVAC Furnace or Resistance Wall Heat Nominal Rated Capacity"
-    primHPCapacity_fieldname = "Primary HVAC Heat Pump or AC Nominal Rated Capacity"
+    primaryHtgCapacityUnits_fieldname = "Primary Heating Capacity Units"
+    primaryHtgCapacity_fieldname = "Primary Rated Heating Capacity [@47F OAT]"
+    primaryClgCapacityUnits_fieldname = "Primary Cooling Capacity Units"
+    primaryClgCapacity_fieldname = "Primary Rated Cooling Capacity [@95F OAT]"
     hpBackupType_fieldname = "ASHP Backup Heat Type"
-    hpBackupCapacity_fieldname = "ASHP Backup Nominal Rated Capacity"
-    backupBaseboardCapacity_fieldname = "Backup Electric Baseboard Heat Capacity"
+    hpBackupCapacityUnits_fieldname = "ASHP Backup Heat Capacity Units"
+    hpBackupCapacity_fieldname = "ASHP Backup Heat Capacity"
+    backupBaseboardCapacity_fieldname = "Backup Electric Baseboard Heat Capacity [kW]"
+    #primFurnaceCapacity_fieldname = "Primary HVAC Furnace or Resistance Wall Heat Nominal Rated Capacity"
+    #primHPCapacity_fieldname = "Primary HVAC Heat Pump or AC Nominal Rated Capacity"
+    #hpBackupCapacity_fieldname = "ASHP Backup Nominal Rated Capacity"
     hpBackupLockout_fieldname = "ASHP Backup Heat Lockout Temp [deg F]"
     hpCompressorLockout_fieldname = "ASHP Compressor Lockout Temp [deg F]"
     AFUE_fieldname = "Gas Furnace AFUE [%]"
@@ -164,11 +169,11 @@ def genmodels(gui_params, get_data_dict):
     # hvac type dictionary
     hvac_dict = make_hvac_dict(set_dir, building_block_dir, hvac_airloop_main_dir, hvac_airloop_hvac_dir, hvac_zone_main_dir, hvac_zone_hvac_dir, hvac_coil_dir, hvac_fan_dir)
     # primary furnace heating capacity dictionary
-    furnace_capacity_dict = make_furnace_capacity_dict()
+    #furnace_capacity_dict = make_furnace_capacity_dict()
     # primary heat pump or ac capacity dictionary
-    hpOrAC_capacity_dict = make_hpOrAC_capacity_dict()
+    #hpOrAC_capacity_dict = make_hpOrAC_capacity_dict()
     # baseboard capacity dictionary
-    baseboard_capacity_dict = make_baseboard_capacity_dict()
+    #baseboard_capacity_dict = make_baseboard_capacity_dict()
     # duct dictionary
     duct_dict = make_duct_dict()
     # foundation type dictionary
@@ -269,31 +274,23 @@ def genmodels(gui_params, get_data_dict):
             #... primary HVAC type
             hvac_type_list = hvac_dict.keys()
             hvac_type = validate(primaryHVAC_fieldname, dictionary[primaryHVAC_fieldname], "list", 999, 999, hvac_type_list)
+            
+            #... heating capacity units
+            primaryHVAC_capacity_units_list = ["kBtu/h", "kW", "ton"]
+            primaryHtg_capacity_units = validate(primaryHtgCapacityUnits_fieldname, dictionary[primaryHtgCapacityUnits_fieldname], "list", 999, 999, primaryHVAC_capacity_units_list)
+            
+            #... primary heating capacity
+            primary_heating_capacity = validate(primaryHtgCapacity_fieldname, dictionary[primaryHtgCapacity_fieldname], "num_not_zero", 999, 999, dummy_list)
+            primary_heating_capacity = convert_capacity(primaryHtg_capacity_units, primary_heating_capacity)
 
-            #... primary furnace capacity
-            if hvac_dict[hvac_type][18] == "Heating_Fuel_Main" or hvac_dict[hvac_type][18] == "Heating_Resistance_Main":
-                furnace_capacity_primary_list = furnace_capacity_dict.keys()
-                furnace_capacity_primary = validate(primFurnaceCapacity_fieldname, dictionary[primFurnaceCapacity_fieldname], "list", 999, 999, furnace_capacity_primary_list)
-                furnace_capacity = furnace_capacity_dict[furnace_capacity_primary]
-            else:
-                furnace_capacity = 0
-
-            #... heat pump or AC capacity
+            #... cooling capacity and capacity units
             if hvac_dict[hvac_type][22] == "SS Heat Pump" or hvac_dict[hvac_type][22] == "DS Heat Pump" or hvac_dict[hvac_type][22] == "MS Heat Pump" \
             or hvac_dict[hvac_type][15] != "NA":
-                hpOrAC_capacity_primary_list = hpOrAC_capacity_dict.keys()
-                hpOrAC_capacity_primary = validate(primHPCapacity_fieldname, dictionary[primHPCapacity_fieldname], "list", 999, 999, hpOrAC_capacity_primary_list)
-                hpOrAC_capacity = hpOrAC_capacity_dict[hpOrAC_capacity_primary]
+                primaryClg_capacity_units = validate(primaryClgCapacityUnits_fieldname, dictionary[primaryClgCapacityUnits_fieldname], "list", 999, 999, primaryHVAC_capacity_units_list)
+                primary_cooling_capacity = validate(primaryClgCapacity_fieldname, dictionary[primaryClgCapacity_fieldname], "num_not_zero", 999, 999, dummy_list)
+                primary_cooling_capacity = convert_capacity(primaryClg_capacity_units, primary_cooling_capacity)
             else:
-                hpOrAC_capacity = 0
-
-            #... baseboard heating capacity
-            if str(dictionary[backupBaseboardCapacity_fieldname]) == "nan":
-                baseboard_capacity = 0
-            else:
-                baseboard_heat_capacity_list = baseboard_capacity_dict.keys()
-                baseboard_heat_capacity = validate(backupBaseboardCapacity_fieldname, dictionary[backupBaseboardCapacity_fieldname], "list", 999, 999, baseboard_heat_capacity_list)
-                baseboard_capacity = baseboard_capacity_dict[baseboard_heat_capacity]
+                primary_cooling_capacity = 0
 
             #... heat pump specific inputs
             if hvac_dict[hvac_type][22] == "SS Heat Pump" or hvac_dict[hvac_type][22] == "DS Heat Pump" or hvac_dict[hvac_type][22] == "MS Heat Pump" \
@@ -301,17 +298,24 @@ def genmodels(gui_params, get_data_dict):
                 #... ASHP backup heat type
                 hp_supp_heat_type_list = ["Electric", "Gas"]
                 hp_supp_heat_type = validate(hpBackupType_fieldname, dictionary[hpBackupType_fieldname], "list", 999, 999, hp_supp_heat_type_list)
+                #... ASHP backup heat capacity units
+                ASHPbackup_capacity_units_list = ["kBtu/h", "kW"]
+                ASHPbackup_capacity_units = validate(hpBackupCapacityUnits_fieldname, dictionary[hpBackupCapacityUnits_fieldname], "list", 999, 999, ASHPbackup_capacity_units_list)
                 #... ASHP backup heat capacity
-                hp_supp_heat_capacity_list = furnace_capacity_dict.keys()
-                hp_supp_heat_capacity = validate(hpBackupCapacity_fieldname, dictionary[hpBackupCapacity_fieldname], "list", 999, 999, hp_supp_heat_capacity_list)
-                supp_furnace_capacity = furnace_capacity_dict[hp_supp_heat_capacity]
+                hp_supp_heat_capacity = convert_capacity(ASHPbackup_capacity_units, validate(hpBackupCapacity_fieldname, dictionary[hpBackupCapacity_fieldname], "num_not_zero", 999, 999, dummy_list))
                 #... backup heat lockout
                 hp_max_resistance_temp = validate(hpBackupLockout_fieldname, convert_degF_to_degC(dictionary[hpBackupLockout_fieldname]), "any_num", 999, 999, dummy_list)
                 #... compressor lockout
                 hp_min_compressor_temp = validate(hpCompressorLockout_fieldname, convert_degF_to_degC(dictionary[hpCompressorLockout_fieldname]), "any_num", 999, 999, dummy_list)
             else:
                 hp_supp_heat_type = "None"
-                supp_furnace_capacity = 0
+                hp_supp_heat_capacity = 0
+
+            #... baseboard heating capacity
+            if str(dictionary[backupBaseboardCapacity_fieldname]) == "nan":
+                baseboard_heat_capacity = 0
+            else:
+                baseboard_heat_capacity = convert_capacity("kW", validate(backupBaseboardCapacity_fieldname, dictionary[backupBaseboardCapacity_fieldname], "any_num", 999, 999, dummy_list))
             
             #... duct inputs
             if hvac_dict[hvac_type][0] == "Central":
@@ -381,7 +385,6 @@ def genmodels(gui_params, get_data_dict):
         except:
             return True
         
-
         ## Set window construction
         win_construction = "Exterior Window"
 
@@ -646,21 +649,26 @@ def genmodels(gui_params, get_data_dict):
         fan_CFMmult_spd_2 = hvac_dict[hvac_type][28]
         fan_CFMmult_spd_3 = hvac_dict[hvac_type][29]
         fan_CFMmult_spd_4 = hvac_dict[hvac_type][30]
-        heating_capacitymult_spd_1 = hvac_dict[hvac_type][31]
-        heating_capacitymult_spd_2 = hvac_dict[hvac_type][32]
-        heating_capacitymult_spd_3 = hvac_dict[hvac_type][33]
-        heating_capacitymult_spd_4 = hvac_dict[hvac_type][34]
+        capacitymult_spd_1 = hvac_dict[hvac_type][31]
+        capacitymult_spd_2 = hvac_dict[hvac_type][32]
+        capacitymult_spd_3 = hvac_dict[hvac_type][33]
+        capacitymult_spd_4 = hvac_dict[hvac_type][34]
 
         # Assume effectively no integrated supplemental backup heat for a DHP
         if AirLoopHVAC_Unitary_ObjectType == "AirLoopHVAC:UnitaryHeatPump:AirToAir:MultiSpeed" and hvac_dict[hvac_type][0] == "Zonal":
             hp_max_resistance_temp = convert_degF_to_degC(68)
             hp_min_compressor_temp = convert_degF_to_degC(-20)
 
-        # Set max fan speed using the proper user inputted total HVAC capacity
-        if AirLoopHVAC_Unitary_ObjectType == "AirLoopHVAC:UnitaryHeatPump:AirtoAir" or AirLoopHVAC_Unitary_ObjectType == "AirLoopHVAC:UnitaryHeatPump:AirToAir:MultiSpeed":
-            fan_m3PerSec_max = convert_CFM_to_m3PerSec(fan_CFMperTon_max * convert_kW_to_ton(hpOrAC_capacity/1000))
+        # Set capacity to use for sizing fans. If heating only, use heating capacity. If heating and cooling, use average capacity.
+        if hvac_dict[hvac_type][22] == "SS Heat Pump" or hvac_dict[hvac_type][22] == "DS Heat Pump" or hvac_dict[hvac_type][22] == "MS Heat Pump" \
+            or hvac_dict[hvac_type][15] != "NA":
+
+            sizing_capacity = convert_W_to_ton((primary_heating_capacity + primary_cooling_capacity)/2)
         else:
-            fan_m3PerSec_max = convert_CFM_to_m3PerSec(fan_CFMperTon_max * convert_kW_to_ton(furnace_capacity/1000))
+            sizing_capacity = convert_W_to_ton(primary_heating_capacity)
+
+        # Set max fan speed using the proper user inputted total HVAC capacity
+        fan_m3PerSec_max = convert_CFM_to_m3PerSec(fan_CFMperTon_max * sizing_capacity)
         
         # Set fan speeds and capacities using characteristics from HVAC dictionary and user selected HVAC type.
         # Variable speed equipment is modeled using four speeds.
@@ -668,19 +676,19 @@ def genmodels(gui_params, get_data_dict):
         fan_m3PerSec_spd_2 = fan_CFMmult_spd_2 * fan_m3PerSec_max
         fan_m3PerSec_spd_3 = fan_CFMmult_spd_3 * fan_m3PerSec_max
         fan_m3PerSec_spd_4 = fan_CFMmult_spd_4 * fan_m3PerSec_max
-        htg_capacity_spd_1 = heating_capacitymult_spd_1 * hpOrAC_capacity
-        htg_capacity_spd_2 = heating_capacitymult_spd_2 * hpOrAC_capacity
-        htg_capacity_spd_3 = heating_capacitymult_spd_3 * hpOrAC_capacity
-        htg_capacity_spd_4 = heating_capacitymult_spd_4 * hpOrAC_capacity
-        clg_capacity_spd_1 = htg_capacity_spd_1
-        clg_capacity_spd_2 = htg_capacity_spd_2
-        clg_capacity_spd_3 = htg_capacity_spd_3
-        clg_capacity_spd_4 = htg_capacity_spd_4
+        htg_capacity_spd_1 = capacitymult_spd_1 * primary_heating_capacity
+        htg_capacity_spd_2 = capacitymult_spd_2 * primary_heating_capacity
+        htg_capacity_spd_3 = capacitymult_spd_3 * primary_heating_capacity
+        htg_capacity_spd_4 = capacitymult_spd_4 * primary_heating_capacity
+        clg_capacity_spd_1 = capacitymult_spd_1 * primary_cooling_capacity
+        clg_capacity_spd_2 = capacitymult_spd_2 * primary_cooling_capacity
+        clg_capacity_spd_3 = capacitymult_spd_3 * primary_cooling_capacity
+        clg_capacity_spd_4 = capacitymult_spd_4 * primary_cooling_capacity
 
         fan_max_flow_allowed = 1 * fan_m3PerSec_max
 
         # Add baseboard capacity if defined
-        if baseboard_capacity != 0:
+        if baseboard_heat_capacity != 0:
             ZoneEquipment2ObjectType = "ZoneHVAC:Baseboard:Convective:Electric"
             ZoneEquipment2Name = "BaseboardElectric"
             ZoneEquipment2CoolingSequence = "2"
