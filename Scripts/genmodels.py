@@ -82,7 +82,7 @@ def genmodels(gui_params, get_data_dict):
     get_data_dict["runlog"].write("Starting to build subdirectories under " + os.path.join(get_data_dict["master_directory"]) + ". \n")
 
     for name in directory_names:
-        path = os.path.join(get_data_dict["master_directory"], name) # Note: the "master directory" is the user-defined "Project" folder
+        path = os.path.join(get_data_dict["master_directory"], str(name)) # Note: the "master directory" is the user-defined "Project" folder
         try:
             os.mkdir(path)
             get_data_dict["runlog"].write("... subdirectory successfully created at " + path + ". \n")
@@ -1680,7 +1680,7 @@ def genmodels(gui_params, get_data_dict):
         # then it gets named after the harvested runlabel
         filename = f"{run_label}.idf"
         # the path gets set for the new idf
-        path = os.path.join(get_data_dict["master_directory"], run_label, filename)
+        path = os.path.join(get_data_dict["master_directory"], str(run_label), filename)
         # and voila! the idf gets written for the present runlabel, and the loop begins again
         with open(path, 'w') as newfile:
                 newfile.write(fullidf)

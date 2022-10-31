@@ -2,6 +2,7 @@ import os
 from tkinter import *
 from tkinter import ttk, filedialog
 from tkinter.filedialog import askopenfile
+import threading
 
 def gui(func):
 
@@ -11,7 +12,11 @@ def gui(func):
     sim_select = ["Annual", "Sub-Annual: enter start and end dates at right -->"] # check with CD
     gran_select = ["Annual", "Hourly", "TimeStep"]
     end_select = ["All_End_Uses", "Total_Electric_HVAC", "Heating", "Cooling", "Fan", "Water-Heating", "Lighting", "Other_Electric_Equipment"]
+    default_store = "C:\EnergyPlusV9-5-0\energyplus.exe"
 
+    with open('custompath.txt', 'r') as pathread:
+        path_import = pathread.read()
+        pathread.close()
 
     # functions
     def browse(*args):
@@ -32,13 +37,24 @@ def gui(func):
         "end_mo":em_input.get(),
         "end_day":ed_input.get(),
         }
+
+
+        new_path = path_input.get()
+        with open('custompath.txt', 'w') as path_file:
+            path_file.write(new_path)
+
+
         # print(gui_params.values()) # for debugging
         func(gui_params)
         root.quit() # enable this to make program auto-term after one run
 
+    def restore():
+        with open('custompath.txt', 'w') as path_file:
+                path_file.write(default_store)
+        path_input.set(default_store)
 
     def update(*args):
-        if path_input.get() != "C:\EnergyPlusV9-5-0\energyplus.exe":
+        if path_input.get() != path_import:
             path_entry.config(foreground="black")
         if project_input.get() != "New Project":
             project_entry.config(foreground="black")
@@ -60,6 +76,20 @@ def gui(func):
     frm = ttk.Frame(root, padding=20)
     frm.grid()
     root.title("REEDR Project Setup")
+    # special thanks to codemy.com for the window-centering code
+    app_width = 800
+    app_height = 450
+
+    screen_width = root.winfo_screenwidth()
+    screen_height = root.winfo_screenheight()
+    x = (screen_width / 2) - (app_width / 2)
+    y = (screen_height / 2) - (app_height / 2)
+    root.geometry(f"{app_width}x{app_height}+{int(x)}+{int(y)}")
+    # root.geometry(f"{screen_width}x{screen_height}")
+    # root.geometry("600x250")
+    # root.eval('tk::PlaceWindow . center')
+
+
 
     s = ttk.Style()
     s.configure('Title.TLabel', font=('Helvetica', 12, 'bold'))
@@ -68,6 +98,7 @@ def gui(func):
     s.configure('Body.TEntry', font=('Helvetica', 11), relief = SUNKEN)
     s.configure('Browse.TButton', font=('Helvetica', 11))
     s.configure('Run.TButton', font=('Helvetica', 12, 'bold'))
+    s.configure('Path.TButton', font=('Helvetica', 9))
 
     ttk.Label(frm, text="Residential Energy Efficiency and Demand Response (REEDR) Tool", style='Title.TLabel').grid(sticky=W, column=0, row=0, padx=10, columnspan=2)
     ttk.Label(frm, text="v0.5.0", style='Version.TLabel').grid(sticky=W, column=0, row=1, padx=10)
@@ -75,16 +106,27 @@ def gui(func):
 
 
     path_input = StringVar()
-    path_input.set("C:\EnergyPlusV9-5-0\energyplus.exe")
+    path_input.set(path_import)
     path_input.trace_add("write", update)
     path_entry = ttk.Entry(frm, width=60, style='Body.TEntry', textvariable=path_input, foreground="gray") # path entry
     path_entry.grid(sticky=W, column=1, row=2, padx=10, pady=25, columnspan=2) # for whatever bizarre reason, unless the grid parameters are declared on their own line, path_entry is not recognized as an Entry object by py and the browse function doesn't work
 
-    ttk.Label(frm, text="Project Name: ", style='Body.TLabel').grid(sticky=W, column=0, row=3, padx=10, pady=20)
+    # checkvar = IntVar()
+    # checkvar.set(0)
+    # checkbox = ttk.Checkbutton(frm, text='Remember Path',variable=checkvar, onvalue=1, offvalue=0)
+    # checkbox.grid(sticky=W, column=1, row=3, padx=10, pady=5, columnspan=2)
+    # checkbox.pack()
+
+    # Exp path button
+    def_button = ttk.Button(frm, text="Restore Default Path", style='Path.TButton', width=20, command=restore)
+    def_button.grid(column=1, row=3, columnspan=2, padx=10, pady=5)
+
+
+    ttk.Label(frm, text="Project Name: ", style='Body.TLabel').grid(sticky=W, column=0, row=4, padx=10, pady=20)
     project_input = StringVar()
     project_input.set("New Project")
     project_entry = ttk.Entry(frm, width=48, style='Body.TEntry', textvariable=project_input, foreground="gray")
-    project_entry.grid(sticky=W, column=1, row=3, padx=10, pady=20, columnspan=2)
+    project_entry.grid(sticky=W, column=1, row=4, padx=10, pady=20, columnspan=2)
 
      # project entry
     # project_entry.config(foreground="red")
@@ -141,7 +183,7 @@ def gui(func):
     ed_input = StringVar()
     ed = ttk.Combobox(frm, width=5, values=days, textvariable=ed_input, state="readonly").grid(column=4, row=6) # end day
 
-    ttk.Button(frm, text="RUN", style='Run.TButton', width=15, command=exe_main).grid(column=2, row=9, columnspan=3, padx=10, pady=15) # run button, idle rn
+    ttk.Button(frm, text="RUN", style='Run.TButton', width=15, command=threading.Thread(target=exe_main).start).grid(column=2, row=9, columnspan=3, padx=10, pady=15)
 
     
     

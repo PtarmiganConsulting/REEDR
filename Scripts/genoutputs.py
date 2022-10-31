@@ -176,7 +176,7 @@ def produce_output_report(set_dir, output_dict, end_use_report_name, output_gran
         #sht1.range('status_line_3').value = status
 
         # Get the path to the EnergyPlus output csv for each run
-        eplus_out_path = get_data_dict["master_directory"] + '/' + run_label + '/' + "eplusout.csv"
+        eplus_out_path = get_data_dict["master_directory"] + '/' + str(run_label) + '/' + "eplusout.csv"
 
         if output_gran == "Annual":
             # Read in the EnergyPlus-generated output csv
@@ -220,7 +220,7 @@ def produce_output_report(set_dir, output_dict, end_use_report_name, output_gran
             df_out = pd.concat([df_out, eplus_out_df])
 
         # Update run log
-        get_data_dict["runlog"].write("... sucessfully read outputs for run " + run_label + "\n")
+        get_data_dict["runlog"].write("... sucessfully read outputs for run " + str(run_label) + "\n")
         # Update sim status counter
         i = i + 1
 

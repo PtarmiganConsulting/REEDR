@@ -4,6 +4,8 @@ from pathlib import Path # for getting current directory path
 import sys
 from pprint import pprint
 
+import time
+
 cwd = Path(os. getcwd())
 parent = cwd.parent.absolute()
 os.chdir(cwd)
@@ -25,6 +27,8 @@ from getdata import getdata
 # the main function
 
 def main(gui_params):
+
+    start = time.time() ## for timing
     
     #Run getdata.py
     get_data_dict = getdata(gui_params)
@@ -87,6 +91,8 @@ def main(gui_params):
             # hit_error = True
 
     if hit_error == False:
+        end = time.time()
+        print(f"elapsed time: {end - start}")
         input("REEDR run successful. Please press enter to continue...")
 
 # the gui function
