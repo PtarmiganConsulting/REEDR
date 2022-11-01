@@ -16,7 +16,8 @@ def getdata(gui_params):
 
         # Get paths for the current and parent directories
         cwd = Path(os. getcwd())
-        parent = cwd.parent.absolute()
+        # parent = cwd.parent.absolute() ##actual parent
+        parent = cwd ## used when running from newmain
 
         # Sets the directory. When calling from __main__, needs to be set to "parent". When calling from entry exe script, needs to be set to "cwd".
         set_dir = parent

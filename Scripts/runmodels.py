@@ -10,8 +10,8 @@ from pprint import pprint # for debugging
 def runmodels(gui_params, get_data_dict):
 
     # for enabling or disabling multithreading
-    # multi = True
-    multi = False
+    multi = True
+    # multi = False
 
     # Sets the directory. When calling from __main__, needs to be set to "parent". When calling from entry exe script, needs to be set to "cwd".
     set_dir = get_data_dict["parent"]

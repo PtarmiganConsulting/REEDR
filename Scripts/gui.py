@@ -14,7 +14,7 @@ def gui(func):
     end_select = ["All_End_Uses", "Total_Electric_HVAC", "Heating", "Cooling", "Fan", "Water-Heating", "Lighting", "Other_Electric_Equipment"]
     default_store = "C:\EnergyPlusV9-5-0\energyplus.exe"
 
-    with open('custompath.txt', 'r') as pathread:
+    with open('Scripts/custompath.txt', 'r') as pathread:
         path_import = pathread.read()
         pathread.close()
 
@@ -40,7 +40,7 @@ def gui(func):
 
 
         new_path = path_input.get()
-        with open('custompath.txt', 'w') as path_file:
+        with open('Scripts/custompath.txt', 'w') as path_file:
             path_file.write(new_path)
 
 
@@ -49,7 +49,7 @@ def gui(func):
         root.quit() # enable this to make program auto-term after one run
 
     def restore():
-        with open('custompath.txt', 'w') as path_file:
+        with open('Scripts/custompath.txt', 'w') as path_file:
                 path_file.write(default_store)
         path_input.set(default_store)
 
@@ -119,7 +119,7 @@ def gui(func):
 
     # Exp path button
     def_button = ttk.Button(frm, text="Restore Default Path", style='Path.TButton', width=20, command=restore)
-    def_button.grid(column=1, row=3, columnspan=2, padx=10, pady=5)
+    def_button.grid(column=1, row=3, columnspan=2, padx=10, pady=0)
 
 
     ttk.Label(frm, text="Project Name: ", style='Body.TLabel').grid(sticky=W, column=0, row=4, padx=10, pady=20)

@@ -4,7 +4,7 @@ import os # for making paths and directories and removing files
 import shutil # for removing full directories
 import math # used for functions like square root
 from pprint import pprint # for debugging
-from unitconversions import convert_WperFt2_to_WperM2, convert_degF_to_degC, convert_IP_Uvalue_to_SI_Uvalue, convert_ft_to_m, convert_ft2_to_m2, convert_ft3_to_m3, \
+from Scripts.unitconversions import convert_WperFt2_to_WperM2, convert_degF_to_degC, convert_IP_Uvalue_to_SI_Uvalue, convert_ft_to_m, convert_ft2_to_m2, convert_ft3_to_m3, \
     convert_Btuh_to_W, convert_kW_to_ton, convert_CFM_to_m3PerSec
 
 def genmodels(gui_params, get_data_dict):
