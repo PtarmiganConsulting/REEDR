@@ -2,9 +2,14 @@
 import os
 import subprocess
 import pandas as pd
+import threading
 from pprint import pprint # for debugging
 
 def runmodels(gui_params, get_data_dict):
+
+    # for enabling or disabling multithreading
+    multi = True
+    # multi = False
 
     # Sets the directory.
     set_dir = get_data_dict["parent"]
@@ -67,25 +72,59 @@ def runmodels(gui_params, get_data_dict):
     ## and that's how we can catch every runlabel with one short loop!
     get_data_dict["runlog"].write("Starting model runs... \n")
     i = 1
-    for dictionary in get_data_dict["master_dict_list"]:
-        # Update simulation status...
-        status = "...running model " + str(i) + " of " + str(len(get_data_dict["df"])) + "..."
-        print(status)
 
-        run_label = dictionary["Run Label"]
-        location_pull = dictionary["Weather File"]
+    if multi:
 
-        try:
-            plusterwolf(run_label, location_pull, get_data_dict["master_directory"], gui_params["path_val"], i, get_data_dict["df"])
-            get_data_dict["runlog"].write("... model run for " + run_label + " complete. \n")
-        except Exception as e:
-            get_data_dict["runlog"].write("!!! problem running model " + run_label + "\n")
-            get_data_dict["runlog"].write("!!! REEDR experienced the following error: " + str(e) + "\n")
-            print(e)
+        threads = []
+        for dictionary in get_data_dict["master_dict_list"]:
+            # Update simulation status box in REEDR.xlsm...
+            status = "...running model " + str(i) + " of " + str(len(get_data_dict["df"])) + "..."
+            print(status)
+            #sht1.range('status_line_2').value = status
 
-        i = i + 1
+            run_label = dictionary["Run Label"]
+            location_pull = dictionary["Weather File"]
 
-    get_data_dict["runlog"].write("... \n")
+            try:
+                t = threading.Thread(target=plusterwolf, args=(run_label, location_pull, get_data_dict["master_directory"], gui_params["path_val"], i, get_data_dict["df"]))
+                # t.setName(run_label + "t")
+                threads.append(t)
+                t.start()
+                # plusterwolf(run_label, location_pull, get_data_dict["master_directory"], gui_params["path_val"], i, get_data_dict["df"])
+                get_data_dict["runlog"].write("... model run for " + str(run_label) + " complete. \n")
+            except Exception as e:
+                get_data_dict["runlog"].write("!!! problem running model " + str(run_label) + "\n")
+                get_data_dict["runlog"].write("!!! REEDR experienced the following error: " + str(e) + "\n")
+                print(e)
+
+            i = i + 1
+
+        get_data_dict["runlog"].write("... \n")
+
+        for thread in threads:
+            # print(thread)
+            thread.join()
+
+    else:
+        for dictionary in get_data_dict["master_dict_list"]:
+            # Update simulation status...
+            status = "...running model " + str(i) + " of " + str(len(get_data_dict["df"])) + "..."
+            print(status)
+    
+            run_label = dictionary["Run Label"]
+            location_pull = dictionary["Weather File"]
+    
+            try:
+                plusterwolf(run_label, location_pull, get_data_dict["master_directory"], gui_params["path_val"], i, get_data_dict["df"])
+                get_data_dict["runlog"].write("... model run for " + run_label + " complete. \n")
+            except Exception as e:
+                get_data_dict["runlog"].write("!!! problem running model " + run_label + "\n")
+                get_data_dict["runlog"].write("!!! REEDR experienced the following error: " + str(e) + "\n")
+                print(e)
+    
+            i = i + 1
+    
+        get_data_dict["runlog"].write("... \n")
 
     print("...model runs complete.")
     print()
