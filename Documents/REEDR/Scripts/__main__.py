@@ -15,10 +15,10 @@ sys.path.append(os.path.join(parent,"python-3.10.0","Lib","site-packages","win32
 sys.path.append(os.path.join(parent,"python-3.10.0","Lib","site-packages","openpyxl","xml"))
 
 # import main functions needed for REEDR
-from Scripts.genmodels import genmodels
-from Scripts.runmodels import runmodels
-from Scripts.genoutputs import genoutputs
-from Scripts.getdata import getdata
+from genmodels import genmodels
+from runmodels import runmodels
+from genoutputs import genoutputs
+from getdata import getdata
 
 ##############################################
 
@@ -57,6 +57,6 @@ def main(gui_params):
         input("REEDR experienced an error. Please press enter to continue...")
 
 # the gui function
-from Scripts.gui import gui as gui
+from gui import gui as gui
 
 gui(main)

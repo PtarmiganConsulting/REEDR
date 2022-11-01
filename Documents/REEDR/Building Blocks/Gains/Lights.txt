@@ -1,0 +1,44 @@
+!-   ===========  ALL OBJECTS IN CLASS: LIGHTS ===========
+
+Lights,
+    Living Hardwired Lighting1, 	!- Name
+    living,            	!- Zone or ZoneList Name
+    InteriorLightingHE,         		!- Schedule Name
+    Watts/Area,           		!- Design Level Calculation Method
+    ,        				!- Lighting Level {{W}}
+    {interior_lpd},                	!- Watts per Zone Floor Area {{W/m2}}
+    ,                        		!- Watts per Person {{W/person}}
+    0,                       		!- Return Air Fraction
+    0.6,                     		!- Fraction Radiant
+    0.2,                     		!- Fraction Visible
+    0;                       		!- Fraction Replaceable
+
+Lights,
+    Living Plug-in Lighting1, !- Name
+    living,            	!- Zone or ZoneList Name
+    InteriorLightingHE,         		!- Schedule Name
+    Watts/Area,           		!- Design Level Calculation Method
+    ,        				!- Lighting Level {{W}}
+    {interior_lpd},                   	!- Watts per Zone Floor Area {{W/m2}} # From NREL's Seattle benchmark assumption 153 W for a 2160 ft2 building
+    ,                        		!- Watts per Person {{W/person}}
+    0,                       		!- Return Air Fraction
+    0.6,                     		!- Fraction Radiant
+    0.2,                     		!- Fraction Visible
+    0;                       		!- Fraction Replaceable
+
+!-   ===========  ALL OBJECTS IN CLASS: EXTERIOR:LIGHTS ===========
+
+Exterior:Lights,
+    Exterior-Lights_unit1,       !- Name
+    ExteriorLighting,         		!- Schedule Name
+    {exterior_lp},                	!- Design Level {{W}}
+    ,              	!- Control Option
+    Exterior-Lights;         		!- End-Use Subcategory
+
+Exterior:Lights,
+    Garage-Lights_unit1,         !- Name
+    InteriorLightingHE,         		!- Schedule Name
+    {exterior_lp},                	!- Design Level {{W}}
+    ,                        		!- Control Option
+    Garage-Lights;         		!- End-Use Subcategory
+
