@@ -171,8 +171,8 @@ def gui(func):
 
     ttk.Label(frm, text="Begin: ", style='Body.TLabel').grid(column=2, row=5, sticky=E)
     ttk.Label(frm, text="End: ", style='Body.TLabel').grid(column=2, row=6, sticky=E)
-    ttk.Label(frm, text="Mo: ", style='Body.TLabel').grid(column=3, row=4)
-    ttk.Label(frm, text="Day: ", style='Body.TLabel').grid(column=4, row=4)
+    ttk.Label(frm, text="Mo: ", style='Body.TLabel').grid(column=3, row=4, sticky=S)
+    ttk.Label(frm, text="Day: ", style='Body.TLabel').grid(column=4, row=4, sticky=S)
 
     bm_input = StringVar() # this one is called "inp" because it avoids a mysterious error
     bm = ttk.Combobox(frm, width=5, values=months, textvariable=bm_input, state="readonly").grid(column=3, row=5) # begin month
