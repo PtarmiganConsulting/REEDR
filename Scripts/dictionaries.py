@@ -850,57 +850,57 @@ def make_hvac_dict(set_dir, building_block_dir, hvac_airloop_main_dir, hvac_airl
     }
     return hvac_dict
 
-def make_furnace_capacity_dict():
-    furnace_capacity_dict = {
-        "5 kW (17 kBtu)": 5000,
-        "7 kW (24 kBtu)": 7000,
-        "8 kW (27 kBtu)": 8000,
-        "10 kW (34 kBtu)": 10000,
-        "12 kW (41 kBtu)*": 12000,
-        "15 kW (51 kBtu)": 15000,
-        "17 kW (58 kBtu)*": 17000,
-        "20 kW (68 kBtu)": 20000,
-        "25 kW (85 kBtu)": 25000,
-        "30 kW (102 kBtu)": 30000,
-        "35 kW (119 kBtu)": 35000,
-        "40 kW (136 kBtu)": 40000,
-        "30 kBtu (8.8 kW)": 8792.1,
-        "40 kBtu (11.7 kW)": 11722.8,
-        "60 kBtu (17.6 kW)": 17584.3,
-        "80 kBtu (23.4 kW)": 23445.7,
-        "100 kBtu (29.3 kW)": 29307.1,
-        "120 kBtu (35.2 kW)": 35168.5,
-    }
-    return furnace_capacity_dict
+# def make_furnace_capacity_dict():
+#     furnace_capacity_dict = {
+#         "5 kW (17 kBtu)": 5000,
+#         "7 kW (24 kBtu)": 7000,
+#         "8 kW (27 kBtu)": 8000,
+#         "10 kW (34 kBtu)": 10000,
+#         "12 kW (41 kBtu)*": 12000,
+#         "15 kW (51 kBtu)": 15000,
+#         "17 kW (58 kBtu)*": 17000,
+#         "20 kW (68 kBtu)": 20000,
+#         "25 kW (85 kBtu)": 25000,
+#         "30 kW (102 kBtu)": 30000,
+#         "35 kW (119 kBtu)": 35000,
+#         "40 kW (136 kBtu)": 40000,
+#         "30 kBtu (8.8 kW)": 8792.1,
+#         "40 kBtu (11.7 kW)": 11722.8,
+#         "60 kBtu (17.6 kW)": 17584.3,
+#         "80 kBtu (23.4 kW)": 23445.7,
+#         "100 kBtu (29.3 kW)": 29307.1,
+#         "120 kBtu (35.2 kW)": 35168.5,
+#     }
+#     return furnace_capacity_dict
 
-def make_hpOrAC_capacity_dict():
-    hpOrAC_capacity_dict = {
-        "6 kBtu (0.5 ton)": 1758.5,
-        "9 kBtu (0.75 ton)": 2637.7,
-        "12 kBtu (1 ton)": 3516.9,
-        "18 kBtu (1.5 ton)": 5275.4,
-        "24 kBtu (2 ton)": 7033.8,
-        "36 kBtu (3 ton)": 10550.7,
-        "48 kBtu (4 ton)": 14067.6,
-        "60 kBtu (5 ton)": 17584.5,
-        "72 kBtu (6 ton)": 21101.4,
-        "84 kBtu (7 ton)": 24618.3,
-        "96 kBtu (8 ton)": 28135.2,
-    }
-    return hpOrAC_capacity_dict
+# def make_hpOrAC_capacity_dict():
+#     hpOrAC_capacity_dict = {
+#         "6 kBtu (0.5 ton)": 1758.5,
+#         "9 kBtu (0.75 ton)": 2637.7,
+#         "12 kBtu (1 ton)": 3516.9,
+#         "18 kBtu (1.5 ton)": 5275.4,
+#         "24 kBtu (2 ton)": 7033.8,
+#         "36 kBtu (3 ton)": 10550.7,
+#         "48 kBtu (4 ton)": 14067.6,
+#         "60 kBtu (5 ton)": 17584.5,
+#         "72 kBtu (6 ton)": 21101.4,
+#         "84 kBtu (7 ton)": 24618.3,
+#         "96 kBtu (8 ton)": 28135.2,
+#     }
+#     return hpOrAC_capacity_dict
 
-def make_baseboard_capacity_dict():
-    baseboard_capacity_dict = {
-        "5 kW": 5000,
-        "10 kW": 10000,
-        "15 kW": 15000,
-        "20 kW": 20000,
-        "25 kW": 25000,
-        "30 kW": 30000,
-        "35 kW": 35000,
-        "40 kW": 40000,
-    }
-    return baseboard_capacity_dict
+# def make_baseboard_capacity_dict():
+#     baseboard_capacity_dict = {
+#         "5 kW": 5000,
+#         "10 kW": 10000,
+#         "15 kW": 15000,
+#         "20 kW": 20000,
+#         "25 kW": 25000,
+#         "30 kW": 30000,
+#         "35 kW": 35000,
+#         "40 kW": 40000,
+#     }
+#     return baseboard_capacity_dict
 
 def make_duct_dict():
     duct_dict = {
