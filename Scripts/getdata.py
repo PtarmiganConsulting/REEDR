@@ -19,6 +19,7 @@ def getdata(gui_params):
     # parent = cwd.parent.absolute() # actual parent
     parent = cwd ## used to make newmain work, strongly consider renaming parent variable
 
+
     # Sets the directory.
     set_dir = parent
 
