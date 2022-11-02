@@ -3,6 +3,7 @@ import os
 import subprocess
 import pandas as pd
 import threading
+import time
 from pprint import pprint # for debugging
 
 def runmodels(gui_params, get_data_dict):
@@ -79,6 +80,7 @@ def runmodels(gui_params, get_data_dict):
 
         threads = []
         for dictionary in get_data_dict["master_dict_list"]:
+            time.sleep(.25)
             # Update simulation status box in REEDR.xlsm...
             status = "...running model " + str(i) + " of " + str(len(get_data_dict["df"])) + "..."
             # print(status) # original placement
@@ -92,9 +94,12 @@ def runmodels(gui_params, get_data_dict):
             if len(threads) >= thread_limit:
                 # print("Thread limit reached.  Resolving threads...")
                 for thread in threads:
+                    time.sleep(.25)
                     thread.join()
                     # threads.pop(thread)
-                thread_limit += 8
+                    thread._stop()
+                threads = []
+                # thread_limit += 8
             
             print(status)
                 
@@ -104,6 +109,7 @@ def runmodels(gui_params, get_data_dict):
                 # t.setName(run_label + "t")
                 threads.append(t)
                 t.start()
+
                 # plusterwolf(run_label, location_pull, get_data_dict["master_directory"], gui_params["path_val"], i, get_data_dict["df"])
                 get_data_dict["runlog"].write("... model run for " + str(run_label) + " complete. \n")
             except Exception as e:
@@ -118,6 +124,7 @@ def runmodels(gui_params, get_data_dict):
         for thread in threads:
             # print(thread)
             thread.join()
+            thread._stop()
 
     else:
         for dictionary in get_data_dict["master_dict_list"]:
