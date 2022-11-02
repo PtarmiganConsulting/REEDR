@@ -73,17 +73,31 @@ def runmodels(gui_params, get_data_dict):
     get_data_dict["runlog"].write("Starting model runs... \n")
     i = 1
 
+
+    thread_limit = 8
     if multi:
 
         threads = []
         for dictionary in get_data_dict["master_dict_list"]:
             # Update simulation status box in REEDR.xlsm...
             status = "...running model " + str(i) + " of " + str(len(get_data_dict["df"])) + "..."
-            print(status)
+            # print(status) # original placement
             #sht1.range('status_line_2').value = status
 
             run_label = dictionary["Run Label"]
             location_pull = dictionary["Weather File"]
+
+            
+            
+            if len(threads) >= thread_limit:
+                # print("Thread limit reached.  Resolving threads...")
+                for thread in threads:
+                    thread.join()
+                    # threads.pop(thread)
+                thread_limit += 8
+            
+            print(status)
+                
 
             try:
                 t = threading.Thread(target=plusterwolf, args=(run_label, location_pull, get_data_dict["master_directory"], gui_params["path_val"], i, get_data_dict["df"]))
