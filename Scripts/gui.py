@@ -18,10 +18,10 @@ def gui(func):
     gui_cwd = os.getcwd()
     # gui_parent = gui_cwd.parent.absolute()
 
-    if "REEDR-O" in gui_cwd:
+    if "REEDR" in gui_cwd:
         path_path = os.path.join(gui_cwd, "Scripts\custompath.txt")
     else:
-        path_path = os.path.join(gui_cwd, "REEDR-O\Scripts\custompath.txt")
+        path_path = os.path.join(gui_cwd, "REEDR\Scripts\custompath.txt")
 
 
     with open(path_path, 'r') as pathread:
