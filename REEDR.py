@@ -52,9 +52,9 @@ def main(gui_params):
         hit_error = genoutputs(gui_params, get_data_dict) # for debugging
 
     if hit_error == False:
-        input("REEDR run successful. You can now close this window.")
+        input("REEDR run successful.  You may now close this window.")
     else:
-        input("REEDR experienced an error. You can now close this window.")
+        input("REEDR experienced an error.  You may now close this window.")
 
 # the gui function
 from Scripts.gui import gui as gui

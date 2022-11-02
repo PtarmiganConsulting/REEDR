@@ -3,6 +3,7 @@ from tkinter import *
 from tkinter import ttk, filedialog
 from tkinter.filedialog import askopenfile
 import threading
+from pathlib import Path
 
 def gui(func):
 
@@ -14,7 +15,16 @@ def gui(func):
     end_select = ["All_End_Uses", "All_HVAC", "Heating", "Cooling", "Fan", "Water_Heating", "Lighting", "Other_Equipment"]
     default_store = "C:\EnergyPlusV9-5-0\energyplus.exe"
 
-    with open('Scripts/custompath.txt', 'r') as pathread:
+    gui_cwd = os.getcwd()
+    # gui_parent = gui_cwd.parent.absolute()
+
+    if "REEDR-O" in gui_cwd:
+        path_path = os.path.join(gui_cwd, "Scripts\custompath.txt")
+    else:
+        path_path = os.path.join(gui_cwd, "REEDR-O\Scripts\custompath.txt")
+
+
+    with open(path_path, 'r') as pathread:
         path_import = pathread.read()
         pathread.close()
 
@@ -40,7 +50,8 @@ def gui(func):
         }
 
         new_path = path_input.get()
-        with open('Scripts/custompath.txt', 'w') as path_file:
+        # with open('Scripts/custompath.txt', 'w') as path_file:
+        with open(path_path, 'w') as path_file:
             path_file.write(new_path)
 
 
@@ -50,7 +61,8 @@ def gui(func):
             gui_params["output_enduses"] = "Heating"
         # print(gui_params.values()) # for debugging
         func(gui_params)
-        # root.quit() # enable this to make program auto-term after one run
+        root.quit() # enable this to make program auto-term after one run
+        
 
 
     def update(*args):

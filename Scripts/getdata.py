@@ -16,7 +16,7 @@ def getdata(gui_params):
 
     # Get paths for the current and parent directories
     cwd = Path(os. getcwd())
-    parent = cwd.parent.absolute() # actual parent
+    # parent = cwd.parent.absolute() # actual parent
     parent = cwd ## used to make newmain work, strongly consider renaming parent variable
 
     # Sets the directory.
