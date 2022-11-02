@@ -75,7 +75,7 @@ def runmodels(gui_params, get_data_dict):
     i = 1
 
 
-    thread_limit = 8
+    thread_limit = 4
     if multi:
 
         threads = []
