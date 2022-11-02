@@ -108,7 +108,7 @@ def gui(func):
     s.configure('Run.TButton', font=('Helvetica', 12, 'bold'))
 
     ttk.Label(frm, text="Residential Energy Efficiency and Demand Response (REEDR) Tool", style='Title.TLabel').grid(sticky=W, column=0, row=0, padx=10, columnspan=2)
-    ttk.Label(frm, text="v0.5.0", style='Version.TLabel').grid(sticky=W, column=0, row=1, padx=10)
+    ttk.Label(frm, text="v0.9.0", style='Version.TLabel').grid(sticky=W, column=0, row=1, padx=10)
     ttk.Label(frm, text="EnergyPlus v9.5 Executable Path: ", style='Body.TLabel').grid(sticky=W, column=0, row=2, padx=10, pady=25)
 
 
