@@ -9,10 +9,10 @@ os.chdir(cwd)
 
 # add paths for Python to be able to find modules and libraries
 sys.path.append(os. getcwd())
-sys.path.append(os.path.join(parent,"python-3.10.0","Lib","site-packages"))
-sys.path.append(os.path.join(parent,"python-3.10.0","Lib","site-packages","win32"))
-sys.path.append(os.path.join(parent,"python-3.10.0","Lib","site-packages","win32","lib"))
-sys.path.append(os.path.join(parent,"python-3.10.0","Lib","site-packages","openpyxl","xml"))
+sys.path.append(os.path.join(cwd,"python-3.10.0","Lib","site-packages"))
+sys.path.append(os.path.join(cwd,"python-3.10.0","Lib","site-packages","win32"))
+sys.path.append(os.path.join(cwd,"python-3.10.0","Lib","site-packages","win32","lib"))
+sys.path.append(os.path.join(cwd,"python-3.10.0","Lib","site-packages","openpyxl","xml"))
 
 # import main functions needed for REEDR
 from Scripts.genmodels import genmodels
