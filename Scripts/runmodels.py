@@ -97,6 +97,8 @@ def runmodels(gui_params, get_data_dict):
                     thread.join()
                     # threads.pop(thread)
                     thread._stop()
+                    time.sleep(.1)
+
                 threads = []
                 # thread_limit += 8
             
