@@ -22,6 +22,8 @@ from Scripts.getdata import getdata
 
 ##############################################
 
+print("Initializing REEDR interface...\n")
+
 # the main function
 
 def main(gui_params):
