@@ -92,7 +92,7 @@ def gui(func):
 
     # special thanks to codemy.com for the window-centering code
     app_width = 800
-    app_height = 450
+    app_height = 500
 
     screen_width = root.winfo_screenwidth()
     screen_height = root.winfo_screenheight()
@@ -159,7 +159,7 @@ def gui(func):
     outenduses_entry.grid(sticky=W, column=1, row=8, padx=10, pady=0) # output end uses
 
 
-    ttk.Button(frm, text="Browse", style='Browse.TButton', command=browse).grid(column=3, row=2, columnspan=2)
+    ttk.Button(frm, text="Browse", style='Browse.TButton', command=browse).grid(column=3, row=2, columnspan=2, sticky = E)
 
     ttk.Label(frm, text="Begin: ", style='Body.TLabel').grid(column=2, row=5, sticky=E)
     ttk.Label(frm, text="End: ", style='Body.TLabel').grid(column=2, row=6, sticky=E)
@@ -182,7 +182,7 @@ def gui(func):
     multibox = ttk.Checkbutton(frm, text='Enable multithreading', variable=multi_val, onvalue=True, offvalue=False)
     multibox.grid(sticky=W, column=1, row=9, columnspan=3, padx=10, pady=15)
 
-    ttk.Button(frm, text="RUN", style='Run.TButton', width=15, command=threading.Thread(target=exe_main).start).grid(column=2, row=10, columnspan=3, padx=0, pady=15) # run button, idle rn
+    ttk.Button(frm, text="RUN", style='Run.TButton', width=15, command=threading.Thread(target=exe_main).start).grid(column=2, row=10, columnspan=3, padx=0, pady=15, sticky=E) # run button, idle rn
     # row was 9
 
     root.mainloop()
