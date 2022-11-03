@@ -9,7 +9,8 @@ from pprint import pprint # for debugging
 def runmodels(gui_params, get_data_dict):
 
     # for enabling or disabling multithreading
-    multi = True
+    multi=gui_params["multithread"]
+    # multi = True
     # multi = False
 
     # Sets the directory.
@@ -89,8 +90,6 @@ def runmodels(gui_params, get_data_dict):
             run_label = dictionary["Run Label"]
             location_pull = dictionary["Weather File"]
 
-            
-            
             if len(threads) >= thread_limit:
                 # print("Thread limit reached.  Resolving threads...")
                 for thread in threads:

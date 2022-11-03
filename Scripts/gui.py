@@ -47,6 +47,7 @@ def gui(func):
         "begin_day":bd_input.get(),
         "end_mo":em_input.get(),
         "end_day":ed_input.get(),
+        "multithread":multi_val.get(),
         }
 
         new_path = path_input.get()
@@ -106,6 +107,7 @@ def gui(func):
     s.configure('Body.TEntry', font=('Helvetica', 11), relief = SUNKEN)
     s.configure('Browse.TButton', font=('Helvetica', 11))
     s.configure('Run.TButton', font=('Helvetica', 12, 'bold'))
+    # s.configure("Checkbox.Cbox", font=('Helvetica', 11)) # didn't work, can try again later
 
     ttk.Label(frm, text="Residential Energy Efficiency and Demand Response (REEDR) Tool", style='Title.TLabel').grid(sticky=W, column=0, row=0, padx=10, columnspan=2)
     ttk.Label(frm, text="v0.9.0", style='Version.TLabel').grid(sticky=W, column=0, row=1, padx=10)
@@ -173,6 +175,14 @@ def gui(func):
     ed_input = StringVar()
     ed = ttk.Combobox(frm, width=5, values=days, textvariable=ed_input, state="readonly").grid(column=4, row=6) # end day
 
-    ttk.Button(frm, text="RUN", style='Run.TButton', width=15, command=threading.Thread(target=exe_main).start).grid(column=2, row=9, columnspan=3, padx=10, pady=15) # run button, idle rn
+    # checkbox construction
     
+    multi_val = BooleanVar()
+    multi_val.set(True)
+    multibox = ttk.Checkbutton(frm, text='Enable multithreading', variable=multi_val, onvalue=True, offvalue=False)
+    multibox.grid(sticky=W, column=1, row=9, columnspan=3, padx=10, pady=15)
+
+    ttk.Button(frm, text="RUN", style='Run.TButton', width=15, command=threading.Thread(target=exe_main).start).grid(column=2, row=10, columnspan=3, padx=0, pady=15) # run button, idle rn
+    # row was 9
+
     root.mainloop()
