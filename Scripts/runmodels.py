@@ -58,7 +58,8 @@ def runmodels(gui_params, get_data_dict):
         eplusout_path = output_path
 
         ## https://github.com/jamiebull1/eplus_worker/blob/master/worker/runner.py
-        dff = subprocess.Popen([eplus_path, '-r', '-w', weather_file, '-d', eplusout_path, eplus_file],stdout=subprocess.PIPE, universal_newlines=True)
+        #dff = subprocess.Popen([eplus_path, '-r', '-w', weather_file, '-d', eplusout_path, eplus_file],stdout=subprocess.PIPE, universal_newlines=True)
+        dff = subprocess.Popen([eplus_path, '-w', weather_file, '-d', eplusout_path, eplus_file],stdout=subprocess.PIPE, universal_newlines=True)
 
         # for stdout_line in dff.stdout:
         #     print(stdout_line)
