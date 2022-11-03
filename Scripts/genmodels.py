@@ -858,6 +858,11 @@ def genmodels(gui_params, get_data_dict):
         #... add general output
         with open(os.path.join(set_dir, building_block_dir, output_dir, 'OtherOutput.txt'), 'r') as f:
             output_t = f.read()
+
+        # Output file control
+        #... add general output
+        with open(os.path.join(set_dir, building_block_dir, 'OutputControl_Files.txt'), 'r') as f:
+            outputcontrol_t = f.read()
         
         ### --- Assemble Final IDF Text File --- ###
         # Nests all the .txt files, now morphed into strings, in a listin the order they are to be written to the new idfs.
@@ -871,7 +876,7 @@ def genmodels(gui_params, get_data_dict):
             AFN_crawl_zone_t, AFN_unheatedbsmt_zone_t, AFN_crawl_unheatedbsmt_leakage_adder_t, AFN_crawl_unheatedbsmt_surface_adder_t, \
             AFN_ducts_t, system_sizing_t, airloop_t, AFN_linkage_coolingcoiladder_t, AFN_nodes_coolingcoiladder_t, \
             zone_equip_list_t, HVAC_equip_1_t, HVAC_equip_2_t, heating_coil_t, supp_heating_coil_t, cooling_coil_t, fan_t, \
-            baseboard_t, thermostat_t, zone_sizing_t, water_heater_t, dhw_t, perf_t, output_t, user_output_t
+            baseboard_t, thermostat_t, zone_sizing_t, water_heater_t, dhw_t, perf_t, output_t, user_output_t, outputcontrol_t
             ]
 
         #the idf writing actually begins here

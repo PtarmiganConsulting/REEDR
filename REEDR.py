@@ -14,6 +14,8 @@ sys.path.append(os.path.join(cwd,"python-3.10.0","Lib","site-packages","win32"))
 sys.path.append(os.path.join(cwd,"python-3.10.0","Lib","site-packages","win32","lib"))
 sys.path.append(os.path.join(cwd,"python-3.10.0","Lib","site-packages","openpyxl","xml"))
 
+print("Initializing REEDR interface...\n")
+
 # import main functions needed for REEDR
 from Scripts.genmodels import genmodels
 from Scripts.runmodels import runmodels

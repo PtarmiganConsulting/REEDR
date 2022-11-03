@@ -9,7 +9,8 @@ from pprint import pprint # for debugging
 def runmodels(gui_params, get_data_dict):
 
     # for enabling or disabling multithreading
-    multi = True
+    multi=gui_params["multithread"]
+    # multi = True
     # multi = False
 
     # Sets the directory.
@@ -57,7 +58,8 @@ def runmodels(gui_params, get_data_dict):
         eplusout_path = output_path
 
         ## https://github.com/jamiebull1/eplus_worker/blob/master/worker/runner.py
-        dff = subprocess.Popen([eplus_path, '-r', '-w', weather_file, '-d', eplusout_path, eplus_file],stdout=subprocess.PIPE, universal_newlines=True)
+        #dff = subprocess.Popen([eplus_path, '-r', '-w', weather_file, '-d', eplusout_path, eplus_file],stdout=subprocess.PIPE, universal_newlines=True)
+        dff = subprocess.Popen([eplus_path, '-w', weather_file, '-d', eplusout_path, eplus_file],stdout=subprocess.PIPE, universal_newlines=True)
 
         # for stdout_line in dff.stdout:
         #     print(stdout_line)
@@ -89,8 +91,6 @@ def runmodels(gui_params, get_data_dict):
             run_label = dictionary["Run Label"]
             location_pull = dictionary["Weather File"]
 
-            
-            
             if len(threads) >= thread_limit:
                 # print("Thread limit reached.  Resolving threads...")
                 for thread in threads:
@@ -98,6 +98,8 @@ def runmodels(gui_params, get_data_dict):
                     thread.join()
                     # threads.pop(thread)
                     thread._stop()
+                    time.sleep(.1)
+
                 threads = []
                 # thread_limit += 8
             
