@@ -19,7 +19,6 @@ def getdata(gui_params):
     # parent = cwd.parent.absolute() # actual parent
     parent = cwd ## used to make newmain work, strongly consider renaming parent variable
 
-
     # Sets the directory.
     set_dir = parent
 
@@ -128,12 +127,12 @@ def getdata(gui_params):
         return get_data_d
 
     #Create RunLog.txt...
-    runlog_path = os.path.join(master_directory, "RunLog.txt")
-    if os.path.exists(os.path.join(runlog_path)) == True:
-        os.remove(os.path.join(runlog_path))
-    else:
-        runlog = open(runlog_path,'w')
-        runlog.write("Run log successfully created at " + runlog_path + ". \n" + "... \n")
+    # runlog_path = os.path.join(master_directory, "RunLog.txt")
+    # if os.path.exists(os.path.join(runlog_path)) == True:
+    #     os.remove(os.path.join(runlog_path))
+    # else:
+    #     runlog = open(runlog_path,'w')
+    #     runlog.write("Run log successfully created at " + runlog_path + ". \n" + "... \n")
 
     ## Next block reads in user model inputs into a Pandas dataframe and creates a master list with a bunch of dictionaries in it.
     # ... read in "Model Input" sheet in "REEDR.xlsm" as a Pandas dataframe.
@@ -147,7 +146,7 @@ def getdata(gui_params):
         }
         return get_data_d
 
-    runlog.write("User inputs successfully read from " + Model_Input_ws + " sheet of " + REEDR_wb + " workbook. \n" + "... \n")
+    # runlog.write("User inputs successfully read from " + Model_Input_ws + " sheet of " + REEDR_wb + " workbook. \n" + "... \n")
 
     #... creates one master list with a bunch of dictionaries in it
     #... Each dictionary corresponds to a complete runlabel row.
@@ -172,7 +171,7 @@ def getdata(gui_params):
         "Model_Input_ws":Model_Input_ws,
         "master_dict_list":master_dict_list,
         "df":df,
-        "runlog":runlog,
+        #"runlog":runlog,
         "eplus_directory":eplus_directory,
         "begin_mo": begin_mo,
         "begin_day": begin_day, 

@@ -8,7 +8,6 @@ import pytz
 ## Import "internal" modules needed for REEDR...
 from Scripts.unitconversions import convert_J_to_kWh, convert_J_to_therm, convert_W_to_Btuh, convert_degC_to_degF
 
-
 ## Main fuction used to generate custom output reports for REEDR.
 ## This function takes:
 ##   1) user inputs (i.e. instructions) on requested output granularity and end uses, and
@@ -32,39 +31,39 @@ def genoutputs(gui_params, get_data_dict):
     ## Define output dictionaries. These become the data fields (i.e. columns) for the custom report.
     Energy_All_End_Uses_dict = {
         "Run Label": ['Run_Label', "Run_Label"],
-        "Total Elec [kWh]": ['Electricity:Facility [J](Annual)', "Elec"],
-        "Total Gas [therm]": ['NaturalGas:Facility [J](Annual)', "Gas"],
-        "Total Heat Elec [kWh]": ['Heating:Electricity [J](Annual)', "Elec"],
-        "Prim Furnace Heat Elec [kWh]": ['HEATING_RESISTANCE_MAIN:Heating Coil Heating Energy [J](Annual)', "Elec"],
-        "ASHP Compressor Heat Elec [kWh]": ['DX_HEATING_COIL:Heating Coil Heating Energy [J](Annual)', "Elec"],
-        "ASHP Backup Heat Elec [kWh]": ['HEATING_RESISTANCE_BACKUP:Heating Coil Heating Energy [J](Annual)', "Elec"],
-        "Baseboard Heat Elec [kWh]": ['BASEBOARDELECTRIC:Baseboard Total Heating Energy [J](Annual)', "Elec"],
-        "Cool Elec [kWh]": ['Cooling:Electricity [J](Annual)', "Elec"],
-        "Fan Elec [kWh]": ['Fans:Electricity [J](Annual)', "Elec"],
-        "Pump Elec [kWh]": ['Pumps:Electricity [J](Annual)', "Elec"],
-        "DHW Elec [kWh]": ['WaterSystems:Electricity [J](Annual)', "Elec"],
-        "IntLights Elec [kWh]": ['InteriorLights:Electricity [J](Annual)', "Elec"],
-        "ExtLights Elec [kWh]": ['ExteriorLights:Electricity [J](Annual)', "Elec"],
-        "Total IntEquip Elec [kWh]": ['InteriorEquipment:Electricity [J](Annual)', "Elec"],
-        "IntEquip Range Elec [kWh]": ['electric_range:InteriorEquipment:Electricity [J](Annual)', "Elec"],
-        "IntEquip Dryer Elec [kWh]": ['electric_dryer:InteriorEquipment:Electricity [J](Annual)', "Elec"],
-        "IntEquip Clotheswasher Elec [kWh]": ['clotheswasher:InteriorEquipment:Electricity [J](Annual)', "Elec"],
-        "IntEquip Dishwasher Elec [kWh]": ['dishwasher:InteriorEquipment:Electricity [J](Annual)', "Elec"],
-        "IntEquip Refrigerator Elec [kWh]": ['refrigerator:InteriorEquipment:Electricity [J](Annual)', "Elec"],
-        "IntEquip Misc Elec [kWh]": ['electric_mels:InteriorEquipment:Electricity [J](Annual)', "Elec"],
-        "HeatRecov Elec [kWh]": ['HeatRecovery:Electricity [J](Annual)', "Elec"],
-        "Total Heat Gas [therm]": ['Heating:NaturalGas [J](Annual)', "Gas"],
-        "DHW Gas [therm]": ['WaterSystems:NaturalGas [J](Annual)', "Gas"],
-        "Total IntEquip Gas [therm]": ['InteriorEquipment:NaturalGas [J](Annual)', "Gas"],
+        "Total Elec [kWh]": ['Electricity:Facility [J](RunPeriod)', "Elec"],
+        "Total Gas [therm]": ['NaturalGas:Facility [J](RunPeriod)', "Gas"],
+        "Total Heat Elec [kWh]": ['Heating:Electricity [J](RunPeriod)', "Elec"],
+        "Prim Furnace Heat Elec [kWh]": ['HEATING_RESISTANCE_MAIN:Heating Coil Heating Energy [J](RunPeriod)', "Elec"],
+        "ASHP Compressor Heat Elec [kWh]": ['DX_HEATING_COIL:Heating Coil Heating Energy [J](RunPeriod)', "Elec"],
+        "ASHP Backup Heat Elec [kWh]": ['HEATING_RESISTANCE_BACKUP:Heating Coil Heating Energy [J](RunPeriod)', "Elec"],
+        "Baseboard Heat Elec [kWh]": ['BASEBOARDELECTRIC:Baseboard Total Heating Energy [J](RunPeriod)', "Elec"],
+        "Cool Elec [kWh]": ['Cooling:Electricity [J](RunPeriod)', "Elec"],
+        "Fan Elec [kWh]": ['Fans:Electricity [J](RunPeriod)', "Elec"],
+        "Pump Elec [kWh]": ['Pumps:Electricity [J](RunPeriod)', "Elec"],
+        "DHW Elec [kWh]": ['WaterSystems:Electricity [J](RunPeriod)', "Elec"],
+        "IntLights Elec [kWh]": ['InteriorLights:Electricity [J](RunPeriod)', "Elec"],
+        "ExtLights Elec [kWh]": ['ExteriorLights:Electricity [J](RunPeriod)', "Elec"],
+        "Total IntEquip Elec [kWh]": ['InteriorEquipment:Electricity [J](RunPeriod)', "Elec"],
+        "IntEquip Range Elec [kWh]": ['electric_range:InteriorEquipment:Electricity [J](RunPeriod)', "Elec"],
+        "IntEquip Dryer Elec [kWh]": ['electric_dryer:InteriorEquipment:Electricity [J](RunPeriod)', "Elec"],
+        "IntEquip Clotheswasher Elec [kWh]": ['clotheswasher:InteriorEquipment:Electricity [J](RunPeriod)', "Elec"],
+        "IntEquip Dishwasher Elec [kWh]": ['dishwasher:InteriorEquipment:Electricity [J](RunPeriod)', "Elec"],
+        "IntEquip Refrigerator Elec [kWh]": ['refrigerator:InteriorEquipment:Electricity [J](RunPeriod)', "Elec"],
+        "IntEquip Misc Elec [kWh]": ['electric_mels:InteriorEquipment:Electricity [J](RunPeriod)', "Elec"],
+        "HeatRecov Elec [kWh]": ['HeatRecovery:Electricity [J](RunPeriod)', "Elec"],
+        "Total Heat Gas [therm]": ['Heating:NaturalGas [J](RunPeriod)', "Gas"],
+        "DHW Gas [therm]": ['WaterSystems:NaturalGas [J](RunPeriod)', "Gas"],
+        "Total IntEquip Gas [therm]": ['InteriorEquipment:NaturalGas [J](RunPeriod)', "Gas"],
         "IntEquip Range Gas [therm]": ['gas_range:InteriorEquipment:NaturalGas ', "Gas"],
-        "IntEquip Dryer Gas [therm]": ['gas_dryer:InteriorEquipment:NaturalGas [J](Annual)', "Gas"],
-        "IntEquip Misc Gas [therm]": ['gas_mels:InteriorEquipment:NaturalGas [J](Annual)', "Gas"],
-        "UnmetHours Heating": ['Facility:Facility Heating Setpoint Not Met Time [hr](Annual)', "NA"],
-        "UnmetHours Cooling": ['Facility:Facility Cooling Setpoint Not Met Time [hr](Annual)', "NA"],
-        "Infiltration Living [ACH]": ['LIVING:AFN Zone Infiltration Air Change Rate [ach](Annual)', "NA"],
-        "Infiltration Attic [ACH]": ['ATTIC:AFN Zone Infiltration Air Change Rate [ach](Annual)', "NA"],
-        "Infiltration Crawlspace [ACH]": ['CRAWLSPACE:AFN Zone Infiltration Air Change Rate [ach](Annual)', "NA"],
-        "Infiltration UnheatedBasement [ACH]": ['UNHEATEDBSMT:AFN Zone Infiltration Air Change Rate [ach](Annual)', "NA"],
+        "IntEquip Dryer Gas [therm]": ['gas_dryer:InteriorEquipment:NaturalGas [J](RunPeriod)', "Gas"],
+        "IntEquip Misc Gas [therm]": ['gas_mels:InteriorEquipment:NaturalGas [J](RunPeriod)', "Gas"],
+        "UnmetHours Heating": ['Facility:Facility Heating Setpoint Not Met Time [hr](RunPeriod)', "NA"],
+        "UnmetHours Cooling": ['Facility:Facility Cooling Setpoint Not Met Time [hr](RunPeriod)', "NA"],
+        "Infiltration Living [ACH]": ['LIVING:AFN Zone Infiltration Air Change Rate [ach](RunPeriod)', "NA"],
+        "Infiltration Attic [ACH]": ['ATTIC:AFN Zone Infiltration Air Change Rate [ach](RunPeriod)', "NA"],
+        "Infiltration Crawlspace [ACH]": ['CRAWLSPACE:AFN Zone Infiltration Air Change Rate [ach](RunPeriod)', "NA"],
+        "Infiltration UnheatedBasement [ACH]": ['UNHEATEDBSMT:AFN Zone Infiltration Air Change Rate [ach](RunPeriod)', "NA"],
     }
 
     Demand_All_HVAC_dict = {
@@ -141,7 +140,7 @@ def genoutputs(gui_params, get_data_dict):
         Demand_All_End_Uses_dict.update(d)
 
     # Write to RunLog...
-    get_data_dict["runlog"].write("Starting to read model outputs... \n ...\n")
+    # get_data_dict["runlog"].write("Starting to read model outputs... \n ...\n")
 
     ## Determine report type to output based on user input...
     #... determine whether to create an energy or demand report
@@ -157,7 +156,7 @@ def genoutputs(gui_params, get_data_dict):
     #... convert string to a dictionary, so that it can be properly processed below
     output_dict = locals()[output_dict_str]
     #... write to RunLog...
-    get_data_dict["runlog"].write("Producing report for " + report_name + "... \n")
+    # get_data_dict["runlog"].write("Producing report for " + report_name + "... \n")
 
     ## This is the main function ("sub-routine") that generates the actual custom report.
     ## It takes as arguments the working directory (set_dir), the proper output dictionary (output_dict),
@@ -168,7 +167,7 @@ def genoutputs(gui_params, get_data_dict):
 
     # Update simulation status box in REEDR.xlsm...
     #sht1.range('status_line_3').value = "Generating model output... Model output complete."
-    get_data_dict["runlog"].write("...\nModel output complete.")
+    # get_data_dict["runlog"].write("...\nModel output complete.")
 
     # sub = subprocess.Popen("cmd /k")
 
@@ -217,7 +216,9 @@ def produce_output_report(set_dir, output_dict, end_use_report_name, output_gran
 
         if output_gran == "Annual":
             # Read in the EnergyPlus-generated output csv
-            eplus_out_df = pd.read_csv (eplus_out_path)
+            #... skip the first rows corresponding to the HVAC design days
+            rows_to_skip = range(1, 3)
+            eplus_out_df = pd.read_csv (eplus_out_path, skiprows=rows_to_skip)
 
             for column in column_header_list:
                 try:
@@ -257,7 +258,7 @@ def produce_output_report(set_dir, output_dict, end_use_report_name, output_gran
             df_out = pd.concat([df_out, eplus_out_df])
 
         # Update run log
-        get_data_dict["runlog"].write("... sucessfully read outputs for run " + run_label + "\n")
+        # get_data_dict["runlog"].write("... sucessfully read outputs for run " + run_label + "\n")
         # Update sim status counter
         i = i + 1
 
@@ -269,10 +270,11 @@ def produce_output_report(set_dir, output_dict, end_use_report_name, output_gran
     if os.path.exists(out_path) == True:
         try:
             os.remove(out_path)
-        except Exception as e:
-            print(e)
+        except:
+            print("\n*** ERROR: Could not remove RunReport. Please ensure that RunReport is not open when running REEDR.\n")
+            return True
             # Write error to RunLog
-            get_data_dict["runlog"].write("!!! Could not remove existing output file. REEDR experienced the following error: " + str(e) + " \n")
+            # get_data_dict["runlog"].write("!!! Could not remove existing output file. REEDR experienced the following error: " + str(e) + " \n")
 
     ## Rename column headers in df with simpler, more descriptive names
     ## AND convert units where necessary
@@ -282,7 +284,7 @@ def produce_output_report(set_dir, output_dict, end_use_report_name, output_gran
             try:
                 df_out = df_out.rename(columns = {output_dict[key][0]:key})
             except:
-                get_data_dict["runlog"].write("Could not rename column" + output_dict[key][0] + " to " + key)
+                pass
             # Convert units
             if output_dict[key][1] == "Gas":
                 try:
