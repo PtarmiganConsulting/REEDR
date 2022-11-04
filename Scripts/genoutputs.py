@@ -34,9 +34,11 @@ def genoutputs(gui_params, get_data_dict):
         "Total Elec [kWh]": ['Electricity:Facility [J](RunPeriod)', "Elec"],
         "Total Gas [therm]": ['NaturalGas:Facility [J](RunPeriod)', "Gas"],
         "Total Heat Elec [kWh]": ['Heating:Electricity [J](RunPeriod)', "Elec"],
-        "Prim Furnace Heat Elec [kWh]": ['HEATING_RESISTANCE_MAIN:Heating Coil Heating Energy [J](RunPeriod)', "Elec"],
-        "ASHP Compressor Heat Elec [kWh]": ['DX_HEATING_COIL:Heating Coil Heating Energy [J](RunPeriod)', "Elec"],
-        "ASHP Backup Heat Elec [kWh]": ['HEATING_RESISTANCE_BACKUP:Heating Coil Heating Energy [J](RunPeriod)', "Elec"],
+        "Prim Furnace Heat Elec [kWh]": ['HEATING_RESISTANCE_MAIN:Heating Coil Electricity Energy [J](RunPeriod)', "Elec"],
+        "ASHP Compressor Heat Elec [kWh]": ['DX_HEATING_COIL:Heating Coil Electricity Energy [J](RunPeriod)', "Elec"],
+        "ASHP Backup Heat Elec [kWh]": ['HEATING_RESISTANCE_BACKUP:Heating Coil Electricity Energy [J](RunPeriod)', "Elec"],
+        "ASHP Defrost Elec [kWh]": ['DX_HEATING_COIL:Heating Coil Defrost Electricity Energy [J](RunPeriod)', "Elec"],
+        "ASHP Crankcase Heater Elec [kWh]": ['DX_HEATING_COIL:Heating Coil Crankcase Heater Electricity Energy [J](RunPeriod)', "Elec"],
         "Baseboard Heat Elec [kWh]": ['BASEBOARDELECTRIC:Baseboard Total Heating Energy [J](RunPeriod)', "Elec"],
         "Cool Elec [kWh]": ['Cooling:Electricity [J](RunPeriod)', "Elec"],
         "Fan Elec [kWh]": ['Fans:Electricity [J](RunPeriod)', "Elec"],
@@ -69,6 +71,8 @@ def genoutputs(gui_params, get_data_dict):
     Demand_All_HVAC_dict = {
         "ASHP Compressor Heat [W]": ['DX_HEATING_COIL:Heating Coil Electricity Rate [W]' + '(' + gui_params["output_gran"] +')', "Elec"],
         "ASHP Resistance Backup Heat [W]": ['HEATING_RESISTANCE_BACKUP:Heating Coil Electricity Rate [W]' + '(' + gui_params["output_gran"] +')', "Elec"],
+        "ASHP Defrost [W]": ['DX_HEATING_COIL:Heating Coil Defrost Electricity Rate [W]' + '(' + gui_params["output_gran"] +')', "Elec"],
+        "ASHP Crankcase Heater [W]": ['DX_HEATING_COIL:Heating Coil Crankcase Heater Electricity Rate [W]' + '(' + gui_params["output_gran"] +')', "Elec"],
         "Primary Elec Furnace Heat [W]": ['HEATING_RESISTANCE_MAIN:Heating Coil Electricity Rate [W]' + '(' + gui_params["output_gran"] +')', "Elec"],
         "Gas Furnace Gas Use [Btu/h]": ['MAIN FUEL HEATING COIL_UNIT1:Heating Coil NaturalGas Rate [W]' + '(' + gui_params["output_gran"] +')', "Gas"],
         "Gas Furnace Electric Use [W]": ['MAIN FUEL HEATING COIL_UNIT1:Heating Coil Electricity Rate [W]' + '(' + gui_params["output_gran"] +')', "Elec"],
@@ -83,6 +87,8 @@ def genoutputs(gui_params, get_data_dict):
     Demand_Heating_dict = {
         "ASHP Compressor Heat [W]": ['DX_HEATING_COIL:Heating Coil Electricity Rate [W]' + '(' + gui_params["output_gran"] +')', "Elec"],
         "ASHP Resistance Backup Heat [W]": ['HEATING_RESISTANCE_BACKUP:Heating Coil Electricity Rate [W]' + '(' + gui_params["output_gran"] +')', "Elec"],
+        "ASHP Defrost [W]": ['DX_HEATING_COIL:Heating Coil Defrost Electricity Rate [W]' + '(' + gui_params["output_gran"] +')', "Elec"],
+        "ASHP Crankcase Heater [W]": ['DX_HEATING_COIL:Heating Coil Crankcase Heater Electricity Rate [W]' + '(' + gui_params["output_gran"] +')', "Elec"],
         "Primary Elec Furnace Heat [W]": ['HEATING_RESISTANCE_MAIN:Heating Coil Electricity Rate [W]' + '(' + gui_params["output_gran"] +')', "Elec"],
         "Gas Furnace Gas Use [Btu/h]": ['MAIN FUEL HEATING COIL_UNIT1:Heating Coil NaturalGas Rate [W]' + '(' + gui_params["output_gran"] +')', "Gas"],
         "Gas Furnace Electric Use [W]": ['MAIN FUEL HEATING COIL_UNIT1:Heating Coil Electricity Rate [W]' + '(' + gui_params["output_gran"] +')', "Elec"],
@@ -249,7 +255,8 @@ def produce_output_report(set_dir, output_dict, end_use_report_name, output_gran
             # Skip the first rows corresponding to the HVAC design days
             rows_to_skip = range(1, 24*2*output_timesteps_per_hr+1)
             # Read in each individual EnergyPlus-generated output file, and skip the first design day rows
-            eplus_out_df = pd.read_csv (eplus_out_path, skiprows=rows_to_skip)
+            #eplus_out_df = pd.read_csv (eplus_out_path, skiprows=rows_to_skip)
+            eplus_out_df = pd.read_csv (eplus_out_path)
             # Strip leading or trailing whitespace from column names...
             eplus_out_df.columns = eplus_out_df.columns.str.strip()
             # Insert the Run_label into the first column of the file
