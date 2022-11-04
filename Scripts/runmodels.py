@@ -10,8 +10,6 @@ def runmodels(gui_params, get_data_dict):
 
     # for enabling or disabling multithreading
     multi=gui_params["multithread"]
-    # multi = True
-    # multi = False
 
     # Sets the directory.
     set_dir = get_data_dict["parent"]
@@ -73,7 +71,7 @@ def runmodels(gui_params, get_data_dict):
     ## iterates over the master dictionary list and calls eplus on all of them
     ## remember, each dictionary is effectively a complete runlabel row...
     ## and that's how we can catch every runlabel with one short loop!
-    get_data_dict["runlog"].write("Starting model runs... \n")
+    # get_data_dict["runlog"].write("Starting model runs... \n")
     i = 1
 
 
@@ -113,15 +111,16 @@ def runmodels(gui_params, get_data_dict):
                 t.start()
 
                 # plusterwolf(run_label, location_pull, get_data_dict["master_directory"], gui_params["path_val"], i, get_data_dict["df"])
-                get_data_dict["runlog"].write("... model run for " + str(run_label) + " complete. \n")
-            except Exception as e:
-                get_data_dict["runlog"].write("!!! problem running model " + str(run_label) + "\n")
-                get_data_dict["runlog"].write("!!! REEDR experienced the following error: " + str(e) + "\n")
-                print(e)
+                # get_data_dict["runlog"].write("... model run for " + str(run_label) + " complete. \n")
+            except:
+                # get_data_dict["runlog"].write("!!! problem running model " + str(run_label) + "\n")
+                # get_data_dict["runlog"].write("!!! REEDR experienced the following error: " + str(e) + "\n")
+                print("\n*** ERROR: Problem running EnergyPlus. Please check to make sure you have a valid EnergyPlus exe path.\n")
+                return True
 
             i = i + 1
 
-        get_data_dict["runlog"].write("... \n")
+        # get_data_dict["runlog"].write("... \n")
 
         for thread in threads:
             # print(thread)
@@ -139,15 +138,16 @@ def runmodels(gui_params, get_data_dict):
     
             try:
                 plusterwolf(run_label, location_pull, get_data_dict["master_directory"], gui_params["path_val"], i, get_data_dict["df"])
-                get_data_dict["runlog"].write("... model run for " + run_label + " complete. \n")
-            except Exception as e:
-                get_data_dict["runlog"].write("!!! problem running model " + run_label + "\n")
-                get_data_dict["runlog"].write("!!! REEDR experienced the following error: " + str(e) + "\n")
-                print(e)
+                # get_data_dict["runlog"].write("... model run for " + run_label + " complete. \n")
+            except:
+                # get_data_dict["runlog"].write("!!! problem running model " + run_label + "\n")
+                # get_data_dict["runlog"].write("!!! REEDR experienced the following error: " + str(e) + "\n")
+                print("\n*** ERROR: Problem running EnergyPlus. Please check to make sure you have a valid EnergyPlus exe path.\n")
+                return True
     
             i = i + 1
     
-        get_data_dict["runlog"].write("... \n")
+        # get_data_dict["runlog"].write("... \n")
 
     print("...model runs complete.")
     print()

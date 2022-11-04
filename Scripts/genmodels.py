@@ -120,13 +120,15 @@ def genmodels(gui_params, get_data_dict):
         try:
             os.remove(os.path.join(set_dir, building_block_dir, schedule_dir, schedule_file))
             read_file.to_csv ((os.path.join(set_dir, building_block_dir, schedule_dir, schedule_file)), index = None, header=True)
-            get_data_dict["runlog"].write("Schedules.csv successfully overwritten at " + os.path.join(set_dir, building_block_dir, schedule_dir, schedule_file) + ". \n" + "... \n")
-        except Exception as e:
-            get_data_dict["runlog"].write("!!! Schedules.csv could not be made at " + os.path.join(set_dir, building_block_dir, schedule_dir, schedule_file) + ". \n")
-            get_data_dict["runlog"].write("!!! REEDR experienced the following error: " + str(e) + ". \n")
+            # get_data_dict["runlog"].write("Schedules.csv successfully overwritten at " + os.path.join(set_dir, building_block_dir, schedule_dir, schedule_file) + ". \n" + "... \n")
+        except:
+            print("\n*** ERROR: Could not remove Schedule File. Please ensure that 8760 Schedule File is not open when running REEDR.\n")
+            return True
+            # get_data_dict["runlog"].write("!!! Schedules.csv could not be made at " + os.path.join(set_dir, building_block_dir, schedule_dir, schedule_file) + ". \n")
+            # get_data_dict["runlog"].write("!!! REEDR experienced the following error: " + str(e) + ". \n")
     else:
         read_file.to_csv ((os.path.join(set_dir, building_block_dir, schedule_dir, schedule_file)), index = None, header=True)
-        get_data_dict["runlog"].write(schedule_file + " successfully created at " + os.path.join(set_dir, building_block_dir, schedule_dir, schedule_file) + ". \n" + "... \n")
+        # get_data_dict["runlog"].write(schedule_file + " successfully created at " + os.path.join(set_dir, building_block_dir, schedule_dir, schedule_file) + ". \n" + "... \n")
     
     sched_list = (list(read_file.columns))
 
@@ -135,7 +137,7 @@ def genmodels(gui_params, get_data_dict):
     for i in range(len(get_data_dict["df"])): # Note: df is a Pandas dataframe that contains user inputs from the "Model_Inputs" tab in REEDR.xlsx
         directory_names.append(get_data_dict["df"].loc[i][0])
 
-    get_data_dict["runlog"].write("Starting to build subdirectories under " + os.path.join(get_data_dict["master_directory"]) + ". \n")
+    # get_data_dict["runlog"].write("Starting to build subdirectories under " + os.path.join(get_data_dict["master_directory"]) + ". \n")
 
     for name in directory_names:
         try:
@@ -145,15 +147,15 @@ def genmodels(gui_params, get_data_dict):
             return True
         try:
             os.mkdir(path)
-            get_data_dict["runlog"].write("... subdirectory successfully created at " + path + ". \n")
+            # get_data_dict["runlog"].write("... subdirectory successfully created at " + path + ". \n")
         except Exception as e:
-            get_data_dict["runlog"].write("!!! subdirectory could not be created at " + path + ". \n")
-            get_data_dict["runlog"].write("!!! REEDR experienced the following error: " + str(e) + ". \n")
-            get_data_dict["runlog"].close()
+            # get_data_dict["runlog"].write("!!! subdirectory could not be created at " + path + ". \n")
+            # get_data_dict["runlog"].write("!!! REEDR experienced the following error: " + str(e) + ". \n")
+            # get_data_dict["runlog"].close()
             print("\n*** ERROR: Subdirectory could not be created for the run: " + name + ". ***\nPlease ensure that ALL Run Labels are unique.\n")
             return True
 
-    get_data_dict["runlog"].write("... \n")
+    # get_data_dict["runlog"].write("... \n")
 
     ### --- Set output end uses and granularity based on user input. --- ###
     if gui_params["output_gran"] == "Annual":
@@ -168,12 +170,6 @@ def genmodels(gui_params, get_data_dict):
     foundation_and_floor_dict = make_foundation_and_floor_dict()
     # hvac type dictionary
     hvac_dict = make_hvac_dict(set_dir, building_block_dir, hvac_airloop_main_dir, hvac_airloop_hvac_dir, hvac_zone_main_dir, hvac_zone_hvac_dir, hvac_coil_dir, hvac_fan_dir)
-    # primary furnace heating capacity dictionary
-    #furnace_capacity_dict = make_furnace_capacity_dict()
-    # primary heat pump or ac capacity dictionary
-    #hpOrAC_capacity_dict = make_hpOrAC_capacity_dict()
-    # baseboard capacity dictionary
-    #baseboard_capacity_dict = make_baseboard_capacity_dict()
     # duct dictionary
     duct_dict = make_duct_dict()
     # foundation type dictionary
@@ -182,7 +178,7 @@ def genmodels(gui_params, get_data_dict):
     ### --- IDF WRITER LOOP BEGINS HERE. --- ###
     # The loop covers every dictionary (effectively a runlabel row) in the big dictionary list.
     # Each time the loop comes to a new dictionary/runlabel row, it updates the changable variables before doing anything else.
-    get_data_dict["runlog"].write("Starting to build EnergyPlus .idf model files... \n")
+    # get_data_dict["runlog"].write("Starting to build EnergyPlus .idf model files... \n")
 
     i = 1
     for dictionary in get_data_dict["master_dict_list"]:
@@ -893,12 +889,12 @@ def genmodels(gui_params, get_data_dict):
                 newfile.write(fullidf)
 
         i = i + 1
-        get_data_dict["runlog"].write("... successfully built EnergyPlus model at " +  path + " \n")
+        # get_data_dict["runlog"].write("... successfully built EnergyPlus model at " +  path + " \n")
 
     print("...model build complete.")
     print()
 
-    get_data_dict["runlog"].write("... \n")
+    # get_data_dict["runlog"].write("... \n")
 
     return False
     ##########################################################################################################################
