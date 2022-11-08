@@ -1,3 +1,5 @@
+print("Initializing REEDR interface...\n")
+
 import os # for making paths and directories
 from pathlib import Path # for getting current directory path
 import sys
@@ -13,8 +15,6 @@ sys.path.append(os.path.join(cwd,"python-3.10.0","Lib","site-packages"))
 sys.path.append(os.path.join(cwd,"python-3.10.0","Lib","site-packages","win32"))
 sys.path.append(os.path.join(cwd,"python-3.10.0","Lib","site-packages","win32","lib"))
 sys.path.append(os.path.join(cwd,"python-3.10.0","Lib","site-packages","openpyxl","xml"))
-
-print("Initializing REEDR interface...\n")
 
 # import main functions needed for REEDR
 from Scripts.genmodels import genmodels
