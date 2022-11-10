@@ -347,10 +347,10 @@ def genmodels(gui_params, get_data_dict):
             people = validate(numOfPeople_fieldname, dictionary[numOfPeople_fieldname], "any_num", 999, 999, dummy_list)
 
             #... interior lighting power density
-            interior_lpd = validate(intLPD_fieldname, convert_WperFt2_to_WperM2(dictionary[intLPD_fieldname])/2, "any_num", 999, 999, dummy_list) #divide total lpd by plug lights and hardwired lights
+            interior_lpd = validate(intLPD_fieldname, convert_WperFt2_to_WperM2(dictionary[intLPD_fieldname]), "any_num", 999, 999, dummy_list) #divide total lpd by plug lights and hardwired lights
 
             #... exterior lighting power
-            exterior_lp = validate(extLP_fieldname, dictionary[extLP_fieldname]/2, "any_num", 999, 999, dummy_list) #divide total lp by garage lights and exterior facade lights
+            exterior_lp = validate(extLP_fieldname, dictionary[extLP_fieldname], "any_num", 999, 999, dummy_list) #divide total lp by garage lights and exterior facade lights
 
             #... range type
             range_type_list = ["Electric", "Gas", "None"]
