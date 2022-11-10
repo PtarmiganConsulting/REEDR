@@ -117,8 +117,8 @@ def genoutputs(gui_params, get_data_dict):
     }
 
     Demand_Lighting_dict = {
-        "Hardwired_Lighting[W]": ['LIVING HARDWIRED LIGHTING1:Lights Electricity Rate [W]' + '(' + gui_params["output_gran"] +')', "Elec"],
-        "Plugin_Lighting[W]": ['LIVING PLUG-IN LIGHTING1:Lights Electricity Rate [W]' + '(' + gui_params["output_gran"] +')', "Elec"],
+        "Interior Lighting [W]": ['INTERIOR LIGHTS:Lights Electricity Rate [W]' + '(' + gui_params["output_gran"] +')', "Elec"],
+        "Exterior Lighting [W]": ['EXTERIOR LIGHTS:Lights Electricity Rate [W]' + '(' + gui_params["output_gran"] +')', "Elec"],
     }
 
     Demand_Water_Heating_dict = {
@@ -225,7 +225,7 @@ def produce_output_report(set_dir, output_dict, end_use_report_name, output_gran
             #... skip the first rows corresponding to the HVAC design days
             rows_to_skip = range(1, 3)
             eplus_out_df = pd.read_csv (eplus_out_path, skiprows=rows_to_skip)
-
+            
             for column in column_header_list:
                 try:
                     if output_dict[column][1] == "Run_Label":
@@ -252,11 +252,10 @@ def produce_output_report(set_dir, output_dict, end_use_report_name, output_gran
             elif output_gran == "TimeStep":
                 output_timesteps_per_hr = timestep
 
-            # Skip the first rows corresponding to the HVAC design days
-            rows_to_skip = range(1, 24*2*output_timesteps_per_hr+1)
-            # Read in each individual EnergyPlus-generated output file, and skip the first design day rows
-            #eplus_out_df = pd.read_csv (eplus_out_path, skiprows=rows_to_skip)
-            eplus_out_df = pd.read_csv (eplus_out_path)
+            # Skip the last rows corresponding to the HVAC design days
+            endrows_to_skip = 24*2*output_timesteps_per_hr
+            # Read in each individual EnergyPlus-generated output file, and skip the last design day rows
+            eplus_out_df = pd.read_csv (eplus_out_path, engine='python', skipfooter=endrows_to_skip)
             # Strip leading or trailing whitespace from column names...
             eplus_out_df.columns = eplus_out_df.columns.str.strip()
             # Insert the Run_label into the first column of the file
