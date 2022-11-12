@@ -18,6 +18,8 @@ def genmodels(gui_params, get_data_dict):
     ### --- Define building block directory and folder names as variables, so they can be established only once here, and flow throughout. --- ###
     building_block_dir = "Building Blocks"
     schedule_dir = "Schedules"
+    schedule_elec_gains_dir = "MiscElecGains"
+    schedule_gas_gains_dir = "MiscGasGains"
     schedule_file = "Schedules.csv"
     location_and_climate_dir = "LocationAndClimate"
     materials_main_dir = "Materials"
@@ -100,7 +102,9 @@ def genmodels(gui_params, get_data_dict):
     cw_fieldname = "ClothesWasher"
     dw_fieldname = "Dishwasher"
     miscElec_fieldname = "Misc Electric Gains [Max W]"
+    miscElecShed_fieldname = "Misc Electric Gains Sch"
     miscGas_fieldname = "Misc Gas Gains [Max Btu/h]"
+    miscGasShed_fieldname = "Misc Gas Gains Sch"
 
     ### --- Get input variables from tkinter user interface. --- ###
     begin_mo = get_data_dict["begin_mo"]
@@ -131,6 +135,12 @@ def genmodels(gui_params, get_data_dict):
         # get_data_dict["runlog"].write(schedule_file + " successfully created at " + os.path.join(set_dir, building_block_dir, schedule_dir, schedule_file) + ". \n" + "... \n")
     
     sched_list = (list(read_file.columns))
+
+    # Make a list for data validation that includes an option for "PNNL Default", and removes non-schedule name fields from list
+    PNNL_default = ["PNNL Prototype Default"]
+    sched_validation_list = (list(read_file.columns))
+    sched_validation_list.extend(PNNL_default)
+    del sched_validation_list[:7]
 
     ### --- Gather the run labels from the user specified runs, and create subdirectories that will house each run's input and output. --- ###
     directory_names = []
@@ -325,10 +335,10 @@ def genmodels(gui_params, get_data_dict):
                 return_leak = duct_dict[hvac_dict[hvac_type][0]][9]
 
             #... heating setpoint schedule
-            htg_stpt_sch = validate(htgSched_fieldname, dictionary[htgSched_fieldname], "list", 999, 999, sched_list)
+            htg_stpt_sch = validate(htgSched_fieldname, dictionary[htgSched_fieldname], "list", 999, 999, sched_validation_list)
 
             #... cooling setpoint schedule
-            clg_stpt_sch = validate(clgSched_fieldname, dictionary[clgSched_fieldname], "list", 999, 999, sched_list)
+            clg_stpt_sch = validate(clgSched_fieldname, dictionary[clgSched_fieldname], "list", 999, 999, sched_validation_list)
 
             #... gas furnace AFUE
             if hvac_dict[hvac_type][18] == "Heating_Fuel_Main" or hp_supp_heat_type == "Gas":
@@ -341,7 +351,7 @@ def genmodels(gui_params, get_data_dict):
             water_heater_type = validate(dhwType_fieldname, dictionary[dhwType_fieldname], "list", 999, 999, water_heater_type_list)
             
             #... DHW setpoint schedule
-            dhw_stpt_sch = validate(dhwSched_fieldname, dictionary[dhwSched_fieldname], "list", 999, 999, sched_list)
+            dhw_stpt_sch = validate(dhwSched_fieldname, dictionary[dhwSched_fieldname], "list", 999, 999, sched_validation_list)
 
             #... number of people
             people = validate(numOfPeople_fieldname, dictionary[numOfPeople_fieldname], "any_num", 999, 999, dummy_list)
@@ -375,8 +385,16 @@ def genmodels(gui_params, get_data_dict):
             #... miscellaneous electric power
             misc_elec = validate(miscElec_fieldname, dictionary[miscElec_fieldname], "any_num", 999, 999, dummy_list)
 
+            if misc_elec != 0:
+                #... miscellaneous electric power schedule
+                misc_elec_sch = validate(miscElecShed_fieldname, dictionary[miscElecShed_fieldname], "list", 999, 999, sched_validation_list)
+
             #... miscellaneous gas power
             misc_gas = validate(miscGas_fieldname, convert_Btuh_to_W(dictionary[miscGas_fieldname]), "any_num", 999, 999, dummy_list)
+
+            if misc_gas != 0:
+                #... miscellaneous gas power schedule
+                misc_gas_sch = validate(miscGasShed_fieldname, dictionary[miscGasShed_fieldname], "list", 999, 999, sched_validation_list)
             
         except:
             return True
@@ -559,6 +577,33 @@ def genmodels(gui_params, get_data_dict):
         htg_sch_num = sched_list.index(htg_stpt_sch) + 1
         clg_sch_num = sched_list.index(clg_stpt_sch) + 1
         dhw_sch_num = sched_list.index(dhw_stpt_sch) + 1
+
+        #... misc electric gains
+        if misc_elec != 0 and misc_elec_sch != str(PNNL_default[0]):
+            try:
+                misc_elec_sch_num = sched_list.index(misc_elec_sch) + 1
+                with open(os.path.join(set_dir, building_block_dir, schedule_dir, schedule_elec_gains_dir, 'MiscElectricGainsCustom.txt'), 'r') as f:
+                    misc_elec_sched_t = f"{f.read()}".format(**locals())
+            except:
+                print("\n*** ERROR: REEDR could not find schedule for miscellaneous electric gains. Please ensure this input is valid. \n")
+                return True
+        else:
+            with open(os.path.join(set_dir, building_block_dir, schedule_dir, schedule_elec_gains_dir, 'MiscElecPNNLdefault.txt'), 'r') as f:
+                    misc_elec_sched_t = f"{f.read()}".format(**locals())
+        #... misc gas gains
+        if misc_gas != 0 and misc_gas_sch != str(PNNL_default[0]):
+            try:
+                misc_gas_sch_num = sched_list.index(misc_gas_sch) + 1
+                with open(os.path.join(set_dir, building_block_dir, schedule_dir, schedule_gas_gains_dir, 'MiscGasGainsCustom.txt'), 'r') as f:
+                    misc_gas_sched_t = f"{f.read()}".format(**locals())
+            except:
+                print("\n*** ERROR: REEDR could not find schedule for miscellaneous gas gains. Please ensure this input is valid. \n")
+                return True
+        else:
+            with open(os.path.join(set_dir, building_block_dir, schedule_dir, schedule_gas_gains_dir, 'MiscGasPNNLdefault.txt'), 'r') as f:
+                    misc_gas_sched_t = f"{f.read()}".format(**locals())
+
+        #... most other schedules
         with open(os.path.join(set_dir, building_block_dir, schedule_dir, 'Schedules.txt'), 'r') as f:
             sched_t = f"{f.read()}".format(**locals())
 
@@ -864,8 +909,9 @@ def genmodels(gui_params, get_data_dict):
         # Nests all the .txt files, now morphed into strings, in a listin the order they are to be written to the new idfs.
         # Nesting them this way allows us to easily write the full idf file, because we can simply iterate over the list
         master_tl = [
-            simparam_t, performanceprecision_t, locations_t, sched_t, mat_t, above_ground_wall_t, ceiling_attic_t, glazing_t, win_construction_t, \
-            construction_t, range_t, dryer_t, clotheswasher_t, dishwasher_t, frig_t, misc_elec_t, misc_gas_t, people_t, lights_t, \
+            simparam_t, performanceprecision_t, locations_t, sched_t, misc_elec_sched_t, misc_gas_sched_t, \
+            mat_t, above_ground_wall_t, ceiling_attic_t, glazing_t, win_construction_t, construction_t, \
+            range_t, dryer_t, clotheswasher_t, dishwasher_t, frig_t, misc_elec_t, misc_gas_t, people_t, lights_t, \
             foundation_type_t, geom_rules_t, internal_mass_t, geom_main_envelope_t, geom_nonslab_adder_t, geom_main_windows_t, \
             living_zone_t, attic_zone_t, unheatedbsmt_zone_t, crawlspace_zone_t, geom_nonhtdbsmt_adder_t, \
             AFN_sim_control_t, AFN_main_zones_t, AFN_main_leakage_t, AFN_main_surfaces_t, AFN_nodes_main_t, AFN_linkage_main_t, \
