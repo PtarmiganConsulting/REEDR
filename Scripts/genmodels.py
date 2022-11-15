@@ -6,7 +6,7 @@ import math # used for functions like square root
 from pprint import pprint
 from Scripts.unitconversions import convert_WperFt2_to_WperM2, convert_degF_to_degC, convert_IP_Uvalue_to_SI_Uvalue, convert_ft_to_m, convert_ft2_to_m2, convert_ft3_to_m3, \
     convert_Btuh_to_W, convert_CFM_to_m3PerSec, convert_W_to_ton
-from Scripts.dictionaries import make_foundation_and_floor_dict, make_hvac_dict, make_duct_dict, make_foundation_dict
+from Scripts.dictionaries import make_foundation_and_floor_dict, make_hvac_dict, make_foundation_dict
 from Scripts.datavalidation import validate, convert_capacity
 
 
@@ -65,7 +65,7 @@ def genmodels(gui_params, get_data_dict):
     floorCon_fieldname = "Foundation And Floor Construction"
     foundWallHtAg_fieldname = "Foundation Wall Height Above Ground [ft]"
     foundWallHtBg_fieldname = "Foundation Wall Height Below Ground [ft]"
-    windowuUvalue_fieldname = "Window U-Value [Btu/h/ft^2/F]"
+    windowuUvalue_fieldname = "Window U-Value [Btu/h-ft^2-F]"
     windowSHGC_fieldname = "Window SHGC"
     windowShade_fieldname = "Window Shades"
     wtwFront_fieldname = "WtW Ratio Front [%]"
@@ -81,14 +81,13 @@ def genmodels(gui_params, get_data_dict):
     hpBackupCapacityUnits_fieldname = "ASHP Backup Heat Capacity Units"
     hpBackupCapacity_fieldname = "ASHP Backup Heat Capacity"
     backupBaseboardCapacity_fieldname = "Backup Electric Baseboard Heat Capacity [kW]"
-    #primFurnaceCapacity_fieldname = "Primary HVAC Furnace or Resistance Wall Heat Nominal Rated Capacity"
-    #primHPCapacity_fieldname = "Primary HVAC Heat Pump or AC Nominal Rated Capacity"
-    #hpBackupCapacity_fieldname = "ASHP Backup Nominal Rated Capacity"
     hpBackupLockout_fieldname = "ASHP Backup Heat Lockout Temp [deg F]"
     hpCompressorLockout_fieldname = "ASHP Compressor Lockout Temp [deg F]"
     AFUE_fieldname = "Gas Furnace AFUE [%]"
     supplyLeakage_fieldname = "Supply Duct Leakage [%]"
+    supplyRvalue_fieldname = "Supply Duct Insulation Nominal R-Value [h-ft^2-F/Btu]"
     returnLeakage_fieldname = "Return Duct Leakage [%]"
+    returnRvalue_fieldname = "Return Duct Insulation Nominal R-Value [h-ft^2-F/Btu]"
     htgSched_fieldname = "Htg StPt Sch"
     clgSched_fieldname = "Clg StPt Sch"
     dhwType_fieldname = "Water Heater Type"
@@ -180,8 +179,6 @@ def genmodels(gui_params, get_data_dict):
     foundation_and_floor_dict = make_foundation_and_floor_dict()
     # hvac type dictionary
     hvac_dict = make_hvac_dict(set_dir, building_block_dir, hvac_airloop_main_dir, hvac_airloop_hvac_dir, hvac_zone_main_dir, hvac_zone_hvac_dir, hvac_coil_dir, hvac_fan_dir)
-    # duct dictionary
-    duct_dict = make_duct_dict()
     # foundation type dictionary
     foundation_dict = make_foundation_dict()
 
@@ -325,14 +322,27 @@ def genmodels(gui_params, get_data_dict):
             
             #... duct inputs
             if hvac_dict[hvac_type][0] == "Central":
-                #... supply duct leakage
+                #... duct leakage
                 duct_leak_lo = 0.0001
                 duct_leak_hi = 0.99
                 supply_leak = validate(supplyLeakage_fieldname, dictionary[supplyLeakage_fieldname], "num_between", duct_leak_lo, duct_leak_hi, dummy_list)
                 return_leak = validate(returnLeakage_fieldname, dictionary[returnLeakage_fieldname], "num_between", duct_leak_lo, duct_leak_hi, dummy_list)
+                #... duct R-value
+                supplyRvalue = validate(supplyRvalue_fieldname, dictionary[supplyRvalue_fieldname], "any_num", 999, 999, dummy_list)
+                returnRvalue = validate(returnRvalue_fieldname, dictionary[returnRvalue_fieldname], "any_num", 999, 999, dummy_list)
+                if supplyRvalue == int(0):
+                    supplyUvalue = 6.8
+                else:
+                    supplyUvalue = convert_IP_Uvalue_to_SI_Uvalue(1/supplyRvalue)
+                if returnRvalue == int(0):
+                    returnUvalue = 6.8
+                else:
+                    returnUvalue = convert_IP_Uvalue_to_SI_Uvalue(1/returnRvalue)
             else:
-                supply_leak = duct_dict[hvac_dict[hvac_type][0]][8]
-                return_leak = duct_dict[hvac_dict[hvac_type][0]][9]
+                supply_leak = 0.0001
+                return_leak = 0.0001
+                supplyUvalue = 0.0001
+                returnUvalue = 0.0001
 
             #... heating setpoint schedule
             htg_stpt_sch = validate(htgSched_fieldname, dictionary[htgSched_fieldname], "list", 999, 999, sched_validation_list)
@@ -841,14 +851,34 @@ def genmodels(gui_params, get_data_dict):
                 AFN_crawl_unheatedbsmt_surface_adder_t = f.read()
   
         # Get duct inputs based on HVAC type; for "zonal" systems assume "perfect ducts"
-        maintrunk_duct_length = duct_dict[hvac_dict[hvac_type][0]][0]
-        maintrunk_duct_Ufactor = duct_dict[hvac_dict[hvac_type][0]][1]
-        zonesupply_duct_length = duct_dict[hvac_dict[hvac_type][0]][2]
-        zonesupply_duct_Ufactor = duct_dict[hvac_dict[hvac_type][0]][3]
-        zonereturn_duct_length = duct_dict[hvac_dict[hvac_type][0]][4]
-        zonereturn_duct_Ufactor = duct_dict[hvac_dict[hvac_type][0]][5]
-        mainreturn_duct_length = duct_dict[hvac_dict[hvac_type][0]][6]
-        mainreturn_duct_Ufactor = duct_dict[hvac_dict[hvac_type][0]][7]
+        # maintrunk_duct_length = duct_dict[hvac_dict[hvac_type][0]][0]
+        # maintrunk_duct_Ufactor = duct_dict[hvac_dict[hvac_type][0]][1]
+        # zonesupply_duct_length = duct_dict[hvac_dict[hvac_type][0]][2]
+        # zonesupply_duct_Ufactor = duct_dict[hvac_dict[hvac_type][0]][3]
+        # zonereturn_duct_length = duct_dict[hvac_dict[hvac_type][0]][4]
+        # zonereturn_duct_Ufactor = duct_dict[hvac_dict[hvac_type][0]][5]
+        # mainreturn_duct_length = duct_dict[hvac_dict[hvac_type][0]][6]
+        # mainreturn_duct_Ufactor = duct_dict[hvac_dict[hvac_type][0]][7]
+
+        if hvac_dict[hvac_type][0] == "Central":
+            maintrunk_duct_length = 2 # units are meters
+            zonesupply_duct_length = 15
+            zonereturn_duct_length = 8
+            mainreturn_duct_length = 1
+
+            supply_duct_Ufactor = supplyUvalue # units are W/m2-K
+            return_duct_Ufactor = returnUvalue
+        elif hvac_dict[hvac_type][0] == "Zonal":
+            maintrunk_duct_length = 0.0001
+            zonesupply_duct_length = 0.0001
+            zonereturn_duct_length = 0.0001
+            mainreturn_duct_length = 0.0001
+
+            supply_duct_Ufactor = supplyUvalue
+            return_duct_Ufactor = returnUvalue
+        else:
+            print("\n*** ERROR: Problem assigning duct system parameters. Please ensure you have selected a valid HVAC system type. \n")
+            return True
 
         # Add AFN ducts to all models
         with open(os.path.join(set_dir, building_block_dir, hvac_afn_main_dir, 'AFN_Ducts.txt'), 'r') as f:
