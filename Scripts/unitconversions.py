@@ -56,3 +56,7 @@ def convert_W_to_ton(W):
 def convert_CFM_to_m3PerSec(CFM):
     m3PerSec = CFM/2118.8799727596793
     return m3PerSec
+
+def convert_in2_to_m2(in2):
+    m2 = in2*0.00064516
+    return m2

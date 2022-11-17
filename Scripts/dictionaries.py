@@ -849,36 +849,7 @@ def make_hvac_dict(set_dir, building_block_dir, hvac_airloop_main_dir, hvac_airl
             ],           
     }
     return hvac_dict
-
-
-# def make_duct_dict():
-#     duct_dict = {
-#         "Central": [
-#             2, # maintrunk_duct_length
-#             0.943, # maintrunk_duct_U-factor
-#             15, # zonesupply_duct_length
-#             0.943, # zonesupply_duct_U-factor
-#             8, # zonereturn_duct_length
-#             0.943, # zonereturn_duct_U-factor
-#             1, # mainreturn_duct_length
-#             0.943, # mainreturn_duct_U-factor
-#             "user-assigned", # supply_leak
-#             "user-assigned", # return_leak
-#             ], 
-#         "Zonal": [
-#             0.0001, # maintrunk_duct_length
-#             0.0001, # maintrunk_duct_U-factor
-#             0.0001, # zonesupply_duct_length
-#             0.0001, # zonesupply_duct_U-factor
-#             0.0001, # zonereturn_duct_length
-#             0.0001, # zonereturn_duct_U-factor
-#             0.0001, # mainreturn_duct_length
-#             0.0001, # mainreturn_duct_U-factor
-#             0.0001, # supply_leak
-#             0.0001, # return_leak
-#             ],
-#     }
-#     return duct_dict
+    
 
 def make_foundation_dict():
     foundation_dict = {
