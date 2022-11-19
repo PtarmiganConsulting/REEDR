@@ -804,50 +804,36 @@ def genmodels(gui_params, get_data_dict):
 
         # Estimate effective leakage areas (ELAs), used to represent building infiltration, in AFN model
         infiltrationInACH50 = infiltration
-        infiltrationInCFM50 = infiltrationInACH50 * dictionary[volume_fieldname] / 60
-        totalEffectiveLeakageArea_SqIn = infiltrationInCFM50/10
-        totalEffectiveLeakageArea_SqM = convert_in2_to_m2(totalEffectiveLeakageArea_SqIn)
-        #print(str(infiltrationInACH50) + " ACH50")
-        #print(str(infiltrationInCFM50) + " CFM50")
-        #print(str(totalEffectiveLeakageArea_SqIn) + " sq in of ELA")
-        #print(str(totalEffectiveLeakageArea_SqM) + " sq m of ELA")
-
-        # if hasSlabOrHtdBsmnt == 1:
-        #     wall_frontback_leakage_wt = (wall_area_front + wall_area_back) / (wall_area_front + wall_area_back + \
-        #         wall_area_right + wall_area_left + conditioned_footprint_area) # here conditioned footprint area represents ceiling area
-        #     wall_leftright_leakage_wt = (wall_area_right + wall_area_left) / (wall_area_front + wall_area_back + \
-        #         wall_area_right + wall_area_left + conditioned_footprint_area) # here conditioned footprint area represents ceiling area
-        #     ceiling_leakage_wt = (conditioned_footprint_area) / (wall_area_front + wall_area_back + \
-        #         wall_area_right + wall_area_left + conditioned_footprint_area) # here conditioned footprint area represents ceiling area
-        #     ELA_wall_frontback = (wall_frontback_leakage_wt * totalEffectiveLeakageArea_SqM) / 2
-        #     ELA_wall_leftright = (wall_leftright_leakage_wt * totalEffectiveLeakageArea_SqM) / 2
-        #     ELA_ceiling = ceiling_leakage_wt * totalEffectiveLeakageArea_SqM
-
-        #     #print(str(wall_frontback_leakage_wt+wall_leftright_leakage_wt+ceiling_leakage_wt) + " wt check")
-        #     #print(str(2*ELA_wall_frontback+2*ELA_wall_leftright+ELA_ceiling) + " ELA check")
-
-        #else: # hasSlabOrHtdBsmnt == 0
-        # wall_frontback_leakage_wt = (wall_area_front + wall_area_back) / (wall_area_front + wall_area_back + \
-        #     wall_area_right + wall_area_left + 2*conditioned_footprint_area) # here conditioned footprint area represents ceiling area
-        # wall_leftright_leakage_wt = (wall_area_right + wall_area_left) / (wall_area_front + wall_area_back + \
-        #     wall_area_right + wall_area_left + 2*conditioned_footprint_area) # here conditioned footprint area represents ceiling area
-        # ceiling_leakage_wt = (conditioned_footprint_area) / (wall_area_front + wall_area_back + \
-        #     wall_area_right + wall_area_left + 2*conditioned_footprint_area) # here conditioned footprint area represents ceiling area
-        # floor_leakage_wt = (conditioned_footprint_area) / (wall_area_front + wall_area_back + \
-        #     wall_area_right + wall_area_left + 2*conditioned_footprint_area) # here conditioned footprint area represents ceiling area
         
-        if infiltrationInACH50 > 9.5 and infiltrationInACH50 < 10.5:
-            if foundation_type == "Heated Basement":
-                if dictionary[footprint_fieldname] < 2000:
-                    adjust = 8.5
-                else:
-                    adjust = 12
+        if foundation_type == "Unheated Basement":
+            if dictionary[footprint_fieldname] <= 2000:
+                adjust = infiltrationInACH50/2.083 #good
             else:
-                if dictionary[footprint_fieldname] < 2000:
-                    adjust = 5 # good
+                adjust = infiltrationInACH50/1.552 #good
+
+        if foundation_type == "Vented Crawlspace":
+            if dictionary[footprint_fieldname] <= 2000:
+                adjust = infiltrationInACH50/2.084 #good
+            else:
+                adjust = infiltrationInACH50/1.578 #good
+
+        if foundation_type == "Slab":
+            if dictionary[footprint_fieldname] <= 2000:
+                adjust = infiltrationInACH50/2.209 #good
+            else:
+                adjust = infiltrationInACH50/1.609 #good
+
+        if foundation_type == "Heated Basement":
+            if dictionary[footprint_fieldname] <= 2000:
+                if infiltrationInACH50 >= 3:
+                    adjust = infiltrationInACH50/1.287 #good
                 else:
-                    adjust = 7
-        
+                    adjust = infiltrationInACH50/2.1 #good
+            else:
+                if infiltrationInACH50 >= 3:
+                    adjust = infiltrationInACH50/0.920 #good
+                else:
+                    adjust = infiltrationInACH50/1.008 #good
         
         ELA_wall_frontback = adjust * wall_area_front * 0.00010812648958345 #(wall_frontback_leakage_wt * totalEffectiveLeakageArea_SqM) / 2
         ELA_wall_leftright = adjust * wall_area_left * 0.00010812648958345 #(wall_leftright_leakage_wt * totalEffectiveLeakageArea_SqM) / 2
@@ -855,9 +841,6 @@ def genmodels(gui_params, get_data_dict):
         ELA_floor = adjust * conditioned_footprint_area * 0.0000000905634180403216 #floor_leakage_wt * totalEffectiveLeakageArea_SqM
         ELA_attic = 0.37
         ELA_crawl = 0.37
-
-            #print(str(wall_frontback_leakage_wt+wall_leftright_leakage_wt+ceiling_leakage_wt+floor_leakage_wt) + " wt check")
-            #print(str(2*ELA_wall_frontback+2*ELA_wall_leftright+ELA_ceiling+ELA_floor) + " ELA check")
         
         ### --- Add Air Flow Network (AFN) and airloop. Currently all HVAC systems are modeled with ducts. "Ductless" systems are modeled with "perfect" ducts. --- ### 
         AFN_control = "MultizoneWithDistribution"
