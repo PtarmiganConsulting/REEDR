@@ -5,10 +5,12 @@ import shutil # for removing full directories
 import math # used for functions like square root
 from pprint import pprint
 import datetime
+import math
 from Scripts.unitconversions import convert_WperFt2_to_WperM2, convert_degF_to_degC, convert_IP_Uvalue_to_SI_Uvalue, convert_ft_to_m, convert_ft2_to_m2, \
     convert_ft3_to_m3, convert_Btuh_to_W, convert_CFM_to_m3PerSec, convert_W_to_ton, convert_in2_to_m2
 from Scripts.dictionaries import make_foundation_and_floor_dict, make_hvac_dict, make_foundation_dict
 from Scripts.datavalidation import validate, convert_capacity
+from Scripts.utilfunctions import estimateInfiltrationAdjustment
 
 
 def genmodels(gui_params, get_data_dict):
@@ -804,36 +806,9 @@ def genmodels(gui_params, get_data_dict):
 
         # Estimate effective leakage areas (ELAs), used to represent building infiltration, in AFN model
         infiltrationInACH50 = infiltration
+        stories = dictionary[volume_fieldname] / dictionary[footprint_fieldname] / 8
         
-        if foundation_type == "Unheated Basement":
-            if dictionary[footprint_fieldname] <= 2000:
-                adjust = infiltrationInACH50/2.083 #good
-            else:
-                adjust = infiltrationInACH50/1.552 #good
-
-        if foundation_type == "Vented Crawlspace":
-            if dictionary[footprint_fieldname] <= 2000:
-                adjust = infiltrationInACH50/2.084 #good
-            else:
-                adjust = infiltrationInACH50/1.578 #good
-
-        if foundation_type == "Slab":
-            if dictionary[footprint_fieldname] <= 2000:
-                adjust = infiltrationInACH50/2.209 #good
-            else:
-                adjust = infiltrationInACH50/1.609 #good
-
-        if foundation_type == "Heated Basement":
-            if dictionary[footprint_fieldname] <= 2000:
-                if infiltrationInACH50 >= 3:
-                    adjust = infiltrationInACH50/1.287 #good
-                else:
-                    adjust = infiltrationInACH50/2.1 #good
-            else:
-                if infiltrationInACH50 >= 3:
-                    adjust = infiltrationInACH50/0.920 #good
-                else:
-                    adjust = infiltrationInACH50/1.008 #good
+        adjust = estimateInfiltrationAdjustment(foundation_type, infiltrationInACH50, dictionary[footprint_fieldname], stories)
         
         ELA_wall_frontback = adjust * wall_area_front * 0.00010812648958345 #(wall_frontback_leakage_wt * totalEffectiveLeakageArea_SqM) / 2
         ELA_wall_leftright = adjust * wall_area_left * 0.00010812648958345 #(wall_leftright_leakage_wt * totalEffectiveLeakageArea_SqM) / 2
