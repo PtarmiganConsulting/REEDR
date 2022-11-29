@@ -5,7 +5,6 @@ import shutil # for removing full directories
 import math # used for functions like square root
 from pprint import pprint
 import datetime
-import math
 from Scripts.unitconversions import convert_WperFt2_to_WperM2, convert_degF_to_degC, convert_IP_Uvalue_to_SI_Uvalue, convert_ft_to_m, convert_ft2_to_m2, \
     convert_ft3_to_m3, convert_Btuh_to_W, convert_CFM_to_m3PerSec, convert_W_to_ton, convert_in2_to_m2
 from Scripts.dictionaries import make_foundation_and_floor_dict, make_hvac_dict, make_foundation_dict
@@ -806,16 +805,24 @@ def genmodels(gui_params, get_data_dict):
 
         # Estimate effective leakage areas (ELAs), used to represent building infiltration, in AFN model
         infiltrationInACH50 = infiltration
-        stories = dictionary[volume_fieldname] / dictionary[footprint_fieldname] / 8
+        total_envelope_height = dictionary[volume_fieldname] / dictionary[footprint_fieldname]
         
-        adjust = estimateInfiltrationAdjustment(foundation_type, infiltrationInACH50, dictionary[footprint_fieldname], stories)
+        adjust = estimateInfiltrationAdjustment(foundation_type, infiltrationInACH50, dictionary[footprint_fieldname], total_envelope_height)
         
-        ELA_wall_frontback = adjust * wall_area_front * 0.00010812648958345 #(wall_frontback_leakage_wt * totalEffectiveLeakageArea_SqM) / 2
-        ELA_wall_leftright = adjust * wall_area_left * 0.00010812648958345 #(wall_leftright_leakage_wt * totalEffectiveLeakageArea_SqM) / 2
-        ELA_ceiling = adjust * conditioned_footprint_area * 0.00010812648958345 #ceiling_leakage_wt * totalEffectiveLeakageArea_SqM
-        ELA_floor = adjust * conditioned_footprint_area * 0.0000000905634180403216 #floor_leakage_wt * totalEffectiveLeakageArea_SqM
-        ELA_attic = 0.37
-        ELA_crawl = 0.37
+        ELA_wall_frontback = adjust * wall_area_front * 0.00010812648958345
+        ELA_wall_leftright = adjust * wall_area_left * 0.00010812648958345
+        ELA_ceiling = adjust * conditioned_footprint_area * 0.00010812648958345
+        ELA_floor = adjust * conditioned_footprint_area * 0.0000000905634180403216
+        
+        attic_adjust = 1
+        roof_hypotenuse = math.sqrt(roof_ht**2 + (building_depth/2)**2)
+        attic_wall_area = 2*(0.5*building_depth*roof_ht) + 2*(roof_hypotenuse*building_width)
+        ELA_attic = attic_adjust * attic_wall_area * 0.00010812648958345
+
+        crawl_adjust = 1
+        crawl_wall_area = 2*(foundationwall_ht_AG + foundationwall_ht_BG)*building_depth + 2*(foundationwall_ht_AG + foundationwall_ht_BG)*building_width
+        ELA_crawl = crawl_adjust * crawl_wall_area * 0.00010812648958345
+        
         
         ### --- Add Air Flow Network (AFN) and airloop. Currently all HVAC systems are modeled with ducts. "Ductless" systems are modeled with "perfect" ducts. --- ### 
         AFN_control = "MultizoneWithDistribution"
