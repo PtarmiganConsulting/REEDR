@@ -307,11 +307,11 @@ def produce_output_report(set_dir, output_dict, end_use_report_name, output_gran
     writer = pd.ExcelWriter(out_path, engine='xlsxwriter')
     
     # Paste output dataframe (custom report) to the path created just above.
-    df_out.to_excel(writer, sheet_name="Model Out", float_format="%.2f", header=True, index=False, startrow=0, startcol=0)
+    df_out.to_excel(writer, sheet_name="Model Out", header=True, index=False, startrow=0, startcol=0) #commented out: float_format="%.2f"
 
     # write model inputs to output report as well
     df_in = get_data_dict["df"]
-    df_in.to_excel(writer, sheet_name="Model In", float_format="%.2f", header=True, index=False, startrow=0, startcol=0)
+    df_in.to_excel(writer, sheet_name="Model In", header=True, index=False, startrow=0, startcol=0) #commented out: float_format="%.2f"
 
     # get current time
     current_time = datetime.datetime.now(pytz.timezone('US/Pacific'))

@@ -4,10 +4,12 @@ import os # for making paths and directories and removing files
 import shutil # for removing full directories
 import math # used for functions like square root
 from pprint import pprint
-from Scripts.unitconversions import convert_WperFt2_to_WperM2, convert_degF_to_degC, convert_IP_Uvalue_to_SI_Uvalue, convert_ft_to_m, convert_ft2_to_m2, convert_ft3_to_m3, \
-    convert_Btuh_to_W, convert_CFM_to_m3PerSec, convert_W_to_ton
+import datetime
+from Scripts.unitconversions import convert_WperFt2_to_WperM2, convert_degF_to_degC, convert_IP_Uvalue_to_SI_Uvalue, convert_ft_to_m, convert_ft2_to_m2, \
+    convert_ft3_to_m3, convert_Btuh_to_W, convert_CFM_to_m3PerSec, convert_W_to_ton, convert_in2_to_m2
 from Scripts.dictionaries import make_foundation_and_floor_dict, make_hvac_dict, make_foundation_dict
 from Scripts.datavalidation import validate, convert_capacity
+from Scripts.utilfunctions import estimateInfiltrationAdjustment
 
 
 def genmodels(gui_params, get_data_dict):
@@ -72,6 +74,7 @@ def genmodels(gui_params, get_data_dict):
     wtwBack_fieldname = "WtW Ratio Back [%]"
     wtwLeft_fieldname = "WtW Ratio Left [%]"
     wtwRight_fieldname = "WtW Ratio Right [%]"
+    infiltration_fieldname = "Conditioned Envelope Infiltration [ACH50]"
     primaryHVAC_fieldname = "Primary HVAC Type"
     primaryHtgCapacityUnits_fieldname = "Primary Heating Capacity Units"
     primaryHtgCapacity_fieldname = "Primary Rated Heating Capacity [@47F OAT]"
@@ -242,6 +245,11 @@ def genmodels(gui_params, get_data_dict):
             foundation_key = foundation_and_floor_con[:chars]
             foundation_type = foundation_dict[foundation_key][0]
             returnduct_location = foundation_dict[foundation_key][1]
+            # Establish if foundation is slab or heated basement, if using regression-based infiltration estimate
+            if foundation_type == "Slab" or foundation_type == "Heated Basement":
+                hasSlabOrHtdBsmnt = 1
+            else:
+                hasSlabOrHtdBsmnt = 0
 
             #... Foundation wall height above and below ground
             if foundation_type == "Slab":
@@ -273,6 +281,9 @@ def genmodels(gui_params, get_data_dict):
             wtw_ratio_back = validate(wtwBack_fieldname, dictionary[wtwBack_fieldname], "num_between", wtw_lo, wtw_hi, dummy_list)
             wtw_ratio_left = validate(wtwLeft_fieldname, dictionary[wtwLeft_fieldname], "num_between", wtw_lo, wtw_hi, dummy_list)
             wtw_ratio_right = validate(wtwRight_fieldname, dictionary[wtwRight_fieldname], "num_between", wtw_lo, wtw_hi, dummy_list)
+
+            #... infiltration
+            infiltration = validate(infiltration_fieldname, dictionary[infiltration_fieldname], "num_not_zero", 999, 999, dummy_list)
 
             #... primary HVAC type
             hvac_type_list = hvac_dict.keys()
@@ -331,11 +342,11 @@ def genmodels(gui_params, get_data_dict):
                 supplyRvalue = validate(supplyRvalue_fieldname, dictionary[supplyRvalue_fieldname], "any_num", 999, 999, dummy_list)
                 returnRvalue = validate(returnRvalue_fieldname, dictionary[returnRvalue_fieldname], "any_num", 999, 999, dummy_list)
                 if supplyRvalue == int(0):
-                    supplyUvalue = 6.8
+                    supplyUvalue = 6.8 #estimted U-value of thin piece of uninsulated metal duct
                 else:
                     supplyUvalue = convert_IP_Uvalue_to_SI_Uvalue(1/supplyRvalue)
                 if returnRvalue == int(0):
-                    returnUvalue = 6.8
+                    returnUvalue = 6.8 #estimted U-value of thin piece of uninsulated metal duct
                 else:
                     returnUvalue = convert_IP_Uvalue_to_SI_Uvalue(1/returnRvalue)
             else:
@@ -792,6 +803,29 @@ def genmodels(gui_params, get_data_dict):
             with open(os.path.join(set_dir, building_block_dir, hvac_afn_main_dir, hvac_afn_linkage_dir, 'AFN_CoolingCoilLinkageAdder.txt'), 'r') as f:
                 AFN_linkage_coolingcoiladder_t = f"{f.read()}".format(**locals())
 
+        # Estimate effective leakage areas (ELAs), used to represent building infiltration, in AFN model
+        infiltrationInACH50 = infiltration
+        total_envelope_height = dictionary[volume_fieldname] / dictionary[footprint_fieldname]
+        
+        adjust = []
+        adjust = estimateInfiltrationAdjustment(foundation_type, infiltrationInACH50, dictionary[footprint_fieldname], total_envelope_height)
+        living_adjust = adjust[0]
+        attic_adjust = adjust[1]
+        crawl_adjust = adjust[2]
+        
+        ELA_wall_frontback = living_adjust * wall_area_front * 0.00010812648958345
+        ELA_wall_leftright = living_adjust * wall_area_left * 0.00010812648958345
+        ELA_ceiling = living_adjust * conditioned_footprint_area * 0.00010812648958345
+        ELA_floor = living_adjust * conditioned_footprint_area * 0.0000000905634180403216
+        
+        roof_hypotenuse = math.sqrt(roof_ht**2 + (building_depth/2)**2)
+        attic_wall_area = 2*(0.5*building_depth*roof_ht) + 2*(roof_hypotenuse*building_width)
+        ELA_attic = attic_adjust * attic_wall_area * 0.00010812648958345
+
+        crawl_wall_area = 2*(abs(foundationwall_ht_AG) + abs(foundationwall_ht_BG))*building_depth + 2*(abs(foundationwall_ht_AG) + abs(foundationwall_ht_BG))*building_width
+        ELA_crawl = crawl_adjust * crawl_wall_area * 0.00010812648958345
+        
+        
         ### --- Add Air Flow Network (AFN) and airloop. Currently all HVAC systems are modeled with ducts. "Ductless" systems are modeled with "perfect" ducts. --- ### 
         AFN_control = "MultizoneWithDistribution"
         # The following text files are added for all building models
@@ -815,7 +849,7 @@ def genmodels(gui_params, get_data_dict):
             AFN_main_zones_t = f.read()
         #...insert AFN surface leakage
         with open(os.path.join(set_dir, building_block_dir, hvac_afn_main_dir, hvac_afn_leakage_dir, 'AFN_MainLeakage.txt'), 'r') as f:
-            AFN_main_leakage_t = f.read()
+            AFN_main_leakage_t = f"{f.read()}".format(**locals())
         #...insert AFN surfaces common to all geometries
         with open(os.path.join(set_dir, building_block_dir, hvac_afn_main_dir, hvac_afn_surface_dir, 'AFN_MainSurfaces.txt'), 'r') as f:
             AFN_main_surfaces_t = f.read()
@@ -833,7 +867,7 @@ def genmodels(gui_params, get_data_dict):
                 AFN_crawl_zone_t = f.read()
             #...add surface leakage for crawlspace walls
             with open(os.path.join(set_dir, building_block_dir, hvac_afn_main_dir, hvac_afn_leakage_dir, 'AFN_CrawlUnheatedBsmtLeakageAdder.txt'), 'r') as f:
-                AFN_crawl_unheatedbsmt_leakage_adder_t = f.read()
+                AFN_crawl_unheatedbsmt_leakage_adder_t = f"{f.read()}".format(**locals())
             #...add crawlspace surfaces
             with open(os.path.join(set_dir, building_block_dir, hvac_afn_main_dir, hvac_afn_surface_dir, 'AFN_CrawlUnheatedBsmtSurfaceAdder.txt'), 'r') as f:
                 AFN_crawl_unheatedbsmt_surface_adder_t = f.read()
@@ -845,20 +879,10 @@ def genmodels(gui_params, get_data_dict):
                 AFN_unheatedbsmt_zone_t = f.read()
             #...add surface leakage for basement walls
             with open(os.path.join(set_dir, building_block_dir, hvac_afn_main_dir, hvac_afn_leakage_dir, 'AFN_CrawlUnheatedBsmtLeakageAdder.txt'), 'r') as f:
-                AFN_crawl_unheatedbsmt_leakage_adder_t = f.read()
+                AFN_crawl_unheatedbsmt_leakage_adder_t = f"{f.read()}".format(**locals())
             #...add AFN surfaces for basement walls
             with open(os.path.join(set_dir, building_block_dir, hvac_afn_main_dir, hvac_afn_surface_dir, 'AFN_CrawlUnheatedBsmtSurfaceAdder.txt'), 'r') as f:
                 AFN_crawl_unheatedbsmt_surface_adder_t = f.read()
-  
-        # Get duct inputs based on HVAC type; for "zonal" systems assume "perfect ducts"
-        # maintrunk_duct_length = duct_dict[hvac_dict[hvac_type][0]][0]
-        # maintrunk_duct_Ufactor = duct_dict[hvac_dict[hvac_type][0]][1]
-        # zonesupply_duct_length = duct_dict[hvac_dict[hvac_type][0]][2]
-        # zonesupply_duct_Ufactor = duct_dict[hvac_dict[hvac_type][0]][3]
-        # zonereturn_duct_length = duct_dict[hvac_dict[hvac_type][0]][4]
-        # zonereturn_duct_Ufactor = duct_dict[hvac_dict[hvac_type][0]][5]
-        # mainreturn_duct_length = duct_dict[hvac_dict[hvac_type][0]][6]
-        # mainreturn_duct_Ufactor = duct_dict[hvac_dict[hvac_type][0]][7]
 
         if hvac_dict[hvac_type][0] == "Central":
             maintrunk_duct_length = 2 # units are meters
