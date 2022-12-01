@@ -807,20 +807,22 @@ def genmodels(gui_params, get_data_dict):
         infiltrationInACH50 = infiltration
         total_envelope_height = dictionary[volume_fieldname] / dictionary[footprint_fieldname]
         
+        adjust = []
         adjust = estimateInfiltrationAdjustment(foundation_type, infiltrationInACH50, dictionary[footprint_fieldname], total_envelope_height)
+        living_adjust = adjust[0]
+        attic_adjust = adjust[1]
+        crawl_adjust = adjust[2]
         
-        ELA_wall_frontback = adjust * wall_area_front * 0.00010812648958345
-        ELA_wall_leftright = adjust * wall_area_left * 0.00010812648958345
-        ELA_ceiling = adjust * conditioned_footprint_area * 0.00010812648958345
-        ELA_floor = adjust * conditioned_footprint_area * 0.0000000905634180403216
+        ELA_wall_frontback = living_adjust * wall_area_front * 0.00010812648958345
+        ELA_wall_leftright = living_adjust * wall_area_left * 0.00010812648958345
+        ELA_ceiling = living_adjust * conditioned_footprint_area * 0.00010812648958345
+        ELA_floor = living_adjust * conditioned_footprint_area * 0.0000000905634180403216
         
-        attic_adjust = 1
         roof_hypotenuse = math.sqrt(roof_ht**2 + (building_depth/2)**2)
         attic_wall_area = 2*(0.5*building_depth*roof_ht) + 2*(roof_hypotenuse*building_width)
         ELA_attic = attic_adjust * attic_wall_area * 0.00010812648958345
 
-        crawl_adjust = 1
-        crawl_wall_area = 2*(foundationwall_ht_AG + foundationwall_ht_BG)*building_depth + 2*(foundationwall_ht_AG + foundationwall_ht_BG)*building_width
+        crawl_wall_area = 2*(abs(foundationwall_ht_AG) + abs(foundationwall_ht_BG))*building_depth + 2*(abs(foundationwall_ht_AG) + abs(foundationwall_ht_BG))*building_width
         ELA_crawl = crawl_adjust * crawl_wall_area * 0.00010812648958345
         
         
