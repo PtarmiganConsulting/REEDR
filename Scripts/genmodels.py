@@ -117,6 +117,10 @@ def genmodels(gui_params, get_data_dict):
     output_gran = gui_params["output_gran"]
     output_enduses = gui_params["output_enduses"]
 
+    ### --- Allows tstat to overrun setpoint by a certain amount and drift back down to setpoint before kicking on again. This value empirically results in 
+    ### average room temps that are +/- 1 degree F about the desired setpoint. ###
+    deadband = 0.79
+
     ### --- Update simulation status in command prompt. --- ###
     print("Starting model build...")
 
@@ -908,9 +912,11 @@ def genmodels(gui_params, get_data_dict):
         with open(os.path.join(set_dir, building_block_dir, hvac_afn_main_dir, 'AFN_Ducts.txt'), 'r') as f:
             AFN_ducts_t = f"{f.read()}".format(**locals())
         
+        
+
         #  Add a theromstat (T-stat)
         with open(os.path.join(set_dir, building_block_dir, hvac_tstat_dir, 'Thermostat.txt'), 'r') as f:
-            thermostat_t = f.read()
+            thermostat_t = f"{f.read()}".format(**locals())
         # Add zone sizing
         with open(os.path.join(set_dir, building_block_dir, hvac_zone_main_dir, 'ZoneSizing.txt'), 'r') as f:
             zone_sizing_t = f"{f.read()}".format(**locals())
