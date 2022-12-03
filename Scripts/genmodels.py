@@ -117,7 +117,9 @@ def genmodels(gui_params, get_data_dict):
     output_gran = gui_params["output_gran"]
     output_enduses = gui_params["output_enduses"]
 
-    deadband = "" #0.79
+    ### --- Allows tstat to overrun setpoint by a certain amount and drift back down to setpoint before kicking on again. This value empirically results in 
+    ### average room temps that are +/- 1 degree F about the desired setpoint. ###
+    deadband = 0.79
 
     ### --- Update simulation status in command prompt. --- ###
     print("Starting model build...")
