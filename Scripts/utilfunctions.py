@@ -42,7 +42,7 @@ def estimateInfiltrationAdjustment(foundation_type, ACH50, footprint, total_enve
             ln_of_attic_adjust = 1.58102134544365 + 0.05682517047341*math.log(footprint) + -0.17651399691023*math.log(total_envelope_height) + 0.0255147565251867*math.log(ACH50)
             attic_adjust = math.exp(ln_of_attic_adjust)
 
-            ln_of_crawl_adjust = -1.18929965485452 + 0.68651068206866*math.log(footprint) + -0.0703840392330436*math.log(total_envelope_height) + -0.00645057776680579*math.log(ACH50)
+            ln_of_crawl_adjust = -0.57831567002439 + 0.598333210175362*math.log(footprint) + -0.0339554160401319*math.log(total_envelope_height) + -0.00335138196797992*math.log(ACH50)
             crawl_adjust = math.exp(ln_of_crawl_adjust)
 
         elif ACH50 >3 and ACH50 <= 9:
@@ -52,7 +52,7 @@ def estimateInfiltrationAdjustment(foundation_type, ACH50, footprint, total_enve
             ln_of_attic_adjust = 1.18936943365758 + 0.0640358403055768*math.log(footprint) + -0.0999325792341555*math.log(total_envelope_height) + 0.131563521887011*math.log(ACH50)
             attic_adjust = math.exp(ln_of_attic_adjust)
 
-            ln_of_crawl_adjust = -1.41910538584929 + 0.723491734694965*math.log(footprint) + -0.0795766219597931*math.log(total_envelope_height) + -0.0263903031848593*math.log(ACH50)
+            ln_of_crawl_adjust = -0.683820631214255 + 0.61523330083822*math.log(footprint) + -0.0378108768305732*math.log(total_envelope_height) + -0.0130367930108907*math.log(ACH50)
             crawl_adjust = math.exp(ln_of_crawl_adjust)
 
         else: #if ACH50 >9
@@ -62,13 +62,13 @@ def estimateInfiltrationAdjustment(foundation_type, ACH50, footprint, total_enve
             ln_of_attic_adjust = 0.541665794835799 + 0.0748564756756913*math.log(footprint) + 0.00547899248162892*math.log(total_envelope_height) + 0.269358365472381*math.log(ACH50)
             attic_adjust = math.exp(ln_of_attic_adjust)
 
-            ln_of_crawl_adjust = -1.73881593009879 + 0.77214633914482*math.log(footprint) + -0.0844179798513457*math.log(total_envelope_height) + -0.0432235436955832*math.log(ACH50)
+            ln_of_crawl_adjust = -0.833135093128905 + 0.638219665153735*math.log(footprint) + -0.0405001563027068*math.log(total_envelope_height) + -0.0214967560735974*math.log(ACH50)
             crawl_adjust = math.exp(ln_of_crawl_adjust)
 
     elif foundation_type == "Unheated Basement":
 
         if ACH50 <= 3:
-            ln_of_living_adjust = -3.57769569818466 + 0.272836485392094*math.log(footprint) + 0.231498952713215*math.log(total_envelope_height) + 1.04385902311568*math.log(ACH50)
+            ln_of_living_adjust = -4.0049211230694 + 0.29334006830038*math.log(footprint) + 0.308470008957762*math.log(total_envelope_height) + 1.02449589465282*math.log(ACH50)
             living_adjust = math.exp(ln_of_living_adjust)
 
             ln_of_attic_adjust = 1.6054636121344 + 0.0539986426948462*math.log(footprint) + -0.177196676842448*math.log(total_envelope_height) + 0.025990856810172*math.log(ACH50)
@@ -100,7 +100,7 @@ def estimateInfiltrationAdjustment(foundation_type, ACH50, footprint, total_enve
     else: #foundation_type == "Heated Basement":
 
         if ACH50 <= 3:
-            ln_of_living_adjust = -7.36037172774158 + 0.808787066481509*math.log(footprint) + 0.016003682061174*math.log(total_envelope_height) + 1.40181025851803*math.log(ACH50)
+            ln_of_living_adjust = -7.50760925775228 + 0.827974951892082*math.log(footprint) + 0.00316063420335651*math.log(total_envelope_height) + 1.4002739382372*math.log(ACH50)
             living_adjust = math.exp(ln_of_living_adjust)
 
             ln_of_attic_adjust = 1.23129226756326 + 0.0954891411911133*math.log(footprint) + -0.167483919772096*math.log(total_envelope_height) + 0.0481161923744135*math.log(ACH50)
@@ -109,19 +109,19 @@ def estimateInfiltrationAdjustment(foundation_type, ACH50, footprint, total_enve
             crawl_adjust = 999
 
         elif ACH50 >3 and ACH50 <= 9:
-            ln_of_living_adjust = -5.39697508212085 + 0.482258269530736*math.log(footprint) + 0.0495421602077332*math.log(total_envelope_height) + 1.72811451704117*math.log(ACH50)
+            ln_of_living_adjust = -5.80562124716613 + 0.51823062303286*math.log(footprint) + 0.0672650682960535*math.log(total_envelope_height) + 1.754113322665*math.log(ACH50)
             living_adjust = math.exp(ln_of_living_adjust)
 
-            ln_of_attic_adjust = 0.911128972674308 + 0.117993612663188*math.log(footprint) + -0.169273154771191*math.log(total_envelope_height) + 0.139082070615369*math.log(ACH50)
+            ln_of_attic_adjust = 0.855140824123791 + 0.0920570038711215*math.log(footprint) + -0.0919666012731126*math.log(total_envelope_height) + 0.202647584023343*math.log(ACH50)
             attic_adjust = math.exp(ln_of_attic_adjust)
 
             crawl_adjust = 999
 
         else: #if ACH50 >9
-            ln_of_living_adjust = -5.25792830750376 + 0.486891658324829*math.log(footprint) + 0.0467516261900185*math.log(total_envelope_height) + 1.6682025751285*math.log(ACH50)
+            ln_of_living_adjust = -5.45020719790042 + 0.481827544334094*math.log(footprint) + 0.0933158986544682*math.log(total_envelope_height) + 1.70045883883582*math.log(ACH50)
             living_adjust = math.exp(ln_of_living_adjust)
 
-            ln_of_attic_adjust = 0.370950512927855 + 0.133904971804104*math.log(footprint) + -0.136208958078823*math.log(total_envelope_height) + 0.296826099697312*math.log(ACH50)
+            ln_of_attic_adjust = 0.389139840435075 + 0.096817467876815*math.log(footprint) + -0.0242709692178634*math.log(total_envelope_height) + 0.326247837260171*math.log(ACH50)
             attic_adjust = math.exp(ln_of_attic_adjust)
 
             crawl_adjust = 999
