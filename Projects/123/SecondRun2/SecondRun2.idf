@@ -15,7 +15,7 @@ SimulationControl,
 !-   ===========  ALL OBJECTS IN CLASS: BUILDING ===========
 
 Building,
-    SecondRun6,                	!- Name
+    SecondRun2,                	!- Name
     0,      	!- North Axis {deg}
     Suburbs,                 	!- Terrain
     0.5,                    	!- Loads Convergence Tolerance Value, Note: originally 0.04
@@ -37,12 +37,12 @@ Timestep,
 !-   ===========  ALL OBJECTS IN CLASS: RUNPERIOD ===========
 
 RunPeriod,
-    Test Run,                  !- Name
+    Sub-Annual,                  !- Name
     1,                       !- Begin Month
     1,                       !- Begin Day of Month
     ,                        !- Begin Year
     1,                      !- End Month
-    1,                      !- End Day of Month
+    2,                      !- End Day of Month
     ,                        !- End Year
     Sunday,                  !- Day of Week for Start Day
     Yes,                     !- Use Weather File Holidays and Special Days
@@ -55,11 +55,11 @@ RunPeriod,
 !-   ===========  ALL OBJECTS IN CLASS: PERFORMANCEPRECISIONTRADEOFFS ===========
 
 PerformancePrecisionTradeoffs,
-    Yes,                     !- Use Coil Direct Solutions
+    No,                     !- Use Coil Direct Solutions
     CarrollMRT,              !- Zone Radiant Exchange Algorithm
-    Mode07,                  !- Override Mode
-    1,                       !- MaxZoneTempDiff
-    0.05;                     !- MaxAllowedDelTemp
+    Normal,                  !- Override Mode
+    0.5,                       !- MaxZoneTempDiff
+    0.01;                     !- MaxAllowedDelTemp
 
 !-   ===========  ALL OBJECTS IN CLASS: SITE:LOCATION ===========
 
@@ -2444,9 +2444,9 @@ BuildingSurface:Detailed,
      autocalculate,  !- view factor to ground
      4,  !- number of vertices
      0.0,0.0,2.4383972816,  !- vertex 1 coordinates
-     8.0642164387,0.0,2.4383972816,  !- vertex 2 coordinates
-     8.0642164387,2.8800772996,3.8099303508,  !- vertex 3 coordinates
-     0.0,2.8800772996,3.8099303508;  !- vertex 4 coordinates
+     11.4045242576,0.0,2.4383972816,  !- vertex 2 coordinates
+     11.4045242576,4.0730443777,3.8099303508,  !- vertex 3 coordinates
+     0.0,4.0730443777,3.8099303508;  !- vertex 4 coordinates
 
 BuildingSurface:Detailed,  
      roof_back,  !- name
@@ -2459,10 +2459,10 @@ BuildingSurface:Detailed,
      WindExposed,  !- wind exposure
      autocalculate,  !- view factor to ground
      4,  !- number of vertices
-     8.0642164387,5.7601545991,2.4383972816,  !- vertex 1 coordinates
-     0.0,5.7601545991,2.4383972816,  !- vertex 2 coordinates
-     0.0,2.8800772996,3.8099303508,  !- vertex 3 coordinates
-     8.0642164387,2.8800772996,3.8099303508;  !- vertex 4 coordinates
+     11.4045242576,8.1460887554,2.4383972816,  !- vertex 1 coordinates
+     0.0,8.1460887554,2.4383972816,  !- vertex 2 coordinates
+     0.0,4.0730443777,3.8099303508,  !- vertex 3 coordinates
+     11.4045242576,4.0730443777,3.8099303508;  !- vertex 4 coordinates
 
 BuildingSurface:Detailed,  
      roof_right,  !- name
@@ -2475,9 +2475,9 @@ BuildingSurface:Detailed,
      WindExposed,  !- wind exposure
      autocalculate,  !- view factor to ground
      3,  !- number of vertices
-     8.0642164387,0.0,2.4383972816,  !- vertex 1 coordinates
-     8.0642164387,5.7601545991,2.4383972816,  !- vertex 2 coordinates
-     8.0642164387,2.8800772996,3.8099303508;  !- vertex 3 coordinates
+     11.4045242576,0.0,2.4383972816,  !- vertex 1 coordinates
+     11.4045242576,8.1460887554,2.4383972816,  !- vertex 2 coordinates
+     11.4045242576,4.0730443777,3.8099303508;  !- vertex 3 coordinates
 
 BuildingSurface:Detailed,  
      roof_left,  !- name
@@ -2490,9 +2490,9 @@ BuildingSurface:Detailed,
      WindExposed,  !- wind exposure
      autocalculate,  !- view factor to ground
      3,  !- number of vertices
-     0.0,5.7601545991,2.4383972816,  !- vertex 1 coordinates
+     0.0,8.1460887554,2.4383972816,  !- vertex 1 coordinates
      0.0,0.0,2.4383972816,  !- vertex 2 coordinates
-     0.0,2.8800772996,3.8099303508;  !- vertex 3 coordinates
+     0.0,4.0730443777,3.8099303508;  !- vertex 3 coordinates
 
 BuildingSurface:Detailed,  
      ceiling,  !- name
@@ -2506,9 +2506,9 @@ BuildingSurface:Detailed,
      autocalculate,  !- view factor to ground
      4,  !- number of vertices
      0.0,0.0,2.4383972816,  !- vertex 1 coordinates
-     8.0642164387,0.0,2.4383972816,  !- vertex 2 coordinates
-     8.0642164387,5.7601545991,2.4383972816,  !- vertex 3 coordinates
-     0.0,5.7601545991,2.4383972816;  !- vertex 4 coordinates
+     11.4045242576,0.0,2.4383972816,  !- vertex 2 coordinates
+     11.4045242576,8.1460887554,2.4383972816,  !- vertex 3 coordinates
+     0.0,8.1460887554,2.4383972816;  !- vertex 4 coordinates
 
 BuildingSurface:Detailed,  
      wall_floor1_front,  !- name
@@ -2522,8 +2522,8 @@ BuildingSurface:Detailed,
      autocalculate,  !- view factor to ground
      4,  !- number of vertices
      0.0,0.0,0.0,  !- vertex 1 coordinates
-     8.0642164387,0.0,0.0,  !- vertex 2 coordinates
-     8.0642164387,0.0,2.4383972816,  !- vertex 3 coordinates
+     11.4045242576,0.0,0.0,  !- vertex 2 coordinates
+     11.4045242576,0.0,2.4383972816,  !- vertex 3 coordinates
      0.0,0.0,2.4383972816;  !- vertex 4 coordinates
 
 BuildingSurface:Detailed,  
@@ -2537,10 +2537,10 @@ BuildingSurface:Detailed,
      WindExposed,  !- wind exposure
      autocalculate,  !- view factor to ground
      4,  !- number of vertices
-     8.0642164387,0.0,0.0,  !- vertex 1 coordinates
-     8.0642164387,5.7601545991,0.0,  !- vertex 2 coordinates
-     8.0642164387,5.7601545991,2.4383972816,  !- vertex 3 coordinates
-     8.0642164387,0.0,2.4383972816;  !- vertex 4 coordinates
+     11.4045242576,0.0,0.0,  !- vertex 1 coordinates
+     11.4045242576,8.1460887554,0.0,  !- vertex 2 coordinates
+     11.4045242576,8.1460887554,2.4383972816,  !- vertex 3 coordinates
+     11.4045242576,0.0,2.4383972816;  !- vertex 4 coordinates
 
 BuildingSurface:Detailed,  
      wall_floor1_back,  !- name
@@ -2553,10 +2553,10 @@ BuildingSurface:Detailed,
      WindExposed,  !- wind exposure
      autocalculate,  !- view factor to ground
      4,  !- number of vertices
-     8.0642164387,5.7601545991,0.0,  !- vertex 1 coordinates
-     0.0,5.7601545991,0.0,  !- vertex 2 coordinates
-     0.0,5.7601545991,2.4383972816,  !- vertex 3 coordinates
-     8.0642164387,5.7601545991,2.4383972816;  !- vertex 4 coordinates
+     11.4045242576,8.1460887554,0.0,  !- vertex 1 coordinates
+     0.0,8.1460887554,0.0,  !- vertex 2 coordinates
+     0.0,8.1460887554,2.4383972816,  !- vertex 3 coordinates
+     11.4045242576,8.1460887554,2.4383972816;  !- vertex 4 coordinates
 
 BuildingSurface:Detailed,  
      wall_floor1_left,  !- name
@@ -2569,10 +2569,10 @@ BuildingSurface:Detailed,
      WindExposed,  !- wind exposure
      autocalculate,  !- view factor to ground
      4,  !- number of vertices
-     0.0,5.7601545991,0.0,  !- vertex 1 coordinates
+     0.0,8.1460887554,0.0,  !- vertex 1 coordinates
      0.0,0.0,0.0,  !- vertex 2 coordinates
      0.0,0.0,2.4383972816,  !- vertex 3 coordinates
-     0.0,5.7601545991,2.4383972816;  !- vertex 4 coordinates
+     0.0,8.1460887554,2.4383972816;  !- vertex 4 coordinates
 
 
 
@@ -2582,9 +2582,9 @@ Window,
      wall_floor1_front,  !- Building Surface Name
      0,  !- Frame and divider Name
      1,  !- Multiplier
-     2.0160541097,  !- Starting X coordinate
+     2.8511310644,  !- Starting X coordinate
      0.6095993204,  !- Starting Z coordinate
-     4.0321082194,  !- Length
+     5.7022621288,  !- Length
      1.2191986408;  !- Height
 
 Window,  
@@ -2593,9 +2593,9 @@ Window,
      wall_floor1_back,  !- Building Surface Name
      0,  !- Frame and divider Name
      1,  !- Multiplier
-     2.0160541097,  !- Starting X coordinate
+     2.8511310644,  !- Starting X coordinate
      0.6095993204,  !- Starting Z coordinate
-     4.0321082194,  !- Length
+     5.7022621288,  !- Length
      1.2191986408;  !- Height
 
 Window,  
@@ -2604,9 +2604,9 @@ Window,
      wall_floor1_right,  !- Building Surface Name
      0,  !- Frame and divider Name
      1,  !- Multiplier
-     1.4400386498,  !- Starting X coordinate
+     2.0365221888,  !- Starting X coordinate
      0.6095993204,  !- Starting Z coordinate
-     2.8800772995,  !- Length
+     4.0730443777,  !- Length
      1.2191986408;  !- Height
 
 Window,  
@@ -2615,9 +2615,9 @@ Window,
      wall_floor1_left,  !- Building Surface Name
      0,  !- Frame and divider Name
      1,  !- Multiplier
-     1.4400386498,  !- Starting X coordinate
+     2.0365221888,  !- Starting X coordinate
      0.6095993204,  !- Starting Z coordinate
-     2.8800772995,  !- Length
+     4.0730443777,  !- Length
      1.2191986408;  !- Height
 
 !-   ===========  ALL OBJECTS IN CLASS: ZONE ===========
@@ -2652,9 +2652,9 @@ BuildingSurface:Detailed,
      autocalculate,  !- view factor to ground
      4,  !- number of vertices
      0.0,0.0,0.0,  !- vertex 1 coordinates
-     0.0,5.7601545991,0.0,  !- vertex 2 coordinates
-     8.0642164387,5.7601545991,0.0,  !- vertex 3 coordinates
-     8.0642164387,0.0,0.0;  !- vertex 4 coordinates
+     0.0,8.1460887554,0.0,  !- vertex 2 coordinates
+     11.4045242576,8.1460887554,0.0,  !- vertex 3 coordinates
+     11.4045242576,0.0,0.0;  !- vertex 4 coordinates
 
 !-   ===========  ALL OBJECTS IN CLASS: AIRFLOWNETWORK:SIMULATIONCONTROL ===========
 
@@ -2702,28 +2702,28 @@ AirflowNetwork:MultiZone:Zone,
 
 AirflowNetwork:MultiZone:Surface:EffectiveLeakageArea,
     ZoneLeak_FrontBackWall,     !- Name
-    0.00029402612768319076,       !- Effective Leakage Area {m2} 0.00340012477060435
+    0.0002493787836301326,       !- Effective Leakage Area {m2} 0.00340012477060435
     1.0,                       !- Discharge Coefficient {dimensionless}
     4,                          !- Reference Pressure Difference {Pa}
     0.65;                       !- Air Mass Flow Exponent {dimensionless}
 
 AirflowNetwork:MultiZone:Surface:EffectiveLeakageArea,
     ZoneLeak_LeftRightWall,     !- Name
-    0.00021001866263085052,       !- Effective Leakage Area {m2} 0.00255009357795326
+    0.0001781277025917989,       !- Effective Leakage Area {m2} 0.00255009357795326
     1.0,                       !- Discharge Coefficient {dimensionless}
     4,                          !- Reference Pressure Difference {Pa}
     0.65;                       !- Air Mass Flow Exponent {dimensionless}
 
 AirflowNetwork:MultiZone:Surface:EffectiveLeakageArea,
     ZoneLeak_Ceiling,           !- Name
-    0.0006945693240446326,              !- Effective Leakage Area {m2}
+    0.0008331135047136182,              !- Effective Leakage Area {m2}
     1.0,                       !- Discharge Coefficient {dimensionless}
     4,                          !- Reference Pressure Difference {Pa}
     0.65;                       !- Air Mass Flow Exponent {dimensionless}
 
 AirflowNetwork:MultiZone:Surface:EffectiveLeakageArea,
     AtticVent,                  !- Name
-    0.02779206759042136,    		            !- Effective Leakage Area {m2}	# modulated to yield 4.6 ach across the board...
+    0.05379402275326815,    		            !- Effective Leakage Area {m2}	# modulated to yield 4.6 ach across the board...
     1.0,                       !- Discharge Coefficient {dimensionless}
     4,                          !- Reference Pressure Difference {Pa}
     0.65;                       !- Air Mass Flow Exponent {dimensionless}
@@ -4647,6 +4647,31 @@ Output:Diagnostics,DisplayExtraWarnings;
 
 Output:Variable,
     *,                       !- Key Value
+    Electric Equipment Electricity Rate ,  !- Variable Name
+    Hourly;                  !- Reporting Frequency
+
+Output:Variable,
+    *,                       !- Key Value
+    Lights Electricity Rate ,!- Variable Name
+    Hourly;                  !- Reporting Frequency
+
+Output:Variable,
+    *,                       !- Key Value
+    Gas Equipment NaturalGas Rate ,  !- Variable Name
+    Hourly;                  !- Reporting Frequency
+
+Output:Variable,
+    *,                       !- Key Value
+    Fan Electricity Rate ,   !- Variable Name
+    Hourly;                  !- Reporting Frequency
+
+Output:Variable,
+    *,                       !- Key Value
+    Cooling Coil Electricity Rate ,  !- Variable Name
+    Hourly;                  !- Reporting Frequency
+
+Output:Variable,
+    *,                       !- Key Value
     Heating Coil Electricity Rate ,  !- Variable Name
     Hourly;                  !- Reporting Frequency
 
@@ -4667,7 +4692,12 @@ Output:Variable,
 
 Output:Variable,
     *,                       !- Key Value
-    Fan Electricity Rate ,   !- Variable Name
+    Water Heater Electricity Rate ,  !- Variable Name
+    Hourly;                  !- Reporting Frequency
+
+Output:Variable,
+    *,                       !- Key Value
+    Water Heater NaturalGas Rate ,  !- Variable Name
     Hourly;                  !- Reporting Frequency
 
 Output:Variable,
@@ -4678,6 +4708,11 @@ Output:Variable,
 Output:Variable,
     *,                       !- Key Value
     Site Outdoor Air Drybulb Temperature ,  !- Variable Name
+    Hourly;                  !- Reporting Frequency
+
+Output:Variable,
+    *,                       !- Key Value
+    Site Mains Water Temperature ,  !- Variable Name
     Hourly;                  !- Reporting Frequency
 
 !-   ===========  ALL OBJECTS IN CLASS: OUTPUTCONTROL:FILES ===========

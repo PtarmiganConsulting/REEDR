@@ -4,10 +4,10 @@ import os # used to remove files
 from pprint import pprint # used to print dataframes to command prompt in more legible way for debugging
 import datetime
 import pytz
-from Scripts.xlsxadjust import adapt_spreadsheet
 
 ## Import "internal" modules needed for REEDR...
 from Scripts.unitconversions import convert_J_to_kWh, convert_J_to_therm, convert_W_to_Btuh, convert_degC_to_degF
+from Scripts.xlsxadjust import adapt_spreadsheet
 
 ## Main fuction used to generate custom output reports for REEDR.
 ## This function takes:
@@ -165,12 +165,19 @@ def genoutputs(gui_params, get_data_dict):
     #... write to RunLog...
     # get_data_dict["runlog"].write("Producing report for " + report_name + "... \n")
 
+
     ## This is the main function ("sub-routine") that generates the actual custom report.
     ## It takes as arguments the working directory (set_dir), the proper output dictionary (output_dict),
     ## the proper report name (report_name), and the requested output granularity (output_gran).
     ## From there, it takes the proper outputs from the individual EnergyPlus-generated output files
     ## and creates a new, custom report in Excel that combines all runs.
     produce_output_report(set_dir, output_dict, report_name, gui_params["output_gran"], output_type, get_data_dict, gui_params["output_enduses"])
+
+    if gui_params["sim_type"] != "Annual":
+        project_path = f'{set_dir}/Projects/{gui_params["project_val"]}'
+        adapt_spreadsheet(project_path)
+
+
 
     # Update simulation status box in REEDR.xlsm...
     #sht1.range('status_line_3').value = "Generating model output... Model output complete."
@@ -180,10 +187,6 @@ def genoutputs(gui_params, get_data_dict):
 
     print("...model output complete.")
     print()
-
-    if gui_params["sim_type"] != "Annual":
-        project_path = f'{set_dir}/Projects/{gui_params["project_val"]}'
-        adapt_spreadsheet(project_path)
 
     return False
 
@@ -260,7 +263,7 @@ def produce_output_report(set_dir, output_dict, end_use_report_name, output_gran
             # Skip the last rows corresponding to the HVAC design days
             endrows_to_skip = 24*2*output_timesteps_per_hr
             # Read in each individual EnergyPlus-generated output file, and skip the last design day rows
-            eplus_out_df = pd.read_csv (eplus_out_path, engine='python', skipfooter=endrows_to_skip)
+            eplus_out_df = pd.read_csv(eplus_out_path, engine='python', skipfooter=endrows_to_skip)
             # Strip leading or trailing whitespace from column names...
             eplus_out_df.columns = eplus_out_df.columns.str.strip()
             # Insert the Run_label into the first column of the file

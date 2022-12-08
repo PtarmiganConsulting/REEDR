@@ -37,12 +37,12 @@ Timestep,
 !-   ===========  ALL OBJECTS IN CLASS: RUNPERIOD ===========
 
 RunPeriod,
-    Sub-Annual,                  !- Name
+    Test Run,                  !- Name
     1,                       !- Begin Month
     1,                       !- Begin Day of Month
     ,                        !- Begin Year
     1,                      !- End Month
-    2,                      !- End Day of Month
+    1,                      !- End Day of Month
     ,                        !- End Year
     Sunday,                  !- Day of Week for Start Day
     Yes,                     !- Use Weather File Holidays and Special Days
@@ -55,11 +55,11 @@ RunPeriod,
 !-   ===========  ALL OBJECTS IN CLASS: PERFORMANCEPRECISIONTRADEOFFS ===========
 
 PerformancePrecisionTradeoffs,
-    No,                     !- Use Coil Direct Solutions
+    Yes,                     !- Use Coil Direct Solutions
     CarrollMRT,              !- Zone Radiant Exchange Algorithm
-    Normal,                  !- Override Mode
-    0.5,                       !- MaxZoneTempDiff
-    0.01;                     !- MaxAllowedDelTemp
+    Mode07,                  !- Override Mode
+    1,                       !- MaxZoneTempDiff
+    0.05;                     !- MaxAllowedDelTemp
 
 !-   ===========  ALL OBJECTS IN CLASS: SITE:LOCATION ===========
 
@@ -4647,31 +4647,6 @@ Output:Diagnostics,DisplayExtraWarnings;
 
 Output:Variable,
     *,                       !- Key Value
-    Electric Equipment Electricity Rate ,  !- Variable Name
-    Hourly;                  !- Reporting Frequency
-
-Output:Variable,
-    *,                       !- Key Value
-    Lights Electricity Rate ,!- Variable Name
-    Hourly;                  !- Reporting Frequency
-
-Output:Variable,
-    *,                       !- Key Value
-    Gas Equipment NaturalGas Rate ,  !- Variable Name
-    Hourly;                  !- Reporting Frequency
-
-Output:Variable,
-    *,                       !- Key Value
-    Fan Electricity Rate ,   !- Variable Name
-    Hourly;                  !- Reporting Frequency
-
-Output:Variable,
-    *,                       !- Key Value
-    Cooling Coil Electricity Rate ,  !- Variable Name
-    Hourly;                  !- Reporting Frequency
-
-Output:Variable,
-    *,                       !- Key Value
     Heating Coil Electricity Rate ,  !- Variable Name
     Hourly;                  !- Reporting Frequency
 
@@ -4692,12 +4667,7 @@ Output:Variable,
 
 Output:Variable,
     *,                       !- Key Value
-    Water Heater Electricity Rate ,  !- Variable Name
-    Hourly;                  !- Reporting Frequency
-
-Output:Variable,
-    *,                       !- Key Value
-    Water Heater NaturalGas Rate ,  !- Variable Name
+    Fan Electricity Rate ,   !- Variable Name
     Hourly;                  !- Reporting Frequency
 
 Output:Variable,
@@ -4708,11 +4678,6 @@ Output:Variable,
 Output:Variable,
     *,                       !- Key Value
     Site Outdoor Air Drybulb Temperature ,  !- Variable Name
-    Hourly;                  !- Reporting Frequency
-
-Output:Variable,
-    *,                       !- Key Value
-    Site Mains Water Temperature ,  !- Variable Name
     Hourly;                  !- Reporting Frequency
 
 !-   ===========  ALL OBJECTS IN CLASS: OUTPUTCONTROL:FILES ===========

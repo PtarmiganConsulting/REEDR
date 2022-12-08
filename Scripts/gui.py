@@ -28,7 +28,7 @@ def gui(func):
     sim_select = ["Annual", "Sub-Annual: enter start and end dates at right -->", "Test Run"]
     gran_select = dropdown_dict["annual_sim_granularity"]
     end_select = dropdown_dict["annual_gran_enduses"]
-    default_string = "C:\EnergyPlusV9-5-0\energyplus.exe!@##@!New Project!@##@!Annual!@##@!Annual!@##@!All_End_Uses!@##@!True!@##@!BLANKSTR!@##@!BLANKSTR!@##@!BLANKSTR!@##@!BLANKSTR"
+    default_string = "C:\EnergyPlusV9-5-0\energyplus.exe!@##@!123!@##@!Test Run!@##@!Test Run!@##@!Test Run!@##@!True!@##@!BLANKSTR!@##@!BLANKSTR!@##@!BLANKSTR!@##@!BLANKSTR!@##@!True"
     ## even if the default string is not in use, it's handy for resetting defaults for version control.
 
     # Acquire User Settings Path
@@ -50,6 +50,9 @@ def gui(func):
     except:
 
         print("\nusersettings.txt not found.  Loading default parameters...\n")
+
+        with open(path_path, 'w') as data_storage:
+                data_storage.write(default_string)
         
         import_list = [
             "C:\EnergyPlusV9-5-0\energyplus.exe",
@@ -126,9 +129,9 @@ def gui(func):
 
             # print(gui_params)
 
-            new_path = path_input.get()
-            with open(path_path, 'w') as path_file:
-                path_file.write(new_path)
+            # new_path = path_input.get()
+            # with open(path_path, 'w') as path_file:
+            #     path_file.write(new_path)
 
 
             if multi_val.get() == True:
@@ -198,6 +201,7 @@ def gui(func):
             # ed.config(state="disabled")
             # root.quit()
 
+            # print(gui_params)
             func(gui_params)
             # root.quit() # enable this to make program auto-term after one run
         
