@@ -4,6 +4,7 @@ import os # used to remove files
 from pprint import pprint # used to print dataframes to command prompt in more legible way for debugging
 import datetime
 import pytz
+from Scripts.xlsxadjust import adapt_spreadsheet
 
 ## Import "internal" modules needed for REEDR...
 from Scripts.unitconversions import convert_J_to_kWh, convert_J_to_therm, convert_W_to_Btuh, convert_degC_to_degF
@@ -179,6 +180,10 @@ def genoutputs(gui_params, get_data_dict):
 
     print("...model output complete.")
     print()
+
+    if gui_params["sim_type"] != "Annual":
+        project_path = f'{set_dir}/Projects/{gui_params["project_val"]}'
+        adapt_spreadsheet(project_path)
 
     return False
 
