@@ -173,7 +173,7 @@ def genoutputs(gui_params, get_data_dict):
     ## and creates a new, custom report in Excel that combines all runs.
     produce_output_report(set_dir, output_dict, report_name, gui_params["output_gran"], output_type, get_data_dict, gui_params["output_enduses"])
 
-    if gui_params["sim_type"] != "Annual":
+    if gui_params["output_gran"] != "Annual":
         project_path = f'{set_dir}/Projects/{gui_params["project_val"]}'
         adapt_spreadsheet(project_path)
 

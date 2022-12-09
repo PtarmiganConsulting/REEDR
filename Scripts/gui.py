@@ -28,7 +28,7 @@ def gui(func):
     sim_select = ["Annual", "Sub-Annual: enter start and end dates at right -->", "Test Run"]
     gran_select = dropdown_dict["annual_sim_granularity"]
     end_select = dropdown_dict["annual_gran_enduses"]
-    default_string = "C:\EnergyPlusV9-5-0\energyplus.exe!@##@!123!@##@!Test Run!@##@!Test Run!@##@!Test Run!@##@!True!@##@!BLANKSTR!@##@!BLANKSTR!@##@!BLANKSTR!@##@!BLANKSTR!@##@!True"
+    default_string = "C:\EnergyPlusV9-5-0\energyplus.exe!@##@!New Project!@##@!Annual!@##@!Annual!@##@!All_End_Uses!@##@!True!@##@!BLANKSTR!@##@!BLANKSTR!@##@!BLANKSTR!@##@!BLANKSTR!@##@!True"
     ## even if the default string is not in use, it's handy for resetting defaults for version control.
 
     # Acquire User Settings Path
@@ -40,8 +40,7 @@ def gui(func):
     else:
         path_path = os.path.join(gui_cwd, r"REEDR\Scripts\usersettings.txt")
 
-    # Acquire User Settings
-    
+    # Acquire User Settings, creates new usersettings.txt if one is not found.
     try:
         with open(path_path, 'r') as pathread:
             settings_import = pathread.read()
@@ -127,13 +126,7 @@ def gui(func):
             "multithread":multi_val.get(),
             }
 
-            # print(gui_params)
-
-            # new_path = path_input.get()
-            # with open(path_path, 'w') as path_file:
-            #     path_file.write(new_path)
-
-
+            # Data-massaging some booleans.
             if multi_val.get() == True:
                 multi_str = "True"
             else:
@@ -144,6 +137,7 @@ def gui(func):
             else:
                 over_str = "False"
 
+            # Harvests user settings to be converted into a list, later used to make the string that saves user settings.
             input_list = [
                 path_input.get(),
                 project_input.get(),
@@ -159,8 +153,7 @@ def gui(func):
 
             ]
 
-            # print(input_list)
-
+            # Creates the string stored by usersettings.txt to save user settings
             data_string = ""
             for i in range(len(input_list)):
                 if input_list[i]:
@@ -171,39 +164,20 @@ def gui(func):
                 if i != (len(input_list) - 1):
                     data_string += "!@##@!"
 
-            # print(data_string)
-
+            # Saves user settings in usersettings.txt 
             with open(path_path, 'w') as data_storage:
                 data_storage.write(data_string)
 
-            #
-            # if test run, assume hardcoded input values; genmodels will later assume single day for simulation
+            # If test run, assume hardcoded input values; genmodels will later assume single day for simulation
             if gui_params["sim_type"] == "Test Run":
                 gui_params["output_gran"] = "Hourly"
                 gui_params["output_enduses"] = "Heating"
-
-
             
-            # Version 1
+            # Terminate the GUI during program run cycle
             root.quit()
             root.destroy()
-
-            # Version 2
-
-            # path_entry.config(state="disabled")
-            # project_entry.config(state="disabled")
-            # simperiod_entry.config(state="disabled")
-            # outgran_entry.config(state="disabled")
-            # outenduses_entry.config(state="disabled")
-            # bm.config(state="disabled")
-            # em.config(state="disabled")
-            # bd.config(state="disabled")
-            # ed.config(state="disabled")
-            # root.quit()
-
-            # print(gui_params)
             func(gui_params)
-            # root.quit() # enable this to make program auto-term after one run
+
         
     def update(*args):
         """
@@ -384,6 +358,13 @@ def gui(func):
     ttk.Button(frm, text="RUN", style='Run.TButton', width=15, command=threading.Thread(target=exe_main).start).grid(column=2, row=11, columnspan=3, padx=0, pady=15, sticky=E) # threaded v
     ttk.Button(frm, text="RUN", style='Run.TButton', width=15, command=exe_main).grid(column=2, row=11, columnspan=3, padx=0, pady=15, sticky=E)
  
+    # Activate Tracing
+    path_input.trace_add("write", update)
+    project_input.trace_add("write", update)
+    sim_input.trace_add("write", update)
+    outgran_input.trace_add("write", update)
+    outenduses_input.trace_add("write", update)
+    
     # Set Imported User Settings
     for i in range(len(import_list)):
         if import_list[i] == "True":
@@ -431,12 +412,5 @@ def gui(func):
             else:
                 over_val.set(False)
 
-    # Activate Tracing
-    path_input.trace_add("write", update)
-    project_input.trace_add("write", update)
-    sim_input.trace_add("write", update)
-    outgran_input.trace_add("write", update)
-    outenduses_input.trace_add("write", update)
-
-    # Activate the Main Loop
+    # Activate the main GUI loop
     root.mainloop()
