@@ -56,24 +56,24 @@ def genmodels(gui_params, get_data_dict):
 
     ### --- Define user input data field names --- ###
     runLabel_fieldname = "Run Label"
-    timestep_fieldname = "Timesteps Per Hr"
+    timestep_fieldname = "Timesteps Per Hour"
     weather_fieldname = "Weather File"
-    orient_fieldname = "Bldg Orient [deg]"
+    orient_fieldname = "Building Orientation [deg]"
     footprint_fieldname = "Conditioned Footprint Area [ft^2]"
     volume_fieldname = "Total Conditioned Volume Above Foundation Walls [ft^3]"
-    bldgRatio_fieldname = "Ratio Width to Depth"
+    bldgRatio_fieldname = "Building Width to Depth Ratio"
     wallCon_fieldname = "Exterior Non-Foundation Wall Construction"
     ceilingCon_fieldname = "Ceiling And Roof Construction"
     floorCon_fieldname = "Foundation And Floor Construction"
-    foundWallHtAg_fieldname = "Foundation Wall Height Above Ground [ft]"
-    foundWallHtBg_fieldname = "Foundation Wall Height Below Ground [ft]"
+    #foundWallHtAg_fieldname = "Foundation Wall Height Above Ground [ft]"
+    #foundWallHtBg_fieldname = "Foundation Wall Height Below Ground [ft]"
     windowuUvalue_fieldname = "Window U-Value [Btu/h-ft^2-F]"
-    windowSHGC_fieldname = "Window SHGC"
+    windowSHGC_fieldname = "Window Solar Heat Gain Coefficient"
     windowShade_fieldname = "Window Shades"
-    wtwFront_fieldname = "WtW Ratio Front [%]"
-    wtwBack_fieldname = "WtW Ratio Back [%]"
-    wtwLeft_fieldname = "WtW Ratio Left [%]"
-    wtwRight_fieldname = "WtW Ratio Right [%]"
+    wtwFront_fieldname = "Window-to-Wall Ratio, Front [%]"
+    wtwBack_fieldname = "Window-to-Wall Ratio, Back [%]"
+    wtwLeft_fieldname = "Window-to-Wall Ratio, Left [%]"
+    wtwRight_fieldname = "Window-to-Wall Ratio, Right [%]"
     infiltration_fieldname = "Conditioned Envelope Infiltration [ACH50]"
     primaryHVAC_fieldname = "Primary HVAC Type"
     primaryHtgCapacityUnits_fieldname = "Primary Heating Capacity Units"
@@ -91,22 +91,22 @@ def genmodels(gui_params, get_data_dict):
     supplyRvalue_fieldname = "Supply Duct Insulation Nominal R-Value [h-ft^2-F/Btu]"
     returnLeakage_fieldname = "Return Duct Leakage [%]"
     returnRvalue_fieldname = "Return Duct Insulation Nominal R-Value [h-ft^2-F/Btu]"
-    htgSched_fieldname = "Htg StPt Sch"
-    clgSched_fieldname = "Clg StPt Sch"
+    htgSched_fieldname = "Heating Setpoint Schedule"
+    clgSched_fieldname = "Cooling Setpoint Schedule"
     dhwType_fieldname = "Water Heater Type"
-    dhwSched_fieldname = "DHW StPt Sch"
+    dhwSched_fieldname = "Water Heater Setpoint Schedule"
     numOfPeople_fieldname = "Number Of People"
-    intLPD_fieldname = "Interior LPD [W/ft^2]"
-    extLP_fieldname = "Exterior LP [W]"
+    intLPD_fieldname = "Interior Lighting Power Density [W/ft^2]"
+    extLP_fieldname = "Exterior Lighting Power [W]"
     range_fieldname = "Range"
     dryer_fieldname = "Dryer"
     frig_fieldname = "Refrigerator"
-    cw_fieldname = "ClothesWasher"
+    cw_fieldname = "Clothes Washer"
     dw_fieldname = "Dishwasher"
     miscElec_fieldname = "Misc Electric Gains [Max W]"
-    miscElecShed_fieldname = "Misc Electric Gains Sch"
+    miscElecShed_fieldname = "Misc Electric Gains Schedule"
     miscGas_fieldname = "Misc Gas Gains [Max Btu/h]"
-    miscGasShed_fieldname = "Misc Gas Gains Sch"
+    miscGasShed_fieldname = "Misc Gas Gains Schedule"
 
     ### --- Get input variables from tkinter user interface. --- ###
     begin_mo = get_data_dict["begin_mo"]
@@ -134,11 +134,8 @@ def genmodels(gui_params, get_data_dict):
         except:
             print("\n*** ERROR: Could not remove Schedule File. Please ensure that 8760 Schedule File is not open when running REEDR.\n")
             return True
-            # get_data_dict["runlog"].write("!!! Schedules.csv could not be made at " + os.path.join(set_dir, building_block_dir, schedule_dir, schedule_file) + ". \n")
-            # get_data_dict["runlog"].write("!!! REEDR experienced the following error: " + str(e) + ". \n")
     else:
         read_file.to_csv ((os.path.join(set_dir, building_block_dir, schedule_dir, schedule_file)), index = None, header=True)
-        # get_data_dict["runlog"].write(schedule_file + " successfully created at " + os.path.join(set_dir, building_block_dir, schedule_dir, schedule_file) + ". \n" + "... \n")
     
     sched_list = (list(read_file.columns))
 
@@ -163,15 +160,9 @@ def genmodels(gui_params, get_data_dict):
             return True
         try:
             os.mkdir(path)
-            # get_data_dict["runlog"].write("... subdirectory successfully created at " + path + ". \n")
-        except Exception as e:
-            # get_data_dict["runlog"].write("!!! subdirectory could not be created at " + path + ". \n")
-            # get_data_dict["runlog"].write("!!! REEDR experienced the following error: " + str(e) + ". \n")
-            # get_data_dict["runlog"].close()
+        except:
             print("\n*** ERROR: Subdirectory could not be created for the run: " + name + ". ***\nPlease ensure that ALL Run Labels are unique.\n")
             return True
-
-    # get_data_dict["runlog"].write("... \n")
 
     ### --- Set output end uses and granularity based on user input. --- ###
     if gui_params["output_gran"] == "Annual":
@@ -192,7 +183,6 @@ def genmodels(gui_params, get_data_dict):
     ### --- IDF WRITER LOOP BEGINS HERE. --- ###
     # The loop covers every dictionary (effectively a runlabel row) in the big dictionary list.
     # Each time the loop comes to a new dictionary/runlabel row, it updates the changable variables before doing anything else.
-    # get_data_dict["runlog"].write("Starting to build EnergyPlus .idf model files... \n")
 
     i = 1
     for dictionary in get_data_dict["master_dict_list"]:
@@ -257,11 +247,18 @@ def genmodels(gui_params, get_data_dict):
 
             #... Foundation wall height above and below ground
             if foundation_type == "Slab":
-                foundationwall_ht_AG = float(validate(foundWallHtAg_fieldname, round(convert_ft_to_m(dictionary[foundWallHtAg_fieldname]),10), "any_num", 999, 999, dummy_list))
-                foundationwall_ht_BG = float(validate(foundWallHtBg_fieldname, -1 * round(convert_ft_to_m(dictionary[foundWallHtBg_fieldname]),10), "any_num", 999, 999, dummy_list))
+                #foundationwall_ht_AG = float(validate(foundWallHtAg_fieldname, round(convert_ft_to_m(dictionary[foundWallHtAg_fieldname]),10), "any_num", 999, 999, dummy_list))
+                #foundationwall_ht_BG = float(validate(foundWallHtBg_fieldname, -1 * round(convert_ft_to_m(dictionary[foundWallHtBg_fieldname]),10), "any_num", 999, 999, dummy_list))
+                foundationwall_ht_AG = round(convert_ft_to_m(0),10)
+                foundationwall_ht_BG = -1 * round(convert_ft_to_m(0),10)
+            elif foundation_type == "Vented Crawlspace":
+                foundationwall_ht_AG = round(convert_ft_to_m(1),10)
+                foundationwall_ht_BG = -1 * round(convert_ft_to_m(2),10)
             else:
-                foundationwall_ht_AG = float(validate(foundWallHtAg_fieldname, round(convert_ft_to_m(dictionary[foundWallHtAg_fieldname]),10), "num_not_zero", 999, 999, dummy_list))
-                foundationwall_ht_BG = float(validate(foundWallHtBg_fieldname, -1 * round(convert_ft_to_m(dictionary[foundWallHtBg_fieldname]),10), "num_not_zero", 999, 999, dummy_list))
+                #foundationwall_ht_AG = float(validate(foundWallHtAg_fieldname, round(convert_ft_to_m(dictionary[foundWallHtAg_fieldname]),10), "num_not_zero", 999, 999, dummy_list))
+                #foundationwall_ht_BG = float(validate(foundWallHtBg_fieldname, -1 * round(convert_ft_to_m(dictionary[foundWallHtBg_fieldname]),10), "num_not_zero", 999, 999, dummy_list))
+                foundationwall_ht_AG = round(convert_ft_to_m(1),10)
+                foundationwall_ht_BG = -1 * round(convert_ft_to_m(7),10)
 
             #... window U-value
             u_lo = 0.1
@@ -354,6 +351,7 @@ def genmodels(gui_params, get_data_dict):
                 else:
                     returnUvalue = convert_IP_Uvalue_to_SI_Uvalue(1/returnRvalue)
             else:
+                #assume essentially no duct leakage, i.e. "perfect ducts", although EPlus does not allow zero.
                 supply_leak = 0.0001
                 return_leak = 0.0001
                 supplyUvalue = 0.0001
@@ -908,12 +906,9 @@ def genmodels(gui_params, get_data_dict):
             print("\n*** ERROR: Problem assigning duct system parameters. Please ensure you have selected a valid HVAC system type. \n")
             return True
 
-        # Add AFN ducts to all models
+        # Add AFN ducts to all models (note: zonal/ductless systems assume "perfect" ducts)
         with open(os.path.join(set_dir, building_block_dir, hvac_afn_main_dir, 'AFN_Ducts.txt'), 'r') as f:
             AFN_ducts_t = f"{f.read()}".format(**locals())
-        
-        
-
         #  Add a theromstat (T-stat)
         with open(os.path.join(set_dir, building_block_dir, hvac_tstat_dir, 'Thermostat.txt'), 'r') as f:
             thermostat_t = f"{f.read()}".format(**locals())
@@ -995,12 +990,9 @@ def genmodels(gui_params, get_data_dict):
                 newfile.write(fullidf)
 
         i = i + 1
-        # get_data_dict["runlog"].write("... successfully built EnergyPlus model at " +  path + " \n")
 
     print("...model build complete.")
     print()
-
-    # get_data_dict["runlog"].write("... \n")
 
     return False
     ##########################################################################################################################

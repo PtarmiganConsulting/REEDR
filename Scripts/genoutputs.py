@@ -218,7 +218,7 @@ def produce_output_report(set_dir, output_dict, end_use_report_name, output_gran
     ## Main loop that fills output dataframe.
     for row in get_data_dict["master_dict_list"]: # go through every runlabel row...
         run_label = row["Run Label"]
-        timestep = row["Timesteps Per Hr"]
+        timestep = row["Timesteps Per Hour"]
 
         # Update simulation status box in REEDR.xlsm...
         status = "...generating output for run " + str(i) + " of " + str(len(df_for_run_labels)) + "..."
