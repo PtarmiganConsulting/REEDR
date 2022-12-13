@@ -2,7 +2,7 @@ import os
 
 # This is a separate file that makes dictionaries for genmodels.
 
-def make_foundation_and_floor_dict():
+def make_foundation_and_floor_dict2():
     foundation_and_floor_dict = {
         "Vented Crawlspace - R0 Cavity Insulation": [
             "Exterior Floor", # main_floor_construction
@@ -361,6 +361,368 @@ def make_foundation_and_floor_dict():
             "unheatedbsmt", # floor_main outside boundary condition object
             "unheatedbsmt", # foundation_zone_name    
             ],
+    }
+    return foundation_and_floor_dict
+
+def make_foundation_and_floor_dict():
+    foundation_and_floor_dict = {
+        "Vented Crawlspace - R0 Cavity Insulation": {
+            "main_floor_construction": "Exterior Floor", # main_floor_construction
+            "foundation_surface": "floor_foundation", # foundation_surface
+            "int_horiz_ins_mat_name": "", # int_horiz_ins_mat_name
+            "int_horiz_ins_depth": "", # int_horiz_ins_depth
+            "int_horiz_ins_width": "", # int_horiz_ins_width
+            "int_vert_ins_mat_name": "", # int_vert_ins_mat_name
+            "int_vert_ins_depth": "", # int_vert_ins_depth               
+            "ext_vert_ins_mat_name": "", # ext_vert_ins_mat_name 
+            "ext_vert_ins_depth": "", # ext_vert_ins_depth 
+            "wall_ht_above_grade": 0.5, # wall_ht_above_grade 
+            "wall_ht_below_slab": 1, # wall_ht_below_slab
+            "floor_insulation_layer": "Fiberglass_Batt_R0", # floor insulation layer material name
+            "floor_main_outside_boundary_condition": "Zone", # floor_main outside boundary condition
+            "floor_main_outside_boundary_condition_object": "crawlspace", # floor_main outside boundary condition object
+            "foundation_zone_name": "crawlspace", # foundation_zone_name
+            },
+        "Vented Crawlspace - R13 Cavity Insulation": {
+            "main_floor_construction": "Exterior Floor", # main_floor_construction
+            "foundation_surface": "floor_foundation", # foundation_surface
+            "int_horiz_ins_mat_name": "", # int_horiz_ins_mat_name 
+            "int_horiz_ins_depth": "", # int_horiz_ins_depth 
+            "int_horiz_ins_width": "", # int_horiz_ins_width 
+            "int_vert_ins_mat_name": "", # int_vert_ins_mat_name 
+            "int_vert_ins_depth": "", # int_vert_ins_depth               
+            "ext_vert_ins_mat_name": "", # ext_vert_ins_mat_name 
+            "ext_vert_ins_depth": "", # ext_vert_ins_depth 
+            "wall_ht_above_grade": 0.5, # wall_ht_above_grade 
+            "wall_ht_below_slab": 1, # wall_ht_below_slab
+            "floor_insulation_layer": "Fiberglass_Batt_R13", # floor insulation layer material name
+            "floor_main_outside_boundary_condition": "Zone", # floor_main outside boundary condition
+            "floor_main_outside_boundary_condition_object": "crawlspace", # floor_main outside boundary condition object
+            "foundation_zone_name": "crawlspace", # foundation_zone_name
+            },
+        "Vented Crawlspace - R19 Cavity Insulation": {
+            "main_floor_construction": "Exterior Floor", # main_floor_construction
+            "foundation_surface": "floor_foundation", # foundation_surface
+            "int_horiz_ins_mat_name": "", # int_horiz_ins_mat_name 
+            "int_horiz_ins_depth": "", # int_horiz_ins_depth 
+            "int_horiz_ins_width": "", # int_horiz_ins_width 
+            "int_vert_ins_mat_name": "", # int_vert_ins_mat_name 
+            "int_vert_ins_depth": "", # int_vert_ins_depth               
+            "ext_vert_ins_mat_name": "", # ext_vert_ins_mat_name 
+            "ext_vert_ins_depth": "", # ext_vert_ins_depth 
+            "wall_ht_above_grade": 0.5, # wall_ht_above_grade 
+            "wall_ht_below_slab": 1, # wall_ht_below_slab
+            "floor_insulation_layer": "Fiberglass_Batt_R19", # floor insulation layer material name
+            "floor_main_outside_boundary_condition": "Zone", # floor_main outside boundary condition
+            "floor_main_outside_boundary_condition_object": "crawlspace", # floor_main outside boundary condition object
+            "foundation_zone_name": "crawlspace", # foundation_zone_name
+            },
+        "Vented Crawlspace - R30 Cavity Insulation": {
+            "main_floor_construction": "Exterior Floor", # main_floor_construction
+            "foundation_surface": "floor_foundation", # foundation_surface
+            "int_horiz_ins_mat_name": "", # int_horiz_ins_mat_name 
+            "int_horiz_ins_depth": "", # int_horiz_ins_depth 
+            "int_horiz_ins_width": "", # int_horiz_ins_width 
+            "int_vert_ins_mat_name": "", # int_vert_ins_mat_name 
+            "int_vert_ins_depth": "", # int_vert_ins_depth               
+            "ext_vert_ins_mat_name": "", # ext_vert_ins_mat_name 
+            "ext_vert_ins_depth": "", # ext_vert_ins_depth 
+            "wall_ht_above_grade": 0.5, # wall_ht_above_grade 
+            "wall_ht_below_slab": 1, # wall_ht_below_slab
+            "floor_insulation_layer": "Fiberglass_Batt_R30", # floor insulation layer material name
+            "floor_main_outside_boundary_condition": "Zone", # floor_main outside boundary condition
+            "floor_main_outside_boundary_condition_object": "crawlspace", # floor_main outside boundary condition object
+            "foundation_zone_name": "crawlspace", # foundation_zone_name
+            },
+        "Vented Crawlspace - R38 Cavity Insulation": {
+            "main_floor_construction": "Exterior Floor", # main_floor_construction
+            "foundation_surface": "floor_foundation", # foundation_surface
+            "int_horiz_ins_mat_name": "", # int_horiz_ins_mat_name 
+            "int_horiz_ins_depth": "", # int_horiz_ins_depth 
+            "int_horiz_ins_width": "", # int_horiz_ins_width 
+            "int_vert_ins_mat_name": "", # int_vert_ins_mat_name 
+            "int_vert_ins_depth": "", # int_vert_ins_depth               
+            "ext_vert_ins_mat_name": "", # ext_vert_ins_mat_name 
+            "ext_vert_ins_depth": "", # ext_vert_ins_depth 
+            "wall_ht_above_grade": 0.5, # wall_ht_above_grade 
+            "wall_ht_below_slab": 1, # wall_ht_below_slab
+            "floor_insulation_layer": "Fiberglass_Batt_R38", # floor insulation layer material name
+            "floor_main_outside_boundary_condition": "Zone", # floor_main outside boundary condition
+            "floor_main_outside_boundary_condition_object": "crawlspace", # floor_main outside boundary condition object
+            "foundation_zone_name": "crawlspace", # foundation_zone_name
+            },
+        "Slab - Uninsulated": {
+            "main_floor_construction": "Slab Construction", # main_floor_construction
+            "foundation_surface": "floor_main", # foundation_surface
+            "int_horiz_ins_mat_name": "", # int_horiz_ins_mat_name 
+            "int_horiz_ins_depth": "", # int_horiz_ins_depth 
+            "int_horiz_ins_width": "", # int_horiz_ins_width 
+            "int_vert_ins_mat_name": "", # int_vert_ins_mat_name 
+            "int_vert_ins_depth": "", # int_vert_ins_depth               
+            "ext_vert_ins_mat_name": "", # ext_vert_ins_mat_name 
+            "ext_vert_ins_depth": "", # ext_vert_ins_depth 
+            "wall_ht_above_grade": 0, # wall_ht_above_grade 
+            "wall_ht_below_slab": 0, # wall_ht_below_slab
+            "floor_insulation_layer": "Fiberglass_Batt_R0", # floor insulation layer material name
+            "floor_main_outside_boundary_condition": "Foundation", # floor_main outside boundary condition
+            "floor_main_outside_boundary_condition_object": "Kiva Foundation", # floor_main outside boundary condition object
+            "foundation_zone_name": "", # foundation_zone_name
+            },
+        "Slab - R5 Perimeter with No Thermal Break": {
+            "main_floor_construction": "Slab Construction", # main_floor_construction
+            "foundation_surface": "floor_main", # foundation_surface
+            "int_horiz_ins_mat_name": "XPS_R5", # int_horiz_ins_mat_name 
+            "int_horiz_ins_depth": 0, # int_horiz_ins_depth 
+            "int_horiz_ins_width": 2, # int_horiz_ins_width 
+            "int_vert_ins_mat_name": "", # int_vert_ins_mat_name 
+            "int_vert_ins_depth": "", # int_vert_ins_depth               
+            "ext_vert_ins_mat_name": "", # ext_vert_ins_mat_name 
+            "ext_vert_ins_depth": "", # ext_vert_ins_depth 
+            "wall_ht_above_grade": 0, # wall_ht_above_grade 
+            "wall_ht_below_slab": 0, # wall_ht_below_slab
+            "floor_insulation_layer": "Fiberglass_Batt_R0", # floor insulation layer material name
+            "floor_main_outside_boundary_condition": "Foundation", # floor_main outside boundary condition
+            "floor_main_outside_boundary_condition_object": "Kiva Foundation", # floor_main outside boundary condition object
+            "foundation_zone_name": "", # foundation_zone_name
+            },
+        "Slab - R10 Perimeter with No Thermal Break": {
+            "main_floor_construction": "Slab Construction", # main_floor_construction
+            "foundation_surface": "floor_main", # foundation_surface
+            "int_horiz_ins_mat_name": "XPS_R10", # int_horiz_ins_mat_name 
+            "int_horiz_ins_depth": 0, # int_horiz_ins_depth 
+            "int_horiz_ins_width": 2, # int_horiz_ins_width 
+            "int_vert_ins_mat_name": "", # int_vert_ins_mat_name 
+            "int_vert_ins_depth": "", # int_vert_ins_depth               
+            "ext_vert_ins_mat_name": "", # ext_vert_ins_mat_name 
+            "ext_vert_ins_depth": "", # ext_vert_ins_depth 
+            "wall_ht_above_grade": 0, # wall_ht_above_grade 
+            "wall_ht_below_slab": 0, # wall_ht_below_slab
+            "floor_insulation_layer": "Fiberglass_Batt_R0", # floor insulation layer material name
+            "floor_main_outside_boundary_condition": "Foundation", # floor_main outside boundary condition
+            "floor_main_outside_boundary_condition_object": "Kiva Foundation", # floor_main outside boundary condition object
+            "foundation_zone_name": "", # foundation_zone_name
+            },
+        "Slab - R5 Perimeter with R5 Thermal Break": {
+            "main_floor_construction": "Slab Construction", # main_floor_construction
+            "foundation_surface": "floor_main", # foundation_surface
+            "int_horiz_ins_mat_name": "XPS_R5", # int_horiz_ins_mat_name 
+            "int_horiz_ins_depth": 0, # int_horiz_ins_depth 
+            "int_horiz_ins_width": 2, # int_horiz_ins_width 
+            "int_vert_ins_mat_name": "XPS_R5", # int_vert_ins_mat_name 
+            "int_vert_ins_depth": 0.5, # int_vert_ins_depth               
+            "ext_vert_ins_mat_name": "", # ext_vert_ins_mat_name 
+            "ext_vert_ins_depth": "", # ext_vert_ins_depth 
+            "wall_ht_above_grade": 0, # wall_ht_above_grade 
+            "wall_ht_below_slab": 0, # wall_ht_below_slab
+            "floor_insulation_layer": "Fiberglass_Batt_R0", # floor insulation layer material name
+            "floor_main_outside_boundary_condition": "Foundation", # floor_main outside boundary condition
+            "floor_main_outside_boundary_condition_object": "Kiva Foundation", # floor_main outside boundary condition object
+            "foundation_zone_name": "", # foundation_zone_name
+            },
+        "Slab - R10 Perimeter with R5 Thermal Break": {
+            "main_floor_construction": "Slab Construction", # main_floor_construction
+            "foundation_surface": "floor_main", # foundation_surface
+            "int_horiz_ins_mat_name": "XPS_R10", # int_horiz_ins_mat_name 
+            "int_horiz_ins_depth": 0, # int_horiz_ins_depth 
+            "int_horiz_ins_width": 2, # int_horiz_ins_width 
+            "int_vert_ins_mat_name": "XPS_R5", # int_vert_ins_mat_name 
+            "int_vert_ins_depth": 0.5, # int_vert_ins_depth               
+            "ext_vert_ins_mat_name": "", # ext_vert_ins_mat_name 
+            "ext_vert_ins_depth": "", # ext_vert_ins_depth 
+            "wall_ht_above_grade": 0, # wall_ht_above_grade 
+            "wall_ht_below_slab": 0, # wall_ht_below_slab
+            "floor_insulation_layer": "Fiberglass_Batt_R0", # floor insulation layer material name
+            "floor_main_outside_boundary_condition": "Foundation", # floor_main outside boundary condition
+            "floor_main_outside_boundary_condition_object": "Kiva Foundation", # floor_main outside boundary condition object
+            "foundation_zone_name": "", # foundation_zone_name
+            },
+        "Slab - R5 Under Full Slab with R5 Thermal Break": {
+            "main_floor_construction": "Slab Construction w Full R5 Insulation", # main_floor_construction
+            "foundation_surface": "floor_main", # foundation_surface
+            "int_horiz_ins_mat_name": "", # int_horiz_ins_mat_name 
+            "int_horiz_ins_depth": "", # int_horiz_ins_depth 
+            "int_horiz_ins_width": "", # int_horiz_ins_width 
+            "int_vert_ins_mat_name": "XPS_R5", # int_vert_ins_mat_name 
+            "int_vert_ins_depth": 0.25, # int_vert_ins_depth               
+            "ext_vert_ins_mat_name": "", # ext_vert_ins_mat_name 
+            "ext_vert_ins_depth": "", # ext_vert_ins_depth 
+            "wall_ht_above_grade": 0, # wall_ht_above_grade 
+            "wall_ht_below_slab": 0, # wall_ht_below_slab
+            "floor_insulation_layer": "Fiberglass_Batt_R0", # floor insulation layer material name
+            "floor_main_outside_boundary_condition": "Foundation", # floor_main outside boundary condition
+            "floor_main_outside_boundary_condition_object": "Kiva Foundation", # floor_main outside boundary condition object
+            "foundation_zone_name": "", # foundation_zone_name
+            },
+        "Slab - R10 Under Full Slab with R5 Thermal Break": {
+            "main_floor_construction": "Slab Construction w Full R10 Insulation", # main_floor_construction
+            "foundation_surface": "floor_main", # foundation_surface
+            "int_horiz_ins_mat_name": "", # int_horiz_ins_mat_name 
+            "int_horiz_ins_depth": "", # int_horiz_ins_depth 
+            "int_horiz_ins_width": "", # int_horiz_ins_width 
+            "int_vert_ins_mat_name": "XPS_R5", # int_vert_ins_mat_name 
+            "int_vert_ins_depth": 0.25, # int_vert_ins_depth               
+            "ext_vert_ins_mat_name": "", # ext_vert_ins_mat_name 
+            "ext_vert_ins_depth": "", # ext_vert_ins_depth 
+            "wall_ht_above_grade": 0, # wall_ht_above_grade 
+            "wall_ht_below_slab": 0, # wall_ht_below_slab
+            "floor_insulation_layer": "Fiberglass_Batt_R0", # floor insulation layer material name
+            "floor_main_outside_boundary_condition": "Foundation", # floor_main outside boundary condition
+            "floor_main_outside_boundary_condition_object": "Kiva Foundation", # floor_main outside boundary condition object
+            "foundation_zone_name": "", # foundation_zone_name
+            },
+        "Heated Basement - Uninsulated": {
+            "main_floor_construction": "Interior Floor", # main_floor_construction
+            "foundation_surface": "floor_foundation", # foundation_surface
+            "int_horiz_ins_mat_name": "", # int_horiz_ins_mat_name 
+            "int_horiz_ins_depth": "", # int_horiz_ins_depth 
+            "int_horiz_ins_width": "", # int_horiz_ins_width 
+            "int_vert_ins_mat_name": "", # int_vert_ins_mat_name 
+            "int_vert_ins_depth": "", # int_vert_ins_depth               
+            "ext_vert_ins_mat_name": "", # ext_vert_ins_mat_name 
+            "ext_vert_ins_depth": "", # ext_vert_ins_depth
+            "wall_ht_above_grade": 0.2, # wall_ht_above_grade
+            "wall_ht_below_slab": 0.3, # wall_ht_below_slab
+            "floor_insulation_layer": "Fiberglass_Batt_R0", # floor insulation layer material name
+            "floor_main_outside_boundary_condition": "Adiabatic", # floor_main outside boundary condition
+            "floor_main_outside_boundary_condition_object": "", # floor_main outside boundary condition object
+            "foundation_zone_name": "living", # foundation_zone_name
+            },
+        "Heated Basement - R5 Exterior Insulation": {
+            "main_floor_construction": "Interior Floor", # main_floor_construction
+            "foundation_surface": "floor_foundation", # foundation_surface
+            "int_horiz_ins_mat_name": "", # int_horiz_ins_mat_name 
+            "int_horiz_ins_depth": "", # int_horiz_ins_depth 
+            "int_horiz_ins_width": "", # int_horiz_ins_width 
+            "int_vert_ins_mat_name": "", # int_vert_ins_mat_name 
+            "int_vert_ins_depth": "", # int_vert_ins_depth               
+            "ext_vert_ins_mat_name": "XPS_R5", # ext_vert_ins_mat_name 
+            "ext_vert_ins_depth": 2.9, # ext_vert_ins_depth
+            "wall_ht_above_grade": 0.2, # wall_ht_above_grade
+            "wall_ht_below_slab": 0.3, # wall_ht_below_slab
+            "floor_insulation_layer": "Fiberglass_Batt_R0", # floor insulation layer material name
+            "floor_main_outside_boundary_condition": "Adiabatic", # floor_main outside boundary condition
+            "floor_main_outside_boundary_condition_object": "", # floor_main outside boundary condition object
+            "foundation_zone_name": "living", # foundation_zone_name
+            },
+        "Heated Basement - R10 Exterior Insulation": {
+            "main_floor_construction": "Interior Floor", # main_floor_construction
+            "foundation_surface": "floor_foundation", # foundation_surface
+            "int_horiz_ins_mat_name": "", # int_horiz_ins_mat_name 
+            "int_horiz_ins_depth": "", # int_horiz_ins_depth 
+            "int_horiz_ins_width": "", # int_horiz_ins_width 
+            "int_vert_ins_mat_name": "", # int_vert_ins_mat_name 
+            "int_vert_ins_depth": "", # int_vert_ins_depth               
+            "ext_vert_ins_mat_name": "XPS_R10", # ext_vert_ins_mat_name 
+            "ext_vert_ins_depth": 2.9, # ext_vert_ins_depth
+            "wall_ht_above_grade": 0.2, # wall_ht_above_grade
+            "wall_ht_below_slab": 0.3, # wall_ht_below_slab
+            "floor_insulation_layer": "Fiberglass_Batt_R0", # floor insulation layer material name
+            "floor_main_outside_boundary_condition": "Adiabatic", # floor_main outside boundary condition
+            "floor_main_outside_boundary_condition_object": "", # floor_main outside boundary condition object
+            "foundation_zone_name": "living", # foundation_zone_name
+            },
+        "Heated Basement - R15 Exterior Insulation": {
+            "main_floor_construction": "Interior Floor", # main_floor_construction
+            "foundation_surface": "floor_foundation", # foundation_surface
+            "int_horiz_ins_mat_name": "", # int_horiz_ins_mat_name 
+            "int_horiz_ins_depth": "", # int_horiz_ins_depth 
+            "int_horiz_ins_width": "", # int_horiz_ins_width 
+            "int_vert_ins_mat_name": "", # int_vert_ins_mat_name 
+            "int_vert_ins_depth": "", # int_vert_ins_depth               
+            "ext_vert_ins_mat_name": "XPS_R15", # ext_vert_ins_mat_name 
+            "ext_vert_ins_depth": 2.9, # ext_vert_ins_depth
+            "wall_ht_above_grade": 0.2, # wall_ht_above_grade
+            "wall_ht_below_slab": 0.3, # wall_ht_below_slab
+            "floor_insulation_layer": "Fiberglass_Batt_R0", # floor insulation layer material name
+            "floor_main_outside_boundary_condition": "Adiabatic", # floor_main outside boundary condition
+            "floor_main_outside_boundary_condition_object": "", # floor_main outside boundary condition object
+            "foundation_zone_name": "living", # foundation_zone_name
+            },
+        "Unheated Basement - Uninsulated": {
+            "main_floor_construction": "Exterior Floor", # main_floor_construction
+            "foundation_surface": "floor_foundation", # foundation_surface
+            "int_horiz_ins_mat_name": "", # int_horiz_ins_mat_name 
+            "int_horiz_ins_depth": "", # int_horiz_ins_depth 
+            "int_horiz_ins_width": "", # int_horiz_ins_width 
+            "int_vert_ins_mat_name": "", # int_vert_ins_mat_name 
+            "int_vert_ins_depth": "", # int_vert_ins_depth               
+            "ext_vert_ins_mat_name": "", # ext_vert_ins_mat_name 
+            "ext_vert_ins_depth": "", # ext_vert_ins_depth 
+            "wall_ht_above_grade": 0.2, # wall_ht_above_grade 
+            "wall_ht_below_slab": 0.3, # wall_ht_below_slab
+            "floor_insulation_layer": "Fiberglass_Batt_R0", # floor insulation layer material name
+            "floor_main_outside_boundary_condition": "Zone", # floor_main outside boundary condition
+            "floor_main_outside_boundary_condition_object": "unheatedbsmt", # floor_main outside boundary condition object
+            "foundation_zone_name": "unheatedbsmt", # foundation_zone_name
+            },
+        "Unheated Basement - R13 Cavity Insulation": {
+            "main_floor_construction": "Exterior Floor", # main_floor_construction
+            "foundation_surface": "floor_foundation", # foundation_surface
+            "int_horiz_ins_mat_name": "", # int_horiz_ins_mat_name 
+            "int_horiz_ins_depth": "", # int_horiz_ins_depth 
+            "int_horiz_ins_width": "", # int_horiz_ins_width 
+            "int_vert_ins_mat_name": "", # int_vert_ins_mat_name 
+            "int_vert_ins_depth": "", # int_vert_ins_depth               
+            "ext_vert_ins_mat_name": "", # ext_vert_ins_mat_name 
+            "ext_vert_ins_depth": "", # ext_vert_ins_depth 
+            "wall_ht_above_grade": 0.2, # wall_ht_above_grade 
+            "wall_ht_below_slab": 0.3, # wall_ht_below_slab
+            "floor_insulation_layer": "Fiberglass_Batt_R13", # floor insulation layer material name
+            "floor_main_outside_boundary_condition": "Zone", # floor_main outside boundary condition
+            "floor_main_outside_boundary_condition_object": "unheatedbsmt", # floor_main outside boundary condition object
+            "foundation_zone_name": "unheatedbsmt", # foundation_zone_name
+            },
+        "Unheated Basement - R19 Cavity Insulation": {
+            "main_floor_construction": "Exterior Floor", # main_floor_construction
+            "foundation_surface": "floor_foundation", # foundation_surface
+            "int_horiz_ins_mat_name": "", # int_horiz_ins_mat_name 
+            "int_horiz_ins_depth": "", # int_horiz_ins_depth 
+            "int_horiz_ins_width": "", # int_horiz_ins_width 
+            "int_vert_ins_mat_name": "", # int_vert_ins_mat_name 
+            "int_vert_ins_depth": "", # int_vert_ins_depth               
+            "ext_vert_ins_mat_name": "", # ext_vert_ins_mat_name 
+            "ext_vert_ins_depth": "", # ext_vert_ins_depth 
+            "wall_ht_above_grade": 0.2, # wall_ht_above_grade 
+            "wall_ht_below_slab": 0.3, # wall_ht_below_slab
+            "floor_insulation_layer": "Fiberglass_Batt_R19", # floor insulation layer material name
+            "floor_main_outside_boundary_condition": "Zone", # floor_main outside boundary condition
+            "floor_main_outside_boundary_condition_object": "unheatedbsmt", # floor_main outside boundary condition object
+            "foundation_zone_name": "unheatedbsmt", # foundation_zone_name
+            },
+        "Unheated Basement - R30 Cavity Insulation": {
+            "main_floor_construction": "Exterior Floor", # main_floor_construction
+            "foundation_surface": "floor_foundation", # foundation_surface
+            "int_horiz_ins_mat_name": "", # int_horiz_ins_mat_name 
+            "int_horiz_ins_depth": "", # int_horiz_ins_depth 
+            "int_horiz_ins_width": "", # int_horiz_ins_width 
+            "int_vert_ins_mat_name": "", # int_vert_ins_mat_name 
+            "int_vert_ins_depth": "", # int_vert_ins_depth               
+            "ext_vert_ins_mat_name": "", # ext_vert_ins_mat_name 
+            "ext_vert_ins_depth": "", # ext_vert_ins_depth 
+            "wall_ht_above_grade": 0.2, # wall_ht_above_grade 
+            "wall_ht_below_slab": 0.3, # wall_ht_below_slab
+            "floor_insulation_layer": "Fiberglass_Batt_R30", # floor insulation layer material name
+            "floor_main_outside_boundary_condition": "Zone", # floor_main outside boundary condition
+            "floor_main_outside_boundary_condition_object": "unheatedbsmt", # floor_main outside boundary condition object
+            "foundation_zone_name": "unheatedbsmt", # foundation_zone_name
+            },
+        "Unheated Basement - R38 Cavity Insulation": {
+            "main_floor_construction": "Exterior Floor", # main_floor_construction
+            "foundation_surface": "floor_foundation", # foundation_surface
+            "int_horiz_ins_mat_name": "", # int_horiz_ins_mat_name 
+            "int_horiz_ins_depth": "", # int_horiz_ins_depth 
+            "int_horiz_ins_width": "", # int_horiz_ins_width 
+            "int_vert_ins_mat_name": "", # int_vert_ins_mat_name 
+            "int_vert_ins_depth": "", # int_vert_ins_depth               
+            "ext_vert_ins_mat_name": "", # ext_vert_ins_mat_name 
+            "ext_vert_ins_depth": "", # ext_vert_ins_depth 
+            "wall_ht_above_grade": 0.2, # wall_ht_above_grade 
+            "wall_ht_below_slab": 0.3, # wall_ht_below_slab
+            "floor_insulation_layer": "Fiberglass_Batt_R38", # floor insulation layer material name
+            "floor_main_outside_boundary_condition": "Zone", # floor_main outside boundary condition
+            "floor_main_outside_boundary_condition_object": "unheatedbsmt", # floor_main outside boundary condition object
+            "foundation_zone_name": "unheatedbsmt", # foundation_zone_name    
+            },
     }
     return foundation_and_floor_dict
 

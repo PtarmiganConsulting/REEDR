@@ -174,8 +174,8 @@ def gui(func):
                 gui_params["output_enduses"] = "Heating"
             
             # Terminate the GUI during program run cycle
-            root.quit()
-            root.destroy()
+            #root.quit()
+            #root.destroy()
             func(gui_params)
 
         

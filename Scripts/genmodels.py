@@ -7,7 +7,7 @@ from pprint import pprint
 import datetime
 from Scripts.unitconversions import convert_WperFt2_to_WperM2, convert_degF_to_degC, convert_IP_Uvalue_to_SI_Uvalue, convert_ft_to_m, convert_ft2_to_m2, \
     convert_ft3_to_m3, convert_Btuh_to_W, convert_CFM_to_m3PerSec, convert_W_to_ton, convert_in2_to_m2
-from Scripts.dictionaries import make_foundation_and_floor_dict, make_hvac_dict, make_foundation_dict
+from Scripts.dictionaries import make_foundation_and_floor_dict, make_hvac_dict, make_foundation_dict, make_foundation_and_floor_dict2
 from Scripts.datavalidation import validate, convert_capacity
 from Scripts.utilfunctions import estimateInfiltrationAdjustment
 
@@ -117,7 +117,7 @@ def genmodels(gui_params, get_data_dict):
     output_gran = gui_params["output_gran"]
     output_enduses = gui_params["output_enduses"]
 
-    ### --- Allows tstat to overrun setpoint by a certain amount and drift back down to setpoint before kicking on again. This value empirically results in 
+    ### --- Allows tstat to overrun setpoint by a certain amount and drift back down to setpoint before kicking on again. A value of 0.79 empirically results in 
     ### average room temps that are +/- 1 degree F about the desired setpoint. ###
     deadband = "" #0.79
 
@@ -130,7 +130,6 @@ def genmodels(gui_params, get_data_dict):
         try:
             os.remove(os.path.join(set_dir, building_block_dir, schedule_dir, schedule_file))
             read_file.to_csv ((os.path.join(set_dir, building_block_dir, schedule_dir, schedule_file)), index = None, header=True)
-            # get_data_dict["runlog"].write("Schedules.csv successfully overwritten at " + os.path.join(set_dir, building_block_dir, schedule_dir, schedule_file) + ". \n" + "... \n")
         except:
             print("\n*** ERROR: Could not remove Schedule File. Please ensure that 8760 Schedule File is not open when running REEDR.\n")
             return True
@@ -179,6 +178,9 @@ def genmodels(gui_params, get_data_dict):
     hvac_dict = make_hvac_dict(set_dir, building_block_dir, hvac_airloop_main_dir, hvac_airloop_hvac_dir, hvac_zone_main_dir, hvac_zone_hvac_dir, hvac_coil_dir, hvac_fan_dir)
     # foundation type dictionary
     foundation_dict = make_foundation_dict()
+
+    # foundation_and_floor_dict2 = make_foundation_and_floor_dict2()
+    # test = foundation_and_floor_dict2["Vented Crawlspace - R0 Cavity Insulation"]["foundation_zone_name"]
 
     ### --- IDF WRITER LOOP BEGINS HERE. --- ###
     # The loop covers every dictionary (effectively a runlabel row) in the big dictionary list.
@@ -426,21 +428,21 @@ def genmodels(gui_params, get_data_dict):
         win_construction = "Exterior Window"
 
         # Set foundation parameters based on foundation type
-        main_floor_construction = foundation_and_floor_dict[foundation_and_floor_con][0]
-        foundation_surface = foundation_and_floor_dict[foundation_and_floor_con][1]
-        int_horiz_ins_mat_name = foundation_and_floor_dict[foundation_and_floor_con][2]
-        int_horiz_ins_depth = convert_ft_to_m(foundation_and_floor_dict[foundation_and_floor_con][3])
-        int_horiz_ins_width = convert_ft_to_m(foundation_and_floor_dict[foundation_and_floor_con][4])
-        int_vert_ins_mat_name = foundation_and_floor_dict[foundation_and_floor_con][5]   
-        int_vert_ins_depth = convert_ft_to_m(foundation_and_floor_dict[foundation_and_floor_con][6])
-        ext_vert_ins_mat_name = foundation_and_floor_dict[foundation_and_floor_con][7]  
-        ext_vert_ins_depth = convert_ft_to_m(foundation_and_floor_dict[foundation_and_floor_con][8])
-        wall_ht_above_grade = convert_ft_to_m(foundation_and_floor_dict[foundation_and_floor_con][9])
-        wall_ht_below_slab = convert_ft_to_m(foundation_and_floor_dict[foundation_and_floor_con][10])
-        floor_insulation_layer = foundation_and_floor_dict[foundation_and_floor_con][11]
-        floor_main_outside_boundary_condition = foundation_and_floor_dict[foundation_and_floor_con][12]
-        floor_main_outside_boundary_condition_object = foundation_and_floor_dict[foundation_and_floor_con][13]
-        foundation_zone_name = foundation_and_floor_dict[foundation_and_floor_con][14]
+        main_floor_construction = foundation_and_floor_dict[foundation_and_floor_con]["main_floor_construction"]
+        foundation_surface = foundation_and_floor_dict[foundation_and_floor_con]["foundation_surface"]
+        int_horiz_ins_mat_name = foundation_and_floor_dict[foundation_and_floor_con]["int_horiz_ins_mat_name"]
+        int_horiz_ins_depth = convert_ft_to_m(foundation_and_floor_dict[foundation_and_floor_con]["int_horiz_ins_depth"])
+        int_horiz_ins_width = convert_ft_to_m(foundation_and_floor_dict[foundation_and_floor_con]["int_horiz_ins_width"])
+        int_vert_ins_mat_name = foundation_and_floor_dict[foundation_and_floor_con]["int_vert_ins_mat_name"]   
+        int_vert_ins_depth = convert_ft_to_m(foundation_and_floor_dict[foundation_and_floor_con]["int_vert_ins_depth"])
+        ext_vert_ins_mat_name = foundation_and_floor_dict[foundation_and_floor_con]["ext_vert_ins_mat_name"]  
+        ext_vert_ins_depth = convert_ft_to_m(foundation_and_floor_dict[foundation_and_floor_con]["ext_vert_ins_depth"])
+        wall_ht_above_grade = convert_ft_to_m(foundation_and_floor_dict[foundation_and_floor_con]["wall_ht_above_grade"])
+        wall_ht_below_slab = convert_ft_to_m(foundation_and_floor_dict[foundation_and_floor_con]["wall_ht_below_slab"])
+        floor_insulation_layer = foundation_and_floor_dict[foundation_and_floor_con]["floor_insulation_layer"]
+        floor_main_outside_boundary_condition = foundation_and_floor_dict[foundation_and_floor_con]["floor_main_outside_boundary_condition"]
+        floor_main_outside_boundary_condition_object = foundation_and_floor_dict[foundation_and_floor_con]["floor_main_outside_boundary_condition_object"]
+        foundation_zone_name = foundation_and_floor_dict[foundation_and_floor_con]["foundation_zone_name"]
 
         # Set geometry parameters that are needed to create geometry but not needed to be changed by user. All units in ft and converted to meters.
         origin_x = convert_ft_to_m(0) 
