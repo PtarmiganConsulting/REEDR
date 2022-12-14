@@ -379,11 +379,11 @@ def make_hvac_dict(set_dir, building_block_dir, hvac_airloop_main_dir, hvac_airl
             "ZoneAirInletNodeName": "Zone Inlet Node", # ZoneAirInletNodeName
             "ZoneAirExhaustNodeName": "", # ZoneAirExhaustNodeName
             "ZoneReturnAirNodeName": "Zone Outlet Node", # ZoneReturnAirNodeName
-            "unitaryTextFile": os.path.join(set_dir, building_block_dir, hvac_airloop_main_dir, hvac_airloop_hvac_dir, 'UnitaryHeatPumpSS.txt'), # HVAC equipment text file 1
-            "airDistUnitTextFile": os.path.join(set_dir, building_block_dir, hvac_zone_main_dir, hvac_zone_hvac_dir, 'ADU.txt'), # HVAC equipment text file 2
-            "heatCoilTextFile": os.path.join(set_dir, building_block_dir, hvac_coil_dir, 'Heating_ASHP_SS_8.2HSPF.txt'), # additional heating coil text file
-            "coolCoilTextFile": os.path.join(set_dir, building_block_dir, hvac_coil_dir, 'Cooling_ASHP_SS_14SEER.txt'), # additional cooling coil text file
-            "fanTextFile": os.path.join(set_dir, building_block_dir, hvac_fan_dir, 'CentralFanSS.txt'), # additional fan text file
+            "unitaryTextFile": 'UnitaryHeatPumpSS.txt', # HVAC equipment text file 1
+            "airDistUnitTextFile": 'ADU.txt', # HVAC equipment text file 2
+            "heatCoilTextFile": 'Heating_ASHP_SS_8.2HSPF.txt', # additional heating coil text file
+            "coolCoilTextFile": 'Cooling_ASHP_SS_14SEER.txt', # additional cooling coil text file
+            "fanTextFile": 'CentralFanSS.txt', # additional fan text file
             "AirLoopHVAC_HeatingCoil_ObjectType": "Coil:Heating:DX:SingleSpeed", # AirLoopHVAC_HeatingCoil_ObjectType
             "AirLoopHVAC_HeatingCoil_Name": "DX_Heating_Coil", # AirLoopHVAC_HeatingCoil_Name
             "AirLoopHVAC_CoolingCoil_ObjectType": "Coil:Cooling:DX:SingleSpeed", # AirLoopHVAC_CoolingCoil_ObjectType
@@ -416,11 +416,11 @@ def make_hvac_dict(set_dir, building_block_dir, hvac_airloop_main_dir, hvac_airl
             "ZoneAirInletNodeName": "Zone Inlet Node", # ZoneAirInletNodeName
             "ZoneAirExhaustNodeName": "", # ZoneAirExhaustNodeName
             "ZoneReturnAirNodeName": "Zone Outlet Node", # ZoneReturnAirNodeName
-            "unitaryTextFile": os.path.join(set_dir, building_block_dir, hvac_airloop_main_dir, hvac_airloop_hvac_dir, 'UnitaryHeatPumpSS.txt'), # HVAC equipment text file 1
-            "airDistUnitTextFile": os.path.join(set_dir, building_block_dir, hvac_zone_main_dir, hvac_zone_hvac_dir, 'ADU.txt'), # HVAC equipment text file 2
-            "heatCoilTextFile": os.path.join(set_dir, building_block_dir, hvac_coil_dir, 'Heating_ASHP_SS_8.5HSPF.txt'), # additional heating coil text file
-            "coolCoilTextFile": os.path.join(set_dir, building_block_dir, hvac_coil_dir, 'Cooling_ASHP_SS_15SEER.txt'), # additional cooling coil text file
-            "fanTextFile": os.path.join(set_dir, building_block_dir, hvac_fan_dir, 'CentralFanSS.txt'), # additional fan text file
+            "unitaryTextFile": 'UnitaryHeatPumpSS.txt', # HVAC equipment text file 1
+            "airDistUnitTextFile": 'ADU.txt', # HVAC equipment text file 2
+            "heatCoilTextFile": 'Heating_ASHP_SS_8.5HSPF.txt', # additional heating coil text file
+            "coolCoilTextFile": 'Cooling_ASHP_SS_15SEER.txt', # additional cooling coil text file
+            "fanTextFile": 'CentralFanSS.txt', # additional fan text file
             "AirLoopHVAC_HeatingCoil_ObjectType": "Coil:Heating:DX:SingleSpeed", # AirLoopHVAC_HeatingCoil_ObjectType
             "AirLoopHVAC_HeatingCoil_Name": "DX_Heating_Coil", # AirLoopHVAC_HeatingCoil_Name
             "AirLoopHVAC_CoolingCoil_ObjectType": "Coil:Cooling:DX:SingleSpeed", # AirLoopHVAC_CoolingCoil_ObjectType
@@ -453,11 +453,11 @@ def make_hvac_dict(set_dir, building_block_dir, hvac_airloop_main_dir, hvac_airl
             "ZoneAirInletNodeName": "Zone Inlet Node", # ZoneAirInletNodeName
             "ZoneAirExhaustNodeName": "", # ZoneAirExhaustNodeName
             "ZoneReturnAirNodeName": "Zone Outlet Node", # ZoneReturnAirNodeName
-            "unitaryTextFile": os.path.join(set_dir, building_block_dir, hvac_airloop_main_dir, hvac_airloop_hvac_dir, 'UnitaryHeatPumpDS.txt'), # HVAC equipment text file 1
-            "airDistUnitTextFile": os.path.join(set_dir, building_block_dir, hvac_zone_main_dir, hvac_zone_hvac_dir, 'ADU.txt'), # HVAC equipment text file 2
-            "heatCoilTextFile": os.path.join(set_dir, building_block_dir, hvac_coil_dir, 'Heating_ASHP_DS_9.5HSPF.txt'), # additional heating coil text file
-            "coolCoilTextFile": os.path.join(set_dir, building_block_dir, hvac_coil_dir, 'Cooling_ASHP_DS_19SEER.txt'), # additional cooling coil text file
-            "fanTextFile": os.path.join(set_dir, building_block_dir, hvac_fan_dir, 'CentralFanMS.txt'), # additional fan text file
+            "unitaryTextFile": 'UnitaryHeatPumpDS.txt', # HVAC equipment text file 1
+            "airDistUnitTextFile": 'ADU.txt', # HVAC equipment text file 2
+            "heatCoilTextFile": 'Heating_ASHP_DS_9.5HSPF.txt', # additional heating coil text file
+            "coolCoilTextFile": 'Cooling_ASHP_DS_19SEER.txt', # additional cooling coil text file
+            "fanTextFile": 'CentralFanMS.txt', # additional fan text file
             "AirLoopHVAC_HeatingCoil_ObjectType": "Coil:Heating:DX:MultiSpeed", # AirLoopHVAC_HeatingCoil_ObjectType
             "AirLoopHVAC_HeatingCoil_Name": "DX_Heating_Coil", # AirLoopHVAC_HeatingCoil_Name
             "AirLoopHVAC_CoolingCoil_ObjectType": "Coil:Cooling:DX:MultiSpeed", # AirLoopHVAC_CoolingCoil_ObjectType
@@ -490,11 +490,11 @@ def make_hvac_dict(set_dir, building_block_dir, hvac_airloop_main_dir, hvac_airl
             "ZoneAirInletNodeName": "Zone Inlet Node", # ZoneAirInletNodeName
             "ZoneAirExhaustNodeName": "", # ZoneAirExhaustNodeName
             "ZoneReturnAirNodeName": "Zone Outlet Node", # ZoneReturnAirNodeName
-            "unitaryTextFile": os.path.join(set_dir, building_block_dir, hvac_airloop_main_dir, hvac_airloop_hvac_dir, 'UnitaryHeatPumpMS.txt'), # HVAC equipment text file 1
-            "airDistUnitTextFile": os.path.join(set_dir, building_block_dir, hvac_zone_main_dir, hvac_zone_hvac_dir, 'ADU.txt'), # HVAC equipment text file 2
-            "heatCoilTextFile": os.path.join(set_dir, building_block_dir, hvac_coil_dir, 'Heating_ASHP_VS_10HSPF.txt'), # additional heating coil text file
-            "coolCoilTextFile": os.path.join(set_dir, building_block_dir, hvac_coil_dir, 'Cooling_ASHP_VS_22SEER.txt'), # additional cooling coil text file
-            "fanTextFile": os.path.join(set_dir, building_block_dir, hvac_fan_dir, 'CentralFanMS.txt'), # additional fan text file
+            "unitaryTextFile": 'UnitaryHeatPumpMS.txt', # HVAC equipment text file 1
+            "airDistUnitTextFile": 'ADU.txt', # HVAC equipment text file 2
+            "heatCoilTextFile": 'Heating_ASHP_VS_10HSPF.txt', # additional heating coil text file
+            "coolCoilTextFile": 'Cooling_ASHP_VS_22SEER.txt', # additional cooling coil text file
+            "fanTextFile": 'CentralFanMS.txt', # additional fan text file
             "AirLoopHVAC_HeatingCoil_ObjectType": "Coil:Heating:DX:MultiSpeed", # AirLoopHVAC_HeatingCoil_ObjectType
             "AirLoopHVAC_HeatingCoil_Name": "DX_Heating_Coil", # AirLoopHVAC_HeatingCoil_Name
             "AirLoopHVAC_CoolingCoil_ObjectType": "Coil:Cooling:DX:MultiSpeed", # AirLoopHVAC_CoolingCoil_ObjectType
@@ -527,11 +527,11 @@ def make_hvac_dict(set_dir, building_block_dir, hvac_airloop_main_dir, hvac_airl
             "ZoneAirInletNodeName": "Zone Inlet Node", # ZoneAirInletNodeName
             "ZoneAirExhaustNodeName": "", # ZoneAirExhaustNodeName
             "ZoneReturnAirNodeName": "Zone Outlet Node", # ZoneReturnAirNodeName
-            "unitaryTextFile": os.path.join(set_dir, building_block_dir, hvac_airloop_main_dir, hvac_airloop_hvac_dir, 'UnitaryHeatCool.txt'), # HVAC equipment text file 1
-            "airDistUnitTextFile": os.path.join(set_dir, building_block_dir, hvac_zone_main_dir, hvac_zone_hvac_dir, 'ADU.txt'), # HVAC equipment text file 2
-            "heatCoilTextFile": os.path.join(set_dir, building_block_dir, hvac_coil_dir, 'Heating_Resistance_Main.txt'), # additional heating coil text file
-            "coolCoilTextFile": os.path.join(set_dir, building_block_dir, hvac_coil_dir, 'Cooling_ASHP_SS_15SEER.txt'), # additional cooling coil text file
-            "fanTextFile": os.path.join(set_dir, building_block_dir, hvac_fan_dir, 'CentralFanSS.txt'), # additional fan text file
+            "unitaryTextFile": 'UnitaryHeatCool.txt', # HVAC equipment text file 1
+            "airDistUnitTextFile": 'ADU.txt', # HVAC equipment text file 2
+            "heatCoilTextFile": 'Heating_Resistance_Main.txt', # additional heating coil text file
+            "coolCoilTextFile": 'Cooling_ASHP_SS_15SEER.txt', # additional cooling coil text file
+            "fanTextFile": 'CentralFanSS.txt', # additional fan text file
             "AirLoopHVAC_HeatingCoil_ObjectType": "Coil:Heating:Electric", # AirLoopHVAC_HeatingCoil_ObjectType
             "AirLoopHVAC_HeatingCoil_Name": "Heating_Resistance_Main", # AirLoopHVAC_HeatingCoil_Name
             "AirLoopHVAC_CoolingCoil_ObjectType": "Coil:Cooling:DX:SingleSpeed", # AirLoopHVAC_CoolingCoil_ObjectType
@@ -564,11 +564,11 @@ def make_hvac_dict(set_dir, building_block_dir, hvac_airloop_main_dir, hvac_airl
             "ZoneAirInletNodeName": "Zone Inlet Node", # ZoneAirInletNodeName
             "ZoneAirExhaustNodeName": "", # ZoneAirExhaustNodeName
             "ZoneReturnAirNodeName": "Zone Outlet Node", # ZoneReturnAirNodeName
-            "unitaryTextFile": os.path.join(set_dir, building_block_dir, hvac_airloop_main_dir, hvac_airloop_hvac_dir, 'UnitaryHeatOnly.txt'), # HVAC equipment text file 1
-            "airDistUnitTextFile": os.path.join(set_dir, building_block_dir, hvac_zone_main_dir, hvac_zone_hvac_dir, 'ADU.txt'), # HVAC equipment text file 2
-            "heatCoilTextFile": os.path.join(set_dir, building_block_dir, hvac_coil_dir, 'Heating_Resistance_Main.txt'), # additional heating coil text file
+            "unitaryTextFile": 'UnitaryHeatOnly.txt', # HVAC equipment text file 1
+            "airDistUnitTextFile": 'ADU.txt', # HVAC equipment text file 2
+            "heatCoilTextFile": 'Heating_Resistance_Main.txt', # additional heating coil text file
             "coolCoilTextFile": "NA", # additional cooling coil text file
-            "fanTextFile": os.path.join(set_dir, building_block_dir, hvac_fan_dir, 'CentralFanSS.txt'), # additional fan text file
+            "fanTextFile": 'CentralFanSS.txt', # additional fan text file
             "AirLoopHVAC_HeatingCoil_ObjectType": "Coil:Heating:Electric", # AirLoopHVAC_HeatingCoil_ObjectType
             "AirLoopHVAC_HeatingCoil_Name": "Heating_Resistance_Main", # AirLoopHVAC_HeatingCoil_Name
             "AirLoopHVAC_CoolingCoil_ObjectType": "NA", # AirLoopHVAC_CoolingCoil_ObjectType
@@ -601,11 +601,11 @@ def make_hvac_dict(set_dir, building_block_dir, hvac_airloop_main_dir, hvac_airl
             "ZoneAirInletNodeName": "Zone Inlet Node", # ZoneAirInletNodeName
             "ZoneAirExhaustNodeName": "", # ZoneAirExhaustNodeName
             "ZoneReturnAirNodeName": "Zone Outlet Node", # ZoneReturnAirNodeName
-            "unitaryTextFile": os.path.join(set_dir, building_block_dir, hvac_airloop_main_dir, hvac_airloop_hvac_dir, 'UnitaryHeatCool.txt'), # HVAC equipment text file 1
-            "airDistUnitTextFile": os.path.join(set_dir, building_block_dir, hvac_zone_main_dir, hvac_zone_hvac_dir, 'ADU.txt'), # HVAC equipment text file 2
-            "heatCoilTextFile": os.path.join(set_dir, building_block_dir, hvac_coil_dir, 'Heating_Fuel_Main.txt'), # additional heating coil text file
-            "coolCoilTextFile": os.path.join(set_dir, building_block_dir, hvac_coil_dir, 'Cooling_ASHP_SS_15SEER.txt'), # additional cooling coil text file
-            "fanTextFile": os.path.join(set_dir, building_block_dir, hvac_fan_dir, 'CentralFanSS.txt'), # additional fan text file
+            "unitaryTextFile": 'UnitaryHeatCool.txt', # HVAC equipment text file 1
+            "airDistUnitTextFile": 'ADU.txt', # HVAC equipment text file 2
+            "heatCoilTextFile": 'Heating_Fuel_Main.txt', # additional heating coil text file
+            "coolCoilTextFile": 'Cooling_ASHP_SS_15SEER.txt', # additional cooling coil text file
+            "fanTextFile": 'CentralFanSS.txt', # additional fan text file
             "AirLoopHVAC_HeatingCoil_ObjectType": "Coil:Heating:Fuel", # AirLoopHVAC_HeatingCoil_ObjectType
             "AirLoopHVAC_HeatingCoil_Name": "Heating_Fuel_Main", # AirLoopHVAC_HeatingCoil_Name
             "AirLoopHVAC_CoolingCoil_ObjectType": "Coil:Cooling:DX:SingleSpeed", # AirLoopHVAC_CoolingCoil_ObjectType
@@ -638,11 +638,11 @@ def make_hvac_dict(set_dir, building_block_dir, hvac_airloop_main_dir, hvac_airl
             "ZoneAirInletNodeName": "Zone Inlet Node", # ZoneAirInletNodeName
             "ZoneAirExhaustNodeName": "", # ZoneAirExhaustNodeName
             "ZoneReturnAirNodeName": "Zone Outlet Node", # ZoneReturnAirNodeName
-            "unitaryTextFile": os.path.join(set_dir, building_block_dir, hvac_airloop_main_dir, hvac_airloop_hvac_dir, 'UnitaryHeatOnly.txt'), # HVAC equipment text file 1
-            "airDistUnitTextFile": os.path.join(set_dir, building_block_dir, hvac_zone_main_dir, hvac_zone_hvac_dir, 'ADU.txt'), # HVAC equipment text file 2
-            "heatCoilTextFile": os.path.join(set_dir, building_block_dir, hvac_coil_dir, 'Heating_Fuel_Main.txt'), # additional heating coil text file
+            "unitaryTextFile": 'UnitaryHeatOnly.txt', # HVAC equipment text file 1
+            "airDistUnitTextFile": 'ADU.txt', # HVAC equipment text file 2
+            "heatCoilTextFile": 'Heating_Fuel_Main.txt', # additional heating coil text file
             "coolCoilTextFile": "NA", # additional cooling coil text file
-            "fanTextFile": os.path.join(set_dir, building_block_dir, hvac_fan_dir, 'CentralFanSS.txt'), # additional fan text file
+            "fanTextFile": 'CentralFanSS.txt', # additional fan text file
             "AirLoopHVAC_HeatingCoil_ObjectType": "Coil:Heating:Fuel", # AirLoopHVAC_HeatingCoil_ObjectType
             "AirLoopHVAC_HeatingCoil_Name": "Heating_Fuel_Main", # AirLoopHVAC_HeatingCoil_Name
             "AirLoopHVAC_CoolingCoil_ObjectType": "NA", # AirLoopHVAC_CoolingCoil_ObjectType
@@ -675,11 +675,11 @@ def make_hvac_dict(set_dir, building_block_dir, hvac_airloop_main_dir, hvac_airl
             "ZoneAirInletNodeName": "Zone Inlet Node", # ZoneAirInletNodeName
             "ZoneAirExhaustNodeName": "", # ZoneAirExhaustNodeName
             "ZoneReturnAirNodeName": "Zone Outlet Node", # ZoneReturnAirNodeName
-            "unitaryTextFile": os.path.join(set_dir, building_block_dir, hvac_airloop_main_dir, hvac_airloop_hvac_dir, 'UnitaryHeatOnly.txt'), # HVAC equipment text file 1
-            "airDistUnitTextFile": os.path.join(set_dir, building_block_dir, hvac_zone_main_dir, hvac_zone_hvac_dir, 'ADU.txt'), # HVAC equipment text file 2
-            "heatCoilTextFile": os.path.join(set_dir, building_block_dir, hvac_coil_dir, 'Heating_Resistance_Main.txt'), # additional heating coil text file
+            "unitaryTextFile": 'UnitaryHeatOnly.txt', # HVAC equipment text file 1
+            "airDistUnitTextFile": 'ADU.txt', # HVAC equipment text file 2
+            "heatCoilTextFile": 'Heating_Resistance_Main.txt', # additional heating coil text file
             "coolCoilTextFile": "NA", # additional cooling coil text file
-            "fanTextFile": os.path.join(set_dir, building_block_dir, hvac_fan_dir, 'ZonalFanSS.txt'), # additional fan text file
+            "fanTextFile": 'ZonalFanSS.txt', # additional fan text file
             "AirLoopHVAC_HeatingCoil_ObjectType": "Coil:Heating:Electric", # AirLoopHVAC_HeatingCoil_ObjectType
             "AirLoopHVAC_HeatingCoil_Name": "Heating_Resistance_Main", # AirLoopHVAC_HeatingCoil_Name
             "AirLoopHVAC_CoolingCoil_ObjectType": "NA", # AirLoopHVAC_CoolingCoil_ObjectType
@@ -712,11 +712,11 @@ def make_hvac_dict(set_dir, building_block_dir, hvac_airloop_main_dir, hvac_airl
             "ZoneAirInletNodeName": "Zone Inlet Node", # ZoneAirInletNodeName
             "ZoneAirExhaustNodeName": "", # ZoneAirExhaustNodeName
             "ZoneReturnAirNodeName": "Zone Outlet Node", # ZoneReturnAirNodeName
-            "unitaryTextFile": os.path.join(set_dir, building_block_dir, hvac_airloop_main_dir, hvac_airloop_hvac_dir, 'UnitaryHeatCool.txt'), # HVAC equipment text file 1
-            "airDistUnitTextFile": os.path.join(set_dir, building_block_dir, hvac_zone_main_dir, hvac_zone_hvac_dir, 'ADU.txt'), # HVAC equipment text file 2
-            "heatCoilTextFile": os.path.join(set_dir, building_block_dir, hvac_coil_dir, 'Heating_Resistance_Main.txt'), # additional heating coil text file
-            "coolCoilTextFile": os.path.join(set_dir, building_block_dir, hvac_coil_dir, 'Cooling_WinAC_8.5EER.txt'), # additional cooling coil text file
-            "fanTextFile": os.path.join(set_dir, building_block_dir, hvac_fan_dir, 'ZonalFanSS.txt'), # additional fan text file
+            "unitaryTextFile": 'UnitaryHeatCool.txt', # HVAC equipment text file 1
+            "airDistUnitTextFile": 'ADU.txt', # HVAC equipment text file 2
+            "heatCoilTextFile": 'Heating_Resistance_Main.txt', # additional heating coil text file
+            "coolCoilTextFile": 'Cooling_WinAC_8.5EER.txt', # additional cooling coil text file
+            "fanTextFile": 'ZonalFanSS.txt', # additional fan text file
             "AirLoopHVAC_HeatingCoil_ObjectType": "Coil:Heating:Electric", # AirLoopHVAC_HeatingCoil_ObjectType
             "AirLoopHVAC_HeatingCoil_Name": "Heating_Resistance_Main", # AirLoopHVAC_HeatingCoil_Name
             "AirLoopHVAC_CoolingCoil_ObjectType": "Coil:Cooling:DX:SingleSpeed", # AirLoopHVAC_CoolingCoil_ObjectType
@@ -749,11 +749,11 @@ def make_hvac_dict(set_dir, building_block_dir, hvac_airloop_main_dir, hvac_airl
             "ZoneAirInletNodeName": "Zone Inlet Node", # ZoneAirInletNodeName
             "ZoneAirExhaustNodeName": "", # ZoneAirExhaustNodeName
             "ZoneReturnAirNodeName": "Zone Outlet Node", # ZoneReturnAirNodeName
-            "unitaryTextFile": os.path.join(set_dir, building_block_dir, hvac_airloop_main_dir, hvac_airloop_hvac_dir, 'UnitaryHeatCool.txt'), # HVAC equipment text file 1
-            "airDistUnitTextFile": os.path.join(set_dir, building_block_dir, hvac_zone_main_dir, hvac_zone_hvac_dir, 'ADU.txt'), # HVAC equipment text file 2
-            "heatCoilTextFile": os.path.join(set_dir, building_block_dir, hvac_coil_dir, 'Heating_Resistance_Main.txt'), # additional heating coil text file
-            "coolCoilTextFile": os.path.join(set_dir, building_block_dir, hvac_coil_dir, 'Cooling_WinAC_9.8EER.txt'), # additional cooling coil text file
-            "fanTextFile": os.path.join(set_dir, building_block_dir, hvac_fan_dir, 'ZonalFanSS.txt'), # additional fan text file
+            "unitaryTextFile": 'UnitaryHeatCool.txt', # HVAC equipment text file 1
+            "airDistUnitTextFile": 'ADU.txt', # HVAC equipment text file 2
+            "heatCoilTextFile": 'Heating_Resistance_Main.txt', # additional heating coil text file
+            "coolCoilTextFile": 'Cooling_WinAC_9.8EER.txt', # additional cooling coil text file
+            "fanTextFile": 'ZonalFanSS.txt', # additional fan text file
             "AirLoopHVAC_HeatingCoil_ObjectType": "Coil:Heating:Electric", # AirLoopHVAC_HeatingCoil_ObjectType
             "AirLoopHVAC_HeatingCoil_Name": "Heating_Resistance_Main", # AirLoopHVAC_HeatingCoil_Name
             "AirLoopHVAC_CoolingCoil_ObjectType": "Coil:Cooling:DX:SingleSpeed", # AirLoopHVAC_CoolingCoil_ObjectType
@@ -786,11 +786,11 @@ def make_hvac_dict(set_dir, building_block_dir, hvac_airloop_main_dir, hvac_airl
             "ZoneAirInletNodeName": "Zone Inlet Node", # ZoneAirInletNodeName
             "ZoneAirExhaustNodeName": "", # ZoneAirExhaustNodeName
             "ZoneReturnAirNodeName": "Zone Outlet Node", # ZoneReturnAirNodeName
-            "unitaryTextFile": os.path.join(set_dir, building_block_dir, hvac_airloop_main_dir, hvac_airloop_hvac_dir, 'UnitaryHeatCool.txt'), # HVAC equipment text file 1
-            "airDistUnitTextFile": os.path.join(set_dir, building_block_dir, hvac_zone_main_dir, hvac_zone_hvac_dir, 'ADU.txt'), # HVAC equipment text file 2
-            "heatCoilTextFile": os.path.join(set_dir, building_block_dir, hvac_coil_dir, 'Heating_Resistance_Main.txt'), # additional heating coil text file
-            "coolCoilTextFile": os.path.join(set_dir, building_block_dir, hvac_coil_dir, 'Cooling_WinAC_10.7EER.txt'), # additional cooling coil text file
-            "fanTextFile": os.path.join(set_dir, building_block_dir, hvac_fan_dir, 'ZonalFanSS.txt'), # additional fan text file
+            "unitaryTextFile": 'UnitaryHeatCool.txt', # HVAC equipment text file 1
+            "airDistUnitTextFile": 'ADU.txt', # HVAC equipment text file 2
+            "heatCoilTextFile": 'Heating_Resistance_Main.txt', # additional heating coil text file
+            "coolCoilTextFile": 'Cooling_WinAC_10.7EER.txt', # additional cooling coil text file
+            "fanTextFile": 'ZonalFanSS.txt', # additional fan text file
             "AirLoopHVAC_HeatingCoil_ObjectType": "Coil:Heating:Electric", # AirLoopHVAC_HeatingCoil_ObjectType
             "AirLoopHVAC_HeatingCoil_Name": "Heating_Resistance_Main", # AirLoopHVAC_HeatingCoil_Name
             "AirLoopHVAC_CoolingCoil_ObjectType": "Coil:Cooling:DX:SingleSpeed", # AirLoopHVAC_CoolingCoil_ObjectType
@@ -823,11 +823,11 @@ def make_hvac_dict(set_dir, building_block_dir, hvac_airloop_main_dir, hvac_airl
             "ZoneAirInletNodeName": "Zone Inlet Node", # ZoneAirInletNodeName
             "ZoneAirExhaustNodeName": "", # ZoneAirExhaustNodeName
             "ZoneReturnAirNodeName": "Zone Outlet Node", # ZoneReturnAirNodeName
-            "unitaryTextFile": os.path.join(set_dir, building_block_dir, hvac_airloop_main_dir, hvac_airloop_hvac_dir, 'UnitaryHeatPumpMS.txt'), # HVAC equipment text file 1
-            "airDistUnitTextFile": os.path.join(set_dir, building_block_dir, hvac_zone_main_dir, hvac_zone_hvac_dir, 'ADU.txt'), # HVAC equipment text file 2
-            "heatCoilTextFile": os.path.join(set_dir, building_block_dir, hvac_coil_dir, 'Heating_DHP_VS_10HSPF.txt'), # additional heating coil text file
-            "coolCoilTextFile": os.path.join(set_dir, building_block_dir, hvac_coil_dir, 'Cooling_ASHP_VS_22SEER.txt'), # additional cooling coil text file
-            "fanTextFile": os.path.join(set_dir, building_block_dir, hvac_fan_dir, 'ZonalFanMS.txt'), # additional fan text file
+            "unitaryTextFile": 'UnitaryHeatPumpMS.txt', # HVAC equipment text file 1
+            "airDistUnitTextFile": 'ADU.txt', # HVAC equipment text file 2
+            "heatCoilTextFile": 'Heating_DHP_VS_10HSPF.txt', # additional heating coil text file
+            "coolCoilTextFile": 'Cooling_ASHP_VS_22SEER.txt', # additional cooling coil text file
+            "fanTextFile": 'ZonalFanMS.txt', # additional fan text file
             "AirLoopHVAC_HeatingCoil_ObjectType": "Coil:Heating:DX:MultiSpeed", # AirLoopHVAC_HeatingCoil_ObjectType
             "AirLoopHVAC_HeatingCoil_Name": "DX_Heating_Coil", # AirLoopHVAC_HeatingCoil_Name
             "AirLoopHVAC_CoolingCoil_ObjectType": "Coil:Cooling:DX:MultiSpeed", # AirLoopHVAC_CoolingCoil_ObjectType

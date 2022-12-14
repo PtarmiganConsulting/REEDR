@@ -7,7 +7,8 @@ from pprint import pprint
 import datetime
 from Scripts.unitconversions import convert_WperFt2_to_WperM2, convert_degF_to_degC, convert_IP_Uvalue_to_SI_Uvalue, convert_ft_to_m, convert_ft2_to_m2, \
     convert_ft3_to_m3, convert_Btuh_to_W, convert_CFM_to_m3PerSec, convert_W_to_ton, convert_in2_to_m2
-from Scripts.dictionaries import make_foundation_and_floor_dict, make_hvac_dict
+from Scripts.dictionaries import make_foundation_and_floor_dict, make_hvac_dict, make_living_infiltration_coeff_dict, make_attic_infiltration_coeff_dict, \
+    make_crawl_infiltration_coeff_dict
 from Scripts.datavalidation import validate, convert_capacity
 from Scripts.utilfunctions import estimateInfiltrationAdjustment
 
@@ -176,8 +177,14 @@ def genmodels(gui_params, get_data_dict):
     foundation_and_floor_dict = make_foundation_and_floor_dict()
     # hvac type dictionary
     hvac_dict = make_hvac_dict(set_dir, building_block_dir, hvac_airloop_main_dir, hvac_airloop_hvac_dir, hvac_zone_main_dir, hvac_zone_hvac_dir, hvac_coil_dir, hvac_fan_dir)
+    # living zone infiltration regression coefficients
+    living_infiltration_coeff_dict = make_living_infiltration_coeff_dict()
+    # attic zone infiltration regression coefficients
+    attic_infiltration_coeff_dict = make_attic_infiltration_coeff_dict()
+    # crawl zone infiltration regression coefficients
+    crawl_infiltration_coeff_dict = make_crawl_infiltration_coeff_dict()
+    
     # foundation type dictionary
-    #foundation_dict = make_foundation_dict()
     foundation_dict = {
         "Vent": ["Vented Crawlspace", "crawlspace"],
         "Slab": ["Slab", "attic"],
@@ -308,11 +315,19 @@ def genmodels(gui_params, get_data_dict):
             ZoneAirInletNodeName = hvac_dict[hvac_type]["ZoneAirInletNodeName"] #9
             ZoneAirExhaustNodeName = hvac_dict[hvac_type]["ZoneAirExhaustNodeName"] #10
             ZoneReturnAirNodeName = hvac_dict[hvac_type]["ZoneReturnAirNodeName"] #11
-            unitaryTextFile = hvac_dict[hvac_type]["unitaryTextFile"] #12
-            airDistUnitTextFile = hvac_dict[hvac_type]["airDistUnitTextFile"] #13
-            heatCoilTextFile = hvac_dict[hvac_type]["heatCoilTextFile"] #14
-            coolCoilTextFile = hvac_dict[hvac_type]["coolCoilTextFile"] #15
-            fanTextFile = hvac_dict[hvac_type]["fanTextFile"] #16
+
+            unitaryTextFile = os.path.join(set_dir, building_block_dir, hvac_airloop_main_dir, hvac_airloop_hvac_dir, hvac_dict[hvac_type]["unitaryTextFile"]) #12
+            airDistUnitTextFile = os.path.join(set_dir, building_block_dir, hvac_zone_main_dir, hvac_zone_hvac_dir, hvac_dict[hvac_type]["airDistUnitTextFile"]) #13
+            heatCoilTextFile = os.path.join(set_dir, building_block_dir, hvac_coil_dir, hvac_dict[hvac_type]["heatCoilTextFile"]) #14
+            coolCoilTextFile = os.path.join(set_dir, building_block_dir, hvac_coil_dir, hvac_dict[hvac_type]["coolCoilTextFile"]) #15
+            fanTextFile = os.path.join(set_dir, building_block_dir, hvac_fan_dir, hvac_dict[hvac_type]["fanTextFile"]) #16
+
+            # "unitaryTextFile": os.path.join(set_dir, building_block_dir, hvac_airloop_main_dir, hvac_airloop_hvac_dir, 'UnitaryHeatPumpSS.txt'), # HVAC equipment text file 1
+            # "airDistUnitTextFile": os.path.join(set_dir, building_block_dir, hvac_zone_main_dir, hvac_zone_hvac_dir, 'ADU.txt'), # HVAC equipment text file 2
+            # "heatCoilTextFile": os.path.join(set_dir, building_block_dir, hvac_coil_dir, 'Heating_ASHP_SS_8.5HSPF.txt'), # additional heating coil text file
+            # "coolCoilTextFile": os.path.join(set_dir, building_block_dir, hvac_coil_dir, 'Cooling_ASHP_SS_15SEER.txt'), # additional cooling coil text file
+            # "fanTextFile": os.path.join(set_dir, building_block_dir, hvac_fan_dir, 'CentralFanSS.txt'), # additional fan text file
+
             AirLoopHVAC_HeatingCoil_ObjectType = hvac_dict[hvac_type]["AirLoopHVAC_HeatingCoil_ObjectType"] #17
             AirLoopHVAC_HeatingCoil_Name = hvac_dict[hvac_type]["AirLoopHVAC_HeatingCoil_Name"] #18
             AirLoopHVAC_CoolingCoil_ObjectType = hvac_dict[hvac_type]["AirLoopHVAC_CoolingCoil_ObjectType"] #19
@@ -821,7 +836,8 @@ def genmodels(gui_params, get_data_dict):
         total_envelope_height = dictionary[volume_fieldname] / dictionary[footprint_fieldname]
         
         adjust = []
-        adjust = estimateInfiltrationAdjustment(foundation_type, infiltrationInACH50, dictionary[footprint_fieldname], total_envelope_height)
+        adjust = estimateInfiltrationAdjustment(foundation_type, infiltrationInACH50, dictionary[footprint_fieldname], total_envelope_height, \
+            living_infiltration_coeff_dict, attic_infiltration_coeff_dict, crawl_infiltration_coeff_dict)
         living_adjust = adjust[0]
         attic_adjust = adjust[1]
         crawl_adjust = adjust[2]
@@ -837,7 +853,6 @@ def genmodels(gui_params, get_data_dict):
 
         crawl_wall_area = 2*(abs(foundationwall_ht_AG) + abs(foundationwall_ht_BG))*building_depth + 2*(abs(foundationwall_ht_AG) + abs(foundationwall_ht_BG))*building_width
         ELA_crawl = crawl_adjust * crawl_wall_area * 0.00010812648958345
-        
         
         ### --- Add Air Flow Network (AFN) and airloop. Currently all HVAC systems are modeled with ducts. "Ductless" systems are modeled with "perfect" ducts. --- ### 
         AFN_control = "MultizoneWithDistribution"
