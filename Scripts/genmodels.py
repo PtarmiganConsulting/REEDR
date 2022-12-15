@@ -61,7 +61,8 @@ def genmodels(gui_params, get_data_dict):
     weather_fieldname = "Weather File"
     orient_fieldname = "Building Orientation [deg]"
     footprint_fieldname = "Conditioned Footprint Area [ft^2]"
-    volume_fieldname = "Total Conditioned Volume Above Foundation Walls [ft^3]"
+    stories_fieldname = "Average Number of Stories Above Foundation"
+    heightPerStory_fieldname = "Average Ceiling Height Per Story [ft]"
     bldgRatio_fieldname = "Building Width to Depth Ratio"
     wallCon_fieldname = "Exterior Non-Foundation Wall Construction"
     ceilingCon_fieldname = "Ceiling And Roof Construction"
@@ -227,8 +228,15 @@ def genmodels(gui_params, get_data_dict):
             #... conditioned footprint area
             conditioned_footprint_area = float(validate(footprint_fieldname, round(convert_ft2_to_m2(dictionary[footprint_fieldname]),10), "num_not_zero", 999, 999, dummy_list))
 
+            #... average building stories
+            avgStories = float(validate(stories_fieldname, round(dictionary[stories_fieldname],10), "num_not_zero", 999, 999, dummy_list))
+
+            #... average height per story
+            avgHtPerStory = float(validate(heightPerStory_fieldname, round(convert_ft_to_m(dictionary[heightPerStory_fieldname]),10), "num_not_zero", 999, 999, dummy_list))
+
             #... total conditioned volume
-            total_conditioned_volume = float(validate(volume_fieldname, round(convert_ft3_to_m3(dictionary[volume_fieldname]),10), "num_not_zero", 999, 999, dummy_list))
+            #total_conditioned_volume = float(validate(volume_fieldname, round(convert_ft3_to_m3(dictionary[volume_fieldname]),10), "num_not_zero", 999, 999, dummy_list))
+            total_conditioned_volume = conditioned_footprint_area * avgStories * avgHtPerStory
 
             #... Width to depth ratio
             ratio_width_to_depth = validate(bldgRatio_fieldname, dictionary[bldgRatio_fieldname], "num_not_zero", 999, 999, dummy_list)
@@ -319,14 +327,11 @@ def genmodels(gui_params, get_data_dict):
             unitaryTextFile = os.path.join(set_dir, building_block_dir, hvac_airloop_main_dir, hvac_airloop_hvac_dir, hvac_dict[hvac_type]["unitaryTextFile"]) #12
             airDistUnitTextFile = os.path.join(set_dir, building_block_dir, hvac_zone_main_dir, hvac_zone_hvac_dir, hvac_dict[hvac_type]["airDistUnitTextFile"]) #13
             heatCoilTextFile = os.path.join(set_dir, building_block_dir, hvac_coil_dir, hvac_dict[hvac_type]["heatCoilTextFile"]) #14
-            coolCoilTextFile = os.path.join(set_dir, building_block_dir, hvac_coil_dir, hvac_dict[hvac_type]["coolCoilTextFile"]) #15
+            if hvac_dict[hvac_type]["coolCoilTextFile"] != "NA":
+                coolCoilTextFile = os.path.join(set_dir, building_block_dir, hvac_coil_dir, hvac_dict[hvac_type]["coolCoilTextFile"]) #15
+            else:
+                coolCoilTextFile = "NA"
             fanTextFile = os.path.join(set_dir, building_block_dir, hvac_fan_dir, hvac_dict[hvac_type]["fanTextFile"]) #16
-
-            # "unitaryTextFile": os.path.join(set_dir, building_block_dir, hvac_airloop_main_dir, hvac_airloop_hvac_dir, 'UnitaryHeatPumpSS.txt'), # HVAC equipment text file 1
-            # "airDistUnitTextFile": os.path.join(set_dir, building_block_dir, hvac_zone_main_dir, hvac_zone_hvac_dir, 'ADU.txt'), # HVAC equipment text file 2
-            # "heatCoilTextFile": os.path.join(set_dir, building_block_dir, hvac_coil_dir, 'Heating_ASHP_SS_8.5HSPF.txt'), # additional heating coil text file
-            # "coolCoilTextFile": os.path.join(set_dir, building_block_dir, hvac_coil_dir, 'Cooling_ASHP_SS_15SEER.txt'), # additional cooling coil text file
-            # "fanTextFile": os.path.join(set_dir, building_block_dir, hvac_fan_dir, 'CentralFanSS.txt'), # additional fan text file
 
             AirLoopHVAC_HeatingCoil_ObjectType = hvac_dict[hvac_type]["AirLoopHVAC_HeatingCoil_ObjectType"] #17
             AirLoopHVAC_HeatingCoil_Name = hvac_dict[hvac_type]["AirLoopHVAC_HeatingCoil_Name"] #18
@@ -833,7 +838,7 @@ def genmodels(gui_params, get_data_dict):
 
         # Estimate effective leakage areas (ELAs), used to represent building infiltration, in AFN model
         infiltrationInACH50 = infiltration
-        total_envelope_height = dictionary[volume_fieldname] / dictionary[footprint_fieldname]
+        total_envelope_height = dictionary[stories_fieldname] * dictionary[heightPerStory_fieldname]
         
         adjust = []
         adjust = estimateInfiltrationAdjustment(foundation_type, infiltrationInACH50, dictionary[footprint_fieldname], total_envelope_height, \
