@@ -7,7 +7,8 @@ from pprint import pprint
 import datetime
 from Scripts.unitconversions import convert_WperFt2_to_WperM2, convert_degF_to_degC, convert_IP_Uvalue_to_SI_Uvalue, convert_ft_to_m, convert_ft2_to_m2, \
     convert_ft3_to_m3, convert_Btuh_to_W, convert_CFM_to_m3PerSec, convert_W_to_ton, convert_in2_to_m2
-from Scripts.dictionaries import make_foundation_and_floor_dict, make_hvac_dict, make_foundation_dict
+from Scripts.dictionaries import make_foundation_and_floor_dict, make_hvac_dict, make_living_infiltration_coeff_dict, make_attic_infiltration_coeff_dict, \
+    make_crawl_infiltration_coeff_dict
 from Scripts.datavalidation import validate, convert_capacity
 from Scripts.utilfunctions import estimateInfiltrationAdjustment
 
@@ -60,7 +61,8 @@ def genmodels(gui_params, get_data_dict):
     weather_fieldname = "Weather File"
     orient_fieldname = "Building Orientation [deg]"
     footprint_fieldname = "Conditioned Footprint Area [ft^2]"
-    volume_fieldname = "Total Conditioned Volume Above Foundation Walls [ft^3]"
+    stories_fieldname = "Average Number of Stories Above Foundation"
+    heightPerStory_fieldname = "Average Ceiling Height Per Story [ft]"
     bldgRatio_fieldname = "Building Width to Depth Ratio"
     wallCon_fieldname = "Exterior Non-Foundation Wall Construction"
     ceilingCon_fieldname = "Ceiling And Roof Construction"
@@ -117,7 +119,7 @@ def genmodels(gui_params, get_data_dict):
     output_gran = gui_params["output_gran"]
     output_enduses = gui_params["output_enduses"]
 
-    ### --- Allows tstat to overrun setpoint by a certain amount and drift back down to setpoint before kicking on again. This value empirically results in 
+    ### --- Allows tstat to overrun setpoint by a certain amount and drift back down to setpoint before kicking on again. A value of 0.79 empirically results in 
     ### average room temps that are +/- 1 degree F about the desired setpoint. ###
     deadband = "" #0.79
 
@@ -130,7 +132,6 @@ def genmodels(gui_params, get_data_dict):
         try:
             os.remove(os.path.join(set_dir, building_block_dir, schedule_dir, schedule_file))
             read_file.to_csv ((os.path.join(set_dir, building_block_dir, schedule_dir, schedule_file)), index = None, header=True)
-            # get_data_dict["runlog"].write("Schedules.csv successfully overwritten at " + os.path.join(set_dir, building_block_dir, schedule_dir, schedule_file) + ". \n" + "... \n")
         except:
             print("\n*** ERROR: Could not remove Schedule File. Please ensure that 8760 Schedule File is not open when running REEDR.\n")
             return True
@@ -177,8 +178,20 @@ def genmodels(gui_params, get_data_dict):
     foundation_and_floor_dict = make_foundation_and_floor_dict()
     # hvac type dictionary
     hvac_dict = make_hvac_dict(set_dir, building_block_dir, hvac_airloop_main_dir, hvac_airloop_hvac_dir, hvac_zone_main_dir, hvac_zone_hvac_dir, hvac_coil_dir, hvac_fan_dir)
+    # living zone infiltration regression coefficients
+    living_infiltration_coeff_dict = make_living_infiltration_coeff_dict()
+    # attic zone infiltration regression coefficients
+    attic_infiltration_coeff_dict = make_attic_infiltration_coeff_dict()
+    # crawl zone infiltration regression coefficients
+    crawl_infiltration_coeff_dict = make_crawl_infiltration_coeff_dict()
+    
     # foundation type dictionary
-    foundation_dict = make_foundation_dict()
+    foundation_dict = {
+        "Vent": ["Vented Crawlspace", "crawlspace"],
+        "Slab": ["Slab", "attic"],
+        "Heat": ["Heated Basement", "living"],
+        "Unhe": ["Unheated Basement", "unheatedbsmt"],
+    }
 
     ### --- IDF WRITER LOOP BEGINS HERE. --- ###
     # The loop covers every dictionary (effectively a runlabel row) in the big dictionary list.
@@ -215,8 +228,15 @@ def genmodels(gui_params, get_data_dict):
             #... conditioned footprint area
             conditioned_footprint_area = float(validate(footprint_fieldname, round(convert_ft2_to_m2(dictionary[footprint_fieldname]),10), "num_not_zero", 999, 999, dummy_list))
 
+            #... average building stories
+            avgStories = float(validate(stories_fieldname, round(dictionary[stories_fieldname],10), "num_not_zero", 999, 999, dummy_list))
+
+            #... average height per story
+            avgHtPerStory = float(validate(heightPerStory_fieldname, round(convert_ft_to_m(dictionary[heightPerStory_fieldname]),10), "num_not_zero", 999, 999, dummy_list))
+
             #... total conditioned volume
-            total_conditioned_volume = float(validate(volume_fieldname, round(convert_ft3_to_m3(dictionary[volume_fieldname]),10), "num_not_zero", 999, 999, dummy_list))
+            #total_conditioned_volume = float(validate(volume_fieldname, round(convert_ft3_to_m3(dictionary[volume_fieldname]),10), "num_not_zero", 999, 999, dummy_list))
+            total_conditioned_volume = conditioned_footprint_area * avgStories * avgHtPerStory
 
             #... Width to depth ratio
             ratio_width_to_depth = validate(bldgRatio_fieldname, dictionary[bldgRatio_fieldname], "num_not_zero", 999, 999, dummy_list)
@@ -289,6 +309,48 @@ def genmodels(gui_params, get_data_dict):
             #... primary HVAC type
             hvac_type_list = hvac_dict.keys()
             hvac_type = validate(primaryHVAC_fieldname, dictionary[primaryHVAC_fieldname], "list", 999, 999, hvac_type_list)
+
+            #... get HVAC characteristics for primary HVAC type
+            CentralOrZonal = hvac_dict[hvac_type]["CentralOrZonal"] #0
+            ZoneEquipment1ObjectType = hvac_dict[hvac_type]["ZoneEquipment1ObjectType"] #1
+            ZoneEquipment1Name = hvac_dict[hvac_type]["ZoneEquipment1Name"] #2
+            ZoneEquipment1CoolingSequence = hvac_dict[hvac_type]["ZoneEquipment1CoolingSequence"] #3
+            ZoneEquipment1HeatingSequence = hvac_dict[hvac_type]["ZoneEquipment1HeatingSequence"] #4
+            ZoneEquipment2ObjectType = hvac_dict[hvac_type]["ZoneEquipment2ObjectType"] #5
+            ZoneEquipment2Name = hvac_dict[hvac_type]["ZoneEquipment2Name"] #6
+            ZoneEquipment2CoolingSequence = hvac_dict[hvac_type]["ZoneEquipment2CoolingSequence"] #7
+            ZoneEquipment2HeatingSequence = hvac_dict[hvac_type]["ZoneEquipment2HeatingSequence"] #8
+            ZoneAirInletNodeName = hvac_dict[hvac_type]["ZoneAirInletNodeName"] #9
+            ZoneAirExhaustNodeName = hvac_dict[hvac_type]["ZoneAirExhaustNodeName"] #10
+            ZoneReturnAirNodeName = hvac_dict[hvac_type]["ZoneReturnAirNodeName"] #11
+
+            unitaryTextFile = os.path.join(set_dir, building_block_dir, hvac_airloop_main_dir, hvac_airloop_hvac_dir, hvac_dict[hvac_type]["unitaryTextFile"]) #12
+            airDistUnitTextFile = os.path.join(set_dir, building_block_dir, hvac_zone_main_dir, hvac_zone_hvac_dir, hvac_dict[hvac_type]["airDistUnitTextFile"]) #13
+            heatCoilTextFile = os.path.join(set_dir, building_block_dir, hvac_coil_dir, hvac_dict[hvac_type]["heatCoilTextFile"]) #14
+            if hvac_dict[hvac_type]["coolCoilTextFile"] != "NA":
+                coolCoilTextFile = os.path.join(set_dir, building_block_dir, hvac_coil_dir, hvac_dict[hvac_type]["coolCoilTextFile"]) #15
+            else:
+                coolCoilTextFile = "NA"
+            fanTextFile = os.path.join(set_dir, building_block_dir, hvac_fan_dir, hvac_dict[hvac_type]["fanTextFile"]) #16
+
+            AirLoopHVAC_HeatingCoil_ObjectType = hvac_dict[hvac_type]["AirLoopHVAC_HeatingCoil_ObjectType"] #17
+            AirLoopHVAC_HeatingCoil_Name = hvac_dict[hvac_type]["AirLoopHVAC_HeatingCoil_Name"] #18
+            AirLoopHVAC_CoolingCoil_ObjectType = hvac_dict[hvac_type]["AirLoopHVAC_CoolingCoil_ObjectType"] #19
+            AirLoopHVAC_CoolingCoil_Name = hvac_dict[hvac_type]["AirLoopHVAC_CoolingCoil_Name"] #20
+            AirLoopHVAC_Unitary_ObjectType = hvac_dict[hvac_type]["AirLoopHVAC_Unitary_ObjectType"] #21
+            AirLoopHVAC_Unitary_ObjectName = hvac_dict[hvac_type]["AirLoopHVAC_Unitary_ObjectName"] #22
+            fan_name = hvac_dict[hvac_type]["fan_name"] #23
+            heating_speeds = hvac_dict[hvac_type]["heating_speeds"] #24
+            cooling_speeds = hvac_dict[hvac_type]["cooling_speeds"] #25
+            fan_CFMperTon_max = hvac_dict[hvac_type]["fan_CFMperTon_max"] #26
+            fan_CFMmult_spd_1 = hvac_dict[hvac_type]["fan_CFMmult_spd_1"] #27
+            fan_CFMmult_spd_2 = hvac_dict[hvac_type]["fan_CFMmult_spd_2"] #28
+            fan_CFMmult_spd_3 = hvac_dict[hvac_type]["fan_CFMmult_spd_3"] #29
+            fan_CFMmult_spd_4 = hvac_dict[hvac_type]["fan_CFMmult_spd_4"] #30
+            capacitymult_spd_1 = hvac_dict[hvac_type]["capacitymult_spd_1"] #31
+            capacitymult_spd_2 = hvac_dict[hvac_type]["capacitymult_spd_2"] #32
+            capacitymult_spd_3 = hvac_dict[hvac_type]["capacitymult_spd_3"] #33
+            capacitymult_spd_4 = hvac_dict[hvac_type]["capacitymult_spd_4"] #34
             
             #... heating capacity units
             primaryHVAC_capacity_units_list = ["kBtu/h", "kW", "ton"]
@@ -299,8 +361,8 @@ def genmodels(gui_params, get_data_dict):
             primary_heating_capacity = convert_capacity(primaryHtg_capacity_units, primary_heating_capacity)
 
             #... cooling capacity and capacity units
-            if hvac_dict[hvac_type][22] == "SS Heat Pump" or hvac_dict[hvac_type][22] == "DS Heat Pump" or hvac_dict[hvac_type][22] == "MS Heat Pump" \
-            or hvac_dict[hvac_type][15] != "NA":
+            if AirLoopHVAC_Unitary_ObjectName == "SS Heat Pump" or AirLoopHVAC_Unitary_ObjectName == "DS Heat Pump" or AirLoopHVAC_Unitary_ObjectName == "MS Heat Pump" \
+            or coolCoilTextFile != "NA":
                 primaryClg_capacity_units = validate(primaryClgCapacityUnits_fieldname, dictionary[primaryClgCapacityUnits_fieldname], "list", 999, 999, primaryHVAC_capacity_units_list)
                 primary_cooling_capacity = validate(primaryClgCapacity_fieldname, dictionary[primaryClgCapacity_fieldname], "num_not_zero", 999, 999, dummy_list)
                 primary_cooling_capacity = convert_capacity(primaryClg_capacity_units, primary_cooling_capacity)
@@ -308,8 +370,8 @@ def genmodels(gui_params, get_data_dict):
                 primary_cooling_capacity = 0
 
             #... heat pump specific inputs
-            if hvac_dict[hvac_type][22] == "SS Heat Pump" or hvac_dict[hvac_type][22] == "DS Heat Pump" or hvac_dict[hvac_type][22] == "MS Heat Pump" \
-            and hvac_dict[hvac_type][0] == "Central":
+            if AirLoopHVAC_Unitary_ObjectName == "SS Heat Pump" or AirLoopHVAC_Unitary_ObjectName == "DS Heat Pump" or AirLoopHVAC_Unitary_ObjectName == "MS Heat Pump" \
+            and CentralOrZonal == "Central":
                 #... ASHP backup heat type
                 hp_supp_heat_type_list = ["Electric", "Gas"]
                 hp_supp_heat_type = validate(hpBackupType_fieldname, dictionary[hpBackupType_fieldname], "list", 999, 999, hp_supp_heat_type_list)
@@ -333,7 +395,7 @@ def genmodels(gui_params, get_data_dict):
                 baseboard_heat_capacity = convert_capacity("kW", validate(backupBaseboardCapacity_fieldname, dictionary[backupBaseboardCapacity_fieldname], "any_num", 999, 999, dummy_list))
             
             #... duct inputs
-            if hvac_dict[hvac_type][0] == "Central":
+            if CentralOrZonal == "Central":
                 #... duct leakage
                 duct_leak_lo = 0.0001
                 duct_leak_hi = 0.99
@@ -364,7 +426,7 @@ def genmodels(gui_params, get_data_dict):
             clg_stpt_sch = validate(clgSched_fieldname, dictionary[clgSched_fieldname], "list", 999, 999, sched_validation_list)
 
             #... gas furnace AFUE
-            if hvac_dict[hvac_type][18] == "Heating_Fuel_Main" or hp_supp_heat_type == "Gas":
+            if AirLoopHVAC_HeatingCoil_Name == "Heating_Fuel_Main" or hp_supp_heat_type == "Gas":
                 AFUE_lo = 0.5
                 AFUE_hi = 0.99
                 gas_furnace_AFUE = validate(AFUE_fieldname, dictionary[AFUE_fieldname], "num_between", AFUE_lo, AFUE_hi, dummy_list)
@@ -426,21 +488,21 @@ def genmodels(gui_params, get_data_dict):
         win_construction = "Exterior Window"
 
         # Set foundation parameters based on foundation type
-        main_floor_construction = foundation_and_floor_dict[foundation_and_floor_con][0]
-        foundation_surface = foundation_and_floor_dict[foundation_and_floor_con][1]
-        int_horiz_ins_mat_name = foundation_and_floor_dict[foundation_and_floor_con][2]
-        int_horiz_ins_depth = convert_ft_to_m(foundation_and_floor_dict[foundation_and_floor_con][3])
-        int_horiz_ins_width = convert_ft_to_m(foundation_and_floor_dict[foundation_and_floor_con][4])
-        int_vert_ins_mat_name = foundation_and_floor_dict[foundation_and_floor_con][5]   
-        int_vert_ins_depth = convert_ft_to_m(foundation_and_floor_dict[foundation_and_floor_con][6])
-        ext_vert_ins_mat_name = foundation_and_floor_dict[foundation_and_floor_con][7]  
-        ext_vert_ins_depth = convert_ft_to_m(foundation_and_floor_dict[foundation_and_floor_con][8])
-        wall_ht_above_grade = convert_ft_to_m(foundation_and_floor_dict[foundation_and_floor_con][9])
-        wall_ht_below_slab = convert_ft_to_m(foundation_and_floor_dict[foundation_and_floor_con][10])
-        floor_insulation_layer = foundation_and_floor_dict[foundation_and_floor_con][11]
-        floor_main_outside_boundary_condition = foundation_and_floor_dict[foundation_and_floor_con][12]
-        floor_main_outside_boundary_condition_object = foundation_and_floor_dict[foundation_and_floor_con][13]
-        foundation_zone_name = foundation_and_floor_dict[foundation_and_floor_con][14]
+        main_floor_construction = foundation_and_floor_dict[foundation_and_floor_con]["main_floor_construction"]
+        foundation_surface = foundation_and_floor_dict[foundation_and_floor_con]["foundation_surface"]
+        int_horiz_ins_mat_name = foundation_and_floor_dict[foundation_and_floor_con]["int_horiz_ins_mat_name"]
+        int_horiz_ins_depth = convert_ft_to_m(foundation_and_floor_dict[foundation_and_floor_con]["int_horiz_ins_depth"])
+        int_horiz_ins_width = convert_ft_to_m(foundation_and_floor_dict[foundation_and_floor_con]["int_horiz_ins_width"])
+        int_vert_ins_mat_name = foundation_and_floor_dict[foundation_and_floor_con]["int_vert_ins_mat_name"]   
+        int_vert_ins_depth = convert_ft_to_m(foundation_and_floor_dict[foundation_and_floor_con]["int_vert_ins_depth"])
+        ext_vert_ins_mat_name = foundation_and_floor_dict[foundation_and_floor_con]["ext_vert_ins_mat_name"]  
+        ext_vert_ins_depth = convert_ft_to_m(foundation_and_floor_dict[foundation_and_floor_con]["ext_vert_ins_depth"])
+        wall_ht_above_grade = convert_ft_to_m(foundation_and_floor_dict[foundation_and_floor_con]["wall_ht_above_grade"])
+        wall_ht_below_slab = convert_ft_to_m(foundation_and_floor_dict[foundation_and_floor_con]["wall_ht_below_slab"])
+        floor_insulation_layer = foundation_and_floor_dict[foundation_and_floor_con]["floor_insulation_layer"]
+        floor_main_outside_boundary_condition = foundation_and_floor_dict[foundation_and_floor_con]["floor_main_outside_boundary_condition"]
+        floor_main_outside_boundary_condition_object = foundation_and_floor_dict[foundation_and_floor_con]["floor_main_outside_boundary_condition_object"]
+        foundation_zone_name = foundation_and_floor_dict[foundation_and_floor_con]["foundation_zone_name"]
 
         # Set geometry parameters that are needed to create geometry but not needed to be changed by user. All units in ft and converted to meters.
         origin_x = convert_ft_to_m(0) 
@@ -687,45 +749,14 @@ def genmodels(gui_params, get_data_dict):
         
         DesignSpecificationOutdoorAirObjectName = ""
 
-        # Get HVAC characteristics from HVAC dictionary based on user selection in Excel input sheet.
-        ZoneEquipment1ObjectType = hvac_dict[hvac_type][1]
-        ZoneEquipment1Name = hvac_dict[hvac_type][2]
-        ZoneEquipment1CoolingSequence = hvac_dict[hvac_type][3]
-        ZoneEquipment1HeatingSequence = hvac_dict[hvac_type][4]
-        ZoneEquipment2ObjectType = hvac_dict[hvac_type][5]
-        ZoneEquipment2Name = hvac_dict[hvac_type][6]
-        ZoneEquipment2CoolingSequence = hvac_dict[hvac_type][7]
-        ZoneEquipment2HeatingSequence = hvac_dict[hvac_type][8]
-        ZoneAirInletNodeName = hvac_dict[hvac_type][9]
-        ZoneAirExhaustNodeName = hvac_dict[hvac_type][10]
-        ZoneReturnAirNodeName = hvac_dict[hvac_type][11]
-        AirLoopHVAC_HeatingCoil_ObjectType = hvac_dict[hvac_type][17]
-        AirLoopHVAC_HeatingCoil_Name = hvac_dict[hvac_type][18]
-        AirLoopHVAC_CoolingCoil_ObjectType = hvac_dict[hvac_type][19]
-        AirLoopHVAC_CoolingCoil_Name = hvac_dict[hvac_type][20]
-        AirLoopHVAC_Unitary_ObjectType = hvac_dict[hvac_type][21]
-        AirLoopHVAC_Unitary_ObjectName = hvac_dict[hvac_type][22]
-        fan_name = hvac_dict[hvac_type][23]
-        heating_speeds = hvac_dict[hvac_type][24]
-        cooling_speeds = hvac_dict[hvac_type][25]
-        fan_CFMperTon_max = hvac_dict[hvac_type][26]
-        fan_CFMmult_spd_1 = hvac_dict[hvac_type][27]
-        fan_CFMmult_spd_2 = hvac_dict[hvac_type][28]
-        fan_CFMmult_spd_3 = hvac_dict[hvac_type][29]
-        fan_CFMmult_spd_4 = hvac_dict[hvac_type][30]
-        capacitymult_spd_1 = hvac_dict[hvac_type][31]
-        capacitymult_spd_2 = hvac_dict[hvac_type][32]
-        capacitymult_spd_3 = hvac_dict[hvac_type][33]
-        capacitymult_spd_4 = hvac_dict[hvac_type][34]
-
         # Assume effectively no integrated supplemental backup heat for a DHP
-        if AirLoopHVAC_Unitary_ObjectType == "AirLoopHVAC:UnitaryHeatPump:AirToAir:MultiSpeed" and hvac_dict[hvac_type][0] == "Zonal":
+        if AirLoopHVAC_Unitary_ObjectType == "AirLoopHVAC:UnitaryHeatPump:AirToAir:MultiSpeed" and CentralOrZonal == "Zonal":
             hp_max_resistance_temp = convert_degF_to_degC(68)
             hp_min_compressor_temp = convert_degF_to_degC(-20)
 
         # Set capacity to use for sizing fans. If heating only, use heating capacity. If heating and cooling, use average capacity.
-        if hvac_dict[hvac_type][22] == "SS Heat Pump" or hvac_dict[hvac_type][22] == "DS Heat Pump" or hvac_dict[hvac_type][22] == "MS Heat Pump" \
-            or hvac_dict[hvac_type][15] != "NA":
+        if AirLoopHVAC_Unitary_ObjectName == "SS Heat Pump" or AirLoopHVAC_Unitary_ObjectName == "DS Heat Pump" or AirLoopHVAC_Unitary_ObjectName == "MS Heat Pump" \
+            or coolCoilTextFile != "NA":
 
             sizing_capacity = convert_W_to_ton((primary_heating_capacity + primary_cooling_capacity)/2)
         else:
@@ -807,10 +838,11 @@ def genmodels(gui_params, get_data_dict):
 
         # Estimate effective leakage areas (ELAs), used to represent building infiltration, in AFN model
         infiltrationInACH50 = infiltration
-        total_envelope_height = dictionary[volume_fieldname] / dictionary[footprint_fieldname]
+        total_envelope_height = dictionary[stories_fieldname] * dictionary[heightPerStory_fieldname]
         
         adjust = []
-        adjust = estimateInfiltrationAdjustment(foundation_type, infiltrationInACH50, dictionary[footprint_fieldname], total_envelope_height)
+        adjust = estimateInfiltrationAdjustment(foundation_type, infiltrationInACH50, dictionary[footprint_fieldname], total_envelope_height, \
+            living_infiltration_coeff_dict, attic_infiltration_coeff_dict, crawl_infiltration_coeff_dict)
         living_adjust = adjust[0]
         attic_adjust = adjust[1]
         crawl_adjust = adjust[2]
@@ -826,7 +858,6 @@ def genmodels(gui_params, get_data_dict):
 
         crawl_wall_area = 2*(abs(foundationwall_ht_AG) + abs(foundationwall_ht_BG))*building_depth + 2*(abs(foundationwall_ht_AG) + abs(foundationwall_ht_BG))*building_width
         ELA_crawl = crawl_adjust * crawl_wall_area * 0.00010812648958345
-        
         
         ### --- Add Air Flow Network (AFN) and airloop. Currently all HVAC systems are modeled with ducts. "Ductless" systems are modeled with "perfect" ducts. --- ### 
         AFN_control = "MultizoneWithDistribution"
@@ -886,7 +917,7 @@ def genmodels(gui_params, get_data_dict):
             with open(os.path.join(set_dir, building_block_dir, hvac_afn_main_dir, hvac_afn_surface_dir, 'AFN_CrawlUnheatedBsmtSurfaceAdder.txt'), 'r') as f:
                 AFN_crawl_unheatedbsmt_surface_adder_t = f.read()
 
-        if hvac_dict[hvac_type][0] == "Central":
+        if CentralOrZonal == "Central":
             maintrunk_duct_length = 2 # units are meters
             zonesupply_duct_length = 15
             zonereturn_duct_length = 8
@@ -894,7 +925,7 @@ def genmodels(gui_params, get_data_dict):
 
             supply_duct_Ufactor = supplyUvalue # units are W/m2-K
             return_duct_Ufactor = returnUvalue
-        elif hvac_dict[hvac_type][0] == "Zonal":
+        elif CentralOrZonal == "Zonal":
             maintrunk_duct_length = 0.0001
             zonesupply_duct_length = 0.0001
             zonereturn_duct_length = 0.0001
@@ -919,31 +950,31 @@ def genmodels(gui_params, get_data_dict):
         with open(os.path.join(set_dir, building_block_dir, hvac_zone_main_dir, 'EquipListAndConnections.txt'), 'r') as f:
             zone_equip_list_t = f"{f.read()}".format(**locals())
         # Add HVAC equipment text file 1, which is typically the unitary HVAC text file
-        with open(hvac_dict[hvac_type][12], 'r') as f:
+        with open(unitaryTextFile, 'r') as f:
             HVAC_equip_1_t = f"{f.read()}".format(**locals())
         # Add HVAC equipment text file 2, which is typically the air distribution unit
-        if hvac_dict[hvac_type][13] == "NA":
+        if airDistUnitTextFile == "NA":
             HVAC_equip_2_t = ""
         else:
-            with open(hvac_dict[hvac_type][13], 'r') as f:
+            with open(airDistUnitTextFile, 'r') as f:
                 HVAC_equip_2_t = f"{f.read()}".format(**locals())
         # Add heating coil text file
-        if hvac_dict[hvac_type][14] == "NA":
+        if heatCoilTextFile == "NA":
             heating_coil_t = ""
         else:
-            with open(hvac_dict[hvac_type][14], 'r') as f:
+            with open(heatCoilTextFile, 'r') as f:
                 heating_coil_t = f"{f.read()}".format(**locals())
         # Add cooling coil text file
-        if hvac_dict[hvac_type][15] == "NA":    
+        if coolCoilTextFile == "NA":    
             cooling_coil_t = ""
         else:
-            with open(hvac_dict[hvac_type][15], 'r') as f:
+            with open(coolCoilTextFile, 'r') as f:
                 cooling_coil_t = f"{f.read()}".format(**locals())
         # Add fan text file
-        if hvac_dict[hvac_type][16] == "NA":    
+        if fanTextFile == "NA":    
             fan_t = ""
         else:
-            with open(hvac_dict[hvac_type][16], 'r') as f:
+            with open(fanTextFile, 'r') as f:
                 fan_t = f"{f.read()}".format(**locals())
 
         # Output text files
