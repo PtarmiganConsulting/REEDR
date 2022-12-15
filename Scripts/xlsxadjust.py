@@ -2,9 +2,8 @@ from openpyxl import load_workbook
 import pandas as pd
 
 # need to give it eyes
-def adapt_spreadsheet(path):
+def adapt_spreadsheet(standard_filename):
 
-    standard_filename = f"{path}\RunReport.xlsx"
     df = pd.read_excel(standard_filename)
     # df_all = pd.read_excel(standard_filename, sheet_name=None)
     # df = df_all[0]

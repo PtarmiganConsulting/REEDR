@@ -21,7 +21,6 @@ def genoutputs(gui_params, get_data_dict):
 
     # Update simulation status box in Excel interface...
     status = "Generating model output..."
-    #sht1.range('status_line_3').value = status
     print(status)
 
     # Used to print dataframes to command prompt in more legible way for debugging
@@ -146,9 +145,6 @@ def genoutputs(gui_params, get_data_dict):
     for d in (Demand_All_HVAC_dict, Demand_Heating_dict, Demand_Cooling_dict, Demand_Fan_dict, Demand_Lighting_dict, Demand_Water_Heating_dict, Demand_Other_Equipment_dict):
         Demand_All_End_Uses_dict.update(d)
 
-    # Write to RunLog...
-    # get_data_dict["runlog"].write("Starting to read model outputs... \n ...\n")
-
     ## Determine report type to output based on user input...
     #... determine whether to create an energy or demand report
     if gui_params["output_gran"] == "Annual":
@@ -156,34 +152,23 @@ def genoutputs(gui_params, get_data_dict):
         output_enduses = "All_End_Uses" # if outputting annual energy report, always report all end uses
     else:
         output_type = "Demand"
-    #... determine report name
-    report_name = output_type + "_" + gui_params["output_enduses"] # make sure this comes from dictionary
     #... determine which output dictionary to use for report, defined as a string
     output_dict_str = output_type + "_" + gui_params["output_enduses"] + "_dict" # make sure this comes from dictionary
     #... convert string to a dictionary, so that it can be properly processed below
     output_dict = locals()[output_dict_str]
-    #... write to RunLog...
-    # get_data_dict["runlog"].write("Producing report for " + report_name + "... \n")
 
+    #... create path for output workbook
+    out_path = get_data_dict["master_directory"] + "/RunReport_" + str(gui_params["project_val"]) + ".xlsx"
 
     ## This is the main function ("sub-routine") that generates the actual custom report.
     ## It takes as arguments the working directory (set_dir), the proper output dictionary (output_dict),
     ## the proper report name (report_name), and the requested output granularity (output_gran).
     ## From there, it takes the proper outputs from the individual EnergyPlus-generated output files
     ## and creates a new, custom report in Excel that combines all runs.
-    produce_output_report(set_dir, output_dict, report_name, gui_params["output_gran"], output_type, get_data_dict, gui_params["output_enduses"])
+    produce_output_report(output_dict, gui_params["output_gran"], output_type, get_data_dict, gui_params["output_enduses"], out_path)
 
     if gui_params["output_gran"] != "Annual":
-        project_path = f'{set_dir}/Projects/{gui_params["project_val"]}'
-        adapt_spreadsheet(project_path)
-
-
-
-    # Update simulation status box in REEDR.xlsm...
-    #sht1.range('status_line_3').value = "Generating model output... Model output complete."
-    # get_data_dict["runlog"].write("...\nModel output complete.")
-
-    # sub = subprocess.Popen("cmd /k")
+        adapt_spreadsheet(out_path)
 
     print("...model output complete.")
     print()
@@ -195,8 +180,8 @@ def genoutputs(gui_params, get_data_dict):
 ## the proper report name (report_name), the requested output granularity (output_gran), and the output type (energy or demand: output_type).
 ## From there, it takes the proper outputs from the individual EnergyPlus-generated output files
 ## and creates a new, custom report in Excel that combines all runs.
-def produce_output_report(set_dir, output_dict, end_use_report_name, output_gran, output_type, get_data_dict, output_enduses):
-
+def produce_output_report(output_dict, output_gran, output_type, get_data_dict, output_enduses, out_path):
+    
     # Get run labels for output table
     df_for_run_labels = pd.read_excel(get_data_dict["REEDR_wb"], sheet_name=get_data_dict["Model_Input_ws"]) # This is the sheet with the model inputs
     run_label_list = df_for_run_labels['Run Label'].tolist()
@@ -220,10 +205,9 @@ def produce_output_report(set_dir, output_dict, end_use_report_name, output_gran
         run_label = row["Run Label"]
         timestep = row["Timesteps Per Hour"]
 
-        # Update simulation status box in REEDR.xlsm...
+        # Update simulation status...
         status = "...generating output for run " + str(i) + " of " + str(len(df_for_run_labels)) + "..."
         print(status)
-        #sht1.range('status_line_3').value = status
 
         # Get the path to the EnergyPlus output csv for each run
         eplus_out_path = get_data_dict["master_directory"] + '/' + run_label + '/' + "eplusout.csv"
@@ -271,14 +255,8 @@ def produce_output_report(set_dir, output_dict, end_use_report_name, output_gran
             # Concat the individual EnergyPlus run to the end of the custom report file, thus combining output from all EnergyPlus runs
             df_out = pd.concat([df_out, eplus_out_df])
 
-        # Update run log
-        # get_data_dict["runlog"].write("... sucessfully read outputs for run " + run_label + "\n")
         # Update sim status counter
         i = i + 1
-
-    # Create path string for new custom report
-    #out_path = get_data_dict["master_directory"] + '/' + end_use_report_name + ".xlsx"
-    out_path = get_data_dict["master_directory"] + "/RunReport.xlsx"
 
     # If path already exists, remove it, to be overwritten
     if os.path.exists(out_path) == True:
@@ -287,8 +265,6 @@ def produce_output_report(set_dir, output_dict, end_use_report_name, output_gran
         except:
             print("\n*** ERROR: Could not remove RunReport. Please ensure that RunReport is not open when running REEDR.\n")
             return True
-            # Write error to RunLog
-            # get_data_dict["runlog"].write("!!! Could not remove existing output file. REEDR experienced the following error: " + str(e) + " \n")
 
     ## Rename column headers in df with simpler, more descriptive names
     ## AND convert units where necessary
@@ -315,11 +291,11 @@ def produce_output_report(set_dir, output_dict, end_use_report_name, output_gran
     writer = pd.ExcelWriter(out_path, engine='xlsxwriter')
     
     # Paste output dataframe (custom report) to the path created just above.
-    df_out.to_excel(writer, sheet_name="Model Out", header=True, index=False, startrow=0, startcol=0) #commented out: float_format="%.2f"
+    df_out.to_excel(writer, sheet_name="Model Out", header=True, index=False, startrow=0, startcol=0)
 
     # write model inputs to output report as well
     df_in = get_data_dict["df"]
-    df_in.to_excel(writer, sheet_name="Model In", header=True, index=False, startrow=0, startcol=0) #commented out: float_format="%.2f"
+    df_in.to_excel(writer, sheet_name="Model In", header=True, index=False, startrow=0, startcol=0)
 
     # get current time
     current_time = datetime.datetime.now(pytz.timezone('US/Pacific'))
