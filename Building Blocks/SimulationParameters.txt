@@ -8,7 +8,7 @@ Version,
 SimulationControl,
     Yes,                     !- Do Zone Sizing Calculation
     Yes,                     !- Do System Sizing Calculation
-    No,                      !- Do Plant Sizing Calculation
+    Yes,                      !- Do Plant Sizing Calculation
     Yes,                     !- Run Simulation for Sizing Periods
     Yes;                     !- Run Simulation for Weather File Run Periods
 
@@ -51,4 +51,10 @@ RunPeriod,
     Yes,                     !- Use Weather File Rain Indicators
     Yes,                     !- Use Weather File Snow Indicators
     ;                        !- Treat Weather as Actual
+
+ Site:WaterMainsTemperature,
+     CorrelationFromWeatherFile,	!- Calculation method
+     , 		!- Temperature schedule name
+     , !- Annual average outdoor air temperature {{C}}
+     ;	!- Maximum difference in monthly average outdoor air temperatures {{C}}
 

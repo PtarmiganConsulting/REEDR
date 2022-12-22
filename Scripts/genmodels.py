@@ -23,6 +23,7 @@ def genmodels(gui_params, get_data_dict):
     schedule_dir = "Schedules"
     schedule_elec_gains_dir = "MiscElecGains"
     schedule_gas_gains_dir = "MiscGasGains"
+    schedule_DHW_draws_dir = "HotWaterDraws"
     schedule_file = "Schedules.csv"
     location_and_climate_dir = "LocationAndClimate"
     materials_main_dir = "Materials"
@@ -603,17 +604,6 @@ def genmodels(gui_params, get_data_dict):
         with open(os.path.join(set_dir, building_block_dir, 'Constructions.txt'), 'r') as f:
             construction_t = f"{f.read()}".format(**locals())
 
-        # Domestic Hot Water (DHW)
-        if water_heater_type == "None":
-            water_heater_t = ""
-            dhw_t = ""
-        else:
-            water_heater_file = water_heater_type + ".txt"
-            with open(os.path.join(set_dir, building_block_dir, dhw_main_dir, dhw_wh_type_dir, water_heater_file), 'r') as f:
-                water_heater_t = f.read()
-            with open(os.path.join(set_dir, building_block_dir, dhw_main_dir, 'OtherDHW.txt'), 'r') as f:
-                dhw_t = f.read()
-
         # Simulation Parameters
         with open(os.path.join(set_dir, building_block_dir, 'SimulationParameters.txt'), 'r') as f:
             simparam_t = f"{f.read()}".format(**locals())
@@ -977,6 +967,23 @@ def genmodels(gui_params, get_data_dict):
             with open(fanTextFile, 'r') as f:
                 fan_t = f"{f.read()}".format(**locals())
 
+        # Domestic Hot Water (DHW)
+        if water_heater_type == "None" or people == 0:
+            water_heater_t = ""
+            dhw_t = ""
+            dhw_draw_sch_t = ""
+        else:
+            water_heater_file = water_heater_type + ".txt"
+            DHW_people = str(min(people,5))
+            DHW_draw_sch = "Year_" + DHW_people + "_Occupant_DHW"
+            DHW_draw_sch_file = DHW_people + "_Occupant_Draws.txt"
+            with open(os.path.join(set_dir, building_block_dir, dhw_main_dir, dhw_wh_type_dir, water_heater_file), 'r') as f:
+                water_heater_t = f.read()
+            with open(os.path.join(set_dir, building_block_dir, dhw_main_dir, 'OtherDHW.txt'), 'r') as f:
+                dhw_t = f"{f.read()}".format(**locals())
+            with open(os.path.join(set_dir, building_block_dir, schedule_dir, schedule_DHW_draws_dir, DHW_draw_sch_file), 'r') as f:
+                dhw_draw_sch_t = f"{f.read()}".format(**locals())
+
         # Output text files
         #... add user requested output file
         user_output_file = output_lookup + ".txt"
@@ -1004,7 +1011,7 @@ def genmodels(gui_params, get_data_dict):
             AFN_crawl_zone_t, AFN_unheatedbsmt_zone_t, AFN_crawl_unheatedbsmt_leakage_adder_t, AFN_crawl_unheatedbsmt_surface_adder_t, \
             AFN_ducts_t, system_sizing_t, airloop_t, AFN_linkage_coolingcoiladder_t, AFN_nodes_coolingcoiladder_t, \
             zone_equip_list_t, HVAC_equip_1_t, HVAC_equip_2_t, heating_coil_t, supp_heating_coil_t, cooling_coil_t, fan_t, \
-            baseboard_t, thermostat_t, zone_sizing_t, water_heater_t, dhw_t, perf_t, output_t, user_output_t, outputcontrol_t
+            baseboard_t, thermostat_t, zone_sizing_t, water_heater_t, dhw_t, dhw_draw_sch_t, perf_t, output_t, user_output_t, outputcontrol_t
             ]
 
         #the idf writing actually begins here
