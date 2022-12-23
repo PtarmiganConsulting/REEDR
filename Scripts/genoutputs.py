@@ -32,116 +32,14 @@ def genoutputs(gui_params, get_data_dict):
     pd.set_option('display.max_rows', None)  # or 1000
 
     ## Define output dictionaries. These become the data fields (i.e. columns) for the custom report.
-    Energy_All_End_Uses_dict = {
-        "Run Label": ['Run_Label', "Run_Label"],
-        "Total Elec [kWh]": ['Electricity:Facility [J]', "Elec"],
-        "Total Gas [therm]": ['NaturalGas:Facility [J]', "Gas"],
-        "Total Heat Elec [kWh]": ['Heating:Electricity [J]', "Elec"],
-        "Prim Furnace Heat Elec [kWh]": ['HEATING_RESISTANCE_MAIN:Heating Coil Electricity Energy [J]', "Elec"],
-        "ASHP Compressor Heat Elec [kWh]": ['DX_HEATING_COIL:Heating Coil Electricity Energy [J]', "Elec"],
-        "ASHP Backup Heat Elec [kWh]": ['HEATING_RESISTANCE_BACKUP:Heating Coil Electricity Energy [J]', "Elec"],
-        "ASHP Defrost Elec [kWh]": ['DX_HEATING_COIL:Heating Coil Defrost Electricity Energy [J]', "Elec"],
-        "ASHP Crankcase Heater Elec [kWh]": ['DX_HEATING_COIL:Heating Coil Crankcase Heater Electricity Energy [J]', "Elec"],
-        "Baseboard Heat Elec [kWh]": ['BASEBOARDELECTRIC:Baseboard Total Heating Energy [J]', "Elec"],
-        "Cool Elec [kWh]": ['Cooling:Electricity [J]', "Elec"],
-        "Fan Elec [kWh]": ['Fans:Electricity [J]', "Elec"],
-        "Pump Elec [kWh]": ['Pumps:Electricity [J]', "Elec"],
-        "DHW Elec [kWh]": ['WaterSystems:Electricity [J]', "Elec"],
-        "IntLights Elec [kWh]": ['InteriorLights:Electricity [J]', "Elec"],
-        "ExtLights Elec [kWh]": ['ExteriorLights:Electricity [J]', "Elec"],
-        "Total IntEquip Elec [kWh]": ['InteriorEquipment:Electricity [J]', "Elec"],
-        "IntEquip Range Elec [kWh]": ['electric_range:InteriorEquipment:Electricity [J]', "Elec"],
-        "IntEquip Dryer Elec [kWh]": ['electric_dryer:InteriorEquipment:Electricity [J]', "Elec"],
-        "IntEquip Clotheswasher Elec [kWh]": ['clotheswasher:InteriorEquipment:Electricity [J]', "Elec"],
-        "IntEquip Dishwasher Elec [kWh]": ['dishwasher:InteriorEquipment:Electricity [J]', "Elec"],
-        "IntEquip Refrigerator Elec [kWh]": ['refrigerator:InteriorEquipment:Electricity [J]', "Elec"],
-        "IntEquip Misc Elec [kWh]": ['electric_mels:InteriorEquipment:Electricity [J]', "Elec"],
-        "HeatRecov Elec [kWh]": ['HeatRecovery:Electricity [J]', "Elec"],
-        "Total Heat Gas [therm]": ['Heating:NaturalGas [J]', "Gas"],
-        "DHW Gas [therm]": ['WaterSystems:NaturalGas [J]', "Gas"],
-        "Total IntEquip Gas [therm]": ['InteriorEquipment:NaturalGas [J]', "Gas"],
-        "IntEquip Range Gas [therm]": ['gas_range:InteriorEquipment:NaturalGas [J]', "Gas"],
-        "IntEquip Dryer Gas [therm]": ['gas_dryer:InteriorEquipment:NaturalGas [J]', "Gas"],
-        "IntEquip Misc Gas [therm]": ['gas_mels:InteriorEquipment:NaturalGas [J]', "Gas"],
-        "UnmetHours Heating": ['Facility:Facility Heating Setpoint Not Met Time [hr]', "NA"],
-        "UnmetHours Cooling": ['Facility:Facility Cooling Setpoint Not Met Time [hr]', "NA"],
-        "Infiltration Living [ACH]": ['LIVING:AFN Zone Infiltration Air Change Rate [ach]', "NA"],
-        "Infiltration Attic [ACH]": ['ATTIC:AFN Zone Infiltration Air Change Rate [ach]', "NA"],
-        "Infiltration Crawlspace [ACH]": ['CRAWLSPACE:AFN Zone Infiltration Air Change Rate [ach]', "NA"],
-        "Infiltration UnheatedBasement [ACH]": ['UNHEATEDBSMT:AFN Zone Infiltration Air Change Rate [ach]', "NA"],
-    }
-
-    Demand_All_HVAC_dict = {
-        "ASHP Compressor Heat [W]": ['DX_HEATING_COIL:Heating Coil Electricity Rate [W]' + '(' + gui_params["output_gran"] +')', "Elec"],
-        "ASHP Resistance Backup Heat [W]": ['HEATING_RESISTANCE_BACKUP:Heating Coil Electricity Rate [W]' + '(' + gui_params["output_gran"] +')', "Elec"],
-        "ASHP Defrost [W]": ['DX_HEATING_COIL:Heating Coil Defrost Electricity Rate [W]' + '(' + gui_params["output_gran"] +')', "Elec"],
-        "ASHP Crankcase Heater [W]": ['DX_HEATING_COIL:Heating Coil Crankcase Heater Electricity Rate [W]' + '(' + gui_params["output_gran"] +')', "Elec"],
-        "Primary Elec Furnace Heat [W]": ['HEATING_RESISTANCE_MAIN:Heating Coil Electricity Rate [W]' + '(' + gui_params["output_gran"] +')', "Elec"],
-        "Gas Furnace Gas Use [Btu/h]": ['MAIN FUEL HEATING COIL_UNIT1:Heating Coil NaturalGas Rate [W]' + '(' + gui_params["output_gran"] +')', "Gas"],
-        "Gas Furnace Electric Use [W]": ['MAIN FUEL HEATING COIL_UNIT1:Heating Coil Electricity Rate [W]' + '(' + gui_params["output_gran"] +')', "Elec"],
-        "Cooling[W]": ['DX_COOLING_COIL:Cooling Coil Electricity Rate [W]' + '(' + gui_params["output_gran"] +')', "Elec"],
-        "Fan [W]": ['FAN:Fan Electricity Rate [W]' + '(' + gui_params["output_gran"] +')', "Elec"],
-        "Living Zone Air Temperature [F]": ['LIVING:Zone Mean Air Temperature [C]' + '(' + gui_params["output_gran"] +')', "Temp"],
-        "Attic Zone Air Temperature [F]": ['ATTIC:Zone Mean Air Temperature [C]' + '(' + gui_params["output_gran"] +')', "Temp"],
-        "Crawlspace Zone Air Temperature [F]": ['CRAWLSPACE:Zone Mean Air Temperature [C]' + '(' + gui_params["output_gran"] +')', "Temp"],
-        "Outdoor Air Temperature [F]": ['Environment:Site Outdoor Air Drybulb Temperature [C]' + '(' + gui_params["output_gran"] +')', "Temp"],
-    }
-
-    Demand_Heating_dict = {
-        "ASHP Compressor Heat [W]": ['DX_HEATING_COIL:Heating Coil Electricity Rate [W]' + '(' + gui_params["output_gran"] +')', "Elec"],
-        "ASHP Resistance Backup Heat [W]": ['HEATING_RESISTANCE_BACKUP:Heating Coil Electricity Rate [W]' + '(' + gui_params["output_gran"] +')', "Elec"],
-        "ASHP Defrost [W]": ['DX_HEATING_COIL:Heating Coil Defrost Electricity Rate [W]' + '(' + gui_params["output_gran"] +')', "Elec"],
-        "ASHP Crankcase Heater [W]": ['DX_HEATING_COIL:Heating Coil Crankcase Heater Electricity Rate [W]' + '(' + gui_params["output_gran"] +')', "Elec"],
-        "Primary Elec Furnace Heat [W]": ['HEATING_RESISTANCE_MAIN:Heating Coil Electricity Rate [W]' + '(' + gui_params["output_gran"] +')', "Elec"],
-        "Gas Furnace Gas Use [Btu/h]": ['MAIN FUEL HEATING COIL_UNIT1:Heating Coil NaturalGas Rate [W]' + '(' + gui_params["output_gran"] +')', "Gas"],
-        "Gas Furnace Electric Use [W]": ['MAIN FUEL HEATING COIL_UNIT1:Heating Coil Electricity Rate [W]' + '(' + gui_params["output_gran"] +')', "Elec"],
-        "Fan [W]": ['FAN:Fan Electricity Rate [W]' + '(' + gui_params["output_gran"] +')', "Elec"],
-        "Living Zone Air Temperature [F]": ['LIVING:Zone Mean Air Temperature [C]' + '(' + gui_params["output_gran"] +')', "Temp"],
-        "Attic Zone Air Temperature [F]": ['ATTIC:Zone Mean Air Temperature [C]' + '(' + gui_params["output_gran"] +')', "Temp"],
-        "Crawlspace Zone Air Temperature [F]": ['CRAWLSPACE:Zone Mean Air Temperature [C]' + '(' + gui_params["output_gran"] +')', "Temp"],
-        "Outdoor Air Temperature [F]": ['Environment:Site Outdoor Air Drybulb Temperature [C]' + '(' + gui_params["output_gran"] +')', "Temp"],
-    }
-
-    Demand_Cooling_dict = {
-        "Cooling[W]": ['DX_COOLING_COIL:Cooling Coil Electricity Rate [W]' + '(' + gui_params["output_gran"] +')', "Elec"],
-        "Fan [W]": ['FAN:Fan Electricity Rate [W]' + '(' + gui_params["output_gran"] +')', "Elec"],
-        "Living Zone Air Temperature [F]": ['LIVING:Zone Mean Air Temperature [C]' + '(' + gui_params["output_gran"] +')', "Temp"],
-        "Attic Zone Air Temperature [F]": ['ATTIC:Zone Mean Air Temperature [C]' + '(' + gui_params["output_gran"] +')', "Temp"],
-        "Crawlspace Zone Air Temperature [F]": ['CRAWLSPACE:Zone Mean Air Temperature [C]' + '(' + gui_params["output_gran"] +')', "Temp"],
-        "Outdoor Air Temperature [F]": ['Environment:Site Outdoor Air Drybulb Temperature [C]' + '(' + gui_params["output_gran"] +')', "Temp"],
-    }
-
-    Demand_Fan_dict = {
-        "Fan [W]": ['FAN:Fan Electricity Rate [W]' + '(' + gui_params["output_gran"] +')', "Elec"],
-        "Living Zone Air Temperature [F]": ['LIVING:Zone Mean Air Temperature [C]' + '(' + gui_params["output_gran"] +')', "Temp"],
-        "Attic Zone Air Temperature [F]": ['ATTIC:Zone Mean Air Temperature [C]' + '(' + gui_params["output_gran"] +')', "Temp"],
-        "Crawlspace Zone Air Temperature [F]": ['CRAWLSPACE:Zone Mean Air Temperature [C]' + '(' + gui_params["output_gran"] +')', "Temp"],
-        "Outdoor Air Temperature [F]": ['Environment:Site Outdoor Air Drybulb Temperature [C]' + '(' + gui_params["output_gran"] +')', "Temp"],
-    }
-
-    Demand_Lighting_dict = {
-        "Interior Lighting [W]": ['INTERIOR LIGHTS:Lights Electricity Rate [W]' + '(' + gui_params["output_gran"] +')', "Elec"],
-        "Exterior Lighting [W]": ['EXTERIOR LIGHTS:Lights Electricity Rate [W]' + '(' + gui_params["output_gran"] +')', "Elec"],
-    }
-
-    Demand_Water_Heating_dict = {
-        "Electric Water Heater [W]": ['WATER HEATER:Water Heater Electricity Rate [W]' + '(' + gui_params["output_gran"] +')', "Elec"],
-        "Gas Water Heater [Btu/h]": ['WATER HEATER:Water Heater NaturalGas Rate [W]' + '(' + gui_params["output_gran"] +')', "Gas"],
-        "Mains Water Temp[F]": ['Environment:Site Mains Water Temperature [C]' + '(' + gui_params["output_gran"] +')', "Temp"],
-    }
-
-    Demand_Other_Equipment_dict = {
-        "Dishwasher [W]": ['DISHWASHER1:Electric Equipment Electricity Rate [W]' + '(' + gui_params["output_gran"] +')', "Elec"],
-        "Refrigerator [W]": ['REFRIGERATOR1:Electric Equipment Electricity Rate [W]' + '(' + gui_params["output_gran"] +')', "Elec"],
-        "Clothes Washer [W]": ['CLOTHESWASHER1:Electric Equipment Electricity Rate [W]' + '(' + gui_params["output_gran"] +')', "Elec"],
-        "Electric Dryer [W]": ['ELECTRIC_DRYER1:Electric Equipment Electricity Rate [W]' + '(' + gui_params["output_gran"] +')', "Elec"],
-        "Electric Range [W]": ['ELECTRIC_RANGE1:Electric Equipment Electricity Rate [W]' + '(' + gui_params["output_gran"] +')', "Elec"],
-        "Miscellaneous Electric Loads [W]": ['ELECTRIC_MELS1:Electric Equipment Electricity Rate [W]' + '(' + gui_params["output_gran"] +')', "Elec"],
-        "Gas Dryer Electric Use [W]": ['GAS_DRYER1:Electric Equipment Electricity Rate [W]' + '(' + gui_params["output_gran"] +')', "Elec"],
-        "Gas Dryer Gas Use [Btu/h]": ['GAS_DRYER1:Gas Equipment NaturalGas Rate [W]' + '(' + gui_params["output_gran"] +')', "Gas"],
-        "Gas Range [Btu/h]": ['GAS_RANGE1:Gas Equipment NaturalGas Rate [W]' + '(' + gui_params["output_gran"] +')', "Gas"],
-        "Miscellaneous Gas Loads [Btu/h]": ['GAS_MELS1:Gas Equipment NaturalGas Rate [W]' + '(' + gui_params["output_gran"] +')', "Gas"],
-    }
+    Energy_All_End_Uses_dict = make_Energy_All_End_Uses_dict()
+    Demand_All_HVAC_dict = make_Demand_All_HVAC_dict()
+    Demand_Heating_dict = make_Demand_Heating_dict()
+    Demand_Cooling_dict = make_Demand_Cooling_dict()
+    Demand_Fan_dict = make_Demand_Fan_dict()
+    Demand_Lighting_dict = make_Demand_Lighting_dict()
+    Demand_Water_Heating_dict = make_Demand_Water_Heating_dict()
+    Demand_Other_Equipment_dict = make_Demand_Other_Equipment_dict()
 
     # Build Demand_All_End_Use dictionary by combining all individual end use dictionaries
     Demand_All_End_Uses_dict = {}
@@ -159,6 +57,10 @@ def genoutputs(gui_params, get_data_dict):
     output_dict_str = output_type + "_" + gui_params["output_enduses"] + "_dict" # make sure this comes from dictionary
     #... convert string to a dictionary, so that it can be properly processed below
     output_dict = locals()[output_dict_str]
+    #... if demand analysis, add timestep to end of EnergyPlus output fieldname
+    if output_type == "Demand":
+        for key in output_dict:
+            output_dict[key]["mapping_fieldname"] = str(output_dict[key]["mapping_fieldname"]) + "(" + str(gui_params["output_gran"]) + ")"
 
     #... create path for output workbook
     out_path = get_data_dict["master_directory"] + "/RunReport_" + str(gui_params["project_val"]) + ".xlsx"
@@ -223,20 +125,20 @@ def produce_output_report(output_dict, output_gran, output_type, get_data_dict, 
             
             for column in column_header_list:
                 try:
-                    if output_dict[column][1] == "Run_Label":
+                    if output_dict[column]["conversion_ID"] == "Run_Label":
                         # Fill in the first column with the Run_Labels, so we know which run the output corresponds to
                         df_out.at[run_label, column] = run_label
-                    elif output_dict[column][1] == "Elec":
+                    elif output_dict[column]["conversion_ID"] == "Elec":
                         # Convert electric output from joules to kWh
-                        col_lookup = str(output_dict[column][0]) + "(RunPeriod)"
+                        col_lookup = str(output_dict[column]["mapping_fieldname"]) + "(RunPeriod)"
                         df_out.at[run_label, column] = convert_J_to_kWh(eplus_out_df[col_lookup].sum())
-                    elif output_dict[column][1] == "Gas":
+                    elif output_dict[column]["conversion_ID"] == "Gas":
                         # Convert gas output from joules to therms
-                        col_lookup = str(output_dict[column][0]) + "(RunPeriod)"
+                        col_lookup = str(output_dict[column]["mapping_fieldname"]) + "(RunPeriod)"
                         df_out.at[run_label, column] = convert_J_to_therm(eplus_out_df[col_lookup].sum())
                     else:
                         # Units don't need to be converted; simply sum them up
-                        col_lookup = str(output_dict[column][0]) + "(RunPeriod)"
+                        col_lookup = str(output_dict[column]["mapping_fieldname"]) + "(RunPeriod)"
                         df_out.at[run_label, column] = eplus_out_df[col_lookup].sum()
                 except:
                     # If it can't find an output, it means the EnergyPlus model doesn't have any equipment of this end use, so energy consumption is zero.
@@ -278,16 +180,17 @@ def produce_output_report(output_dict, output_gran, output_type, get_data_dict, 
         for key in output_dict:
             # Rename column headers
             try:
-                df_out = df_out.rename(columns = {output_dict[key][0]:key})
+                
+                df_out = df_out.rename(columns = {output_dict[key]["mapping_fieldname"]:key})
             except:
                 pass
             # Convert units
-            if output_dict[key][1] == "Gas":
+            if output_dict[key]["conversion_ID"] == "Gas":
                 try:
                     df_out[key] = convert_W_to_Btuh(df_out[key])
                 except:
                     pass
-            if output_dict[key][1] == "Temp":
+            if output_dict[key]["conversion_ID"] == "Temp":
                 try:
                     df_out[key] = convert_degC_to_degF(df_out[key])
                 except:
