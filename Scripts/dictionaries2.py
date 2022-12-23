@@ -1,5 +1,6 @@
 import os
 
+
 # This is a separate file that makes dictionaries for genmodels.
 
 def make_Energy_All_End_Uses_dict():
