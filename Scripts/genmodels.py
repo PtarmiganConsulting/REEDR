@@ -312,46 +312,46 @@ def genmodels(gui_params, get_data_dict):
             hvac_type = validate(primaryHVAC_fieldname, dictionary[primaryHVAC_fieldname], "list", 999, 999, hvac_type_list)
 
             #... get HVAC characteristics for primary HVAC type
-            CentralOrZonal = hvac_dict[hvac_type]["CentralOrZonal"] #0
-            ZoneEquipment1ObjectType = hvac_dict[hvac_type]["ZoneEquipment1ObjectType"] #1
-            ZoneEquipment1Name = hvac_dict[hvac_type]["ZoneEquipment1Name"] #2
-            ZoneEquipment1CoolingSequence = hvac_dict[hvac_type]["ZoneEquipment1CoolingSequence"] #3
-            ZoneEquipment1HeatingSequence = hvac_dict[hvac_type]["ZoneEquipment1HeatingSequence"] #4
-            ZoneEquipment2ObjectType = hvac_dict[hvac_type]["ZoneEquipment2ObjectType"] #5
-            ZoneEquipment2Name = hvac_dict[hvac_type]["ZoneEquipment2Name"] #6
-            ZoneEquipment2CoolingSequence = hvac_dict[hvac_type]["ZoneEquipment2CoolingSequence"] #7
-            ZoneEquipment2HeatingSequence = hvac_dict[hvac_type]["ZoneEquipment2HeatingSequence"] #8
-            ZoneAirInletNodeName = hvac_dict[hvac_type]["ZoneAirInletNodeName"] #9
-            ZoneAirExhaustNodeName = hvac_dict[hvac_type]["ZoneAirExhaustNodeName"] #10
-            ZoneReturnAirNodeName = hvac_dict[hvac_type]["ZoneReturnAirNodeName"] #11
+            CentralOrZonal = hvac_dict[hvac_type]["CentralOrZonal"]
+            ZoneEquipment1ObjectType = hvac_dict[hvac_type]["ZoneEquipment1ObjectType"]
+            ZoneEquipment1Name = hvac_dict[hvac_type]["ZoneEquipment1Name"]
+            ZoneEquipment1CoolingSequence = hvac_dict[hvac_type]["ZoneEquipment1CoolingSequence"]
+            ZoneEquipment1HeatingSequence = hvac_dict[hvac_type]["ZoneEquipment1HeatingSequence"]
+            ZoneEquipment2ObjectType = hvac_dict[hvac_type]["ZoneEquipment2ObjectType"]
+            ZoneEquipment2Name = hvac_dict[hvac_type]["ZoneEquipment2Name"]
+            ZoneEquipment2CoolingSequence = hvac_dict[hvac_type]["ZoneEquipment2CoolingSequence"]
+            ZoneEquipment2HeatingSequence = hvac_dict[hvac_type]["ZoneEquipment2HeatingSequence"]
+            ZoneAirInletNodeName = hvac_dict[hvac_type]["ZoneAirInletNodeName"]
+            ZoneAirExhaustNodeName = hvac_dict[hvac_type]["ZoneAirExhaustNodeName"]
+            ZoneReturnAirNodeName = hvac_dict[hvac_type]["ZoneReturnAirNodeName"]
 
-            unitaryTextFile = os.path.join(set_dir, building_block_dir, hvac_airloop_main_dir, hvac_airloop_hvac_dir, hvac_dict[hvac_type]["unitaryTextFile"]) #12
-            airDistUnitTextFile = os.path.join(set_dir, building_block_dir, hvac_zone_main_dir, hvac_zone_hvac_dir, hvac_dict[hvac_type]["airDistUnitTextFile"]) #13
-            heatCoilTextFile = os.path.join(set_dir, building_block_dir, hvac_coil_dir, hvac_dict[hvac_type]["heatCoilTextFile"]) #14
+            unitaryTextFile = os.path.join(set_dir, building_block_dir, hvac_airloop_main_dir, hvac_airloop_hvac_dir, hvac_dict[hvac_type]["unitaryTextFile"])
+            airDistUnitTextFile = os.path.join(set_dir, building_block_dir, hvac_zone_main_dir, hvac_zone_hvac_dir, hvac_dict[hvac_type]["airDistUnitTextFile"])
+            heatCoilTextFile = os.path.join(set_dir, building_block_dir, hvac_coil_dir, hvac_dict[hvac_type]["heatCoilTextFile"])
             if hvac_dict[hvac_type]["coolCoilTextFile"] != "NA":
-                coolCoilTextFile = os.path.join(set_dir, building_block_dir, hvac_coil_dir, hvac_dict[hvac_type]["coolCoilTextFile"]) #15
+                coolCoilTextFile = os.path.join(set_dir, building_block_dir, hvac_coil_dir, hvac_dict[hvac_type]["coolCoilTextFile"])
             else:
                 coolCoilTextFile = "NA"
-            fanTextFile = os.path.join(set_dir, building_block_dir, hvac_fan_dir, hvac_dict[hvac_type]["fanTextFile"]) #16
+            fanTextFile = os.path.join(set_dir, building_block_dir, hvac_fan_dir, hvac_dict[hvac_type]["fanTextFile"])
 
-            AirLoopHVAC_HeatingCoil_ObjectType = hvac_dict[hvac_type]["AirLoopHVAC_HeatingCoil_ObjectType"] #17
-            AirLoopHVAC_HeatingCoil_Name = hvac_dict[hvac_type]["AirLoopHVAC_HeatingCoil_Name"] #18
-            AirLoopHVAC_CoolingCoil_ObjectType = hvac_dict[hvac_type]["AirLoopHVAC_CoolingCoil_ObjectType"] #19
-            AirLoopHVAC_CoolingCoil_Name = hvac_dict[hvac_type]["AirLoopHVAC_CoolingCoil_Name"] #20
-            AirLoopHVAC_Unitary_ObjectType = hvac_dict[hvac_type]["AirLoopHVAC_Unitary_ObjectType"] #21
-            AirLoopHVAC_Unitary_ObjectName = hvac_dict[hvac_type]["AirLoopHVAC_Unitary_ObjectName"] #22
-            fan_name = hvac_dict[hvac_type]["fan_name"] #23
-            heating_speeds = hvac_dict[hvac_type]["heating_speeds"] #24
-            cooling_speeds = hvac_dict[hvac_type]["cooling_speeds"] #25
-            fan_CFMperTon_max = hvac_dict[hvac_type]["fan_CFMperTon_max"] #26
-            fan_CFMmult_spd_1 = hvac_dict[hvac_type]["fan_CFMmult_spd_1"] #27
-            fan_CFMmult_spd_2 = hvac_dict[hvac_type]["fan_CFMmult_spd_2"] #28
-            fan_CFMmult_spd_3 = hvac_dict[hvac_type]["fan_CFMmult_spd_3"] #29
-            fan_CFMmult_spd_4 = hvac_dict[hvac_type]["fan_CFMmult_spd_4"] #30
-            capacitymult_spd_1 = hvac_dict[hvac_type]["capacitymult_spd_1"] #31
-            capacitymult_spd_2 = hvac_dict[hvac_type]["capacitymult_spd_2"] #32
-            capacitymult_spd_3 = hvac_dict[hvac_type]["capacitymult_spd_3"] #33
-            capacitymult_spd_4 = hvac_dict[hvac_type]["capacitymult_spd_4"] #34
+            AirLoopHVAC_HeatingCoil_ObjectType = hvac_dict[hvac_type]["AirLoopHVAC_HeatingCoil_ObjectType"]
+            AirLoopHVAC_HeatingCoil_Name = hvac_dict[hvac_type]["AirLoopHVAC_HeatingCoil_Name"]
+            AirLoopHVAC_CoolingCoil_ObjectType = hvac_dict[hvac_type]["AirLoopHVAC_CoolingCoil_ObjectType"]
+            AirLoopHVAC_CoolingCoil_Name = hvac_dict[hvac_type]["AirLoopHVAC_CoolingCoil_Name"]
+            AirLoopHVAC_Unitary_ObjectType = hvac_dict[hvac_type]["AirLoopHVAC_Unitary_ObjectType"]
+            AirLoopHVAC_Unitary_ObjectName = hvac_dict[hvac_type]["AirLoopHVAC_Unitary_ObjectName"]
+            fan_name = hvac_dict[hvac_type]["fan_name"]
+            heating_speeds = hvac_dict[hvac_type]["heating_speeds"]
+            cooling_speeds = hvac_dict[hvac_type]["cooling_speeds"]
+            fan_CFMperTon_max = hvac_dict[hvac_type]["fan_CFMperTon_max"]
+            fan_CFMmult_spd_1 = hvac_dict[hvac_type]["fan_CFMmult_spd_1"]
+            fan_CFMmult_spd_2 = hvac_dict[hvac_type]["fan_CFMmult_spd_2"]
+            fan_CFMmult_spd_3 = hvac_dict[hvac_type]["fan_CFMmult_spd_3"]
+            fan_CFMmult_spd_4 = hvac_dict[hvac_type]["fan_CFMmult_spd_4"]
+            capacitymult_spd_1 = hvac_dict[hvac_type]["capacitymult_spd_1"]
+            capacitymult_spd_2 = hvac_dict[hvac_type]["capacitymult_spd_2"]
+            capacitymult_spd_3 = hvac_dict[hvac_type]["capacitymult_spd_3"]
+            capacitymult_spd_4 = hvac_dict[hvac_type]["capacitymult_spd_4"]
             
             #... heating capacity units
             primaryHVAC_capacity_units_list = ["kBtu/h", "kW", "ton"]
