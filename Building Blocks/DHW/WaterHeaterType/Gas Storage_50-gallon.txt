@@ -59,3 +59,27 @@
     ,                        !- Node 5 Additional Loss Coefficient {W/K}
     ;                     !- Node 6 Additional Loss Coefficient {W/K}
 
+WaterHeater:Sizing,
+  Water Heater,               !- WaterHeater Name
+  ResidentialHUD-FHAMinimum,  !- Design Mode
+  ,                           !- Time Storage Can Meet Peak Draw {hr}
+  ,                           !- Time for Tank Recovery {hr}
+  ,                           !- Nominal Tank Volume for Autosizing Plant Connections {m3}
+  3,                          !- Number of Bedrooms
+  3;                          !- Number of Bathrooms
+
+Branch,
+  Water Heater Branch,            !- Name
+  ,                               !- Pressure Drop Curve Name
+  WaterHeater:Stratified,              !- Component 1 Object Type
+  Water Heater,                   !- Component 1 Name
+  Water Heater Use Inlet Node,    !- Component 1 Inlet Node Name
+  Water Heater Use Outlet Node;   !- Component 1 Outlet Node Name
+
+!-   ===========  ALL OBJECTS IN CLASS: PLANTEQUIPMENTLIST ===========
+
+PlantEquipmentList,
+  DHW Plant Equipment,     !- Name
+  WaterHeater:Stratified,       !- Equipment 1 Object Type
+  Water Heater;            !- Equipment 1 Name
+
