@@ -48,14 +48,6 @@ Branch,
     Mains Makeup Pipe Inlet Node,   !- Component 1 Inlet Node Name
     Mains Makeup Node;              !- Component 1 Outlet Node Name
 
-Branch,
-    Water Heater Branch,            !- Name
-    ,                               !- Pressure Drop Curve Name
-    WaterHeater:Stratified,              !- Component 1 Object Type
-    Water Heater,                   !- Component 1 Name
-    Water Heater Use Inlet Node,    !- Component 1 Inlet Node Name
-    Water Heater Use Outlet Node;   !- Component 1 Outlet Node Name
-
 !-   ===========  ALL OBJECTS IN CLASS: BRANCHLIST ===========
 
 BranchList,
@@ -147,17 +139,6 @@ Pump:VariableSpeed,
     0,                              !- Design Minimum Flow Rate {{m3/s}}
     Intermittent;                   !- Pump Control Type
 
-!-   ===========  ALL OBJECTS IN CLASS: WATERHEATER:SIZING ===========
-
-WaterHeater:Sizing,
-    Water Heater,                   !- WaterHeater Name
-    ResidentialHUD-FHAMinimum,      !- Design Mode
-    ,                               !- Time Storage Can Meet Peak Draw {{hr}}
-    ,                               !- Time for Tank Recovery {{hr}}
-    ,                               !- Nominal Tank Volume for Autosizing Plant Connections {{m3}}
-    3,                              !- Number of Bedrooms
-    3;                              !- Number of Bathrooms
-
 !-   ===========  ALL OBJECTS IN CLASS: PLANTLOOP ===========
 
 PlantLoop,
@@ -168,9 +149,9 @@ PlantLoop,
     DHW Supply Outlet Node,  !- Loop Temperature Setpoint Node Name
     100,                     !- Maximum Loop Temperature {{C}}
     0,                       !- Minimum Loop Temperature {{C}}
-    autosize,                !- Maximum Loop Flow Rate {{m3/s}}
+    0.011141,                !- Maximum Loop Flow Rate {{m3/s}}
     0,                       !- Minimum Loop Flow Rate {{m3/s}}
-    autocalculate,           !- Plant Loop Volume {{m3}}
+    0.003,                   !- Plant Loop Volume {{m3}}
     Mains Inlet Node,        !- Plant Side Inlet Node Name
     DHW Supply Outlet Node,  !- Plant Side Outlet Node Name
     DHW Supply Branches,     !- Plant Side Branch List Name
@@ -179,14 +160,10 @@ PlantLoop,
     Mains Makeup Node,       !- Demand Side Outlet Node Name
     DHW Demand Branches,     !- Demand Side Branch List Name
     DHW Demand Connectors,   !- Demand Side Connector List Name
-    Optimal;                 !- Load Distribution Scheme
-
-!-   ===========  ALL OBJECTS IN CLASS: PLANTEQUIPMENTLIST ===========
-
-PlantEquipmentList,
-    DHW Plant Equipment,     !- Name
-    WaterHeater:Stratified,       !- Equipment 1 Object Type
-    Water Heater;            !- Equipment 1 Name
+    Optimal,                 !- Load Distribution Scheme
+    ,                       !- Availability Manager List Name
+    SingleSetpoint,         !- Plant Loop Demand Calculation Scheme
+    ;                       !- Common Pipe Simulation
 
 !-   ===========  ALL OBJECTS IN CLASS: PLANTEQUIPMENTOPERATION:HEATINGLOAD ===========
 

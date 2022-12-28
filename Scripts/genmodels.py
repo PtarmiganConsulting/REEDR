@@ -268,16 +268,12 @@ def genmodels(gui_params, get_data_dict):
 
             #... Foundation wall height above and below ground
             if foundation_type == "Slab":
-                #foundationwall_ht_AG = float(validate(foundWallHtAg_fieldname, round(convert_ft_to_m(dictionary[foundWallHtAg_fieldname]),10), "any_num", 999, 999, dummy_list))
-                #foundationwall_ht_BG = float(validate(foundWallHtBg_fieldname, -1 * round(convert_ft_to_m(dictionary[foundWallHtBg_fieldname]),10), "any_num", 999, 999, dummy_list))
                 foundationwall_ht_AG = round(convert_ft_to_m(0),10)
                 foundationwall_ht_BG = -1 * round(convert_ft_to_m(0),10)
             elif foundation_type == "Vented Crawlspace":
                 foundationwall_ht_AG = round(convert_ft_to_m(1),10)
                 foundationwall_ht_BG = -1 * round(convert_ft_to_m(2),10)
             else:
-                #foundationwall_ht_AG = float(validate(foundWallHtAg_fieldname, round(convert_ft_to_m(dictionary[foundWallHtAg_fieldname]),10), "num_not_zero", 999, 999, dummy_list))
-                #foundationwall_ht_BG = float(validate(foundWallHtBg_fieldname, -1 * round(convert_ft_to_m(dictionary[foundWallHtBg_fieldname]),10), "num_not_zero", 999, 999, dummy_list))
                 foundationwall_ht_AG = round(convert_ft_to_m(1),10)
                 foundationwall_ht_BG = -1 * round(convert_ft_to_m(7),10)
 
@@ -433,8 +429,12 @@ def genmodels(gui_params, get_data_dict):
                 gas_furnace_AFUE = validate(AFUE_fieldname, dictionary[AFUE_fieldname], "num_between", AFUE_lo, AFUE_hi, dummy_list)
             
             #... water heater type
-            water_heater_type_list = ["Electric Storage_50-gallon", "Gas Storage_50-gallon", "None"]
+            water_heater_type_list = ["Electric Storage_50-gallon", "Gas Storage_50-gallon", "HPWH_50-gallon", "HPWH_80-gallon", "None"]
             water_heater_type = validate(dhwType_fieldname, dictionary[dhwType_fieldname], "list", 999, 999, water_heater_type_list)
+            if water_heater_type == "HPWH_50-gallon":
+                HPWH = 1
+            else:
+                HPWH = 0
             
             #... DHW setpoint schedule
             dhw_stpt_sch = validate(dhwSched_fieldname, dictionary[dhwSched_fieldname], "list", 999, 999, sched_validation_list)
@@ -772,22 +772,73 @@ def genmodels(gui_params, get_data_dict):
 
         fan_max_flow_allowed = 1 * fan_m3PerSec_max
 
-        # Add baseboard capacity if defined
-        if baseboard_heat_capacity != 0:
+        # Add baseboard capacity if defined, and properly handle assingment of HPWH
+        if baseboard_heat_capacity != 0 and HPWH == 0:
+
+            ZoneEquipment3ObjectType = "!-"
+            ZoneEquipment3Name = "!-"
+            ZoneEquipment3CoolingSequence = "!-"
+            ZoneEquipment3HeatingSequence = "!-"
+            
             ZoneEquipment2ObjectType = "ZoneHVAC:Baseboard:Convective:Electric"
             ZoneEquipment2Name = "BaseboardElectric"
             ZoneEquipment2CoolingSequence = "2"
             ZoneEquipment2HeatingSequence = "2"
             with open(os.path.join(set_dir, building_block_dir, hvac_zone_main_dir, hvac_zone_hvac_dir, 'BaseboardHeat.txt'), 'r') as f:
                 baseboard_t = f"{f.read()}".format(**locals())
-        else:
+            
+        elif baseboard_heat_capacity != 0 and HPWH == 1:
+            
+            ZoneEquipment3ObjectType = "ZoneHVAC:Baseboard:Convective:Electric"
+            ZoneEquipment3Name = "BaseboardElectric"
+            ZoneEquipment3CoolingSequence = "3"
+            ZoneEquipment3HeatingSequence = "3"
+            with open(os.path.join(set_dir, building_block_dir, hvac_zone_main_dir, hvac_zone_hvac_dir, 'BaseboardHeat.txt'), 'r') as f:
+                baseboard_t = f"{f.read()}".format(**locals())
+
+            ZoneEquipment2ObjectType = ZoneEquipment1ObjectType
+            ZoneEquipment2Name = ZoneEquipment1Name
+            ZoneEquipment2CoolingSequence = 2
+            ZoneEquipment2HeatingSequence = 2
+
+            ZoneEquipment1ObjectType = "WaterHeater:HeatPump:WrappedCondenser"
+            ZoneEquipment1Name = "Water Heater"
+            ZoneEquipment1CoolingSequence = 1
+            ZoneEquipment1HeatingSequence = 1
+
+            ZoneAirInletNodeName = "Zone Inlet Nodes"
+            ZoneAirExhaustNodeName = "Zone Exhaust Node"
+
+        elif baseboard_heat_capacity == 0 and HPWH == 1:
+
             baseboard_t = ""
-        
-        # This is currently not used, but may be useful when HPWHs or ERVs are eventually added.
-        ZoneEquipment3ObjectType = "!-"
-        ZoneEquipment3Name = "!-"
-        ZoneEquipment3CoolingSequence = "!-"
-        ZoneEquipment3HeatingSequence = "!-"
+
+            ZoneEquipment3ObjectType = "!-"
+            ZoneEquipment3Name = "!-"
+            ZoneEquipment3CoolingSequence = "!-"
+            ZoneEquipment3HeatingSequence = "!-"
+
+            ZoneEquipment2ObjectType = ZoneEquipment1ObjectType
+            ZoneEquipment2Name = ZoneEquipment1Name
+            ZoneEquipment2CoolingSequence = 2
+            ZoneEquipment2HeatingSequence = 2
+
+            ZoneEquipment1ObjectType = "WaterHeater:HeatPump:WrappedCondenser"
+            ZoneEquipment1Name = "Water Heater"
+            ZoneEquipment1CoolingSequence = 1
+            ZoneEquipment1HeatingSequence = 1
+
+            ZoneAirInletNodeName = "Zone Inlet Nodes"
+            ZoneAirExhaustNodeName = "Zone Exhaust Node"
+
+        else:
+
+            baseboard_t = ""
+
+            ZoneEquipment3ObjectType = "!-"
+            ZoneEquipment3Name = "!-"
+            ZoneEquipment3CoolingSequence = "!-"
+            ZoneEquipment3HeatingSequence = "!-"
         
         # Establish supplemental (backup) heat source for ASHPs...
         if AirLoopHVAC_Unitary_ObjectType == "AirLoopHVAC:UnitaryHeatPump:AirtoAir" and hp_supp_heat_type == "Gas":

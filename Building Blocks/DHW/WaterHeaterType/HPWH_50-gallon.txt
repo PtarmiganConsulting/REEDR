@@ -1,0 +1,263 @@
+WaterHeater:Stratified,
+    Water Heater Tank,              !- Name
+    Domestic Hot Water,             !- End-Use Subcategory
+    0.1703,                         !- Tank Volume {m3}
+    1.0335,                         !- Tank Height {m}
+    VerticalCylinder,               !- Tank Shape
+    ,                               !- Tank Perimeter {m}
+    90,                             !- Maximum Temperature Limit {C}
+    MasterSlave,                    !- Heater Priority Control
+    res wh_1 TopElementSetpoint,    !- Heater 1 Setpoint Temperature Schedule Name
+    18.5,                           !- Heater 1 Deadband Temperature Difference {deltaC}
+    4500,                           !- Heater 1 Capacity {W}
+    0.7320621555,                   !- Heater 1 Height {m}
+    res wh_1 BottomElementSetpoint, !- Heater 2 Setpoint Temperature Schedule Name
+    3.89,                           !- Heater 2 Deadband Temperature Difference {deltaC}
+    4500,                           !- Heater 2 Capacity {W}
+    0.2153121555,                   !- Heater 2 Height {m}
+    ELECTRICITY,                    !- Heater Fuel Type
+    1.0,                            !- Heater Thermal Efficiency
+    8.5,                            !- Off Cycle Parasitic Fuel Consumption Rate {W}
+    ELECTRICITY,                    !- Off Cycle Parasitic Fuel Type
+    0,                              !- Off Cycle Parasitic Heat Fraction to Tank
+    0,                              !- Off Cycle Parasitic Height {m}
+    8.5,                            !- On Cycle Parasitic Fuel Consumption Rate {W}
+    ELECTRICITY,                    !- On Cycle Parasitic Fuel Type
+    0,                              !- On Cycle Parasitic Heat Fraction to Tank
+    0,                              !- On Cycle Parasitic Height {m}
+    Zone,                           !- Ambient Temperature Indicator
+    ,                               !- Ambient Temperature Schedule Name
+    living,                         !- Ambient Temperature Zone Name
+    ,                               !- Ambient Temperature Outdoor Air Node Name
+    1.13221367205827,               !- Uniform Skin Loss Coefficient per Unit Area to Ambient Temperature {W/m2-K}
+    1,                              !- Skin Loss Fraction to Zone
+    ,                               !- Off Cycle Flue Loss Coefficient to Ambient Temperature {W/K}
+    1,                              !- Off Cycle Flue Loss Fraction to Zone
+    ,                               !- Peak Use Flow Rate {m3/s}
+    ,                               !- Use Flow Rate Fraction Schedule Name
+    ,                               !- Cold Water Supply Temperature Schedule Name
+    Water Heater use inlet node,    !- Use Side Inlet Node Name
+    Water Heater use outlet node,   !- Use Side Outlet Node Name
+    1.0,                            !- Use Side Effectiveness
+    ,                               !- Use Side Inlet Height {m}
+    ,                               !- Use Side Outlet Height {m}
+    ,                               !- Source Side Inlet Node Name
+    ,                               !- Source Side Outlet Node Name
+    ,                               !- Source Side Effectiveness
+    ,                               !- Source Side Inlet Height {m}
+    ,                               !- Source Side Outlet Height {m}
+    FIXED,                          !- Inlet Mode
+    0.00283433494640006,            !- Use Side Design Flow Rate {m3/s}
+    0.00115525,                     !- Source Side Design Flow Rate {m3/s}
+    1.5,                            !- Indirect Water Heating Recovery Time {hr}
+    12,                             !- Number of Nodes
+    0,                              !- Additional Destratification Conductivity {W/m-K}
+    0,                              !- Node 1 Additional Loss Coefficient {W/K}
+    0,                              !- Node 2 Additional Loss Coefficient {W/K}
+    0,                              !- Node 3 Additional Loss Coefficient {W/K}
+    0,                              !- Node 4 Additional Loss Coefficient {W/K}
+    0,                              !- Node 5 Additional Loss Coefficient {W/K}
+    0,                              !- Node 6 Additional Loss Coefficient {W/K}
+    0,                              !- Node 7 Additional Loss Coefficient {W/K}
+    0,                              !- Node 8 Additional Loss Coefficient {W/K}
+    0,                              !- Node 9 Additional Loss Coefficient {W/K}
+    0,                              !- Node 10 Additional Loss Coefficient {W/K}
+    0,                              !- Node 11 Additional Loss Coefficient {W/K}
+    0,                              !- Node 12 Additional Loss Coefficient {W/K}
+    ;                               !- Source Side Flow Control Mode
+
+Fan:OnOff,
+    Heat Pump Water Heater Fan,                     !- Name
+    always_avail,                                   !- Availability Schedule Name
+    0.17234035847191,                               !- Fan Efficiency
+    65,                                             !- Pressure Rise {Pa}
+    0.226534772736,                                 !- Maximum Flow Rate {m3/s}
+    1,                                              !- Motor Efficiency
+    1.0,                                            !- Motor In Airstream Fraction
+    Heat Pump Water Heater Fan Inlet Node,          !- Air Inlet Node Name
+    HPWH zone inlet node,                           !- Air Outlet Node Name
+    Fan On Off Power Curve,                         !- Fan Power Ratio Function of Speed Ratio Curve Name
+    Fan On Off Efficiency Curve,                    !- Fan Efficiency Ratio Function of Speed Ratio Curve Name
+    General;                                        !- End-Use Subcategory
+
+Curve:Exponent,
+    Fan On Off Power Curve,                 !- Name
+    1,                                      !- Coefficient1 Constant
+    0,                                      !- Coefficient2 Constant
+    0,                                      !- Coefficient3 Constant
+    0,                                      !- Minimum Value of x {BasedOnField A2}
+    1;                                      !- Maximum Value of x {BasedOnField A2}
+
+Curve:Cubic,
+    Fan On Off Efficiency Curve,            !- Name
+    1,                                      !- Coefficient1 Constant
+    0,                                      !- Coefficient2 x
+    0,                                      !- Coefficient3 x**2
+    0,                                      !- Coefficient4 x**3
+    0,                                      !- Minimum Value of x {BasedOnField A2}
+    1;                                      !- Maximum Value of x {BasedOnField A2}
+
+WaterHeater:HeatPump:WrappedCondenser,
+    Water Heater,                                   !- Name
+    Always On Discrete,                             !- Availability Schedule Name
+    dhw_setpt,                                      !- Compressor Setpoint Temperature Schedule Name
+    3.89,                                           !- Dead Band Temperature Difference {deltaC}
+    0.01,                                           !- Condenser Bottom Location
+    0.559815945,                                    !- Condenser Top Location
+    0.226534772736,                                 !- Evaporator Air Flow Rate {m3/s}
+    ZoneAirOnly,                                    !- Inlet Air Configuration
+    Zone Exhaust Node,                              !- Air Inlet Node Name
+    HPWH Zone Inlet Node,                           !- Air Outlet Node Name  
+    ,                                               !- Outdoor Air Node Name
+    ,                                               !- Exhaust Air Node Name
+    ,                                               !- Inlet Air Temperature Schedule Name
+    ,                                               !- Inlet Air Humidity Schedule Name
+    living,                                         !- Inlet Air Zone Name
+    WaterHeater:Stratified,                         !- Tank Object Type
+    Water Heater Tank,                              !- Tank Name
+    Water Heater use inlet node,                    !- Tank Use Side Inlet Node Name
+    Water Heater use outlet node,                   !- Tank Use Side Outlet Node Name
+    Coil:WaterHeating:AirToWaterHeatPump:Wrapped,   !- DX Coil Object Type
+    Heat Pump Water Heater Evaporator,              !- DX Coil Name
+    7.22222222222222,                               !- Minimum Inlet Air Temperature for Compressor Operation {C}
+    48.89,                                          !- Maximum Inlet Air Temperature for Compressor Operation {C}
+    Zone,                                           !- Compressor Location
+    ,                                               !- Compressor Ambient Temperature Schedule Name
+    Fan:OnOff,                                      !- Fan Object Type
+    Heat Pump Water Heater Fan,                     !- Fan Name
+    DrawThrough,                                    !- Fan Placement
+    0,                                              !- On Cycle Parasitic Electric Load {W}
+    0,                                              !- Off Cycle Parasitic Electric Load {W}
+    ,                                               !- Parasitic Heat Rejection Location
+    ,                                               !- Inlet Air Mixer Node Name
+    ,                                               !- Outlet Air Splitter Node Name
+    ,                                               !- Inlet Air Mixer Schedule Name
+    MutuallyExclusive,                              !- Tank Element Control Logic
+    0.8181878445,                                   !- Control Sensor 1 Height In Stratified Tank
+    0.75,                                           !- Control Sensor 1 Weight
+    0.3014378445;                                   !- Control Sensor 2 Height In Stratified Tank
+
+Coil:WaterHeating:AirToWaterHeatPump:Wrapped,
+    Heat Pump Water Heater Evaporator,              !- Name
+    1634.45,                                        !- Rated Heating Capacity {W}
+    3.37,                                           !- Rated COP {W/W}
+    0.98,                                           !- Rated Sensible Heat Ratio
+    19.7222222222222,                               !- Rated Evaporator Inlet Air Dry-Bulb Temperature {C}
+    13.0766780924799,                               !- Rated Evaporator Inlet Air Wet-Bulb Temperature {C}
+    48.89,                                          !- Rated Condenser Inlet Water Temperature {C}
+    0.226534772736,                                 !- Rated Evaporator Air Flow Rate {m3/s}
+    yes,                                            !- Evaporator Fan Power Included in Rated COP
+    Zone Exhaust Node,                              !- Evaporator Air Inlet Node Name
+    Heat Pump Water Heater Fan Inlet Node,          !- Evaporator Air Outlet Node Name
+    ,                                               !- Crankcase Heater Capacity {W}
+    ,                                               !- Maximum Ambient Temperature for Crankcase Heater Operation {C}
+    WetBulbTemperature,                             !- Evaporator Air Temperature Type for Curve Objects
+    HPWH-Cap-fT,                                    !- Heating Capacity Function of Temperature Curve Name
+    HPWH-Htg-Cap-FF,                                !- Heating Capacity Function of Air Flow Fraction Curve Name
+    HPWH-COP-fT,                                    !- Heating COP Function of Temperature Curve Name
+    HPWH-Htg-COP-FF,                                !- Heating COP Function of Air Flow Fraction Curve Name
+    HPWH-COP-fPLR;                                  !- Part Load Fraction Correlation Curve Name
+
+Curve:Biquadratic,
+  HPWH-Cap-fT,                            !- Name
+  0.563,                                  !- Coefficient1 Constant
+  0.0437,                                 !- Coefficient2 x
+  3.9e-05,                                !- Coefficient3 x**2
+  0.0055,                                 !- Coefficient4 y
+  -0.000148,                              !- Coefficient5 y**2
+  -0.000145,                              !- Coefficient6 x*y
+  0,                                      !- Minimum Value of x {BasedOnField A2}
+  100,                                    !- Maximum Value of x {BasedOnField A2}
+  0,                                      !- Minimum Value of y {BasedOnField A3}
+  100;                                    !- Maximum Value of y {BasedOnField A3}
+
+Curve:Cubic,
+  HPWH-Htg-Cap-FF,                        !- Name
+  1,                                      !- Coefficient1 Constant
+  0,                                      !- Coefficient2 x
+  0,                                      !- Coefficient3 x**2
+  0,                                      !- Coefficient4 x**3
+  0,                                      !- Minimum Value of x {BasedOnField A2}
+  100;                                    !- Maximum Value of x {BasedOnField A2}
+
+Curve:Biquadratic,
+  HPWH-COP-fT,                            !- Name
+  1.1332,                                 !- Coefficient1 Constant
+  0.063,                                  !- Coefficient2 x
+  -9.79e-05,                              !- Coefficient3 x**2
+  -0.00972,                               !- Coefficient4 y
+  -2.14e-05,                              !- Coefficient5 y**2
+  -0.000686,                              !- Coefficient6 x*y
+  0,                                      !- Minimum Value of x {BasedOnField A2}
+  100,                                    !- Maximum Value of x {BasedOnField A2}
+  0,                                      !- Minimum Value of y {BasedOnField A3}
+  100;                                    !- Maximum Value of y {BasedOnField A3}
+
+Curve:Cubic,
+  HPWH-Htg-COP-FF,                        !- Name
+  1,                                      !- Coefficient1 Constant
+  0,                                      !- Coefficient2 x
+  0,                                      !- Coefficient3 x**2
+  0,                                      !- Coefficient4 x**3
+  0,                                      !- Minimum Value of x {BasedOnField A2}
+  100;                                    !- Maximum Value of x {BasedOnField A2}
+
+Curve:Cubic,
+  HPWH-COP-fPLR,                          !- Name
+  1,                                      !- Coefficient1 Constant
+  0,                                      !- Coefficient2 x
+  0,                                      !- Coefficient3 x**2
+  0,                                      !- Coefficient4 x**3
+  0,                                      !- Minimum Value of x {BasedOnField A2}
+  1;                                      !- Maximum Value of x {BasedOnField A2}
+
+NodeList,
+    Zone Inlet Nodes,        	!- Name
+    Zone Inlet Node,         	!- Node 1 Name
+    HPWH Zone Inlet Node;		!- Node 2 Name
+
+WaterHeater:Sizing,
+  Water Heater Tank,                      !- WaterHeater Name
+  PeakDraw,                               !- Design Mode
+  0.538503,                               !- Time Storage Can Meet Peak Draw {hr}
+  0,                                      !- Time for Tank Recovery {hr}
+  1;                                      !- Nominal Tank Volume for Autosizing Plant Connections {m3}
+
+Branch,
+  Water Heater Branch,                      !- Name
+  ,                                         !- Pressure Drop Curve Name
+  WaterHeater:HeatPump:WrappedCondenser,    !- Component 1 Object Type
+  Water Heater,                             !- Component 1 Name
+  Water Heater Use Inlet Node,              !- Component 1 Inlet Node Name
+  Water Heater Use Outlet Node;             !- Component 1 Outlet Node Name
+
+!-   ===========  ALL OBJECTS IN CLASS: PLANTEQUIPMENTLIST ===========
+
+PlantEquipmentList,
+  DHW Plant Equipment,                      !- Name
+  WaterHeater:HeatPump:WrappedCondenser,    !- Equipment 1 Object Type
+  Water Heater;                             !- Equipment 1 Name
+
+Schedule:Compact,
+    dhw_setpt_hpwh,          !- Name
+    Temperature,             !- Schedule Type Limits Name
+    Through: 12/31,          !- Field 1
+    For: AllDays,            !- Field 2
+    Until 24:00,             !- Field 3
+    44;                      !- Field 4
+
+Schedule:Constant,
+  Always On Discrete,                     !- Name
+  OnOff,                                  !- Schedule Type Limits Name
+  1;                                      !- Hourly Value
+
+Schedule:Constant,
+  res wh_1 BottomElementSetpoint,         !- Name
+  Temperature,                            !- Schedule Type Limits Name
+  -60;                                    !- Hourly Value
+
+Schedule:Constant,
+  res wh_1 TopElementSetpoint,            !- Name
+  Temperature,                            !- Schedule Type Limits Name
+  42.6699;                                !- Hourly Value
+
