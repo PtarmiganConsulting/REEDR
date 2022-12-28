@@ -149,9 +149,9 @@ PlantLoop,
     DHW Supply Outlet Node,  !- Loop Temperature Setpoint Node Name
     100,                     !- Maximum Loop Temperature {{C}}
     0,                       !- Minimum Loop Temperature {{C}}
-    autosize,                !- Maximum Loop Flow Rate {{m3/s}}
+    0.011141,                !- Maximum Loop Flow Rate {{m3/s}}
     0,                       !- Minimum Loop Flow Rate {{m3/s}}
-    autocalculate,           !- Plant Loop Volume {{m3}}
+    0.003,                   !- Plant Loop Volume {{m3}}
     Mains Inlet Node,        !- Plant Side Inlet Node Name
     DHW Supply Outlet Node,  !- Plant Side Outlet Node Name
     DHW Supply Branches,     !- Plant Side Branch List Name
@@ -160,7 +160,10 @@ PlantLoop,
     Mains Makeup Node,       !- Demand Side Outlet Node Name
     DHW Demand Branches,     !- Demand Side Branch List Name
     DHW Demand Connectors,   !- Demand Side Connector List Name
-    Optimal;                 !- Load Distribution Scheme
+    Optimal,                 !- Load Distribution Scheme
+    ,                       !- Availability Manager List Name
+    SingleSetpoint,         !- Plant Loop Demand Calculation Scheme
+    ;                       !- Common Pipe Simulation
 
 !-   ===========  ALL OBJECTS IN CLASS: PLANTEQUIPMENTOPERATION:HEATINGLOAD ===========
 

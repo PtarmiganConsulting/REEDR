@@ -29,7 +29,7 @@
     ,                         !- Ambient Temperature Schedule Name
     living,                        !- Ambient Temperature Zone Name
     ,                        !- Ambient Temperature Outdoor Air Node Name
-    0.64,      !- Uniform Skin Loss Coefficient per Unit Area to Ambient Temperature {W/m2-K}
+    1.13221367205827,      !- Uniform Skin Loss Coefficient per Unit Area to Ambient Temperature {W/m2-K}
     ,                        !- Skin Loss Fraction to Zone
     ,                        !- Off Cycle Flue Loss Coefficient to Ambient Temperature {W/K}
     ,                        !- Off Cycle Flue Loss Fraction to Zone
@@ -47,7 +47,7 @@
     ,                        !- Source Side Inlet Height {m}
     ,                        !- Source Side Outlet Height {m}
     FIXED,                   !- Inlet Mode
-    autosize,                !- Use Side Design Flow Rate {m3/s}
+    0.00283433494640006,                !- Use Side Design Flow Rate {m3/s}
     0.00115525,              !- Source Side Design Flow Rate {m3/s}
     ,                        !- Indirect Water Heating Recovery Time {hr}
     4,                       !- Number of Nodes
@@ -60,13 +60,11 @@
     ;                     !- Node 6 Additional Loss Coefficient {W/K}
 
 WaterHeater:Sizing,
-  Water Heater,               !- WaterHeater Name
-  ResidentialHUD-FHAMinimum,  !- Design Mode
-  ,                           !- Time Storage Can Meet Peak Draw {hr}
-  ,                           !- Time for Tank Recovery {hr}
-  ,                           !- Nominal Tank Volume for Autosizing Plant Connections {m3}
-  3,                          !- Number of Bedrooms
-  3;                          !- Number of Bathrooms
+  Water Heater,                      !- WaterHeater Name
+  PeakDraw,                               !- Design Mode
+  0.538503,                               !- Time Storage Can Meet Peak Draw {hr}
+  0,                                      !- Time for Tank Recovery {hr}
+  1;                                      !- Nominal Tank Volume for Autosizing Plant Connections {m3}
 
 Branch,
   Water Heater Branch,            !- Name
