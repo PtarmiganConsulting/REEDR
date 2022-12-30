@@ -4,9 +4,10 @@ from tkinter import *
 from tkinter import ttk, filedialog
 from tkinter.filedialog import askopenfile
 import threading
-# import copy
-from pathlib import Path
 
+# from pathlib import Path
+
+from time import sleep as sleep
 from tkinter import messagebox as mb
 
 # Master GUI Function
@@ -24,6 +25,35 @@ def gui(func):
 
     months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
     days = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31]
+
+    calendar_dict = {
+        # jan
+        1 : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31],
+        # feb
+        2 : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28],
+        # mar
+        3: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31],
+        # apr
+        4 : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30],
+        # may
+        5: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31],
+        # jun
+        6 : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30],
+        # jul
+        7: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31],
+        # aug
+        8 : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31],
+        # sept
+        9 : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30],
+        # oct
+        10: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31],
+        # nov
+        11 : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30],
+        # dec
+        12: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31],
+        # empty
+        "": [],
+    }
     
     sim_select = ["Annual", "Sub-Annual: enter start and end dates at right -->", "Test Run"]
     gran_select = dropdown_dict["annual_sim_granularity"]
@@ -150,7 +180,6 @@ def gui(func):
                 em_input.get(),
                 ed_input.get(),
                 over_str,
-
             ]
 
             # Creates the string stored by usersettings.txt to save user settings
@@ -174,6 +203,7 @@ def gui(func):
                 gui_params["output_enduses"] = "Heating"
             
             # Terminate the GUI during program run cycle
+            sleep(2) # slight delay on the gui terming
             root.quit()
             root.destroy()
             func(gui_params)
@@ -229,6 +259,32 @@ def gui(func):
             em.config(state="readonly")
             bd.config(state="readonly")
             ed.config(state="readonly")
+
+            # adaptive month/day selection set code
+            begin_month = bm_input.get()
+            end_month = em_input.get()
+
+            begin_day = bd_input.get()
+            end_day = ed_input.get()
+
+            
+
+            if begin_month:
+                bd.config(values=calendar_dict[int(begin_month)])
+                if begin_day:
+                    if int(begin_day) not in calendar_dict[int(begin_month)]:
+                        bd_input.set(calendar_dict[int(begin_month)][-1])
+            else:
+                bd.config(values=calendar_dict[""])
+
+            if end_month:
+                ed.config(values=calendar_dict[int(end_month)])
+                if end_day:
+                    if int(end_day) not in calendar_dict[int(end_month)]:
+                        ed_input.set(calendar_dict[int(end_month)][-1])
+            else:
+                ed.config(values=calendar_dict[""])
+
         else:
             begin_label.config(foreground="gray")
             end_label.config(foreground="gray")
@@ -364,6 +420,10 @@ def gui(func):
     sim_input.trace_add("write", update)
     outgran_input.trace_add("write", update)
     outenduses_input.trace_add("write", update)
+    # bd_input.trace_add("write", update)
+    # ed_input.trace_add("write", update)
+    bm_input.trace_add("write", update)
+    em_input.trace_add("write", update)
     
     # Set Imported User Settings
     for i in range(len(import_list)):
