@@ -1,0 +1,68 @@
+!-   ===========  ALL OBJECTS IN CLASS: WINDOWPROPERTY:SHADINGCONTROL ===========
+
+WindowShadingControl,
+    Shades,                 !- Name
+    living,                 !- Zone Name
+    1,                       !- Shading Control Sequence Number
+    InteriorBlind,           !- Shading Type
+    window_w_blinds,         !- Construction with Shading Name
+    OnIfScheduleAllows,      !- Shading Control Type
+    shading_2012iecc,        !- Schedule Name
+    ,                        !- Setpoint {W/m2, W or deg C}
+    Yes,                     !- Shading Control Is Scheduled
+    No,                      !- Glare Control Is Active
+    ,                        !- Shading Device Material Name
+    ,                        !- Type of Slat Angle Control for Blinds
+    ,                        !- Slat Angle Schedule Name
+    ,                        !- Setpoint 2 {W/m2 or deg C}
+    ,                        !- Daylighting Control Object Name
+    Sequential,              !- Multiple Surface Control Type
+    window_floor1_front,      !- Fenestration Surface 1 Name
+    window_floor1_back,      !- Fenestration Surface 2 Name
+    window_floor1_right,      !- Fenestration Surface 3 Name
+    window_floor1_left;      !- Fenestration Surface 4 Name
+
+!-   ===========  ALL OBJECTS IN CLASS: WINDOWMATERIAL:BLIND ===========
+
+!*** Properties for blinds taken from E+ dataset for 'Blinds with Medium Reflectivity Slats'***
+!
+WindowMaterial:Blind,
+    int_blind,               !- Name
+    Horizontal,              !- Slat Orientation
+    0.025,                   !- Slat Width {m}
+    0.01875,                 !- Slat Separation {m}
+    0.001,                   !- Slat Thickness {m}
+    45.0,                    !- Slat Angle {deg}
+    221,                     !- Slat Conductivity {W/m-K}
+    0.0,                     !- Slat Beam Solar Transmittance
+    0.5,                     !- Front Side Slat Beam Solar Reflectance
+    0.5,                     !- Back Side Slat Beam Solar Reflectance
+    0.0,                     !- Slat Diffuse Solar Transmittance
+    0.5,                     !- Front Side Slat Diffuse Solar Reflectance
+    0.5,                     !- Back Side Slat Diffuse Solar Reflectance
+    0.0,                     !- Slat Beam Visible Transmittance
+    0.5,                     !- Front Side Slat Beam Visible Reflectance
+    0.5,                     !- Back Side Slat Beam Visible Reflectance
+    0.0,                     !- Slat Diffuse Visible Transmittance
+    0.5,                     !- Front Side Slat Diffuse Visible Reflectance
+    0.5,                     !- Back Side Slat Diffuse Visible Reflectance
+    0.0,                     !- Slat Infrared Hemispherical Transmittance
+    0.9,                     !- Front Side Slat Infrared Hemispherical Emissivity
+    0.9,                     !- Back Side Slat Infrared Hemispherical Emissivity
+    0.050,                   !- Blind to Glass Distance {m}
+    0.5,                     !- Blind Top Opening Multiplier
+    0.5,                     !- Blind Bottom Opening Multiplier
+    0.5,                     !- Blind Left Side Opening Multiplier
+    0.5,                     !- Blind Right Side Opening Multiplier
+    ,                        !- Minimum Slat Angle {deg}
+    ;                        !- Maximum Slat Angle {deg}
+
+Construction,
+    Exterior Window,         !- Name
+    Glass;                   !- Outside Layer
+
+Construction,
+    window_w_blinds,         !- Name
+    Glass,                   !- Outside Layer
+    int_blind;               !- Layer 2
+

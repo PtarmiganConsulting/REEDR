@@ -2,18 +2,21 @@
 import os
 import subprocess
 import pandas as pd
+import threading
+import time
+from pprint import pprint # for debugging
 
-from getdata import cwd, parent, sht1, master_directory, master_dict_list, df, eplus_directory, runlog
+def runmodels(gui_params, get_data_dict):
 
-def runmodels():
+    # for enabling or disabling multithreading
+    multi=gui_params["multithread"]
 
-    # Sets the directory. When calling from __main__, needs to be set to "parent". When calling from entry exe script, needs to be set to "cwd".
-    set_dir = parent
+    # Sets the directory.
+    set_dir = get_data_dict["parent"]
 
-    # Update simulation status box in REEDR.xlsm...
+    # Update simulation status...
     status = "Starting model run(s)..."
     print(status)
-    #sht1.range('status_line_2').value = "Starting model run(s)..."
 
     ################################################################################################################
 
@@ -53,7 +56,8 @@ def runmodels():
         eplusout_path = output_path
 
         ## https://github.com/jamiebull1/eplus_worker/blob/master/worker/runner.py
-        dff = subprocess.Popen([eplus_path, '-r', '-w', weather_file, '-d', eplusout_path, eplus_file],stdout=subprocess.PIPE, universal_newlines=True)
+        #dff = subprocess.Popen([eplus_path, '-r', '-w', weather_file, '-d', eplusout_path, eplus_file],stdout=subprocess.PIPE, universal_newlines=True)
+        dff = subprocess.Popen([eplus_path, '-w', weather_file, '-d', eplusout_path, eplus_file],stdout=subprocess.PIPE, universal_newlines=True)
 
         # for stdout_line in dff.stdout:
         #     print(stdout_line)
@@ -67,32 +71,85 @@ def runmodels():
     ## iterates over the master dictionary list and calls eplus on all of them
     ## remember, each dictionary is effectively a complete runlabel row...
     ## and that's how we can catch every runlabel with one short loop!
-    runlog.write("Starting model runs... \n")
+    # get_data_dict["runlog"].write("Starting model runs... \n")
     i = 1
-    for dictionary in master_dict_list:
-        # Update simulation status box in REEDR.xlsm...
-        status = "...running model " + str(i) + " of " + str(len(df)) + "..."
-        print(status)
-        #sht1.range('status_line_2').value = status
 
-        run_label = dictionary["Run_Label"]
-        location_pull = dictionary["Weather_File"]
-        try:
-            plusterwolf(run_label, location_pull, master_directory, eplus_directory, i, df)
-            runlog.write("... model run for " + run_label + " complete. \n")
-        except Exception as e:
-            runlog.write("!!! problem running model " + run_label + "\n")
-            runlog.write("!!! REEDR experienced the following error: " + str(e) + "\n")
-            print(e)
 
-        i = i + 1
+    thread_limit = 4
+    if multi:
 
-    runlog.write("... \n")
+        threads = []
+        for dictionary in get_data_dict["master_dict_list"]:
+            time.sleep(.25)
+            # Update simulation status box in REEDR.xlsm...
+            status = "...running model " + str(i) + " of " + str(len(get_data_dict["df"])) + "..."
+            # print(status) # original placement
+            #sht1.range('status_line_2').value = status
 
-    #sub = subprocess.Popen("cmd /k")
+            run_label = dictionary["Run Label"]
+            location_pull = dictionary["Weather File"]
+
+            if len(threads) >= thread_limit:
+                # print("Thread limit reached.  Resolving threads...")
+                for thread in threads:
+                    time.sleep(.25)
+                    thread.join()
+                    # threads.pop(thread)
+                    thread._stop()
+                    time.sleep(.1)
+
+                threads = []
+                # thread_limit += 8
+            
+            print(status)
+                
+
+            try:
+                t = threading.Thread(target=plusterwolf, args=(run_label, location_pull, get_data_dict["master_directory"], gui_params["path_val"], i, get_data_dict["df"]))
+                # t.setName(run_label + "t")
+                threads.append(t)
+                t.start()
+
+                # plusterwolf(run_label, location_pull, get_data_dict["master_directory"], gui_params["path_val"], i, get_data_dict["df"])
+                # get_data_dict["runlog"].write("... model run for " + str(run_label) + " complete. \n")
+            except:
+                # get_data_dict["runlog"].write("!!! problem running model " + str(run_label) + "\n")
+                # get_data_dict["runlog"].write("!!! REEDR experienced the following error: " + str(e) + "\n")
+                print("\n*** ERROR: Problem running EnergyPlus. Please check to make sure you have a valid EnergyPlus exe path.\n")
+                return True
+
+            i = i + 1
+
+        # get_data_dict["runlog"].write("... \n")
+
+        for thread in threads:
+            # print(thread)
+            thread.join()
+            thread._stop()
+
+    else:
+        for dictionary in get_data_dict["master_dict_list"]:
+            # Update simulation status...
+            status = "...running model " + str(i) + " of " + str(len(get_data_dict["df"])) + "..."
+            print(status)
+    
+            run_label = dictionary["Run Label"]
+            location_pull = dictionary["Weather File"]
+    
+            try:
+                plusterwolf(run_label, location_pull, get_data_dict["master_directory"], gui_params["path_val"], i, get_data_dict["df"])
+                # get_data_dict["runlog"].write("... model run for " + run_label + " complete. \n")
+            except:
+                # get_data_dict["runlog"].write("!!! problem running model " + run_label + "\n")
+                # get_data_dict["runlog"].write("!!! REEDR experienced the following error: " + str(e) + "\n")
+                print("\n*** ERROR: Problem running EnergyPlus. Please check to make sure you have a valid EnergyPlus exe path.\n")
+                return True
+    
+            i = i + 1
+    
+        # get_data_dict["runlog"].write("... \n")
 
     print("...model runs complete.")
     print()
 
-    # Update simulation status box in REEDR.xlsm...
-    #sht1.range('status_line_2').value = "Starting model run(s)... Model run(s) complete."
+    return False

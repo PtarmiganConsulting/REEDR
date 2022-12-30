@@ -3,24 +3,14 @@
 Version,
     9.5;                     !- Version Identifier
 
-
 !-   ===========  ALL OBJECTS IN CLASS: SIMULATIONCONTROL ===========
 
 SimulationControl,
     Yes,                     !- Do Zone Sizing Calculation
     Yes,                     !- Do System Sizing Calculation
-    No,                      !- Do Plant Sizing Calculation
+    Yes,                      !- Do Plant Sizing Calculation
     Yes,                     !- Run Simulation for Sizing Periods
     Yes;                     !- Run Simulation for Weather File Run Periods
-
-!-   ===========  ALL OBJECTS IN CLASS: PERFORMANCEPRECISIONTRADEOFFS ===========
-
-PerformancePrecisionTradeoffs,
-    Yes,                     !- Use Coil Direct Solutions
-    CarrollMRT,              !- Zone Radiant Exchange Algorithm
-    Mode07,                  !- Override Mode
-    1,                       !- MaxZoneTempDiff
-    0.1;                     !- MaxAllowedDelTemp
 
 !-   ===========  ALL OBJECTS IN CLASS: BUILDING ===========
 
@@ -39,12 +29,10 @@ Building,
 SurfaceConvectionAlgorithm:Inside,
     TARP;                  !- Algorithm
 
-
 !-   ===========  ALL OBJECTS IN CLASS: TIMESTEP ===========
 
 Timestep,
     {timestep};                       !- Number of Timesteps per Hour
-
 
 !-   ===========  ALL OBJECTS IN CLASS: RUNPERIOD ===========
 
@@ -63,3 +51,10 @@ RunPeriod,
     Yes,                     !- Use Weather File Rain Indicators
     Yes,                     !- Use Weather File Snow Indicators
     ;                        !- Treat Weather as Actual
+
+ Site:WaterMainsTemperature,
+     CorrelationFromWeatherFile,	!- Calculation method
+     , 		!- Temperature schedule name
+     , !- Annual average outdoor air temperature {{C}}
+     ;	!- Maximum difference in monthly average outdoor air temperatures {{C}}
+

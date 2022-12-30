@@ -25,3 +25,38 @@ def convert_J_to_therm(J):
 def convert_W_to_Btuh(W):
     Btuh = W*3.41
     return Btuh
+
+def convert_Btuh_to_W(Btuh):
+    W = Btuh/3.41
+    return W
+
+def convert_ft_to_m(ft):
+    if ft == "":
+        m = ""
+    else:
+        m = ft/3.281
+    return m
+
+def convert_ft2_to_m2(ft2):
+    m2 = ft2/10.764
+    return m2
+
+def convert_ft3_to_m3(ft3):
+    m3 = ft3/35.315
+    return m3
+
+def convert_kW_to_ton(kW):
+    ton = kW/3.517
+    return ton
+
+def convert_W_to_ton(W):
+    ton = W/3516.8528420667
+    return ton
+
+def convert_CFM_to_m3PerSec(CFM):
+    m3PerSec = CFM/2118.8799727596793
+    return m3PerSec
+
+def convert_in2_to_m2(in2):
+    m2 = in2*0.00064516
+    return m2

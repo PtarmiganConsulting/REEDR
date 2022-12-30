@@ -236,34 +236,6 @@ Schedule:Day:Hourly,
     0.828571428571429;       !- Hour 24
 
 Schedule:Day:Hourly,
-    MiscPlugLoadDay,         !- Name
-    Fraction,              !- Schedule Type Limits Name
-    0.607490272373541,       !- Hour 1
-    0.559338521400778,       !- Hour 2
-    0.552853437094682,       !- Hour 3
-    0.545071335927367,       !- Hour 4
-    0.524481193255512,       !- Hour 5
-    0.585278858625162,       !- Hour 6
-    0.676232166018158,       !- Hour 7
-    0.718547341115435,       !- Hour 8
-    0.607490272373541,       !- Hour 9
-    0.517023346303502,       !- Hour 10
-    0.529182879377432,       !- Hour 11
-    0.529345006485084,       !- Hour 12
-    0.520428015564202,       !- Hour 13
-    0.538424124513619,       !- Hour 14
-    0.568741893644617,       !- Hour 15
-    0.600356679636835,       !- Hour 16
-    0.71011673151751,        !- Hour 17
-    0.862678339818418,       !- Hour 18
-    0.936608300907912,       !- Hour 19
-    0.966763942931258,       !- Hour 20
-    1,                       !- Hour 21
-    0.976653696498055,       !- Hour 22
-    0.845168612191959,       !- Hour 23
-    0.73443579766537;        !- Hour 24
-
-Schedule:Day:Hourly,
     CookingRangeDay,         !- Name
     Fraction,                !- Schedule Type Limits Name
     0.04715848452508,        !- Hour 1
@@ -921,11 +893,6 @@ Schedule:Week:Compact,
     RefrigeratorDay;         !- Schedule:Day Name 1
 
 Schedule:Week:Compact,
-    MiscPlugLoadWeek,        !- Name
-    For: AllDays,            !- DayType List 1
-    MiscPlugLoadDay;         !- Schedule:Day Name 1
-
-Schedule:Week:Compact,
     CookingRangeWeek,        !- Name
     For: AllDays,            !- DayType List 1
     CookingRangeDay;         !- Schedule:Day Name 1
@@ -1091,15 +1058,6 @@ Schedule:Year,
     31;                      !- End Day 1
 
 Schedule:Year,
-    MiscPlugLoad,            !- Name
-    Fraction,              !- Schedule Type Limits Name
-    MiscPlugLoadWeek,        !- Schedule:Week Name 1
-    1,                       !- Start Month 1
-    1,                       !- Start Day 1
-    12,                      !- End Month 1
-    31;                      !- End Day 1
-
-Schedule:Year,
     CookingRange,            !- Name
     Fraction,                !- Schedule Type Limits Name
     CookingRangeWeek,        !- Schedule:Week Name 1
@@ -1231,14 +1189,6 @@ Schedule:Compact,
     For: AllDays,            !- Field 10
     Until: 24:00,            !- Field 11
     0.85;                    !- Field 12
-
-Schedule:Compact,
-    dhw_setpt_hpwh,          !- Name
-    Temperature,             !- Schedule Type Limits Name
-    Through: 12/31,          !- Field 1
-    For: AllDays,            !- Field 2
-    Until 24:00,             !- Field 3
-    44;                      !- Field 4
 
 Schedule:Compact,
     BA_shower_sch,            !- Name
@@ -1462,20 +1412,52 @@ Schedule:Constant,
     Temperature,             !- Schedule Type Limits Name
     -60;                     !- Hourly Value
 
-Schedule:Constant,
+!- Schedule:Constant,
+!-    heating_sch,             !- Name
+!-    Temperature,             !- Schedule Type Limits Name
+!-    20.556;                     !- Hourly Value
+
+!- Schedule:Constant,
+!-    cooling_sch,             !- Name
+!-    Temperature,             !- Schedule Type Limits Name
+!-    25.556;                     !- Hourly Value
+
+!- Schedule:Constant,
+!-    dhw_setpt,             !- Name
+!-    Temperature,             !- Schedule Type Limits Name
+!-    53.333;                     !- Hourly Value
+
+!-   ===========  ALL OBJECTS IN CLASS: SCHEDULE:FILE ===========
+
+Schedule:File,
     heating_sch,             !- Name
     Temperature,             !- Schedule Type Limits Name
-    20.556;                     !- Hourly Value
+    ..\..\..\Building Blocks\Schedules\Schedules.csv,        !- File Name
+    {htg_sch_num},                       !- Column Number
+    1,                       !- Rows to Skip at Top
+    8760,                    !- Number of Hours of Data
+    Comma,                   !- Column Separator
+    Yes;                     !- Interpolate to Timestep
 
-Schedule:Constant,
+Schedule:File,
     cooling_sch,             !- Name
     Temperature,             !- Schedule Type Limits Name
-    25.556;                     !- Hourly Value
+    ..\..\..\Building Blocks\Schedules\Schedules.csv,        !- File Name
+    {clg_sch_num},                       !- Column Number
+    1,                       !- Rows to Skip at Top
+    8760,                    !- Number of Hours of Data
+    Comma,                   !- Column Separator
+    Yes;                     !- Interpolate to Timestep
 
-Schedule:Constant,
+Schedule:File,
     dhw_setpt,             !- Name
     Temperature,             !- Schedule Type Limits Name
-    53.333;                     !- Hourly Value
+    ..\..\..\Building Blocks\Schedules\Schedules.csv,        !- File Name
+    {dhw_sch_num},                       !- Column Number
+    1,                       !- Rows to Skip at Top
+    8760,                    !- Number of Hours of Data
+    Comma,                   !- Column Separator
+    Yes;                     !- Interpolate to Timestep
 
 
 !-   ===========  ALL OBJECTS IN CLASS: AVAILABILITYMANAGER:SCHEDULED ===========
