@@ -4,6 +4,7 @@ import os # for making paths and directories and removing files
 import shutil # for removing full directories
 import math # used for functions like square root
 from pprint import pprint
+from pathlib import Path
 import datetime
 from Scripts.unitconversions import convert_WperFt2_to_WperM2, convert_degF_to_degC, convert_IP_Uvalue_to_SI_Uvalue, convert_ft_to_m, convert_ft2_to_m2, \
     convert_ft3_to_m3, convert_Btuh_to_W, convert_CFM_to_m3PerSec, convert_W_to_ton, convert_in2_to_m2
@@ -11,12 +12,17 @@ from Scripts.dictionaries import make_foundation_and_floor_dict, make_hvac_dict,
     make_crawl_infiltration_coeff_dict
 from Scripts.datavalidation import validate, convert_capacity
 from Scripts.utilfunctions import estimateInfiltrationAdjustment
+from Scripts.dictmaker import dict_maker
 
 
 def genmodels(gui_params, get_data_dict):
 
     ### --- Set the main working directory. --- ###
     set_dir = get_data_dict["parent"]
+
+    # candidate for revision after changes to get_data_dict
+    cwd = Path(os. getcwd())
+    parent = cwd.parent.absolute() 
 
     ### --- Define building block directory and folder names as variables, so they can be established only once here, and flow throughout. --- ###
     building_block_dir = "Building Blocks"
@@ -175,16 +181,27 @@ def genmodels(gui_params, get_data_dict):
     output_lookup = output_type + "_" + gui_params["output_enduses"]
 
     ### --- Define dictionaries needed for REEDR user inputs. --- ###
+
     # floor and foundation construction dictionary
-    foundation_and_floor_dict = make_foundation_and_floor_dict()
+    foundation_and_floor_path = f"{cwd}/Control Panel/Envelope Constructions/Floor and Foundation.csv"
+    foundation_and_floor_dict = dict_maker(foundation_and_floor_path)
+
     # hvac type dictionary
-    hvac_dict = make_hvac_dict(set_dir, building_block_dir, hvac_airloop_main_dir, hvac_airloop_hvac_dir, hvac_zone_main_dir, hvac_zone_hvac_dir, hvac_coil_dir, hvac_fan_dir)
-    # living zone infiltration regression coefficients
-    living_infiltration_coeff_dict = make_living_infiltration_coeff_dict()
+    hvac_path = f"{cwd}/Control Panel/HVAC Systems/Primary HVAC Equipment.csv"
+    hvac_dict = dict_maker(hvac_path)
+
+    # living zone infiltration regression coefficients    
+    living_infiltration_coeff_path = f"{cwd}/Control Panel/Infiltration Regression Coefficients/Living_Coefficients.csv"
+    living_infiltration_coeff_dict = dict_maker(living_infiltration_coeff_path)
+
     # attic zone infiltration regression coefficients
-    attic_infiltration_coeff_dict = make_attic_infiltration_coeff_dict()
-    # crawl zone infiltration regression coefficients
-    crawl_infiltration_coeff_dict = make_crawl_infiltration_coeff_dict()
+    attic_infiltration_coeff_path = f"{cwd}/Control Panel/Infiltration Regression Coefficients/Attic_Coefficients.csv"
+    attic_infiltration_coeff_dict = dict_maker(attic_infiltration_coeff_path)
+    
+
+    # crawl zone infiltration regression coefficients    
+    crawl_infiltration_coeff_path = f"{cwd}/Control Panel/Infiltration Regression Coefficients/Crawl_Coefficients.csv"
+    crawl_infiltration_coeff_dict = dict_maker(crawl_infiltration_coeff_path)
     
     # foundation type dictionary
     foundation_dict = {
