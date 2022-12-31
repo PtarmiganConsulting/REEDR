@@ -7,9 +7,7 @@ from pprint import pprint
 from pathlib import Path
 import datetime
 from Scripts.unitconversions import convert_WperFt2_to_WperM2, convert_degF_to_degC, convert_IP_Uvalue_to_SI_Uvalue, convert_ft_to_m, convert_ft2_to_m2, \
-    convert_ft3_to_m3, convert_Btuh_to_W, convert_CFM_to_m3PerSec, convert_W_to_ton, convert_in2_to_m2
-from Scripts.dictionaries import make_foundation_and_floor_dict, make_hvac_dict, make_living_infiltration_coeff_dict, make_attic_infiltration_coeff_dict, \
-    make_crawl_infiltration_coeff_dict
+    convert_Btuh_to_W, convert_CFM_to_m3PerSec, convert_W_to_ton
 from Scripts.datavalidation import validate, convert_capacity
 from Scripts.utilfunctions import estimateInfiltrationAdjustment
 from Scripts.dictmaker import dict_maker
@@ -74,8 +72,6 @@ def genmodels(gui_params, get_data_dict):
     wallCon_fieldname = "Exterior Non-Foundation Wall Construction"
     ceilingCon_fieldname = "Ceiling And Roof Construction"
     floorCon_fieldname = "Foundation And Floor Construction"
-    #foundWallHtAg_fieldname = "Foundation Wall Height Above Ground [ft]"
-    #foundWallHtBg_fieldname = "Foundation Wall Height Below Ground [ft]"
     windowuUvalue_fieldname = "Window U-Value [Btu/h-ft^2-F]"
     windowSHGC_fieldname = "Window Solar Heat Gain Coefficient"
     windowShade_fieldname = "Window Shades"
@@ -158,8 +154,6 @@ def genmodels(gui_params, get_data_dict):
     for i in range(len(get_data_dict["df"])): # Note: df is a Pandas dataframe that contains user inputs from the "Model_Inputs" tab in REEDR.xlsx
         directory_names.append(get_data_dict["df"].loc[i][0])
 
-    # get_data_dict["runlog"].write("Starting to build subdirectories under " + os.path.join(get_data_dict["master_directory"]) + ". \n")
-
     for name in directory_names:
         try:
             path = os.path.join(get_data_dict["master_directory"], name) # Note: the "master directory" is the user-defined "Project" folder
@@ -190,16 +184,16 @@ def genmodels(gui_params, get_data_dict):
     hvac_path = f"{cwd}/Control Panel/HVAC Systems/Primary HVAC Equipment.csv"
     hvac_dict = dict_maker(hvac_path)
 
-    # living zone infiltration regression coefficients    
+    # living zone infiltration regression coefficient dictionary    
     living_infiltration_coeff_path = f"{cwd}/Control Panel/Infiltration Regression Coefficients/Living_Coefficients.csv"
     living_infiltration_coeff_dict = dict_maker(living_infiltration_coeff_path)
 
-    # attic zone infiltration regression coefficients
+    # attic zone infiltration regression coefficients dictionary  
     attic_infiltration_coeff_path = f"{cwd}/Control Panel/Infiltration Regression Coefficients/Attic_Coefficients.csv"
     attic_infiltration_coeff_dict = dict_maker(attic_infiltration_coeff_path)
     
 
-    # crawl zone infiltration regression coefficients    
+    # crawl zone infiltration regression coefficients dictionary   
     crawl_infiltration_coeff_path = f"{cwd}/Control Panel/Infiltration Regression Coefficients/Crawl_Coefficients.csv"
     crawl_infiltration_coeff_dict = dict_maker(crawl_infiltration_coeff_path)
     

@@ -1,6 +1,7 @@
 import os
 
-# This is a separate file that makes dictionaries for genmodels.
+# Note that this file is no longer used. These dictionaries are now created using CSVs in the "Control Panel" folder
+# along with the dictmaker.py file. However, this file is kept here to illustrate the structure of these dictionaries.
 
 def make_Energy_All_End_Uses_dict():
     Energy_All_End_Uses_dict = {
