@@ -4,13 +4,12 @@ import os # used to remove files
 from pprint import pprint # used to print dataframes to command prompt in more legible way for debugging
 import datetime
 import pytz
+from pathlib import Path
 
 ## Import "internal" modules needed for REEDR...
 from Scripts.unitconversions import convert_J_to_kWh, convert_J_to_therm, convert_W_to_Btuh, convert_degC_to_degF
 from Scripts.xlsxadjust import adapt_spreadsheet
-
-from Scripts.dictionaries2 import make_Energy_All_End_Uses_dict, make_Demand_All_HVAC_dict, make_Demand_Heating_dict, \
-    make_Demand_Cooling_dict, make_Demand_Fan_dict, make_Demand_Lighting_dict, make_Demand_Water_Heating_dict, make_Demand_Other_Equipment_dict
+from Scripts.dictmaker import dict_maker
 
 ## Main fuction used to generate custom output reports for REEDR.
 ## This function takes:
@@ -22,6 +21,10 @@ def genoutputs(gui_params, get_data_dict):
     # Set the proper working directory.
     set_dir = get_data_dict["parent"]
 
+    # candidate for revision after changes to get_data_dict
+    cwd = Path(os. getcwd())
+    parent = cwd.parent.absolute() 
+
     # Update simulation status box in Excel interface...
     status = "Generating model output..."
     print(status)
@@ -32,19 +35,33 @@ def genoutputs(gui_params, get_data_dict):
     pd.set_option('display.max_rows', None)  # or 1000
 
     ## Define output dictionaries. These become the data fields (i.e. columns) for the custom report.
-    Energy_All_End_Uses_dict = make_Energy_All_End_Uses_dict()
-    Demand_All_HVAC_dict = make_Demand_All_HVAC_dict()
-    Demand_Heating_dict = make_Demand_Heating_dict()
-    Demand_Cooling_dict = make_Demand_Cooling_dict()
-    Demand_Fan_dict = make_Demand_Fan_dict()
-    Demand_Lighting_dict = make_Demand_Lighting_dict()
-    Demand_Water_Heating_dict = make_Demand_Water_Heating_dict()
-    Demand_Other_Equipment_dict = make_Demand_Other_Equipment_dict()
 
-    # Build Demand_All_End_Use dictionary by combining all individual end use dictionaries
-    Demand_All_End_Uses_dict = {}
-    for d in (Demand_All_HVAC_dict, Demand_Heating_dict, Demand_Cooling_dict, Demand_Fan_dict, Demand_Lighting_dict, Demand_Water_Heating_dict, Demand_Other_Equipment_dict):
-        Demand_All_End_Uses_dict.update(d)
+    Energy_All_End_Uses_path = f"{cwd}/Control Panel/Output Reports/Energy All End Uses Report.csv"
+    Energy_All_End_Uses_dict = dict_maker(Energy_All_End_Uses_path)
+
+    Demand_All_HVAC_path = f"{cwd}/Control Panel/Output Reports/Demand All HVAC Report.csv"
+    Demand_All_HVAC_dict = dict_maker(Demand_All_HVAC_path)
+
+    Demand_Heating_path = f"{cwd}/Control Panel/Output Reports/Demand Heating Report.csv"
+    Demand_Heating_dict = dict_maker(Demand_Heating_path)
+
+    Demand_Cooling_path = f"{cwd}/Control Panel/Output Reports/Demand Cooling Report.csv"
+    Demand_Cooling_dict = dict_maker(Demand_Cooling_path)
+
+    Demand_Fan_path = f"{cwd}/Control Panel/Output Reports/Demand Fan Report.csv"
+    Demand_Fan_dict = dict_maker(Demand_Fan_path)
+
+    Demand_Lighting_path = f"{cwd}/Control Panel/Output Reports/Demand Lighting Report.csv"
+    Demand_Lighting_dict = dict_maker(Demand_Lighting_path)
+
+    Demand_Water_Heating_path = f"{cwd}/Control Panel/Output Reports/Demand Water Heating Report.csv"
+    Demand_Water_Heating_dict = dict_maker(Demand_Water_Heating_path)
+
+    Demand_Other_Equipment_path = f"{cwd}/Control Panel/Output Reports/Demand Other Equipment Report.csv"
+    Demand_Other_Equipment_dict = dict_maker(Demand_Other_Equipment_path)
+
+    Demand_All_End_Uses_path = f"{cwd}/Control Panel/Output Reports/Demand All End Uses Report.csv"
+    Demand_All_End_Uses_dict = dict_maker(Demand_All_End_Uses_path)
 
     ## Determine report type to output based on user input...
     #... determine whether to create an energy or demand report
@@ -180,7 +197,6 @@ def produce_output_report(output_dict, output_gran, output_type, get_data_dict, 
         for key in output_dict:
             # Rename column headers
             try:
-                
                 df_out = df_out.rename(columns = {output_dict[key]["mapping_fieldname"]:key})
             except:
                 pass
