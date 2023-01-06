@@ -180,6 +180,10 @@ def genmodels(gui_params, get_data_dict):
     foundation_and_floor_path = f"{cwd}/Control Panel/Envelope Constructions/Floor and Foundation.csv"
     foundation_and_floor_dict = dict_maker(foundation_and_floor_path)
 
+    # exterior non-foundation wall dictionary
+    nonfoundation_wall_path = f"{cwd}/Control Panel/Envelope Constructions/Non Foundation Walls.csv"
+    nonfoundation_wall_dict = dict_maker(nonfoundation_wall_path)
+
     # hvac type dictionary
     hvac_path = f"{cwd}/Control Panel/HVAC Systems/Primary HVAC Equipment.csv"
     hvac_dict = dict_maker(hvac_path)
@@ -192,7 +196,6 @@ def genmodels(gui_params, get_data_dict):
     attic_infiltration_coeff_path = f"{cwd}/Control Panel/Infiltration Regression Coefficients/Attic_Coefficients.csv"
     attic_infiltration_coeff_dict = dict_maker(attic_infiltration_coeff_path)
     
-
     # crawl zone infiltration regression coefficients dictionary   
     crawl_infiltration_coeff_path = f"{cwd}/Control Panel/Infiltration Regression Coefficients/Crawl_Coefficients.csv"
     crawl_infiltration_coeff_dict = dict_maker(crawl_infiltration_coeff_path)
@@ -254,8 +257,9 @@ def genmodels(gui_params, get_data_dict):
             ratio_width_to_depth = validate(bldgRatio_fieldname, dictionary[bldgRatio_fieldname], "num_not_zero", 999, 999, dummy_list)
 
             #... above ground wall construction
-            above_ground_wall_con_path = os.path.join(set_dir, building_block_dir, materials_main_dir, materials_wall_ins_dir)
-            above_ground_wall_con = validate(wallCon_fieldname, dictionary[wallCon_fieldname], "file", 999, 999, dummy_list, above_ground_wall_con_path)
+            # above_ground_wall_con_path = os.path.join(set_dir, building_block_dir, materials_main_dir, materials_wall_ins_dir)
+            above_ground_wall_list = nonfoundation_wall_dict.keys()
+            above_ground_wall_con = validate(wallCon_fieldname, dictionary[wallCon_fieldname], "list", 999, 999, above_ground_wall_list)
 
             #... ceiling and roof construction
             ceiling_and_roof_con_path = os.path.join(set_dir, building_block_dir, materials_main_dir, materials_attic_ins_dir)
@@ -496,8 +500,34 @@ def genmodels(gui_params, get_data_dict):
         except:
             return True
         
-        ## Set window construction
+        # Set window construction
         win_construction = "Exterior Window"
+
+        # Get wall construction layers
+        wall_layers = []
+        wall_layers.append(nonfoundation_wall_dict[above_ground_wall_con]["exterior_wall_layer"])
+        wall_layers.append(nonfoundation_wall_dict[above_ground_wall_con]["next_wall_layer_1"])
+        wall_layers.append(nonfoundation_wall_dict[above_ground_wall_con]["next_wall_layer_2"])
+        wall_layers.append(nonfoundation_wall_dict[above_ground_wall_con]["next_wall_layer_3"])
+        wall_layers.append(nonfoundation_wall_dict[above_ground_wall_con]["next_wall_layer_4"])
+        wall_layers.append(nonfoundation_wall_dict[above_ground_wall_con]["next_wall_layer_5"])
+        wall_layers.append(nonfoundation_wall_dict[above_ground_wall_con]["next_wall_layer_6"])
+        wall_layers.append(nonfoundation_wall_dict[above_ground_wall_con]["next_wall_layer_7"])
+        wall_layers.append(nonfoundation_wall_dict[above_ground_wall_con]["next_wall_layer_8"])
+        wall_layers.append(nonfoundation_wall_dict[above_ground_wall_con]["next_wall_layer_9"])
+        wall_layers.append(nonfoundation_wall_dict[above_ground_wall_con]["next_wall_layer_10"])
+        #... find last "real" (non-empty) layer
+        for i in range(len(wall_layers)):
+            if wall_layers[i] != "!-":
+                last_real_layer_num = i
+        #... add proper punctuation for EnergyPlus based on last real layer
+        for i in range(len(wall_layers)):
+            if i == last_real_layer_num:
+                # last layer in energy plus needs to end with a semi-colon
+                wall_layers[i] = wall_layers[i] + ";"
+            else:
+                # otherwise it is either an intermediate layer or an empty layer, and use a comma
+                wall_layers[i] = wall_layers[i] + ","
 
         # Set foundation parameters based on foundation type
         main_floor_construction = foundation_and_floor_dict[foundation_and_floor_con]["main_floor_construction"]
@@ -644,15 +674,15 @@ def genmodels(gui_params, get_data_dict):
 
         # Materials
         #... insert user-entered above-ground wall insulation
-        wall_ins_file = above_ground_wall_con + ".txt"
-        with open(os.path.join(set_dir, building_block_dir, materials_main_dir, materials_wall_ins_dir, wall_ins_file), 'r') as f:
-            above_ground_wall_t = f.read()
+        # wall_ins_file = above_ground_wall_con + ".txt"
+        # with open(os.path.join(set_dir, building_block_dir, materials_main_dir, materials_wall_ins_dir, wall_ins_file), 'r') as f:
+        #     above_ground_wall_t = f.read()
         #... insert user-entered ceiling/attic insulation
         attic_ins_file = ceiling_and_roof_con + ".txt"
         with open(os.path.join(set_dir, building_block_dir, materials_main_dir, materials_attic_ins_dir, attic_ins_file), 'r') as f:
             ceiling_attic_t = f.read()
         #...insert all other materials
-        with open(os.path.join(set_dir, building_block_dir, materials_main_dir, 'OtherMaterials.txt'), 'r') as f:
+        with open(os.path.join(set_dir, building_block_dir, 'Materials.txt'), 'r') as f:
             mat_t = f.read()
 
         # Performance Curves
@@ -1065,7 +1095,7 @@ def genmodels(gui_params, get_data_dict):
         # Nesting them this way allows us to easily write the full idf file, because we can simply iterate over the list
         master_tl = [
             simparam_t, performanceprecision_t, locations_t, sched_t, misc_elec_sched_t, misc_gas_sched_t, \
-            mat_t, above_ground_wall_t, ceiling_attic_t, glazing_t, win_construction_t, construction_t, \
+            mat_t, ceiling_attic_t, glazing_t, win_construction_t, construction_t, \
             range_t, dryer_t, clotheswasher_t, dishwasher_t, frig_t, misc_elec_t, misc_gas_t, people_t, lights_t, \
             foundation_type_t, geom_rules_t, internal_mass_t, geom_main_envelope_t, geom_nonslab_adder_t, geom_main_windows_t, \
             living_zone_t, attic_zone_t, unheatedbsmt_zone_t, crawlspace_zone_t, geom_nonhtdbsmt_adder_t, \
