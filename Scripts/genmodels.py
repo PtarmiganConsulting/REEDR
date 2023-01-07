@@ -180,9 +180,13 @@ def genmodels(gui_params, get_data_dict):
     foundation_and_floor_path = f"{cwd}/Control Panel/Envelope Constructions/Floor and Foundation.csv"
     foundation_and_floor_dict = dict_maker(foundation_and_floor_path)
 
-    # exterior non-foundation wall dictionary
+    # exterior non-foundation wall construction dictionary
     nonfoundation_wall_path = f"{cwd}/Control Panel/Envelope Constructions/Non Foundation Walls.csv"
     nonfoundation_wall_dict = dict_maker(nonfoundation_wall_path)
+
+    # ceiling and roof construction dictionary
+    ceiling_and_roof_con_path = f"{cwd}/Control Panel/Envelope Constructions/Ceiling and Roof.csv"
+    ceiling_and_roof_con_dict = dict_maker(ceiling_and_roof_con_path)
 
     # hvac type dictionary
     hvac_path = f"{cwd}/Control Panel/HVAC Systems/Primary HVAC Equipment.csv"
@@ -257,13 +261,13 @@ def genmodels(gui_params, get_data_dict):
             ratio_width_to_depth = validate(bldgRatio_fieldname, dictionary[bldgRatio_fieldname], "num_not_zero", 999, 999, dummy_list)
 
             #... above ground wall construction
-            # above_ground_wall_con_path = os.path.join(set_dir, building_block_dir, materials_main_dir, materials_wall_ins_dir)
             above_ground_wall_list = nonfoundation_wall_dict.keys()
             above_ground_wall_con = validate(wallCon_fieldname, dictionary[wallCon_fieldname], "list", 999, 999, above_ground_wall_list)
 
             #... ceiling and roof construction
-            ceiling_and_roof_con_path = os.path.join(set_dir, building_block_dir, materials_main_dir, materials_attic_ins_dir)
-            ceiling_and_roof_con = validate(ceilingCon_fieldname, dictionary[ceilingCon_fieldname], "file", 999, 999, dummy_list, ceiling_and_roof_con_path)
+            # ceiling_and_roof_con_path = os.path.join(set_dir, building_block_dir, materials_main_dir, materials_attic_ins_dir)
+            ceiling_and_roof_con_list = ceiling_and_roof_con_dict.keys()
+            ceiling_and_roof_con = validate(ceilingCon_fieldname, dictionary[ceilingCon_fieldname], "list", 999, 999, ceiling_and_roof_con_list)
 
             #... foundation and floor construction
             foundation_and_floor_con = str(dictionary[floorCon_fieldname])
@@ -521,6 +525,7 @@ def genmodels(gui_params, get_data_dict):
             if wall_layers[i] != "!-":
                 last_real_layer_num = i
         #... add proper punctuation for EnergyPlus based on last real layer
+        i = 0
         for i in range(len(wall_layers)):
             if i == last_real_layer_num:
                 # last layer in energy plus needs to end with a semi-colon
@@ -529,6 +534,54 @@ def genmodels(gui_params, get_data_dict):
                 # otherwise it is either an intermediate layer or an empty layer, and use a comma
                 wall_layers[i] = wall_layers[i] + ","
 
+        # Get ceiling construction layers
+        ceiling_layers = []
+        ceiling_layers.append(ceiling_and_roof_con_dict[ceiling_and_roof_con]["exterior_ceiling_layer"])
+        ceiling_layers.append(ceiling_and_roof_con_dict[ceiling_and_roof_con]["next_ceiling_layer_1"])
+        ceiling_layers.append(ceiling_and_roof_con_dict[ceiling_and_roof_con]["next_ceiling_layer_2"])
+        ceiling_layers.append(ceiling_and_roof_con_dict[ceiling_and_roof_con]["next_ceiling_layer_3"])
+        ceiling_layers.append(ceiling_and_roof_con_dict[ceiling_and_roof_con]["next_ceiling_layer_4"])
+        ceiling_layers.append(ceiling_and_roof_con_dict[ceiling_and_roof_con]["next_ceiling_layer_5"])
+        #... find last "real" (non-empty) layer
+        i = 0
+        last_real_layer_num = 0
+        for i in range(len(ceiling_layers)):
+            if ceiling_layers[i] != "!-":
+                last_real_layer_num = i
+        #... add proper punctuation for EnergyPlus based on last real layer
+        i = 0
+        for i in range(len(ceiling_layers)):
+            if i == last_real_layer_num:
+                # last layer in energy plus needs to end with a semi-colon
+                ceiling_layers[i] = ceiling_layers[i] + ";"
+            else:
+                # otherwise it is either an intermediate layer or an empty layer, and use a comma
+                ceiling_layers[i] = ceiling_layers[i] + ","
+
+        # Get roof construction layers
+        roof_layers = []
+        roof_layers.append(ceiling_and_roof_con_dict[ceiling_and_roof_con]["exterior_roof_layer"])
+        roof_layers.append(ceiling_and_roof_con_dict[ceiling_and_roof_con]["next_roof_layer_1"])
+        roof_layers.append(ceiling_and_roof_con_dict[ceiling_and_roof_con]["next_roof_layer_2"])
+        roof_layers.append(ceiling_and_roof_con_dict[ceiling_and_roof_con]["next_roof_layer_3"])
+        roof_layers.append(ceiling_and_roof_con_dict[ceiling_and_roof_con]["next_roof_layer_4"])
+        roof_layers.append(ceiling_and_roof_con_dict[ceiling_and_roof_con]["next_roof_layer_5"])
+        #... find last "real" (non-empty) layer
+        i = 0
+        last_real_layer_num = 0
+        for i in range(len(roof_layers)):
+            if roof_layers[i] != "!-":
+                last_real_layer_num = i
+        #... add proper punctuation for EnergyPlus based on last real layer
+        i = 0
+        for i in range(len(roof_layers)):
+            if i == last_real_layer_num:
+                # last layer in energy plus needs to end with a semi-colon
+                roof_layers[i] = roof_layers[i] + ";"
+            else:
+                # otherwise it is either an intermediate layer or an empty layer, and use a comma
+                roof_layers[i] = roof_layers[i] + ","
+        
         # Set foundation parameters based on foundation type
         main_floor_construction = foundation_and_floor_dict[foundation_and_floor_con]["main_floor_construction"]
         foundation_surface = foundation_and_floor_dict[foundation_and_floor_con]["foundation_surface"]
