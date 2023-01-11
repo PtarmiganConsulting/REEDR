@@ -9,7 +9,7 @@ import datetime
 from Scripts.unitconversions import convert_WperFt2_to_WperM2, convert_degF_to_degC, convert_IP_Uvalue_to_SI_Uvalue, convert_ft_to_m, convert_ft2_to_m2, \
     convert_Btuh_to_W, convert_CFM_to_m3PerSec, convert_W_to_ton
 from Scripts.datavalidation import validate, convert_capacity
-from Scripts.utilfunctions import estimateInfiltrationAdjustment
+from Scripts.utilfunctions import estimateInfiltrationAdjustment, findLastRealLayer, formatLayerList
 from Scripts.dictmaker import dict_maker
 
 
@@ -22,96 +22,148 @@ def genmodels(gui_params, get_data_dict):
     cwd = Path(os. getcwd())
     parent = cwd.parent.absolute() 
 
-    ### --- Define building block directory and folder names as variables, so they can be established only once here, and flow throughout. --- ###
+    ### --- Define building block directory and file names as variables, so they can be established only once here, and flow throughout. --- ###
     building_block_dir = "Building Blocks"
+    building_block_constructions_file = "Constructions.txt"
+    building_block_foundation_file = "Foundation.txt"
+    building_block_materials_file = "Materials.txt"
+    building_block_outputControl_file = "OutputControl_Files.txt"
+    building_block_performanceCurve_file = "PerformanceCurves.txt"
+    building_block_simParameters_file = "SimulationParameters.txt"
     schedule_dir = "Schedules"
     schedule_elec_gains_dir = "MiscElecGains"
+    schedule_elec_gains_default_file = "MiscElecPNNLdefault.txt"
+    schedule_elec_gains_custom_file = "MiscElectricGainsCustom.txt"
     schedule_gas_gains_dir = "MiscGasGains"
+    schedule_gas_gains_default_file = "MiscGasPNNLdefault.txt"
+    schedule_gas_gains_custom_file = "MiscGasGainsCustom.txt"
     schedule_DHW_draws_dir = "HotWaterDraws"
-    schedule_file = "Schedules.csv"
+    schedule_CSV = "Schedules.csv"
+    schedule_file = "Schedules.txt"
     location_and_climate_dir = "LocationAndClimate"
-    materials_main_dir = "Materials"
-    materials_wall_ins_dir = "AGWallInsulation" # Note: AG = Above Ground
-    materials_attic_ins_dir = "AtticInsulation"
     dhw_main_dir = "DHW"
     dhw_wh_type_dir = "WaterHeaterType"
+    dhw_sys_file = "OtherDHW.txt"
     gains_main_dir = "Gains"
+    gains_cw_file = "ClothesWasher.txt"
+    gains_dw_file = "Dishwasher.txt"
+    gains_lights_file = "Lights.txt"
+    gains_miscElec_file = "MiscElectric.txt"
+    gains_miscGas_file = "MiscGas.txt"
+    gains_people_file = "People.txt"
+    gains_frig_file = "Refrigerator.txt"
     gains_dryertype_dir = "DryerType"
     gains_rangetype_dir = "RangeType"
     hvac_afn_main_dir = "HVAC_AirFlowNetwork" # Note: AFN = Air Flow Network
+    hvac_afn_ducts_file = "AFN_Ducts.txt"
+    hvac_afn_simcontrol_file = "AFN_SimulationControl.txt"
     hvac_afn_leakage_dir = "AFN_Leakage"
+    hvac_afn_leakage_main_file = "AFN_MainLeakage.txt"
+    hvac_afn_leakage_adder_file = "AFN_CrawlUnheatedBsmtLeakageAdder.txt"
     hvac_afn_linkage_dir = "AFN_Linkage"
+    hvac_afn_linkage_main_file = "AFN_MainLinkage.txt"
+    hvac_afn_linkage_adder_file = "AFN_CoolingCoilLinkageAdder.txt"
     hvac_afn_node_dir = "AFN_Nodes"
+    hvac_afn_node_main_file = "AFN_MainNodes.txt"
+    hvac_afn_node_adder_file = "AFN_CoolingCoilNodeAdder.txt"
     hvac_afn_surface_dir = "AFN_Surfaces"
+    hvac_afn_surface_main_file = "AFN_MainSurfaces.txt"
+    hvac_afn_surface_adder_file = "AFN_CrawlUnheatedBsmtSurfaceAdder.txt"
     hvac_afn_zone_dir = "AFN_Zones"
+    hvac_afn_zone_main_file = "AFN_MainZones.txt"
+    hvac_afn_zone_crawl_adder_file = "AFN_CrawlZoneAdder.txt"
+    hvac_afn_zone_unhtdbsmt_adder_file = "AFN_UnheatedbsmtZoneAdder.txt"
     hvac_airloop_main_dir = "HVAC_AirLoop"
+    hvac_airloop_file = "AirLoop.txt"
+    hvac_airloop_sysSizing_file = "SystemSizing.txt"
     hvac_airloop_hvac_dir = "AirLoopHVAC"
     hvac_coil_dir = "HVAC_Coils"
     hvac_fan_dir = "HVAC_Fans"
     hvac_tstat_dir = "HVAC_Thermostat"
+    hvac_tstat_file = "Thermostat.txt"
     hvac_zone_main_dir = "HVAC_Zone"
+    hvac_zone_equipList_file = "EquipListAndConnections.txt"
+    hvac_zone_zoneSizing_file = "ZoneSizing.txt"
     hvac_zone_hvac_dir = "ZoneHVAC"
     output_dir = "Output"
+    output_otherOutput_file = "OtherOutput.txt"
     window_main_dir = "Windows"
+    window_main_simpleGlazingSys_file = "SimpleGlazingSystem.txt"
     window_blinds_dir = "Blinds"
     geometry_main_dir = "Geometry"
+    geometry_globalRules_file = "GlobalGeometryRules.txt"
+    geometry_internalMass_file = "InternalMass.txt"
     geometry_envelope_dir = "Envelope"
+    geometry_envelope_main_file = "MainGeometry.txt"
+    geometry_envelope_nonslabAdder_file = "NonSlabGeometryAdder.txt"
+    geometry_envelope_nonhtdbsmntAdder_file = "NonHeatedBsmtGeometryAdder.txt"
     geometry_window_dir = "Windows"
+    geometry_window_file = "MainWindows.txt"
     geometry_zone_dir = "Zones"
+    geometry_attic_file = "attic.txt"
+    geometry_crawlspace_file = "crawlspace.txt"
+    geometry_living_file = "living.txt"
+    geometry_unhtdbsmnt_file = "unheatedbsmt.txt"
     performanceprecision_dir = "PerformancePrecisionTradeoffs"
+    performanceprecision_highSpeed_file = "HighSpeed.txt"
+    performanceprecision_normal_file = "Normal.txt"
 
     ### --- Define user input data field names --- ###
-    runLabel_fieldname = "Run Label"
-    timestep_fieldname = "Timesteps Per Hour"
-    weather_fieldname = "Weather File"
-    orient_fieldname = "Building Orientation [deg]"
-    footprint_fieldname = "Conditioned Footprint Area [ft^2]"
-    stories_fieldname = "Average Number of Stories Above Foundation"
-    heightPerStory_fieldname = "Average Ceiling Height Per Story [ft]"
-    bldgRatio_fieldname = "Building Width to Depth Ratio"
-    wallCon_fieldname = "Exterior Non-Foundation Wall Construction"
-    ceilingCon_fieldname = "Ceiling And Roof Construction"
-    floorCon_fieldname = "Foundation And Floor Construction"
-    windowuUvalue_fieldname = "Window U-Value [Btu/h-ft^2-F]"
-    windowSHGC_fieldname = "Window Solar Heat Gain Coefficient"
-    windowShade_fieldname = "Window Shades"
-    wtwFront_fieldname = "Window-to-Wall Ratio, Front [%]"
-    wtwBack_fieldname = "Window-to-Wall Ratio, Back [%]"
-    wtwLeft_fieldname = "Window-to-Wall Ratio, Left [%]"
-    wtwRight_fieldname = "Window-to-Wall Ratio, Right [%]"
-    infiltration_fieldname = "Conditioned Envelope Infiltration [ACH50]"
-    primaryHVAC_fieldname = "Primary HVAC Type"
-    primaryHtgCapacityUnits_fieldname = "Primary Heating Capacity Units"
-    primaryHtgCapacity_fieldname = "Primary Rated Heating Capacity [@47F OAT]"
-    primaryClgCapacityUnits_fieldname = "Primary Cooling Capacity Units"
-    primaryClgCapacity_fieldname = "Primary Rated Cooling Capacity [@95F OAT]"
-    hpBackupType_fieldname = "ASHP Backup Heat Type"
-    hpBackupCapacityUnits_fieldname = "ASHP Backup Heat Capacity Units"
-    hpBackupCapacity_fieldname = "ASHP Backup Heat Capacity"
-    backupBaseboardCapacity_fieldname = "Backup Electric Baseboard Heat Capacity [kW]"
-    hpBackupLockout_fieldname = "ASHP Backup Heat Lockout Temp [deg F]"
-    hpCompressorLockout_fieldname = "ASHP Compressor Lockout Temp [deg F]"
-    AFUE_fieldname = "Gas Furnace AFUE [%]"
-    supplyLeakage_fieldname = "Supply Duct Leakage [%]"
-    supplyRvalue_fieldname = "Supply Duct Insulation Nominal R-Value [h-ft^2-F/Btu]"
-    returnLeakage_fieldname = "Return Duct Leakage [%]"
-    returnRvalue_fieldname = "Return Duct Insulation Nominal R-Value [h-ft^2-F/Btu]"
-    htgSched_fieldname = "Heating Setpoint Schedule"
-    clgSched_fieldname = "Cooling Setpoint Schedule"
-    dhwType_fieldname = "Water Heater Type"
-    dhwSched_fieldname = "Water Heater Setpoint Schedule"
-    numOfPeople_fieldname = "Number Of People"
-    intLPD_fieldname = "Interior Lighting Power Density [W/ft^2]"
-    extLP_fieldname = "Exterior Lighting Power [W]"
-    range_fieldname = "Range"
-    dryer_fieldname = "Dryer"
-    frig_fieldname = "Refrigerator"
-    cw_fieldname = "Clothes Washer"
-    dw_fieldname = "Dishwasher"
-    miscElec_fieldname = "Misc Electric Gains [Max W]"
-    miscElecShed_fieldname = "Misc Electric Gains Schedule"
-    miscGas_fieldname = "Misc Gas Gains [Max Btu/h]"
-    miscGasShed_fieldname = "Misc Gas Gains Schedule"
+    #... get input template fieldnames from CSV
+    model_input_temp_fieldnames_path = f"{cwd}/Control Panel/Input Template Fieldnames.csv"
+    model_input_temp_fieldnames_dict = dict_maker(model_input_temp_fieldnames_path)
+    #... assign fieldnames to python variables
+    runLabel_fieldname = model_input_temp_fieldnames_dict["runLabel_fieldname"]["field_name"]
+    timestep_fieldname = model_input_temp_fieldnames_dict["timestep_fieldname"]["field_name"]
+    weather_fieldname = model_input_temp_fieldnames_dict["weather_fieldname"]["field_name"]
+    orient_fieldname = model_input_temp_fieldnames_dict["orient_fieldname"]["field_name"]
+    footprint_fieldname = model_input_temp_fieldnames_dict["footprint_fieldname"]["field_name"]
+    stories_fieldname = model_input_temp_fieldnames_dict["stories_fieldname"]["field_name"]
+    heightPerStory_fieldname = model_input_temp_fieldnames_dict["heightPerStory_fieldname"]["field_name"]
+    bldgRatio_fieldname = model_input_temp_fieldnames_dict["bldgRatio_fieldname"]["field_name"]
+    wallCon_fieldname = model_input_temp_fieldnames_dict["wallCon_fieldname"]["field_name"]
+    ceilingCon_fieldname = model_input_temp_fieldnames_dict["ceilingCon_fieldname"]["field_name"]
+    floorCon_fieldname = model_input_temp_fieldnames_dict["floorCon_fieldname"]["field_name"]
+    windowuUvalue_fieldname = model_input_temp_fieldnames_dict["windowuUvalue_fieldname"]["field_name"]
+    windowSHGC_fieldname = model_input_temp_fieldnames_dict["windowSHGC_fieldname"]["field_name"]
+    windowShade_fieldname = model_input_temp_fieldnames_dict["windowShade_fieldname"]["field_name"]
+    wtwFront_fieldname = model_input_temp_fieldnames_dict["wtwFront_fieldname"]["field_name"]
+    wtwBack_fieldname = model_input_temp_fieldnames_dict["wtwBack_fieldname"]["field_name"]
+    wtwLeft_fieldname = model_input_temp_fieldnames_dict["wtwLeft_fieldname"]["field_name"]
+    wtwRight_fieldname = model_input_temp_fieldnames_dict["wtwRight_fieldname"]["field_name"]
+    infiltration_fieldname = model_input_temp_fieldnames_dict["infiltration_fieldname"]["field_name"]
+    primaryHVAC_fieldname = model_input_temp_fieldnames_dict["primaryHVAC_fieldname"]["field_name"]
+    primaryHtgCapacityUnits_fieldname = model_input_temp_fieldnames_dict["primaryHtgCapacityUnits_fieldname"]["field_name"]
+    primaryHtgCapacity_fieldname = model_input_temp_fieldnames_dict["primaryHtgCapacity_fieldname"]["field_name"]
+    primaryClgCapacityUnits_fieldname = model_input_temp_fieldnames_dict["primaryClgCapacityUnits_fieldname"]["field_name"]
+    primaryClgCapacity_fieldname = model_input_temp_fieldnames_dict["primaryClgCapacity_fieldname"]["field_name"]
+    hpBackupType_fieldname = model_input_temp_fieldnames_dict["hpBackupType_fieldname"]["field_name"]
+    hpBackupCapacityUnits_fieldname = model_input_temp_fieldnames_dict["hpBackupCapacityUnits_fieldname"]["field_name"]
+    hpBackupCapacity_fieldname = model_input_temp_fieldnames_dict["hpBackupCapacity_fieldname"]["field_name"]
+    backupBaseboardCapacity_fieldname = model_input_temp_fieldnames_dict["backupBaseboardCapacity_fieldname"]["field_name"]
+    hpBackupLockout_fieldname = model_input_temp_fieldnames_dict["hpBackupLockout_fieldname"]["field_name"]
+    hpCompressorLockout_fieldname = model_input_temp_fieldnames_dict["hpCompressorLockout_fieldname"]["field_name"]
+    AFUE_fieldname = model_input_temp_fieldnames_dict["AFUE_fieldname"]["field_name"]
+    supplyLeakage_fieldname = model_input_temp_fieldnames_dict["supplyLeakage_fieldname"]["field_name"]
+    supplyRvalue_fieldname = model_input_temp_fieldnames_dict["supplyRvalue_fieldname"]["field_name"]
+    returnLeakage_fieldname = model_input_temp_fieldnames_dict["returnLeakage_fieldname"]["field_name"]
+    returnRvalue_fieldname = model_input_temp_fieldnames_dict["returnRvalue_fieldname"]["field_name"]
+    htgSched_fieldname = model_input_temp_fieldnames_dict["htgSched_fieldname"]["field_name"]
+    clgSched_fieldname = model_input_temp_fieldnames_dict["clgSched_fieldname"]["field_name"]
+    dhwType_fieldname = model_input_temp_fieldnames_dict["dhwType_fieldname"]["field_name"]
+    dhwSched_fieldname = model_input_temp_fieldnames_dict["dhwSched_fieldname"]["field_name"]
+    numOfPeople_fieldname = model_input_temp_fieldnames_dict["numOfPeople_fieldname"]["field_name"]
+    intLPD_fieldname = model_input_temp_fieldnames_dict["intLPD_fieldname"]["field_name"]
+    extLP_fieldname = model_input_temp_fieldnames_dict["extLP_fieldname"]["field_name"]
+    range_fieldname = model_input_temp_fieldnames_dict["range_fieldname"]["field_name"]
+    dryer_fieldname = model_input_temp_fieldnames_dict["dryer_fieldname"]["field_name"]
+    frig_fieldname = model_input_temp_fieldnames_dict["frig_fieldname"]["field_name"]
+    cw_fieldname = model_input_temp_fieldnames_dict["cw_fieldname"]["field_name"]
+    dw_fieldname = model_input_temp_fieldnames_dict["dw_fieldname"]["field_name"]
+    miscElec_fieldname = model_input_temp_fieldnames_dict["miscElec_fieldname"]["field_name"]
+    miscElecShed_fieldname = model_input_temp_fieldnames_dict["miscElecShed_fieldname"]["field_name"]
+    miscGas_fieldname = model_input_temp_fieldnames_dict["miscGas_fieldname"]["field_name"]
+    miscGasShed_fieldname = model_input_temp_fieldnames_dict["miscGasShed_fieldname"]["field_name"]
 
     ### --- Get input variables from tkinter user interface. --- ###
     begin_mo = get_data_dict["begin_mo"]
@@ -131,15 +183,15 @@ def genmodels(gui_params, get_data_dict):
 
     ### --- Create Schedules.csv file and store headers in a list --- ###
     read_file = pd.read_excel (get_data_dict["REEDR_wb"], sheet_name="Schedules_8760")
-    if os.path.exists(os.path.join(set_dir, building_block_dir, schedule_dir, schedule_file)) == True:
+    if os.path.exists(os.path.join(set_dir, building_block_dir, schedule_dir, schedule_CSV)) == True:
         try:
-            os.remove(os.path.join(set_dir, building_block_dir, schedule_dir, schedule_file))
-            read_file.to_csv ((os.path.join(set_dir, building_block_dir, schedule_dir, schedule_file)), index = None, header=True)
+            os.remove(os.path.join(set_dir, building_block_dir, schedule_dir, schedule_CSV))
+            read_file.to_csv ((os.path.join(set_dir, building_block_dir, schedule_dir, schedule_CSV)), index = None, header=True)
         except:
             print("\n*** ERROR: Could not remove Schedule File. Please ensure that 8760 Schedule File is not open when running REEDR.\n")
             return True
     else:
-        read_file.to_csv ((os.path.join(set_dir, building_block_dir, schedule_dir, schedule_file)), index = None, header=True)
+        read_file.to_csv ((os.path.join(set_dir, building_block_dir, schedule_dir, schedule_CSV)), index = None, header=True)
     
     sched_list = (list(read_file.columns))
 
@@ -177,7 +229,7 @@ def genmodels(gui_params, get_data_dict):
     ### --- Define dictionaries needed for REEDR user inputs. --- ###
 
     # floor and foundation construction dictionary
-    foundation_and_floor_path = f"{cwd}/Control Panel/Envelope Constructions/Floor and Foundation.csv"
+    foundation_and_floor_path = f"{cwd}/Control Panel/Envelope Constructions/Floor and Foundation 2.csv"
     foundation_and_floor_dict = dict_maker(foundation_and_floor_path)
 
     # exterior non-foundation wall construction dictionary
@@ -211,6 +263,7 @@ def genmodels(gui_params, get_data_dict):
         "Heat": ["Heated Basement", "living"],
         "Unhe": ["Unheated Basement", "unheatedbsmt"],
     }
+    
 
     ### --- IDF WRITER LOOP BEGINS HERE. --- ###
     # The loop covers every dictionary (effectively a runlabel row) in the big dictionary list.
@@ -521,18 +574,9 @@ def genmodels(gui_params, get_data_dict):
         wall_layers.append(nonfoundation_wall_dict[above_ground_wall_con]["next_wall_layer_9"])
         wall_layers.append(nonfoundation_wall_dict[above_ground_wall_con]["next_wall_layer_10"])
         #... find last "real" (non-empty) layer
-        for i in range(len(wall_layers)):
-            if wall_layers[i] != "!-":
-                last_real_layer_num = i
-        #... add proper punctuation for EnergyPlus based on last real layer
-        i = 0
-        for i in range(len(wall_layers)):
-            if i == last_real_layer_num:
-                # last layer in energy plus needs to end with a semi-colon
-                wall_layers[i] = wall_layers[i] + ";"
-            else:
-                # otherwise it is either an intermediate layer or an empty layer, and use a comma
-                wall_layers[i] = wall_layers[i] + ","
+        last_real_layer_num = findLastRealLayer(wall_layers)
+        #... format layers with proper punctuation for EnergyPlus
+        wall_layers = formatLayerList(last_real_layer_num, wall_layers)
 
         # Get ceiling construction layers
         ceiling_layers = []
@@ -543,20 +587,9 @@ def genmodels(gui_params, get_data_dict):
         ceiling_layers.append(ceiling_and_roof_con_dict[ceiling_and_roof_con]["next_ceiling_layer_4"])
         ceiling_layers.append(ceiling_and_roof_con_dict[ceiling_and_roof_con]["next_ceiling_layer_5"])
         #... find last "real" (non-empty) layer
-        i = 0
-        last_real_layer_num = 0
-        for i in range(len(ceiling_layers)):
-            if ceiling_layers[i] != "!-":
-                last_real_layer_num = i
-        #... add proper punctuation for EnergyPlus based on last real layer
-        i = 0
-        for i in range(len(ceiling_layers)):
-            if i == last_real_layer_num:
-                # last layer in energy plus needs to end with a semi-colon
-                ceiling_layers[i] = ceiling_layers[i] + ";"
-            else:
-                # otherwise it is either an intermediate layer or an empty layer, and use a comma
-                ceiling_layers[i] = ceiling_layers[i] + ","
+        last_real_layer_num = findLastRealLayer(ceiling_layers)
+        #... format layers with proper punctuation for EnergyPlus
+        ceiling_layers = formatLayerList(last_real_layer_num, ceiling_layers)
 
         # Get roof construction layers
         roof_layers = []
@@ -567,20 +600,12 @@ def genmodels(gui_params, get_data_dict):
         roof_layers.append(ceiling_and_roof_con_dict[ceiling_and_roof_con]["next_roof_layer_4"])
         roof_layers.append(ceiling_and_roof_con_dict[ceiling_and_roof_con]["next_roof_layer_5"])
         #... find last "real" (non-empty) layer
-        i = 0
-        last_real_layer_num = 0
-        for i in range(len(roof_layers)):
-            if roof_layers[i] != "!-":
-                last_real_layer_num = i
-        #... add proper punctuation for EnergyPlus based on last real layer
-        i = 0
-        for i in range(len(roof_layers)):
-            if i == last_real_layer_num:
-                # last layer in energy plus needs to end with a semi-colon
-                roof_layers[i] = roof_layers[i] + ";"
-            else:
-                # otherwise it is either an intermediate layer or an empty layer, and use a comma
-                roof_layers[i] = roof_layers[i] + ","
+        last_real_layer_num = findLastRealLayer(roof_layers)
+        #... format layers with proper punctuation for EnergyPlus
+        roof_layers = formatLayerList(last_real_layer_num, roof_layers)
+
+
+
         
         # Set foundation parameters based on foundation type
         main_floor_construction = foundation_and_floor_dict[foundation_and_floor_con]["main_floor_construction"]
@@ -667,52 +692,52 @@ def genmodels(gui_params, get_data_dict):
         if clotheswasher == "None":
             clotheswasher_t = ""
         else:
-            with open(os.path.join(set_dir, building_block_dir, gains_main_dir, 'ClothesWasher.txt'), 'r') as f:
+            with open(os.path.join(set_dir, building_block_dir, gains_main_dir, gains_cw_file), 'r') as f:
                 clotheswasher_t = f.read()
         #... add dishwasher
         if dishwasher == "None":
             dishwasher_t = ""
         else:
-            with open(os.path.join(set_dir, building_block_dir, gains_main_dir, 'Dishwasher.txt'), 'r') as f:
+            with open(os.path.join(set_dir, building_block_dir, gains_main_dir, gains_dw_file), 'r') as f:
                 dishwasher_t = f.read()
         #... add refrigerator
         if frig == "None":
             frig_t = ""
         else:
-            with open(os.path.join(set_dir, building_block_dir, gains_main_dir, 'Refrigerator.txt'), 'r') as f:
+            with open(os.path.join(set_dir, building_block_dir, gains_main_dir, gains_frig_file), 'r') as f:
                 frig_t = f.read()
         #... add miscellaneous electric gains
-        with open(os.path.join(set_dir, building_block_dir, gains_main_dir, 'MiscElectric.txt'), 'r') as f:
+        with open(os.path.join(set_dir, building_block_dir, gains_main_dir, gains_miscElec_file), 'r') as f:
             misc_elec_t = f"{f.read()}".format(**locals())
         #... add miscellaneous gas gains
-        with open(os.path.join(set_dir, building_block_dir, gains_main_dir, 'MiscGas.txt'), 'r') as f:
+        with open(os.path.join(set_dir, building_block_dir, gains_main_dir, gains_miscGas_file), 'r') as f:
             misc_gas_t = f"{f.read()}".format(**locals())
         #... add people
-        with open(os.path.join(set_dir, building_block_dir, gains_main_dir, 'People.txt'), 'r') as f:
+        with open(os.path.join(set_dir, building_block_dir, gains_main_dir, gains_people_file), 'r') as f:
             people_t = f"{f.read()}".format(**locals())
         #... add lights
-        with open(os.path.join(set_dir, building_block_dir, gains_main_dir, 'Lights.txt'), 'r') as f:
+        with open(os.path.join(set_dir, building_block_dir, gains_main_dir, gains_lights_file), 'r') as f:
             lights_t = f"{f.read()}".format(**locals())
 
         # Constructions
-        with open(os.path.join(set_dir, building_block_dir, 'Constructions.txt'), 'r') as f:
+        with open(os.path.join(set_dir, building_block_dir, building_block_constructions_file), 'r') as f:
             construction_t = f"{f.read()}".format(**locals())
 
         # Simulation Parameters
-        with open(os.path.join(set_dir, building_block_dir, 'SimulationParameters.txt'), 'r') as f:
+        with open(os.path.join(set_dir, building_block_dir, building_block_simParameters_file), 'r') as f:
             simparam_t = f"{f.read()}".format(**locals())
 
         # Performance Precision Tradeoffs
         if sim_type == "Test Run":
-            with open(os.path.join(set_dir, building_block_dir, performanceprecision_dir, 'HighSpeed.txt'), 'r') as f:
+            with open(os.path.join(set_dir, building_block_dir, performanceprecision_dir, performanceprecision_highSpeed_file), 'r') as f:
                 performanceprecision_t = f"{f.read()}".format(**locals())
         else:
-            with open(os.path.join(set_dir, building_block_dir, performanceprecision_dir, 'Normal.txt'), 'r') as f:
+            with open(os.path.join(set_dir, building_block_dir, performanceprecision_dir, performanceprecision_normal_file), 'r') as f:
                 performanceprecision_t = f"{f.read()}".format(**locals())
 
         # Windows
         #... set U-value and SHGC
-        with open(os.path.join(set_dir, building_block_dir, window_main_dir, 'SimpleGlazingSystem.txt'), 'r') as f:
+        with open(os.path.join(set_dir, building_block_dir, window_main_dir, window_main_simpleGlazingSys_file), 'r') as f:
             glazing_t = f"{f.read()}".format(**locals())
         #... set window construction (i.e. with or without blinds)
         window_con_file = window_shades + ".txt"
@@ -726,20 +751,11 @@ def genmodels(gui_params, get_data_dict):
             locations_t = f.read()
 
         # Materials
-        #... insert user-entered above-ground wall insulation
-        # wall_ins_file = above_ground_wall_con + ".txt"
-        # with open(os.path.join(set_dir, building_block_dir, materials_main_dir, materials_wall_ins_dir, wall_ins_file), 'r') as f:
-        #     above_ground_wall_t = f.read()
-        #... insert user-entered ceiling/attic insulation
-        attic_ins_file = ceiling_and_roof_con + ".txt"
-        with open(os.path.join(set_dir, building_block_dir, materials_main_dir, materials_attic_ins_dir, attic_ins_file), 'r') as f:
-            ceiling_attic_t = f.read()
-        #...insert all other materials
-        with open(os.path.join(set_dir, building_block_dir, 'Materials.txt'), 'r') as f:
+        with open(os.path.join(set_dir, building_block_dir, building_block_materials_file), 'r') as f:
             mat_t = f.read()
 
         # Performance Curves
-        with open(os.path.join(set_dir, building_block_dir, 'PerformanceCurves.txt'), 'r') as f:
+        with open(os.path.join(set_dir, building_block_dir, building_block_performanceCurve_file), 'r') as f:
             perf_t = f.read()
 
         # Schedules
@@ -751,84 +767,84 @@ def genmodels(gui_params, get_data_dict):
         if misc_elec != 0 and misc_elec_sch != str(PNNL_default[0]):
             try:
                 misc_elec_sch_num = sched_list.index(misc_elec_sch) + 1
-                with open(os.path.join(set_dir, building_block_dir, schedule_dir, schedule_elec_gains_dir, 'MiscElectricGainsCustom.txt'), 'r') as f:
+                with open(os.path.join(set_dir, building_block_dir, schedule_dir, schedule_elec_gains_dir, schedule_elec_gains_custom_file), 'r') as f:
                     misc_elec_sched_t = f"{f.read()}".format(**locals())
             except:
                 print("\n*** ERROR: REEDR could not find schedule for miscellaneous electric gains. Please ensure this input is valid. \n")
                 return True
         else:
-            with open(os.path.join(set_dir, building_block_dir, schedule_dir, schedule_elec_gains_dir, 'MiscElecPNNLdefault.txt'), 'r') as f:
+            with open(os.path.join(set_dir, building_block_dir, schedule_dir, schedule_elec_gains_dir, schedule_elec_gains_default_file), 'r') as f:
                     misc_elec_sched_t = f"{f.read()}".format(**locals())
         #... misc gas gains
         if misc_gas != 0 and misc_gas_sch != str(PNNL_default[0]):
             try:
                 misc_gas_sch_num = sched_list.index(misc_gas_sch) + 1
-                with open(os.path.join(set_dir, building_block_dir, schedule_dir, schedule_gas_gains_dir, 'MiscGasGainsCustom.txt'), 'r') as f:
+                with open(os.path.join(set_dir, building_block_dir, schedule_dir, schedule_gas_gains_dir, schedule_gas_gains_custom_file), 'r') as f:
                     misc_gas_sched_t = f"{f.read()}".format(**locals())
             except:
                 print("\n*** ERROR: REEDR could not find schedule for miscellaneous gas gains. Please ensure this input is valid. \n")
                 return True
         else:
-            with open(os.path.join(set_dir, building_block_dir, schedule_dir, schedule_gas_gains_dir, 'MiscGasPNNLdefault.txt'), 'r') as f:
+            with open(os.path.join(set_dir, building_block_dir, schedule_dir, schedule_gas_gains_dir, schedule_gas_gains_default_file), 'r') as f:
                     misc_gas_sched_t = f"{f.read()}".format(**locals())
 
         #... most other schedules
-        with open(os.path.join(set_dir, building_block_dir, schedule_dir, 'Schedules.txt'), 'r') as f:
+        with open(os.path.join(set_dir, building_block_dir, schedule_dir, schedule_file), 'r') as f:
             sched_t = f"{f.read()}".format(**locals())
 
         # Add Kiva foundation inputs
-        with open(os.path.join(set_dir, building_block_dir, 'Foundation.txt'), 'r') as f:
+        with open(os.path.join(set_dir, building_block_dir, building_block_foundation_file), 'r') as f:
             foundation_type_t = f"{f.read()}".format(**locals())
 
         ### --- Adding building geometry --- ###
         #...insert geometry rules
-        with open(os.path.join(set_dir, building_block_dir, geometry_main_dir, 'GlobalGeometryRules.txt'), 'r') as f:
+        with open(os.path.join(set_dir, building_block_dir, geometry_main_dir, geometry_globalRules_file), 'r') as f:
             geom_rules_t = f.read()
         #...insert internal mass
-        with open(os.path.join(set_dir, building_block_dir, geometry_main_dir, 'InternalMass.txt'), 'r') as f:
+        with open(os.path.join(set_dir, building_block_dir, geometry_main_dir, geometry_internalMass_file), 'r') as f:
             internal_mass_t = f.read()
         #...insert aspects of building geometry common to all buildings (e.g. main walls, ceiling, roof)
-        with open(os.path.join(set_dir, building_block_dir, geometry_main_dir, geometry_envelope_dir, 'MainGeometry.txt'), 'r') as f:
+        with open(os.path.join(set_dir, building_block_dir, geometry_main_dir, geometry_envelope_dir, geometry_envelope_main_file), 'r') as f:
             geom_main_envelope_t = f"{f.read()}".format(**locals())
         #...insert window geometry
-        with open(os.path.join(set_dir, building_block_dir, geometry_main_dir, geometry_window_dir, 'MainWindows.txt'), 'r') as f:
+        with open(os.path.join(set_dir, building_block_dir, geometry_main_dir, geometry_window_dir, geometry_window_file), 'r') as f:
             geom_main_windows_t = f"{f.read()}".format(**locals())
         #...insert living zone geometry in all buildings
-        with open(os.path.join(set_dir, building_block_dir, geometry_main_dir, geometry_zone_dir, 'living.txt'), 'r') as f:
+        with open(os.path.join(set_dir, building_block_dir, geometry_main_dir, geometry_zone_dir, geometry_living_file), 'r') as f:
             living_zone_t = f.read()
         #...insert attic zone geometry in all buildings
-        with open(os.path.join(set_dir, building_block_dir, geometry_main_dir, geometry_zone_dir, 'attic.txt'), 'r') as f:
+        with open(os.path.join(set_dir, building_block_dir, geometry_main_dir, geometry_zone_dir, geometry_attic_file), 'r') as f:
             attic_zone_t = f.read()
         #...if foundation type is slab, add necessary slab geometry and set non-slab geometry files as empty strings
         if foundation_type == "Slab":
             geom_nonslab_adder_t = ""
             unheatedbsmt_zone_t = ""
             crawlspace_zone_t = ""
-            with open(os.path.join(set_dir, building_block_dir, geometry_main_dir, geometry_envelope_dir, 'NonHeatedBsmtGeometryAdder.txt'), 'r') as f:
+            with open(os.path.join(set_dir, building_block_dir, geometry_main_dir, geometry_envelope_dir, geometry_envelope_nonhtdbsmntAdder_file), 'r') as f:
                 geom_nonhtdbsmt_adder_t = f"{f.read()}".format(**locals())
         #...if foundation type is heated basement, add necessary heated basement geometry and set non-htd basement geometry files as empty strings
         elif foundation_type == "Heated Basement":
             unheatedbsmt_zone_t = ""
             crawlspace_zone_t = ""
             geom_nonhtdbsmt_adder_t = ""
-            with open(os.path.join(set_dir, building_block_dir, geometry_main_dir, geometry_envelope_dir, 'NonSlabGeometryAdder.txt'), 'r') as f:
+            with open(os.path.join(set_dir, building_block_dir, geometry_main_dir, geometry_envelope_dir, geometry_envelope_nonslabAdder_file), 'r') as f:
                 geom_nonslab_adder_t = f"{f.read()}".format(**locals())
         #...if foundation type is a vented crawl, add necessary crawl geometry and set non-crawl geometry files as empty strings
         elif foundation_type == "Vented Crawlspace":
             unheatedbsmt_zone_t = ""
-            with open(os.path.join(set_dir, building_block_dir, geometry_main_dir, geometry_zone_dir, 'crawlspace.txt'), 'r') as f:
+            with open(os.path.join(set_dir, building_block_dir, geometry_main_dir, geometry_zone_dir, geometry_crawlspace_file), 'r') as f:
                 crawlspace_zone_t = f.read()
-            with open(os.path.join(set_dir, building_block_dir, geometry_main_dir, geometry_envelope_dir, 'NonSlabGeometryAdder.txt'), 'r') as f:
+            with open(os.path.join(set_dir, building_block_dir, geometry_main_dir, geometry_envelope_dir, geometry_envelope_nonslabAdder_file), 'r') as f:
                 geom_nonslab_adder_t = f"{f.read()}".format(**locals())
-            with open(os.path.join(set_dir, building_block_dir, geometry_main_dir, geometry_envelope_dir, 'NonHeatedBsmtGeometryAdder.txt'), 'r') as f:
+            with open(os.path.join(set_dir, building_block_dir, geometry_main_dir, geometry_envelope_dir, geometry_envelope_nonhtdbsmntAdder_file), 'r') as f:
                 geom_nonhtdbsmt_adder_t = f"{f.read()}".format(**locals()) 
         else: # foundation type is unheated basement
             crawlspace_zone_t = ""
-            with open(os.path.join(set_dir, building_block_dir, geometry_main_dir, geometry_zone_dir, 'unheatedbsmt.txt'), 'r') as f:
+            with open(os.path.join(set_dir, building_block_dir, geometry_main_dir, geometry_zone_dir, geometry_unhtdbsmnt_file), 'r') as f:
                 unheatedbsmt_zone_t = f.read()
-            with open(os.path.join(set_dir, building_block_dir, geometry_main_dir, geometry_envelope_dir, 'NonSlabGeometryAdder.txt'), 'r') as f:
+            with open(os.path.join(set_dir, building_block_dir, geometry_main_dir, geometry_envelope_dir, geometry_envelope_nonslabAdder_file), 'r') as f:
                 geom_nonslab_adder_t = f"{f.read()}".format(**locals())
-            with open(os.path.join(set_dir, building_block_dir, geometry_main_dir, geometry_envelope_dir, 'NonHeatedBsmtGeometryAdder.txt'), 'r') as f:
+            with open(os.path.join(set_dir, building_block_dir, geometry_main_dir, geometry_envelope_dir, geometry_envelope_nonhtdbsmntAdder_file), 'r') as f:
                 geom_nonhtdbsmt_adder_t = f"{f.read()}".format(**locals())
         
         DesignSpecificationOutdoorAirObjectName = ""
@@ -966,9 +982,9 @@ def genmodels(gui_params, get_data_dict):
         else:
             airloop_main_fan_coil_outlet_node = "Cooling Coil Air Inlet Node"
             AFN_main_fan_coil_outlet_node = "FanOutletNode"
-            with open(os.path.join(set_dir, building_block_dir, hvac_afn_main_dir, hvac_afn_node_dir, 'AFN_CoolingCoilNodeAdder.txt'), 'r') as f:
+            with open(os.path.join(set_dir, building_block_dir, hvac_afn_main_dir, hvac_afn_node_dir, hvac_afn_node_adder_file), 'r') as f:
                 AFN_nodes_coolingcoiladder_t = f.read()
-            with open(os.path.join(set_dir, building_block_dir, hvac_afn_main_dir, hvac_afn_linkage_dir, 'AFN_CoolingCoilLinkageAdder.txt'), 'r') as f:
+            with open(os.path.join(set_dir, building_block_dir, hvac_afn_main_dir, hvac_afn_linkage_dir, hvac_afn_linkage_adder_file), 'r') as f:
                 AFN_linkage_coolingcoiladder_t = f"{f.read()}".format(**locals())
 
         # Estimate effective leakage areas (ELAs), used to represent building infiltration, in AFN model
@@ -998,28 +1014,28 @@ def genmodels(gui_params, get_data_dict):
         AFN_control = "MultizoneWithDistribution"
         # The following text files are added for all building models
         #...insert system sizing block
-        with open(os.path.join(set_dir, building_block_dir, hvac_airloop_main_dir, 'SystemSizing.txt'), 'r') as f:
+        with open(os.path.join(set_dir, building_block_dir, hvac_airloop_main_dir, hvac_airloop_sysSizing_file), 'r') as f:
             system_sizing_t = f.read()
         #...insert air loop
-        with open(os.path.join(set_dir, building_block_dir, hvac_airloop_main_dir, 'AirLoop.txt'), 'r') as f:
+        with open(os.path.join(set_dir, building_block_dir, hvac_airloop_main_dir, hvac_airloop_file), 'r') as f:
             airloop_t = f"{f.read()}".format(**locals())
         #...insert AFN nodes common to all buildings
-        with open(os.path.join(set_dir, building_block_dir, hvac_afn_main_dir, hvac_afn_node_dir, 'AFN_MainNodes.txt'), 'r') as f:
+        with open(os.path.join(set_dir, building_block_dir, hvac_afn_main_dir, hvac_afn_node_dir, hvac_afn_node_main_file), 'r') as f:
             AFN_nodes_main_t = f.read()
         #...insert AFN linkages common to all buildings
-        with open(os.path.join(set_dir, building_block_dir, hvac_afn_main_dir, hvac_afn_linkage_dir, 'AFN_MainLinkage.txt'), 'r') as f:
+        with open(os.path.join(set_dir, building_block_dir, hvac_afn_main_dir, hvac_afn_linkage_dir, hvac_afn_linkage_main_file), 'r') as f:
             AFN_linkage_main_t = f"{f.read()}".format(**locals()) 
         #...insert AFN simulation control
-        with open(os.path.join(set_dir, building_block_dir, hvac_afn_main_dir, 'AFN_SimulationControl.txt'), 'r') as f:
+        with open(os.path.join(set_dir, building_block_dir, hvac_afn_main_dir, hvac_afn_simcontrol_file), 'r') as f:
             AFN_sim_control_t = f"{f.read()}".format(**locals())
         #...insert AFN zones common to all buildings (i.e., main, attic)
-        with open(os.path.join(set_dir, building_block_dir, hvac_afn_main_dir, hvac_afn_zone_dir, 'AFN_MainZones.txt'), 'r') as f:
+        with open(os.path.join(set_dir, building_block_dir, hvac_afn_main_dir, hvac_afn_zone_dir, hvac_afn_zone_main_file), 'r') as f:
             AFN_main_zones_t = f.read()
         #...insert AFN surface leakage
-        with open(os.path.join(set_dir, building_block_dir, hvac_afn_main_dir, hvac_afn_leakage_dir, 'AFN_MainLeakage.txt'), 'r') as f:
+        with open(os.path.join(set_dir, building_block_dir, hvac_afn_main_dir, hvac_afn_leakage_dir, hvac_afn_leakage_main_file), 'r') as f:
             AFN_main_leakage_t = f"{f.read()}".format(**locals())
         #...insert AFN surfaces common to all geometries
-        with open(os.path.join(set_dir, building_block_dir, hvac_afn_main_dir, hvac_afn_surface_dir, 'AFN_MainSurfaces.txt'), 'r') as f:
+        with open(os.path.join(set_dir, building_block_dir, hvac_afn_main_dir, hvac_afn_surface_dir, hvac_afn_surface_main_file), 'r') as f:
             AFN_main_surfaces_t = f.read()
         
         # Insert AFN "adders" for certain foundation types
@@ -1031,25 +1047,25 @@ def genmodels(gui_params, get_data_dict):
         elif foundation_dict[foundation_key][0] == "Vented Crawlspace":
             AFN_unheatedbsmt_zone_t = ""
             #...add a crawlspace AFN zone
-            with open(os.path.join(set_dir, building_block_dir, hvac_afn_main_dir, hvac_afn_zone_dir, 'AFN_CrawlZoneAdder.txt'), 'r') as f:
+            with open(os.path.join(set_dir, building_block_dir, hvac_afn_main_dir, hvac_afn_zone_dir, hvac_afn_zone_crawl_adder_file), 'r') as f:
                 AFN_crawl_zone_t = f.read()
             #...add surface leakage for crawlspace walls
-            with open(os.path.join(set_dir, building_block_dir, hvac_afn_main_dir, hvac_afn_leakage_dir, 'AFN_CrawlUnheatedBsmtLeakageAdder.txt'), 'r') as f:
+            with open(os.path.join(set_dir, building_block_dir, hvac_afn_main_dir, hvac_afn_leakage_dir, hvac_afn_leakage_adder_file), 'r') as f:
                 AFN_crawl_unheatedbsmt_leakage_adder_t = f"{f.read()}".format(**locals())
             #...add crawlspace surfaces
-            with open(os.path.join(set_dir, building_block_dir, hvac_afn_main_dir, hvac_afn_surface_dir, 'AFN_CrawlUnheatedBsmtSurfaceAdder.txt'), 'r') as f:
+            with open(os.path.join(set_dir, building_block_dir, hvac_afn_main_dir, hvac_afn_surface_dir, hvac_afn_surface_adder_file), 'r') as f:
                 AFN_crawl_unheatedbsmt_surface_adder_t = f.read()
 
         else: # foundation type is unheated basement
             AFN_crawl_zone_t = ""
             #...add an unheated basement zone
-            with open(os.path.join(set_dir, building_block_dir, hvac_afn_main_dir, hvac_afn_zone_dir, 'AFN_UnheatedbsmtZoneAdder.txt'), 'r') as f:
+            with open(os.path.join(set_dir, building_block_dir, hvac_afn_main_dir, hvac_afn_zone_dir, hvac_afn_zone_unhtdbsmt_adder_file), 'r') as f:
                 AFN_unheatedbsmt_zone_t = f.read()
             #...add surface leakage for basement walls
-            with open(os.path.join(set_dir, building_block_dir, hvac_afn_main_dir, hvac_afn_leakage_dir, 'AFN_CrawlUnheatedBsmtLeakageAdder.txt'), 'r') as f:
+            with open(os.path.join(set_dir, building_block_dir, hvac_afn_main_dir, hvac_afn_leakage_dir, hvac_afn_leakage_adder_file), 'r') as f:
                 AFN_crawl_unheatedbsmt_leakage_adder_t = f"{f.read()}".format(**locals())
             #...add AFN surfaces for basement walls
-            with open(os.path.join(set_dir, building_block_dir, hvac_afn_main_dir, hvac_afn_surface_dir, 'AFN_CrawlUnheatedBsmtSurfaceAdder.txt'), 'r') as f:
+            with open(os.path.join(set_dir, building_block_dir, hvac_afn_main_dir, hvac_afn_surface_dir, hvac_afn_surface_adder_file), 'r') as f:
                 AFN_crawl_unheatedbsmt_surface_adder_t = f.read()
 
         if CentralOrZonal == "Central":
@@ -1073,16 +1089,16 @@ def genmodels(gui_params, get_data_dict):
             return True
 
         # Add AFN ducts to all models (note: zonal/ductless systems assume "perfect" ducts)
-        with open(os.path.join(set_dir, building_block_dir, hvac_afn_main_dir, 'AFN_Ducts.txt'), 'r') as f:
+        with open(os.path.join(set_dir, building_block_dir, hvac_afn_main_dir, hvac_afn_ducts_file), 'r') as f:
             AFN_ducts_t = f"{f.read()}".format(**locals())
         #  Add a theromstat (T-stat)
-        with open(os.path.join(set_dir, building_block_dir, hvac_tstat_dir, 'Thermostat.txt'), 'r') as f:
+        with open(os.path.join(set_dir, building_block_dir, hvac_tstat_dir, hvac_tstat_file), 'r') as f:
             thermostat_t = f"{f.read()}".format(**locals())
         # Add zone sizing
-        with open(os.path.join(set_dir, building_block_dir, hvac_zone_main_dir, 'ZoneSizing.txt'), 'r') as f:
+        with open(os.path.join(set_dir, building_block_dir, hvac_zone_main_dir, hvac_zone_zoneSizing_file), 'r') as f:
             zone_sizing_t = f"{f.read()}".format(**locals())
         # Add zone equipment list
-        with open(os.path.join(set_dir, building_block_dir, hvac_zone_main_dir, 'EquipListAndConnections.txt'), 'r') as f:
+        with open(os.path.join(set_dir, building_block_dir, hvac_zone_main_dir, hvac_zone_equipList_file), 'r') as f:
             zone_equip_list_t = f"{f.read()}".format(**locals())
         # Add HVAC equipment text file 1, which is typically the unitary HVAC text file
         with open(unitaryTextFile, 'r') as f:
@@ -1124,7 +1140,7 @@ def genmodels(gui_params, get_data_dict):
             DHW_draw_sch_file = DHW_people + "_Occupant_Draws.txt"
             with open(os.path.join(set_dir, building_block_dir, dhw_main_dir, dhw_wh_type_dir, water_heater_file), 'r') as f:
                 water_heater_t = f.read()
-            with open(os.path.join(set_dir, building_block_dir, dhw_main_dir, 'OtherDHW.txt'), 'r') as f:
+            with open(os.path.join(set_dir, building_block_dir, dhw_main_dir, dhw_sys_file), 'r') as f:
                 dhw_t = f"{f.read()}".format(**locals())
             with open(os.path.join(set_dir, building_block_dir, schedule_dir, schedule_DHW_draws_dir, DHW_draw_sch_file), 'r') as f:
                 dhw_draw_sch_t = f"{f.read()}".format(**locals())
@@ -1135,12 +1151,12 @@ def genmodels(gui_params, get_data_dict):
         with open(os.path.join(set_dir, building_block_dir, output_dir, user_output_file), 'r') as f:
             user_output_t = f"{f.read()}".format(**locals())  
         #... add general output
-        with open(os.path.join(set_dir, building_block_dir, output_dir, 'OtherOutput.txt'), 'r') as f:
+        with open(os.path.join(set_dir, building_block_dir, output_dir, output_otherOutput_file), 'r') as f:
             output_t = f.read()
 
         # Output file control
         #... add general output
-        with open(os.path.join(set_dir, building_block_dir, 'OutputControl_Files.txt'), 'r') as f:
+        with open(os.path.join(set_dir, building_block_dir, building_block_outputControl_file), 'r') as f:
             outputcontrol_t = f.read()
         
         ### --- Assemble Final IDF Text File --- ###
@@ -1148,7 +1164,7 @@ def genmodels(gui_params, get_data_dict):
         # Nesting them this way allows us to easily write the full idf file, because we can simply iterate over the list
         master_tl = [
             simparam_t, performanceprecision_t, locations_t, sched_t, misc_elec_sched_t, misc_gas_sched_t, \
-            mat_t, ceiling_attic_t, glazing_t, win_construction_t, construction_t, \
+            mat_t, glazing_t, win_construction_t, construction_t, \
             range_t, dryer_t, clotheswasher_t, dishwasher_t, frig_t, misc_elec_t, misc_gas_t, people_t, lights_t, \
             foundation_type_t, geom_rules_t, internal_mass_t, geom_main_envelope_t, geom_nonslab_adder_t, geom_main_windows_t, \
             living_zone_t, attic_zone_t, unheatedbsmt_zone_t, crawlspace_zone_t, geom_nonhtdbsmt_adder_t, \

@@ -11,8 +11,8 @@ def getdata(gui_params):
     warnings.filterwarnings('ignore', category=UserWarning, module='openpyxl')
 
     # Update simulation status...
-    status = "Reading user input data..."
-    print(status)
+    # status = "Reading user input data..."
+    # print("Reading user input data...")
 
     # Get paths for the current and parent directories
     cwd = Path(os. getcwd())
