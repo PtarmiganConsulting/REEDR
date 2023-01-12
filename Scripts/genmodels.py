@@ -13,157 +13,178 @@ from Scripts.utilfunctions import estimateInfiltrationAdjustment, findLastRealLa
 from Scripts.dictmaker import dict_maker
 
 
-def genmodels(gui_params, get_data_dict):
+def genmodels(gui_params, get_data_dict, control_panel_dict):
 
     ### --- Set the main working directory. --- ###
     set_dir = get_data_dict["parent"]
 
-    # candidate for revision after changes to get_data_dict
-    cwd = Path(os. getcwd())
-    parent = cwd.parent.absolute() 
+    ### --- Define control panel directory and file names as variables, so they can be established only once here, and flow throughout --- ###
+    #... get folder and file names from CSV
+    control_panel_folder_name = control_panel_dict["control_panel_folder_name"]
+    control_panel_names_dict = control_panel_dict["control_panel_names_dict"]
+    control_panel_names_lookup_id = control_panel_dict["control_panel_names_lookup_id"]
+    #... assign fieldnames to python variables
+    buildingBlock_names_file = control_panel_names_dict["buildingBlock_names_file"][control_panel_names_lookup_id]
+    inputTemplate_names_file = control_panel_names_dict["inputTemplate_names_file"][control_panel_names_lookup_id]
+    envelope_construction_dir = control_panel_names_dict["envelope_construction_dir"][control_panel_names_lookup_id]
+    envelope_construction_ceilingRoof_file = control_panel_names_dict["envelope_construction_ceilingRoof_file"][control_panel_names_lookup_id]
+    envelope_construction_nonFoundWall_file = control_panel_names_dict["envelope_construction_nonFoundWall_file"][control_panel_names_lookup_id]
+    envelope_construction_floorFound_file = control_panel_names_dict["envelope_construction_floorFound_file"][control_panel_names_lookup_id]
+    hvac_systems_dir = control_panel_names_dict["hvac_systems_dir"][control_panel_names_lookup_id]
+    hvac_systems_primary_file = control_panel_names_dict["hvac_systems_primary_file"][control_panel_names_lookup_id]
+    infil_regression_coeff_dir = control_panel_names_dict["infil_regression_coeff_dir"][control_panel_names_lookup_id]
+    infil_regression_coeff_attic_file = control_panel_names_dict["infil_regression_coeff_attic_file"][control_panel_names_lookup_id]
+    infil_regression_coeff_crawl_file = control_panel_names_dict["infil_regression_coeff_crawl_file"][control_panel_names_lookup_id]
+    infil_regression_coeff_living_file = control_panel_names_dict["infil_regression_coeff_living_file"][control_panel_names_lookup_id]
 
     ### --- Define building block directory and file names as variables, so they can be established only once here, and flow throughout. --- ###
-    building_block_dir = "Building Blocks"
-    building_block_constructions_file = "Constructions.txt"
-    building_block_foundation_file = "Foundation.txt"
-    building_block_materials_file = "Materials.txt"
-    building_block_outputControl_file = "OutputControl_Files.txt"
-    building_block_performanceCurve_file = "PerformanceCurves.txt"
-    building_block_simParameters_file = "SimulationParameters.txt"
-    schedule_dir = "Schedules"
-    schedule_elec_gains_dir = "MiscElecGains"
-    schedule_elec_gains_default_file = "MiscElecPNNLdefault.txt"
-    schedule_elec_gains_custom_file = "MiscElectricGainsCustom.txt"
-    schedule_gas_gains_dir = "MiscGasGains"
-    schedule_gas_gains_default_file = "MiscGasPNNLdefault.txt"
-    schedule_gas_gains_custom_file = "MiscGasGainsCustom.txt"
-    schedule_DHW_draws_dir = "HotWaterDraws"
-    schedule_CSV = "Schedules.csv"
-    schedule_file = "Schedules.txt"
-    location_and_climate_dir = "LocationAndClimate"
-    dhw_main_dir = "DHW"
-    dhw_wh_type_dir = "WaterHeaterType"
-    dhw_sys_file = "OtherDHW.txt"
-    gains_main_dir = "Gains"
-    gains_cw_file = "ClothesWasher.txt"
-    gains_dw_file = "Dishwasher.txt"
-    gains_lights_file = "Lights.txt"
-    gains_miscElec_file = "MiscElectric.txt"
-    gains_miscGas_file = "MiscGas.txt"
-    gains_people_file = "People.txt"
-    gains_frig_file = "Refrigerator.txt"
-    gains_dryertype_dir = "DryerType"
-    gains_rangetype_dir = "RangeType"
-    hvac_afn_main_dir = "HVAC_AirFlowNetwork" # Note: AFN = Air Flow Network
-    hvac_afn_ducts_file = "AFN_Ducts.txt"
-    hvac_afn_simcontrol_file = "AFN_SimulationControl.txt"
-    hvac_afn_leakage_dir = "AFN_Leakage"
-    hvac_afn_leakage_main_file = "AFN_MainLeakage.txt"
-    hvac_afn_leakage_adder_file = "AFN_CrawlUnheatedBsmtLeakageAdder.txt"
-    hvac_afn_linkage_dir = "AFN_Linkage"
-    hvac_afn_linkage_main_file = "AFN_MainLinkage.txt"
-    hvac_afn_linkage_adder_file = "AFN_CoolingCoilLinkageAdder.txt"
-    hvac_afn_node_dir = "AFN_Nodes"
-    hvac_afn_node_main_file = "AFN_MainNodes.txt"
-    hvac_afn_node_adder_file = "AFN_CoolingCoilNodeAdder.txt"
-    hvac_afn_surface_dir = "AFN_Surfaces"
-    hvac_afn_surface_main_file = "AFN_MainSurfaces.txt"
-    hvac_afn_surface_adder_file = "AFN_CrawlUnheatedBsmtSurfaceAdder.txt"
-    hvac_afn_zone_dir = "AFN_Zones"
-    hvac_afn_zone_main_file = "AFN_MainZones.txt"
-    hvac_afn_zone_crawl_adder_file = "AFN_CrawlZoneAdder.txt"
-    hvac_afn_zone_unhtdbsmt_adder_file = "AFN_UnheatedbsmtZoneAdder.txt"
-    hvac_airloop_main_dir = "HVAC_AirLoop"
-    hvac_airloop_file = "AirLoop.txt"
-    hvac_airloop_sysSizing_file = "SystemSizing.txt"
-    hvac_airloop_hvac_dir = "AirLoopHVAC"
-    hvac_coil_dir = "HVAC_Coils"
-    hvac_fan_dir = "HVAC_Fans"
-    hvac_tstat_dir = "HVAC_Thermostat"
-    hvac_tstat_file = "Thermostat.txt"
-    hvac_zone_main_dir = "HVAC_Zone"
-    hvac_zone_equipList_file = "EquipListAndConnections.txt"
-    hvac_zone_zoneSizing_file = "ZoneSizing.txt"
-    hvac_zone_hvac_dir = "ZoneHVAC"
-    output_dir = "Output"
-    output_otherOutput_file = "OtherOutput.txt"
-    window_main_dir = "Windows"
-    window_main_simpleGlazingSys_file = "SimpleGlazingSystem.txt"
-    window_blinds_dir = "Blinds"
-    geometry_main_dir = "Geometry"
-    geometry_globalRules_file = "GlobalGeometryRules.txt"
-    geometry_internalMass_file = "InternalMass.txt"
-    geometry_envelope_dir = "Envelope"
-    geometry_envelope_main_file = "MainGeometry.txt"
-    geometry_envelope_nonslabAdder_file = "NonSlabGeometryAdder.txt"
-    geometry_envelope_nonhtdbsmntAdder_file = "NonHeatedBsmtGeometryAdder.txt"
-    geometry_window_dir = "Windows"
-    geometry_window_file = "MainWindows.txt"
-    geometry_zone_dir = "Zones"
-    geometry_attic_file = "attic.txt"
-    geometry_crawlspace_file = "crawlspace.txt"
-    geometry_living_file = "living.txt"
-    geometry_unhtdbsmnt_file = "unheatedbsmt.txt"
-    performanceprecision_dir = "PerformancePrecisionTradeoffs"
-    performanceprecision_highSpeed_file = "HighSpeed.txt"
-    performanceprecision_normal_file = "Normal.txt"
+    #... get folder and file names from CSV
+    building_block_names_path = os.path.join(set_dir, control_panel_folder_name, buildingBlock_names_file)
+    building_block_names_dict = dict_maker(building_block_names_path)
+    bldg_blk_names_lookup_id = "folder_or_file_name"
+    #... assign folder and file names to python variables
+    building_block_dir = building_block_names_dict["building_block_dir"][bldg_blk_names_lookup_id]
+    building_block_constructions_file = building_block_names_dict["building_block_constructions_file"][bldg_blk_names_lookup_id]
+    building_block_foundation_file = building_block_names_dict["building_block_foundation_file"][bldg_blk_names_lookup_id]
+    building_block_materials_file = building_block_names_dict["building_block_materials_file"][bldg_blk_names_lookup_id]
+    building_block_outputControl_file = building_block_names_dict["building_block_outputControl_file"][bldg_blk_names_lookup_id]
+    building_block_performanceCurve_file = building_block_names_dict["building_block_performanceCurve_file"][bldg_blk_names_lookup_id]
+    building_block_simParameters_file = building_block_names_dict["building_block_simParameters_file"][bldg_blk_names_lookup_id]
+    schedule_dir = building_block_names_dict["schedule_dir"][bldg_blk_names_lookup_id]
+    schedule_elec_gains_dir = building_block_names_dict["schedule_elec_gains_dir"][bldg_blk_names_lookup_id]
+    schedule_elec_gains_default_file = building_block_names_dict["schedule_elec_gains_default_file"][bldg_blk_names_lookup_id]
+    schedule_elec_gains_custom_file = building_block_names_dict["schedule_elec_gains_custom_file"][bldg_blk_names_lookup_id]
+    schedule_gas_gains_dir = building_block_names_dict["schedule_gas_gains_dir"][bldg_blk_names_lookup_id]
+    schedule_gas_gains_default_file = building_block_names_dict["schedule_gas_gains_default_file"][bldg_blk_names_lookup_id]
+    schedule_gas_gains_custom_file = building_block_names_dict["schedule_gas_gains_custom_file"][bldg_blk_names_lookup_id]
+    schedule_DHW_draws_dir = building_block_names_dict["schedule_DHW_draws_dir"][bldg_blk_names_lookup_id]
+    schedule_CSV = building_block_names_dict["schedule_CSV"][bldg_blk_names_lookup_id]
+    schedule_file = building_block_names_dict["schedule_file"][bldg_blk_names_lookup_id]
+    location_and_climate_dir = building_block_names_dict["location_and_climate_dir"][bldg_blk_names_lookup_id]
+    dhw_main_dir = building_block_names_dict["dhw_main_dir"][bldg_blk_names_lookup_id]
+    dhw_wh_type_dir = building_block_names_dict["dhw_wh_type_dir"][bldg_blk_names_lookup_id]
+    dhw_sys_file = building_block_names_dict["dhw_sys_file"][bldg_blk_names_lookup_id]
+    gains_main_dir = building_block_names_dict["gains_main_dir"][bldg_blk_names_lookup_id]
+    gains_cw_file = building_block_names_dict["gains_cw_file"][bldg_blk_names_lookup_id]
+    gains_dw_file = building_block_names_dict["gains_dw_file"][bldg_blk_names_lookup_id]
+    gains_lights_file = building_block_names_dict["gains_lights_file"][bldg_blk_names_lookup_id]
+    gains_miscElec_file = building_block_names_dict["gains_miscElec_file"][bldg_blk_names_lookup_id]
+    gains_miscGas_file = building_block_names_dict["gains_miscGas_file"][bldg_blk_names_lookup_id]
+    gains_people_file = building_block_names_dict["gains_people_file"][bldg_blk_names_lookup_id]
+    gains_frig_file = building_block_names_dict["gains_frig_file"][bldg_blk_names_lookup_id]
+    gains_dryertype_dir = building_block_names_dict["gains_dryertype_dir"][bldg_blk_names_lookup_id]
+    gains_rangetype_dir = building_block_names_dict["gains_rangetype_dir"][bldg_blk_names_lookup_id]
+    hvac_afn_main_dir = building_block_names_dict["hvac_afn_main_dir"][bldg_blk_names_lookup_id]
+    hvac_afn_ducts_file = building_block_names_dict["hvac_afn_ducts_file"][bldg_blk_names_lookup_id]
+    hvac_afn_simcontrol_file = building_block_names_dict["hvac_afn_simcontrol_file"][bldg_blk_names_lookup_id]
+    hvac_afn_leakage_dir = building_block_names_dict["hvac_afn_leakage_dir"][bldg_blk_names_lookup_id]
+    hvac_afn_leakage_main_file = building_block_names_dict["hvac_afn_leakage_main_file"][bldg_blk_names_lookup_id]
+    hvac_afn_leakage_adder_file = building_block_names_dict["hvac_afn_leakage_adder_file"][bldg_blk_names_lookup_id]
+    hvac_afn_linkage_dir = building_block_names_dict["hvac_afn_linkage_dir"][bldg_blk_names_lookup_id]
+    hvac_afn_linkage_main_file = building_block_names_dict["hvac_afn_linkage_main_file"][bldg_blk_names_lookup_id]
+    hvac_afn_linkage_adder_file = building_block_names_dict["hvac_afn_linkage_adder_file"][bldg_blk_names_lookup_id]
+    hvac_afn_node_dir = building_block_names_dict["hvac_afn_node_dir"][bldg_blk_names_lookup_id]
+    hvac_afn_node_main_file = building_block_names_dict["hvac_afn_node_main_file"][bldg_blk_names_lookup_id]
+    hvac_afn_node_adder_file = building_block_names_dict["hvac_afn_node_adder_file"][bldg_blk_names_lookup_id]
+    hvac_afn_surface_dir = building_block_names_dict["hvac_afn_surface_dir"][bldg_blk_names_lookup_id]
+    hvac_afn_surface_main_file = building_block_names_dict["hvac_afn_surface_main_file"][bldg_blk_names_lookup_id]
+    hvac_afn_surface_adder_file = building_block_names_dict["hvac_afn_surface_adder_file"][bldg_blk_names_lookup_id]
+    hvac_afn_zone_dir = building_block_names_dict["hvac_afn_zone_dir"][bldg_blk_names_lookup_id]
+    hvac_afn_zone_main_file = building_block_names_dict["hvac_afn_zone_main_file"][bldg_blk_names_lookup_id]
+    hvac_afn_zone_crawl_adder_file = building_block_names_dict["hvac_afn_zone_crawl_adder_file"][bldg_blk_names_lookup_id]
+    hvac_afn_zone_unhtdbsmt_adder_file = building_block_names_dict["hvac_afn_zone_unhtdbsmt_adder_file"][bldg_blk_names_lookup_id]
+    hvac_airloop_main_dir = building_block_names_dict["hvac_airloop_main_dir"][bldg_blk_names_lookup_id]
+    hvac_airloop_file = building_block_names_dict["hvac_airloop_file"][bldg_blk_names_lookup_id]
+    hvac_airloop_sysSizing_file = building_block_names_dict["hvac_airloop_sysSizing_file"][bldg_blk_names_lookup_id]
+    hvac_airloop_hvac_dir = building_block_names_dict["hvac_airloop_hvac_dir"][bldg_blk_names_lookup_id]
+    hvac_coil_dir = building_block_names_dict["hvac_coil_dir"][bldg_blk_names_lookup_id]
+    hvac_fan_dir = building_block_names_dict["hvac_fan_dir"][bldg_blk_names_lookup_id]
+    hvac_tstat_dir = building_block_names_dict["hvac_tstat_dir"][bldg_blk_names_lookup_id]
+    hvac_tstat_file = building_block_names_dict["hvac_tstat_file"][bldg_blk_names_lookup_id]
+    hvac_zone_main_dir = building_block_names_dict["hvac_zone_main_dir"][bldg_blk_names_lookup_id]
+    hvac_zone_equipList_file = building_block_names_dict["hvac_zone_equipList_file"][bldg_blk_names_lookup_id]
+    hvac_zone_zoneSizing_file = building_block_names_dict["hvac_zone_zoneSizing_file"][bldg_blk_names_lookup_id]
+    hvac_zone_hvac_dir = building_block_names_dict["hvac_zone_hvac_dir"][bldg_blk_names_lookup_id]
+    output_dir = building_block_names_dict["output_dir"][bldg_blk_names_lookup_id]
+    output_otherOutput_file = building_block_names_dict["output_otherOutput_file"][bldg_blk_names_lookup_id]
+    window_main_dir = building_block_names_dict["window_main_dir"][bldg_blk_names_lookup_id]
+    window_main_simpleGlazingSys_file = building_block_names_dict["window_main_simpleGlazingSys_file"][bldg_blk_names_lookup_id]
+    window_blinds_dir = building_block_names_dict["window_blinds_dir"][bldg_blk_names_lookup_id]
+    geometry_main_dir = building_block_names_dict["geometry_main_dir"][bldg_blk_names_lookup_id]
+    geometry_globalRules_file = building_block_names_dict["geometry_globalRules_file"][bldg_blk_names_lookup_id]
+    geometry_internalMass_file = building_block_names_dict["geometry_internalMass_file"][bldg_blk_names_lookup_id]
+    geometry_envelope_dir = building_block_names_dict["geometry_envelope_dir"][bldg_blk_names_lookup_id]
+    geometry_envelope_main_file = building_block_names_dict["geometry_envelope_main_file"][bldg_blk_names_lookup_id]
+    geometry_envelope_nonslabAdder_file = building_block_names_dict["geometry_envelope_nonslabAdder_file"][bldg_blk_names_lookup_id]
+    geometry_envelope_nonhtdbsmntAdder_file = building_block_names_dict["geometry_envelope_nonhtdbsmntAdder_file"][bldg_blk_names_lookup_id]
+    geometry_window_dir = building_block_names_dict["geometry_window_dir"][bldg_blk_names_lookup_id]
+    geometry_window_file = building_block_names_dict["geometry_window_file"][bldg_blk_names_lookup_id]
+    geometry_zone_dir = building_block_names_dict["geometry_zone_dir"][bldg_blk_names_lookup_id]
+    geometry_attic_file = building_block_names_dict["geometry_attic_file"][bldg_blk_names_lookup_id]
+    geometry_crawlspace_file = building_block_names_dict["geometry_crawlspace_file"][bldg_blk_names_lookup_id]
+    geometry_living_file = building_block_names_dict["geometry_living_file"][bldg_blk_names_lookup_id]
+    geometry_unhtdbsmnt_file = building_block_names_dict["geometry_unhtdbsmnt_file"][bldg_blk_names_lookup_id]
+    performanceprecision_dir = building_block_names_dict["performanceprecision_dir"][bldg_blk_names_lookup_id]
+    performanceprecision_highSpeed_file = building_block_names_dict["performanceprecision_highSpeed_file"][bldg_blk_names_lookup_id]
+    performanceprecision_normal_file = building_block_names_dict["performanceprecision_normal_file"][bldg_blk_names_lookup_id]
 
     ### --- Define user input data field names --- ###
     #... get input template fieldnames from CSV
-    model_input_temp_fieldnames_path = f"{cwd}/Control Panel/Input Template Fieldnames.csv"
+    model_input_temp_fieldnames_path = os.path.join(set_dir, control_panel_folder_name, inputTemplate_names_file)
     model_input_temp_fieldnames_dict = dict_maker(model_input_temp_fieldnames_path)
+    input_template_names_lookup_id = "field_name"
     #... assign fieldnames to python variables
-    runLabel_fieldname = model_input_temp_fieldnames_dict["runLabel_fieldname"]["field_name"]
-    timestep_fieldname = model_input_temp_fieldnames_dict["timestep_fieldname"]["field_name"]
-    weather_fieldname = model_input_temp_fieldnames_dict["weather_fieldname"]["field_name"]
-    orient_fieldname = model_input_temp_fieldnames_dict["orient_fieldname"]["field_name"]
-    footprint_fieldname = model_input_temp_fieldnames_dict["footprint_fieldname"]["field_name"]
-    stories_fieldname = model_input_temp_fieldnames_dict["stories_fieldname"]["field_name"]
-    heightPerStory_fieldname = model_input_temp_fieldnames_dict["heightPerStory_fieldname"]["field_name"]
-    bldgRatio_fieldname = model_input_temp_fieldnames_dict["bldgRatio_fieldname"]["field_name"]
-    wallCon_fieldname = model_input_temp_fieldnames_dict["wallCon_fieldname"]["field_name"]
-    ceilingCon_fieldname = model_input_temp_fieldnames_dict["ceilingCon_fieldname"]["field_name"]
-    floorCon_fieldname = model_input_temp_fieldnames_dict["floorCon_fieldname"]["field_name"]
-    windowuUvalue_fieldname = model_input_temp_fieldnames_dict["windowuUvalue_fieldname"]["field_name"]
-    windowSHGC_fieldname = model_input_temp_fieldnames_dict["windowSHGC_fieldname"]["field_name"]
-    windowShade_fieldname = model_input_temp_fieldnames_dict["windowShade_fieldname"]["field_name"]
-    wtwFront_fieldname = model_input_temp_fieldnames_dict["wtwFront_fieldname"]["field_name"]
-    wtwBack_fieldname = model_input_temp_fieldnames_dict["wtwBack_fieldname"]["field_name"]
-    wtwLeft_fieldname = model_input_temp_fieldnames_dict["wtwLeft_fieldname"]["field_name"]
-    wtwRight_fieldname = model_input_temp_fieldnames_dict["wtwRight_fieldname"]["field_name"]
-    infiltration_fieldname = model_input_temp_fieldnames_dict["infiltration_fieldname"]["field_name"]
-    primaryHVAC_fieldname = model_input_temp_fieldnames_dict["primaryHVAC_fieldname"]["field_name"]
-    primaryHtgCapacityUnits_fieldname = model_input_temp_fieldnames_dict["primaryHtgCapacityUnits_fieldname"]["field_name"]
-    primaryHtgCapacity_fieldname = model_input_temp_fieldnames_dict["primaryHtgCapacity_fieldname"]["field_name"]
-    primaryClgCapacityUnits_fieldname = model_input_temp_fieldnames_dict["primaryClgCapacityUnits_fieldname"]["field_name"]
-    primaryClgCapacity_fieldname = model_input_temp_fieldnames_dict["primaryClgCapacity_fieldname"]["field_name"]
-    hpBackupType_fieldname = model_input_temp_fieldnames_dict["hpBackupType_fieldname"]["field_name"]
-    hpBackupCapacityUnits_fieldname = model_input_temp_fieldnames_dict["hpBackupCapacityUnits_fieldname"]["field_name"]
-    hpBackupCapacity_fieldname = model_input_temp_fieldnames_dict["hpBackupCapacity_fieldname"]["field_name"]
-    backupBaseboardCapacity_fieldname = model_input_temp_fieldnames_dict["backupBaseboardCapacity_fieldname"]["field_name"]
-    hpBackupLockout_fieldname = model_input_temp_fieldnames_dict["hpBackupLockout_fieldname"]["field_name"]
-    hpCompressorLockout_fieldname = model_input_temp_fieldnames_dict["hpCompressorLockout_fieldname"]["field_name"]
-    AFUE_fieldname = model_input_temp_fieldnames_dict["AFUE_fieldname"]["field_name"]
-    supplyLeakage_fieldname = model_input_temp_fieldnames_dict["supplyLeakage_fieldname"]["field_name"]
-    supplyRvalue_fieldname = model_input_temp_fieldnames_dict["supplyRvalue_fieldname"]["field_name"]
-    returnLeakage_fieldname = model_input_temp_fieldnames_dict["returnLeakage_fieldname"]["field_name"]
-    returnRvalue_fieldname = model_input_temp_fieldnames_dict["returnRvalue_fieldname"]["field_name"]
-    htgSched_fieldname = model_input_temp_fieldnames_dict["htgSched_fieldname"]["field_name"]
-    clgSched_fieldname = model_input_temp_fieldnames_dict["clgSched_fieldname"]["field_name"]
-    dhwType_fieldname = model_input_temp_fieldnames_dict["dhwType_fieldname"]["field_name"]
-    dhwSched_fieldname = model_input_temp_fieldnames_dict["dhwSched_fieldname"]["field_name"]
-    numOfPeople_fieldname = model_input_temp_fieldnames_dict["numOfPeople_fieldname"]["field_name"]
-    intLPD_fieldname = model_input_temp_fieldnames_dict["intLPD_fieldname"]["field_name"]
-    extLP_fieldname = model_input_temp_fieldnames_dict["extLP_fieldname"]["field_name"]
-    range_fieldname = model_input_temp_fieldnames_dict["range_fieldname"]["field_name"]
-    dryer_fieldname = model_input_temp_fieldnames_dict["dryer_fieldname"]["field_name"]
-    frig_fieldname = model_input_temp_fieldnames_dict["frig_fieldname"]["field_name"]
-    cw_fieldname = model_input_temp_fieldnames_dict["cw_fieldname"]["field_name"]
-    dw_fieldname = model_input_temp_fieldnames_dict["dw_fieldname"]["field_name"]
-    miscElec_fieldname = model_input_temp_fieldnames_dict["miscElec_fieldname"]["field_name"]
-    miscElecShed_fieldname = model_input_temp_fieldnames_dict["miscElecShed_fieldname"]["field_name"]
-    miscGas_fieldname = model_input_temp_fieldnames_dict["miscGas_fieldname"]["field_name"]
-    miscGasShed_fieldname = model_input_temp_fieldnames_dict["miscGasShed_fieldname"]["field_name"]
+    runLabel_fieldname = model_input_temp_fieldnames_dict["runLabel_fieldname"][input_template_names_lookup_id]
+    timestep_fieldname = model_input_temp_fieldnames_dict["timestep_fieldname"][input_template_names_lookup_id]
+    weather_fieldname = model_input_temp_fieldnames_dict["weather_fieldname"][input_template_names_lookup_id]
+    orient_fieldname = model_input_temp_fieldnames_dict["orient_fieldname"][input_template_names_lookup_id]
+    footprint_fieldname = model_input_temp_fieldnames_dict["footprint_fieldname"][input_template_names_lookup_id]
+    stories_fieldname = model_input_temp_fieldnames_dict["stories_fieldname"][input_template_names_lookup_id]
+    heightPerStory_fieldname = model_input_temp_fieldnames_dict["heightPerStory_fieldname"][input_template_names_lookup_id]
+    bldgRatio_fieldname = model_input_temp_fieldnames_dict["bldgRatio_fieldname"][input_template_names_lookup_id]
+    wallCon_fieldname = model_input_temp_fieldnames_dict["wallCon_fieldname"][input_template_names_lookup_id]
+    ceilingCon_fieldname = model_input_temp_fieldnames_dict["ceilingCon_fieldname"][input_template_names_lookup_id]
+    floorCon_fieldname = model_input_temp_fieldnames_dict["floorCon_fieldname"][input_template_names_lookup_id]
+    windowuUvalue_fieldname = model_input_temp_fieldnames_dict["windowuUvalue_fieldname"][input_template_names_lookup_id]
+    windowSHGC_fieldname = model_input_temp_fieldnames_dict["windowSHGC_fieldname"][input_template_names_lookup_id]
+    windowShade_fieldname = model_input_temp_fieldnames_dict["windowShade_fieldname"][input_template_names_lookup_id]
+    wtwFront_fieldname = model_input_temp_fieldnames_dict["wtwFront_fieldname"][input_template_names_lookup_id]
+    wtwBack_fieldname = model_input_temp_fieldnames_dict["wtwBack_fieldname"][input_template_names_lookup_id]
+    wtwLeft_fieldname = model_input_temp_fieldnames_dict["wtwLeft_fieldname"][input_template_names_lookup_id]
+    wtwRight_fieldname = model_input_temp_fieldnames_dict["wtwRight_fieldname"][input_template_names_lookup_id]
+    infiltration_fieldname = model_input_temp_fieldnames_dict["infiltration_fieldname"][input_template_names_lookup_id]
+    primaryHVAC_fieldname = model_input_temp_fieldnames_dict["primaryHVAC_fieldname"][input_template_names_lookup_id]
+    primaryHtgCapacityUnits_fieldname = model_input_temp_fieldnames_dict["primaryHtgCapacityUnits_fieldname"][input_template_names_lookup_id]
+    primaryHtgCapacity_fieldname = model_input_temp_fieldnames_dict["primaryHtgCapacity_fieldname"][input_template_names_lookup_id]
+    primaryClgCapacityUnits_fieldname = model_input_temp_fieldnames_dict["primaryClgCapacityUnits_fieldname"][input_template_names_lookup_id]
+    primaryClgCapacity_fieldname = model_input_temp_fieldnames_dict["primaryClgCapacity_fieldname"][input_template_names_lookup_id]
+    hpBackupType_fieldname = model_input_temp_fieldnames_dict["hpBackupType_fieldname"][input_template_names_lookup_id]
+    hpBackupCapacityUnits_fieldname = model_input_temp_fieldnames_dict["hpBackupCapacityUnits_fieldname"][input_template_names_lookup_id]
+    hpBackupCapacity_fieldname = model_input_temp_fieldnames_dict["hpBackupCapacity_fieldname"][input_template_names_lookup_id]
+    backupBaseboardCapacity_fieldname = model_input_temp_fieldnames_dict["backupBaseboardCapacity_fieldname"][input_template_names_lookup_id]
+    hpBackupLockout_fieldname = model_input_temp_fieldnames_dict["hpBackupLockout_fieldname"][input_template_names_lookup_id]
+    hpCompressorLockout_fieldname = model_input_temp_fieldnames_dict["hpCompressorLockout_fieldname"][input_template_names_lookup_id]
+    AFUE_fieldname = model_input_temp_fieldnames_dict["AFUE_fieldname"][input_template_names_lookup_id]
+    supplyLeakage_fieldname = model_input_temp_fieldnames_dict["supplyLeakage_fieldname"][input_template_names_lookup_id]
+    supplyRvalue_fieldname = model_input_temp_fieldnames_dict["supplyRvalue_fieldname"][input_template_names_lookup_id]
+    returnLeakage_fieldname = model_input_temp_fieldnames_dict["returnLeakage_fieldname"][input_template_names_lookup_id]
+    returnRvalue_fieldname = model_input_temp_fieldnames_dict["returnRvalue_fieldname"][input_template_names_lookup_id]
+    htgSched_fieldname = model_input_temp_fieldnames_dict["htgSched_fieldname"][input_template_names_lookup_id]
+    clgSched_fieldname = model_input_temp_fieldnames_dict["clgSched_fieldname"][input_template_names_lookup_id]
+    dhwType_fieldname = model_input_temp_fieldnames_dict["dhwType_fieldname"][input_template_names_lookup_id]
+    dhwSched_fieldname = model_input_temp_fieldnames_dict["dhwSched_fieldname"][input_template_names_lookup_id]
+    numOfPeople_fieldname = model_input_temp_fieldnames_dict["numOfPeople_fieldname"][input_template_names_lookup_id]
+    intLPD_fieldname = model_input_temp_fieldnames_dict["intLPD_fieldname"][input_template_names_lookup_id]
+    extLP_fieldname = model_input_temp_fieldnames_dict["extLP_fieldname"][input_template_names_lookup_id]
+    range_fieldname = model_input_temp_fieldnames_dict["range_fieldname"][input_template_names_lookup_id]
+    dryer_fieldname = model_input_temp_fieldnames_dict["dryer_fieldname"][input_template_names_lookup_id]
+    frig_fieldname = model_input_temp_fieldnames_dict["frig_fieldname"][input_template_names_lookup_id]
+    cw_fieldname = model_input_temp_fieldnames_dict["cw_fieldname"][input_template_names_lookup_id]
+    dw_fieldname = model_input_temp_fieldnames_dict["dw_fieldname"][input_template_names_lookup_id]
+    miscElec_fieldname = model_input_temp_fieldnames_dict["miscElec_fieldname"][input_template_names_lookup_id]
+    miscElecShed_fieldname = model_input_temp_fieldnames_dict["miscElecShed_fieldname"][input_template_names_lookup_id]
+    miscGas_fieldname = model_input_temp_fieldnames_dict["miscGas_fieldname"][input_template_names_lookup_id]
+    miscGasShed_fieldname = model_input_temp_fieldnames_dict["miscGasShed_fieldname"][input_template_names_lookup_id]
 
     ### --- Get input variables from tkinter user interface. --- ###
     begin_mo = get_data_dict["begin_mo"]
@@ -228,32 +249,43 @@ def genmodels(gui_params, get_data_dict):
 
     ### --- Define dictionaries needed for REEDR user inputs. --- ###
 
+    envelope_construction_dir
+    envelope_construction_ceilingRoof_file
+    envelope_construction_nonFoundWall_file
+    envelope_construction_floorFound_file
+    hvac_systems_dir
+    hvac_systems_primary_file
+    infil_regression_coeff_dir
+    infil_regression_coeff_attic_file
+    infil_regression_coeff_crawl_file
+    infil_regression_coeff_living_file
+
     # floor and foundation construction dictionary
-    foundation_and_floor_path = f"{cwd}/Control Panel/Envelope Constructions/Floor and Foundation 2.csv"
+    foundation_and_floor_path = os.path.join(set_dir, control_panel_folder_name, envelope_construction_dir, envelope_construction_floorFound_file)
     foundation_and_floor_dict = dict_maker(foundation_and_floor_path)
 
     # exterior non-foundation wall construction dictionary
-    nonfoundation_wall_path = f"{cwd}/Control Panel/Envelope Constructions/Non Foundation Walls.csv"
+    nonfoundation_wall_path = os.path.join(set_dir, control_panel_folder_name, envelope_construction_dir, envelope_construction_nonFoundWall_file)
     nonfoundation_wall_dict = dict_maker(nonfoundation_wall_path)
 
     # ceiling and roof construction dictionary
-    ceiling_and_roof_con_path = f"{cwd}/Control Panel/Envelope Constructions/Ceiling and Roof.csv"
+    ceiling_and_roof_con_path = os.path.join(set_dir, control_panel_folder_name, envelope_construction_dir, envelope_construction_ceilingRoof_file)
     ceiling_and_roof_con_dict = dict_maker(ceiling_and_roof_con_path)
 
     # hvac type dictionary
-    hvac_path = f"{cwd}/Control Panel/HVAC Systems/Primary HVAC Equipment.csv"
+    hvac_path = os.path.join(set_dir, control_panel_folder_name, hvac_systems_dir, hvac_systems_primary_file)
     hvac_dict = dict_maker(hvac_path)
 
-    # living zone infiltration regression coefficient dictionary    
-    living_infiltration_coeff_path = f"{cwd}/Control Panel/Infiltration Regression Coefficients/Living_Coefficients.csv"
+    # living zone infiltration regression coefficient dictionary
+    living_infiltration_coeff_path = os.path.join(set_dir, control_panel_folder_name, infil_regression_coeff_dir, infil_regression_coeff_living_file)
     living_infiltration_coeff_dict = dict_maker(living_infiltration_coeff_path)
 
-    # attic zone infiltration regression coefficients dictionary  
-    attic_infiltration_coeff_path = f"{cwd}/Control Panel/Infiltration Regression Coefficients/Attic_Coefficients.csv"
+    # attic zone infiltration regression coefficients dictionary
+    attic_infiltration_coeff_path = os.path.join(set_dir, control_panel_folder_name, infil_regression_coeff_dir, infil_regression_coeff_attic_file)
     attic_infiltration_coeff_dict = dict_maker(attic_infiltration_coeff_path)
     
-    # crawl zone infiltration regression coefficients dictionary   
-    crawl_infiltration_coeff_path = f"{cwd}/Control Panel/Infiltration Regression Coefficients/Crawl_Coefficients.csv"
+    # crawl zone infiltration regression coefficients dictionary
+    crawl_infiltration_coeff_path = os.path.join(set_dir, control_panel_folder_name, infil_regression_coeff_dir, infil_regression_coeff_crawl_file)
     crawl_infiltration_coeff_dict = dict_maker(crawl_infiltration_coeff_path)
     
     # foundation type dictionary
@@ -307,7 +339,6 @@ def genmodels(gui_params, get_data_dict):
             avgHtPerStory = float(validate(heightPerStory_fieldname, round(convert_ft_to_m(dictionary[heightPerStory_fieldname]),10), "num_not_zero", 999, 999, dummy_list))
 
             #... total conditioned volume
-            #total_conditioned_volume = float(validate(volume_fieldname, round(convert_ft3_to_m3(dictionary[volume_fieldname]),10), "num_not_zero", 999, 999, dummy_list))
             total_conditioned_volume = conditioned_footprint_area * avgStories * avgHtPerStory
 
             #... Width to depth ratio
@@ -318,7 +349,6 @@ def genmodels(gui_params, get_data_dict):
             above_ground_wall_con = validate(wallCon_fieldname, dictionary[wallCon_fieldname], "list", 999, 999, above_ground_wall_list)
 
             #... ceiling and roof construction
-            # ceiling_and_roof_con_path = os.path.join(set_dir, building_block_dir, materials_main_dir, materials_attic_ins_dir)
             ceiling_and_roof_con_list = ceiling_and_roof_con_dict.keys()
             ceiling_and_roof_con = validate(ceilingCon_fieldname, dictionary[ceilingCon_fieldname], "list", 999, 999, ceiling_and_roof_con_list)
 
@@ -604,9 +634,6 @@ def genmodels(gui_params, get_data_dict):
         #... format layers with proper punctuation for EnergyPlus
         roof_layers = formatLayerList(last_real_layer_num, roof_layers)
 
-
-
-        
         # Set foundation parameters based on foundation type
         main_floor_construction = foundation_and_floor_dict[foundation_and_floor_con]["main_floor_construction"]
         foundation_surface = foundation_and_floor_dict[foundation_and_floor_con]["foundation_surface"]

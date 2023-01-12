@@ -16,10 +16,27 @@ from Scripts.dictmaker import dict_maker
 ##   1) user inputs (i.e. instructions) on requested output granularity and end uses, and
 ##   2) EnergyPlus-generated outputs from individual runs
 ## to create a custom report that combines output from all EnergyPlus runs.
-def genoutputs(gui_params, get_data_dict):
+def genoutputs(gui_params, get_data_dict, control_panel_dict):
 
     # Set the proper working directory.
     set_dir = get_data_dict["parent"]
+
+    ### --- Define control panel directory and file names as variables, so they can be established only once here, and flow throughout --- ###
+    #... get folder and file names from CSV
+    control_panel_folder_name = control_panel_dict["control_panel_folder_name"]
+    control_panel_names_dict = control_panel_dict["control_panel_names_dict"]
+    control_panel_names_lookup_id = control_panel_dict["control_panel_names_lookup_id"]
+    #... assign fieldnames to python variables
+    output_reports_dir = control_panel_names_dict["output_reports_dir"][control_panel_names_lookup_id]
+    output_reports_demand_allEndUse_file = control_panel_names_dict["output_reports_demand_allEndUse_file"][control_panel_names_lookup_id]
+    output_reports_demand_allHVAC_file = control_panel_names_dict["output_reports_demand_allHVAC_file"][control_panel_names_lookup_id]
+    output_reports_demand_cooling_file = control_panel_names_dict["output_reports_demand_cooling_file"][control_panel_names_lookup_id]
+    output_reports_demand_fan_file = control_panel_names_dict["output_reports_demand_fan_file"][control_panel_names_lookup_id]
+    output_reports_demand_heating_file = control_panel_names_dict["output_reports_demand_heating_file"][control_panel_names_lookup_id]
+    output_reports_demand_lighting_file = control_panel_names_dict["output_reports_demand_lighting_file"][control_panel_names_lookup_id]
+    output_reports_demand_other_file = control_panel_names_dict["output_reports_demand_other_file"][control_panel_names_lookup_id]
+    output_reports_demand_dhw_file = control_panel_names_dict["output_reports_demand_dhw_file"][control_panel_names_lookup_id]
+    output_reports_energy_allEndUse_file = control_panel_names_dict["output_reports_energy_allEndUse_file"][control_panel_names_lookup_id]
 
     # candidate for revision after changes to get_data_dict
     cwd = Path(os. getcwd())
@@ -36,31 +53,31 @@ def genoutputs(gui_params, get_data_dict):
 
     ## Define output dictionaries. These become the data fields (i.e. columns) for the custom report.
 
-    Energy_All_End_Uses_path = f"{cwd}/Control Panel/Output Reports/Energy All End Uses Report.csv"
+    Energy_All_End_Uses_path = os.path.join(set_dir, control_panel_folder_name, output_reports_dir, output_reports_energy_allEndUse_file)
     Energy_All_End_Uses_dict = dict_maker(Energy_All_End_Uses_path)
 
-    Demand_All_HVAC_path = f"{cwd}/Control Panel/Output Reports/Demand All HVAC Report.csv"
+    Demand_All_HVAC_path = os.path.join(set_dir, control_panel_folder_name, output_reports_dir, output_reports_demand_allHVAC_file)
     Demand_All_HVAC_dict = dict_maker(Demand_All_HVAC_path)
 
-    Demand_Heating_path = f"{cwd}/Control Panel/Output Reports/Demand Heating Report.csv"
+    Demand_Heating_path = os.path.join(set_dir, control_panel_folder_name, output_reports_dir, output_reports_demand_heating_file)
     Demand_Heating_dict = dict_maker(Demand_Heating_path)
 
-    Demand_Cooling_path = f"{cwd}/Control Panel/Output Reports/Demand Cooling Report.csv"
+    Demand_Cooling_path = os.path.join(set_dir, control_panel_folder_name, output_reports_dir, output_reports_demand_cooling_file)
     Demand_Cooling_dict = dict_maker(Demand_Cooling_path)
 
-    Demand_Fan_path = f"{cwd}/Control Panel/Output Reports/Demand Fan Report.csv"
+    Demand_Fan_path = os.path.join(set_dir, control_panel_folder_name, output_reports_dir, output_reports_demand_fan_file)
     Demand_Fan_dict = dict_maker(Demand_Fan_path)
 
-    Demand_Lighting_path = f"{cwd}/Control Panel/Output Reports/Demand Lighting Report.csv"
+    Demand_Lighting_path = os.path.join(set_dir, control_panel_folder_name, output_reports_dir, output_reports_demand_lighting_file)
     Demand_Lighting_dict = dict_maker(Demand_Lighting_path)
 
-    Demand_Water_Heating_path = f"{cwd}/Control Panel/Output Reports/Demand Water Heating Report.csv"
+    Demand_Water_Heating_path = os.path.join(set_dir, control_panel_folder_name, output_reports_dir, output_reports_demand_dhw_file)
     Demand_Water_Heating_dict = dict_maker(Demand_Water_Heating_path)
 
-    Demand_Other_Equipment_path = f"{cwd}/Control Panel/Output Reports/Demand Other Equipment Report.csv"
+    Demand_Other_Equipment_path = os.path.join(set_dir, control_panel_folder_name, output_reports_dir, output_reports_demand_other_file)
     Demand_Other_Equipment_dict = dict_maker(Demand_Other_Equipment_path)
 
-    Demand_All_End_Uses_path = f"{cwd}/Control Panel/Output Reports/Demand All End Uses Report.csv"
+    Demand_All_End_Uses_path = os.path.join(set_dir, control_panel_folder_name, output_reports_dir, output_reports_demand_allEndUse_file)
     Demand_All_End_Uses_dict = dict_maker(Demand_All_End_Uses_path)
 
     ## Determine report type to output based on user input...
