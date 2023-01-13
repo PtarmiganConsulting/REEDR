@@ -249,20 +249,13 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
 
     ### --- Define dictionaries needed for REEDR user inputs. --- ###
 
-    envelope_construction_dir
-    envelope_construction_ceilingRoof_file
-    envelope_construction_nonFoundWall_file
-    envelope_construction_floorFound_file
-    hvac_systems_dir
-    hvac_systems_primary_file
-    infil_regression_coeff_dir
-    infil_regression_coeff_attic_file
-    infil_regression_coeff_crawl_file
-    infil_regression_coeff_living_file
-
     # floor and foundation construction dictionary
     foundation_and_floor_path = os.path.join(set_dir, control_panel_folder_name, envelope_construction_dir, envelope_construction_floorFound_file)
     foundation_and_floor_dict = dict_maker(foundation_and_floor_path)
+
+    # new floor and foundation construction dictionary
+    foundation_and_floor_new_path = os.path.join(set_dir, control_panel_folder_name, envelope_construction_dir, "Floor And Foundation.csv")
+    foundation_and_floor_new_dict = dict_maker(foundation_and_floor_new_path)
 
     # exterior non-foundation wall construction dictionary
     nonfoundation_wall_path = os.path.join(set_dir, control_panel_folder_name, envelope_construction_dir, envelope_construction_nonFoundWall_file)
@@ -296,7 +289,6 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
         "Unhe": ["Unheated Basement", "unheatedbsmt"],
     }
     
-
     ### --- IDF WRITER LOOP BEGINS HERE. --- ###
     # The loop covers every dictionary (effectively a runlabel row) in the big dictionary list.
     # Each time the loop comes to a new dictionary/runlabel row, it updates the changable variables before doing anything else.
@@ -633,6 +625,29 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
         last_real_layer_num = findLastRealLayer(roof_layers)
         #... format layers with proper punctuation for EnergyPlus
         roof_layers = formatLayerList(last_real_layer_num, roof_layers)
+
+        # Get floor construction layers
+        floor_layers = []
+        floor_layers.append(foundation_and_floor_new_dict[foundation_and_floor_con]["exterior_floor_layer"])
+        floor_layers.append(foundation_and_floor_new_dict[foundation_and_floor_con]["next_floor_layer_1"])
+        floor_layers.append(foundation_and_floor_new_dict[foundation_and_floor_con]["next_floor_layer_2"])
+        floor_layers.append(foundation_and_floor_new_dict[foundation_and_floor_con]["next_floor_layer_3"])
+        floor_layers.append(foundation_and_floor_new_dict[foundation_and_floor_con]["next_floor_layer_4"])
+        floor_layers.append(foundation_and_floor_new_dict[foundation_and_floor_con]["next_floor_layer_5"])
+        #... find last "real" (non-empty) layer
+        last_real_layer_num = findLastRealLayer(floor_layers)
+        #... format layers with proper punctuation for EnergyPlus
+        floor_layers = formatLayerList(last_real_layer_num, floor_layers)
+
+        # Get other foundation characteristics
+        other_found_chars = []
+        other_found_chars.append(foundation_and_floor_new_dict[foundation_and_floor_con]["foundation_type"])
+        other_found_chars.append(foundation_and_floor_new_dict[foundation_and_floor_con]["slab_perimeter_ins_name"])
+        other_found_chars.append(foundation_and_floor_new_dict[foundation_and_floor_con]["slab_perimeter_ins_width[ft]"])
+        other_found_chars.append(foundation_and_floor_new_dict[foundation_and_floor_con]["slab_thermalbreak_ins_name"])
+        other_found_chars.append(foundation_and_floor_new_dict[foundation_and_floor_con]["slab_thermalbreak_ins_depth[ft]"])
+        other_found_chars.append(foundation_and_floor_new_dict[foundation_and_floor_con]["bsmnt_wall_ext_ins_name"])
+        other_found_chars.append(foundation_and_floor_new_dict[foundation_and_floor_con]["bsmnt_wall_ext_ins_depth[ft]"])
 
         # Set foundation parameters based on foundation type
         main_floor_construction = foundation_and_floor_dict[foundation_and_floor_con]["main_floor_construction"]
