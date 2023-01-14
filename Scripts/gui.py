@@ -203,7 +203,8 @@ def gui(func):
                 gui_params["output_enduses"] = "Heating"
             
             # Terminate the GUI during program run cycle
-            sleep(2) # slight delay on the gui terming
+            print("Reading user input data...")
+            sleep(1) # slight delay on the gui terming
             root.quit()
             root.destroy()
             func(gui_params)

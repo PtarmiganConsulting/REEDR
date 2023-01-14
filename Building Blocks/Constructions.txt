@@ -1,48 +1,54 @@
 !-   ===========  ALL OBJECTS IN CLASS: CONSTRUCTION ===========
 
+!- Note: Commas and semi-colons are added by Python for the construction below
 Construction,
-    Exterior Floor,          !- Name
-    {floor_insulation_layer},                !- Outside Layer
-    Plywood_3/4in,           !- Layer 2
-    Carpet_n_pad;            !- Layer 3
+    ag wall construction,   
+    {wall_layers[0]}        
+    {wall_layers[1]}
+    {wall_layers[2]}
+    {wall_layers[3]}
+    {wall_layers[4]}
+    {wall_layers[5]}
+    {wall_layers[6]}
+    {wall_layers[7]}
+    {wall_layers[8]}
+    {wall_layers[9]}
+    {wall_layers[10]}
+
+!- Note: Commas and semi-colons are added by Python for the construction below
+Construction,
+    ceiling construction,
+    {ceiling_layers[0]}
+    {ceiling_layers[1]}
+    {ceiling_layers[2]}
+    {ceiling_layers[3]}
+    {ceiling_layers[4]}
+    {ceiling_layers[5]}
+
+!- Note: Commas and semi-colons are added by Python for the construction below
+Construction,
+    roof construction,
+    {roof_layers[0]}
+    {roof_layers[1]}
+    {roof_layers[2]}
+    {roof_layers[3]}
+    {roof_layers[4]}
+    {roof_layers[5]}
+
+!- Note: Commas and semi-colons are added by Python for the construction below
+Construction,
+    main floor construction,
+    {floor_layers[0]}
+    {floor_layers[1]}
+    {floor_layers[2]}
+    {floor_layers[3]}
+    {floor_layers[4]}
+    {floor_layers[5]}
 
 Construction,
     Interior Floor,          !- Name
     Plywood_3/4in,           !- Outside Layer
     Carpet_n_pad;            !- Layer 2
-
-Construction,
-    ceiling construction,        !- Name
-    ceil_consol_layer,              !- Outside Layer
-    Drywall_1/2in;           !- Layer 2
-
-Construction,
-    attic floor,             !- Name
-    Drywall_1/2in,           !- Outside Layer
-    ceil_consol_layer;              !- Layer 2
-
-Construction,
-    fndn_roof,              !- Name
-    Carpet_n_pad,            !- Outside Layer
-    Plywood_3/4in,           !- Layer 2
-    ceil_consol_layer;             !- Layer 3
-
-Construction,
-    interiorwall,            !- Name
-    Drywall_1/2in,           !- Outside Layer
-    OSB_5/8in,               !- Layer 2
-    Drywall_1/2in;           !- Layer 3
-
-Construction,
-    Interior Wall,           !- Name
-    Drywall_1/2in,           !- Outside Layer
-    Air_4_in_vert,           !- Layer 2
-    Drywall_1/2in;           !- Layer 3
-
-Construction,
-    roof construction,           !- Name
-    Asphalt_shingle,         !- Outside Layer
-    OSB_1/2in;               !- Layer 2
 
 Construction,
     Interior Window,         !- Name
@@ -101,14 +107,6 @@ Construction,
 Construction,
     ceiling-floor-layer,     !- Name
     Lumber_2x4;              !- Outside Layer
-
-Construction,
-    ag wall construction,
-    syn_stucco,
-    sheathing_consol_layer,
-    OSB_7/16in,
-    wall_consol_layer,
-    Drywall_1/2in;
 
 Construction,
     foundation wall construction,  !- Name

@@ -50,3 +50,26 @@ def estimateInfiltrationAdjustment(foundation_type, ACH50, footprint, total_enve
     adjust = [living_adjust, attic_adjust, crawl_adjust]
     
     return adjust
+
+
+def findLastRealLayer(list_layers):
+
+    for i in range(len(list_layers)):
+            if list_layers[i] != "!-":
+                last_real_layer_num = i
+
+    return last_real_layer_num
+
+def formatLayerList(last_real_layer_num, list_layers):
+
+    #... add proper punctuation for EnergyPlus based on last real layer
+    i = 0
+    for i in range(len(list_layers)):
+        if i == last_real_layer_num:
+            # last layer in energy plus needs to end with a semi-colon
+            list_layers[i] = list_layers[i] + ";"
+        else:
+            # otherwise it is either an intermediate layer or an empty layer, and use a comma
+            list_layers[i] = list_layers[i] + ","
+
+    return list_layers
