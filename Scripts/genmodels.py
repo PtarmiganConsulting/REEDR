@@ -26,6 +26,7 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
     #... assign fieldnames to python variables
     buildingBlock_names_file = control_panel_names_dict["buildingBlock_names_file"][control_panel_names_lookup_id]
     inputTemplate_names_file = control_panel_names_dict["inputTemplate_names_file"][control_panel_names_lookup_id]
+    found_type_assumptions_file = control_panel_names_dict["found_type_assumptions_file"][control_panel_names_lookup_id]
     envelope_construction_dir = control_panel_names_dict["envelope_construction_dir"][control_panel_names_lookup_id]
     envelope_construction_ceilingRoof_file = control_panel_names_dict["envelope_construction_ceilingRoof_file"][control_panel_names_lookup_id]
     envelope_construction_nonFoundWall_file = control_panel_names_dict["envelope_construction_nonFoundWall_file"][control_panel_names_lookup_id]
@@ -253,10 +254,6 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
     foundation_and_floor_path = os.path.join(set_dir, control_panel_folder_name, envelope_construction_dir, envelope_construction_floorFound_file)
     foundation_and_floor_dict = dict_maker(foundation_and_floor_path)
 
-    # new floor and foundation construction dictionary
-    foundation_and_floor_new_path = os.path.join(set_dir, control_panel_folder_name, envelope_construction_dir, "Floor And Foundation.csv")
-    foundation_and_floor_new_dict = dict_maker(foundation_and_floor_new_path)
-
     # exterior non-foundation wall construction dictionary
     nonfoundation_wall_path = os.path.join(set_dir, control_panel_folder_name, envelope_construction_dir, envelope_construction_nonFoundWall_file)
     nonfoundation_wall_dict = dict_maker(nonfoundation_wall_path)
@@ -280,14 +277,11 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
     # crawl zone infiltration regression coefficients dictionary
     crawl_infiltration_coeff_path = os.path.join(set_dir, control_panel_folder_name, infil_regression_coeff_dir, infil_regression_coeff_crawl_file)
     crawl_infiltration_coeff_dict = dict_maker(crawl_infiltration_coeff_path)
-    
-    # foundation type dictionary
-    foundation_dict = {
-        "Vent": ["Vented Crawlspace", "crawlspace"],
-        "Slab": ["Slab", "attic"],
-        "Heat": ["Heated Basement", "living"],
-        "Unhe": ["Unheated Basement", "unheatedbsmt"],
-    }
+
+    # foundation type assumptions dictionary
+    foundation_type_assumptions_path = os.path.join(set_dir, control_panel_folder_name, found_type_assumptions_file)
+    foundation_type_assumptions_dict = dict_maker(foundation_type_assumptions_path)
+
     
     ### --- IDF WRITER LOOP BEGINS HERE. --- ###
     # The loop covers every dictionary (effectively a runlabel row) in the big dictionary list.
@@ -350,26 +344,15 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
             foundation_and_floor_con = validate(floorCon_fieldname, dictionary[floorCon_fieldname], "list" , 999, 999, foundation_list)
 
             # Establish foundation type
-            chars = 4
-            foundation_key = foundation_and_floor_con[:chars]
-            foundation_type = foundation_dict[foundation_key][0]
-            returnduct_location = foundation_dict[foundation_key][1]
+            other_found_chars = {}
+            other_found_chars["foundation_type"] = foundation_and_floor_dict[foundation_and_floor_con]["foundation_type"]
+            foundation_type = other_found_chars["foundation_type"]
+
             # Establish if foundation is slab or heated basement, if using regression-based infiltration estimate
             if foundation_type == "Slab" or foundation_type == "Heated Basement":
                 hasSlabOrHtdBsmnt = 1
             else:
                 hasSlabOrHtdBsmnt = 0
-
-            #... Foundation wall height above and below ground
-            if foundation_type == "Slab":
-                foundationwall_ht_AG = round(convert_ft_to_m(0),10)
-                foundationwall_ht_BG = -1 * round(convert_ft_to_m(0),10)
-            elif foundation_type == "Vented Crawlspace":
-                foundationwall_ht_AG = round(convert_ft_to_m(1),10)
-                foundationwall_ht_BG = -1 * round(convert_ft_to_m(2),10)
-            else:
-                foundationwall_ht_AG = round(convert_ft_to_m(1),10)
-                foundationwall_ht_BG = -1 * round(convert_ft_to_m(7),10)
 
             #... window U-value
             u_lo = 0.1
@@ -628,43 +611,57 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
 
         # Get floor construction layers
         floor_layers = []
-        floor_layers.append(foundation_and_floor_new_dict[foundation_and_floor_con]["exterior_floor_layer"])
-        floor_layers.append(foundation_and_floor_new_dict[foundation_and_floor_con]["next_floor_layer_1"])
-        floor_layers.append(foundation_and_floor_new_dict[foundation_and_floor_con]["next_floor_layer_2"])
-        floor_layers.append(foundation_and_floor_new_dict[foundation_and_floor_con]["next_floor_layer_3"])
-        floor_layers.append(foundation_and_floor_new_dict[foundation_and_floor_con]["next_floor_layer_4"])
-        floor_layers.append(foundation_and_floor_new_dict[foundation_and_floor_con]["next_floor_layer_5"])
+        floor_layers.append(foundation_and_floor_dict[foundation_and_floor_con]["exterior_floor_layer"])
+        floor_layers.append(foundation_and_floor_dict[foundation_and_floor_con]["next_floor_layer_1"])
+        floor_layers.append(foundation_and_floor_dict[foundation_and_floor_con]["next_floor_layer_2"])
+        floor_layers.append(foundation_and_floor_dict[foundation_and_floor_con]["next_floor_layer_3"])
+        floor_layers.append(foundation_and_floor_dict[foundation_and_floor_con]["next_floor_layer_4"])
+        floor_layers.append(foundation_and_floor_dict[foundation_and_floor_con]["next_floor_layer_5"])
         #... find last "real" (non-empty) layer
         last_real_layer_num = findLastRealLayer(floor_layers)
         #... format layers with proper punctuation for EnergyPlus
         floor_layers = formatLayerList(last_real_layer_num, floor_layers)
 
         # Get other foundation characteristics
-        other_found_chars = []
-        other_found_chars.append(foundation_and_floor_new_dict[foundation_and_floor_con]["foundation_type"])
-        other_found_chars.append(foundation_and_floor_new_dict[foundation_and_floor_con]["slab_perimeter_ins_name"])
-        other_found_chars.append(foundation_and_floor_new_dict[foundation_and_floor_con]["slab_perimeter_ins_width[ft]"])
-        other_found_chars.append(foundation_and_floor_new_dict[foundation_and_floor_con]["slab_thermalbreak_ins_name"])
-        other_found_chars.append(foundation_and_floor_new_dict[foundation_and_floor_con]["slab_thermalbreak_ins_depth[ft]"])
-        other_found_chars.append(foundation_and_floor_new_dict[foundation_and_floor_con]["bsmnt_wall_ext_ins_name"])
-        other_found_chars.append(foundation_and_floor_new_dict[foundation_and_floor_con]["bsmnt_wall_ext_ins_depth[ft]"])
+        other_found_chars["slab_perimeter_ins_name"] = foundation_and_floor_dict[foundation_and_floor_con]["slab_perimeter_ins_name"]
+        other_found_chars["slab_perimeter_ins_width[ft]"] = foundation_and_floor_dict[foundation_and_floor_con]["slab_perimeter_ins_width[ft]"]
+        other_found_chars["slab_thermalbreak_ins_name"] = foundation_and_floor_dict[foundation_and_floor_con]["slab_thermalbreak_ins_name"]
+        other_found_chars["slab_thermalbreak_ins_depth[ft]"] = foundation_and_floor_dict[foundation_and_floor_con]["slab_thermalbreak_ins_depth[ft]"]
+        other_found_chars["bsmnt_wall_ext_ins_name"] = foundation_and_floor_dict[foundation_and_floor_con]["bsmnt_wall_ext_ins_name"]
+        other_found_chars["bsmnt_wall_ext_ins_depth[ft]"] = foundation_and_floor_dict[foundation_and_floor_con]["bsmnt_wall_ext_ins_depth[ft]"]
 
-        # Set foundation parameters based on foundation type
-        main_floor_construction = foundation_and_floor_dict[foundation_and_floor_con]["main_floor_construction"]
-        foundation_surface = foundation_and_floor_dict[foundation_and_floor_con]["foundation_surface"]
-        int_horiz_ins_mat_name = foundation_and_floor_dict[foundation_and_floor_con]["int_horiz_ins_mat_name"]
-        int_horiz_ins_depth = convert_ft_to_m(foundation_and_floor_dict[foundation_and_floor_con]["int_horiz_ins_depth"])
-        int_horiz_ins_width = convert_ft_to_m(foundation_and_floor_dict[foundation_and_floor_con]["int_horiz_ins_width"])
-        int_vert_ins_mat_name = foundation_and_floor_dict[foundation_and_floor_con]["int_vert_ins_mat_name"]   
-        int_vert_ins_depth = convert_ft_to_m(foundation_and_floor_dict[foundation_and_floor_con]["int_vert_ins_depth"])
-        ext_vert_ins_mat_name = foundation_and_floor_dict[foundation_and_floor_con]["ext_vert_ins_mat_name"]  
-        ext_vert_ins_depth = convert_ft_to_m(foundation_and_floor_dict[foundation_and_floor_con]["ext_vert_ins_depth"])
-        wall_ht_above_grade = convert_ft_to_m(foundation_and_floor_dict[foundation_and_floor_con]["wall_ht_above_grade"])
-        wall_ht_below_slab = convert_ft_to_m(foundation_and_floor_dict[foundation_and_floor_con]["wall_ht_below_slab"])
-        floor_insulation_layer = foundation_and_floor_dict[foundation_and_floor_con]["floor_insulation_layer"]
-        floor_main_outside_boundary_condition = foundation_and_floor_dict[foundation_and_floor_con]["floor_main_outside_boundary_condition"]
-        floor_main_outside_boundary_condition_object = foundation_and_floor_dict[foundation_and_floor_con]["floor_main_outside_boundary_condition_object"]
-        foundation_zone_name = foundation_and_floor_dict[foundation_and_floor_con]["foundation_zone_name"]
+        # Get EnergyPlus assumptions for main foundation types
+        foundation_assumptions = {}
+        found_type = other_found_chars["foundation_type"]
+        foundation_assumptions["foundation_surface"] = foundation_type_assumptions_dict[found_type]["foundation_surface"]
+        foundation_assumptions["footer_ht_above_grade[ft]"] = foundation_type_assumptions_dict[found_type]["footer_ht_above_grade[ft]"]
+        foundation_assumptions["footer_ht_below_slab[ft]"] = foundation_type_assumptions_dict[found_type]["footer_ht_below_slab[ft]"]
+        foundation_assumptions["floor_main_outside_boundary_condition"] = foundation_type_assumptions_dict[found_type]["floor_main_outside_boundary_condition"]
+        foundation_assumptions["floor_main_outside_boundary_condition_object"] = foundation_type_assumptions_dict[found_type]["floor_main_outside_boundary_condition_object"]
+        foundation_assumptions["foundation_zone_name"] = foundation_type_assumptions_dict[found_type]["foundation_zone_name"]
+        foundation_assumptions["foundationwall_ht_AG[ft]"] = foundation_type_assumptions_dict[found_type]["foundationwall_ht_AG[ft]"]
+        foundation_assumptions["foundationwall_ht_BG[ft]"] = foundation_type_assumptions_dict[found_type]["foundationwall_ht_BG[ft]"]
+        foundation_assumptions["returnduct_location"] = foundation_type_assumptions_dict[found_type]["returnduct_location"]
+
+        # Set general foundation parameters based on foundation type
+        foundation_surface = foundation_assumptions["foundation_surface"]
+        wall_ht_above_grade = convert_ft_to_m(foundation_assumptions["footer_ht_above_grade[ft]"])
+        wall_ht_below_slab = convert_ft_to_m(foundation_assumptions["footer_ht_below_slab[ft]"])
+        floor_main_outside_boundary_condition = foundation_assumptions["floor_main_outside_boundary_condition"]
+        floor_main_outside_boundary_condition_object = foundation_assumptions["floor_main_outside_boundary_condition_object"]
+        foundation_zone_name = foundation_assumptions["foundation_zone_name"]
+        foundationwall_ht_AG = round(convert_ft_to_m(float(foundation_assumptions["foundationwall_ht_AG[ft]"])),10)
+        foundationwall_ht_BG = -1 * round(convert_ft_to_m(float(foundation_assumptions["foundationwall_ht_BG[ft]"])),10)
+        returnduct_location = foundation_assumptions["returnduct_location"]
+
+        # Set foundation insulation based on specific foundation selection
+        int_horiz_ins_mat_name = other_found_chars["slab_perimeter_ins_name"]
+        int_horiz_ins_depth = convert_ft_to_m(0)
+        int_horiz_ins_width = convert_ft_to_m(other_found_chars["slab_perimeter_ins_width[ft]"])
+        int_vert_ins_mat_name = other_found_chars["slab_thermalbreak_ins_name"] 
+        int_vert_ins_depth = convert_ft_to_m(other_found_chars["slab_thermalbreak_ins_depth[ft]"])
+        ext_vert_ins_mat_name = other_found_chars["bsmnt_wall_ext_ins_name"]
+        ext_vert_ins_depth = convert_ft_to_m(other_found_chars["bsmnt_wall_ext_ins_depth[ft]"])
 
         # Set geometry parameters that are needed to create geometry but not needed to be changed by user. All units in ft and converted to meters.
         origin_x = convert_ft_to_m(0) 
@@ -1081,12 +1078,12 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
             AFN_main_surfaces_t = f.read()
         
         # Insert AFN "adders" for certain foundation types
-        if foundation_dict[foundation_key][0] == "Slab" or foundation_dict[foundation_key][0] == "Heated Basement":
+        if foundation_type == "Slab" or foundation_type == "Heated Basement":
             AFN_crawl_zone_t = ""
             AFN_unheatedbsmt_zone_t = ""
             AFN_crawl_unheatedbsmt_leakage_adder_t = ""
             AFN_crawl_unheatedbsmt_surface_adder_t = ""
-        elif foundation_dict[foundation_key][0] == "Vented Crawlspace":
+        elif foundation_type == "Vented Crawlspace":
             AFN_unheatedbsmt_zone_t = ""
             #...add a crawlspace AFN zone
             with open(os.path.join(set_dir, building_block_dir, hvac_afn_main_dir, hvac_afn_zone_dir, hvac_afn_zone_crawl_adder_file), 'r') as f:
