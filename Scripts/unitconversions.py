@@ -22,6 +22,10 @@ def convert_J_to_therm(J):
     therm = J*0.00000000948043
     return therm
 
+def convert_J_to_galLPG(J):
+    gal = J*0.0000000099247861544414
+    return gal    
+
 def convert_W_to_Btuh(W):
     Btuh = W*3.41
     return Btuh

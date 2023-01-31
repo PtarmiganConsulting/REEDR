@@ -65,9 +65,9 @@ def main(gui_params):
         hit_error = genoutputs(gui_params, get_data_dict, control_panel_dict) # for debugging
 
     if hit_error == False:
-        input("REEDR run successful.  You may now close this window.")
+        input("REEDR run successful.  You may now close this window or press enter.")
     else:
-        input("REEDR experienced an error.  You may now close this window.")
+        input("REEDR experienced an error.  You may now close this window or press enter.")
 
 
 # the gui function

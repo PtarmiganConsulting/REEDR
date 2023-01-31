@@ -7,7 +7,7 @@ import pytz
 from pathlib import Path
 
 ## Import "internal" modules needed for REEDR...
-from Scripts.unitconversions import convert_J_to_kWh, convert_J_to_therm, convert_W_to_Btuh, convert_degC_to_degF
+from Scripts.unitconversions import convert_J_to_kWh, convert_J_to_therm, convert_W_to_Btuh, convert_degC_to_degF, convert_J_to_galLPG
 from Scripts.xlsxadjust import adapt_spreadsheet
 from Scripts.dictmaker import dict_maker
 
@@ -170,6 +170,10 @@ def produce_output_report(output_dict, output_gran, output_type, get_data_dict, 
                         # Convert gas output from joules to therms
                         col_lookup = str(output_dict[column]["mapping_fieldname"]) + "(RunPeriod)"
                         df_out.at[run_label, column] = convert_J_to_therm(eplus_out_df[col_lookup].sum())
+                    elif output_dict[column]["conversion_ID"] == "Propane":
+                        # Convert propane output from joules to gallons
+                        col_lookup = str(output_dict[column]["mapping_fieldname"]) + "(RunPeriod)"
+                        df_out.at[run_label, column] = convert_J_to_galLPG(eplus_out_df[col_lookup].sum())
                     else:
                         # Units don't need to be converted; simply sum them up
                         col_lookup = str(output_dict[column]["mapping_fieldname"]) + "(RunPeriod)"
@@ -218,7 +222,7 @@ def produce_output_report(output_dict, output_gran, output_type, get_data_dict, 
             except:
                 pass
             # Convert units
-            if output_dict[key]["conversion_ID"] == "Gas":
+            if output_dict[key]["conversion_ID"] == "Gas" or output_dict[key]["conversion_ID"] == "Propane":
                 try:
                     df_out[key] = convert_W_to_Btuh(df_out[key])
                 except:
