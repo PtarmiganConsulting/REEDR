@@ -1,5 +1,7 @@
 #*******************************************************************************************************************************************************************
 
+#Copyright (C) 2023 Ptarmigan Consulting LLC
+
 #This file is part of REEDR.
 
 #REEDR is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, 
@@ -31,11 +33,14 @@ parent = cwd.parent.absolute()
 os.chdir(cwd)
 
 # add paths for Python to be able to find modules and libraries
-sys.path.append(os. getcwd())
-sys.path.append(os.path.join(cwd,"python-3.10.0","Lib","site-packages"))
-sys.path.append(os.path.join(cwd,"python-3.10.0","Lib","site-packages","win32"))
-sys.path.append(os.path.join(cwd,"python-3.10.0","Lib","site-packages","win32","lib"))
-sys.path.append(os.path.join(cwd,"python-3.10.0","Lib","site-packages","openpyxl","xml"))
+# sys.path.append(os. getcwd())
+# sys.path.append(os.path.join(cwd,"python-3.10.0","Lib","site-packages"))
+# sys.path.append(os.path.join(cwd,"python-3.10.0","Lib","site-packages","win32"))
+# sys.path.append(os.path.join(cwd,"python-3.10.0","Lib","site-packages","win32","lib"))
+# sys.path.append(os.path.join(cwd,"python-3.10.0","Lib","site-packages","openpyxl","xml"))
+
+# sys.path.append(Path(r"C:\Users\chris\AppData\Local\Programs\Python\Python39\Lib\site-packages"))
+# sys.path.append(Path(r"C:\Users\chris\AppData\Local\Programs\Python\Python39\Lib\site-packages\xlsxwriter"))
 
 # import main functions needed for REEDR
 from Scripts.genmodels import genmodels

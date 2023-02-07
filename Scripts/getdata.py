@@ -1,5 +1,7 @@
 #*******************************************************************************************************************************************************************
 
+#Copyright (C) 2023 Ptarmigan Consulting LLC
+
 #This file is part of REEDR.
 
 #REEDR is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, 

@@ -1,5 +1,7 @@
 #*******************************************************************************************************************************************************************
 
+#Copyright (C) 2023 Ptarmigan Consulting LLC
+
 #This file is part of REEDR.
 
 #REEDR is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, 
@@ -332,7 +334,7 @@ def gui(func):
         ## special thanks to codemy.com for help with the window-centering code
 
     # Main Window Labels
-    ttk.Label(frm, text="The Residential Energy Efficiency and Demand Response Model (REEDR)", style='Title.TLabel').grid(sticky=W, column=0, row=0, padx=10, columnspan=2)
+    ttk.Label(frm, text="the Residential Energy Efficiency and Demand Response tool (REEDR)", style='Title.TLabel').grid(sticky=W, column=0, row=0, padx=10, columnspan=2)
     ttk.Label(frm, text="v1.0.0-beta", style='Version.TLabel').grid(sticky=W, column=0, row=1, padx=10)
 
     # Widget Formatting
