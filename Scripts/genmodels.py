@@ -1,3 +1,13 @@
+#This file is part of REEDR.
+
+#REEDR is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, 
+#either version 3 of the License, or (at your option) any later version.
+
+#REEDR is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
+#PURPOSE. See the GNU General Public License for more details.
+
+#You should have received a copy of the GNU General Public License along with REEDR. If not, see <https://www.gnu.org/licenses/>. 
+
 ### --- Import modules. --- ###
 import pandas as pd # to import xcel, some initial data manipulation
 import os # for making paths and directories and removing files
@@ -397,15 +407,18 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
             ZoneAirInletNodeName = hvac_dict[hvac_type]["ZoneAirInletNodeName"]
             ZoneAirExhaustNodeName = hvac_dict[hvac_type]["ZoneAirExhaustNodeName"]
             ZoneReturnAirNodeName = hvac_dict[hvac_type]["ZoneReturnAirNodeName"]
+            heatCoilFuelType  = hvac_dict[hvac_type]["heatCoilFuelType"]
 
             unitaryTextFile = os.path.join(set_dir, building_block_dir, hvac_airloop_main_dir, hvac_airloop_hvac_dir, hvac_dict[hvac_type]["unitaryTextFile"])
             airDistUnitTextFile = os.path.join(set_dir, building_block_dir, hvac_zone_main_dir, hvac_zone_hvac_dir, hvac_dict[hvac_type]["airDistUnitTextFile"])
             heatCoilTextFile = os.path.join(set_dir, building_block_dir, hvac_coil_dir, hvac_dict[hvac_type]["heatCoilTextFile"])
-            if hvac_dict[hvac_type]["coolCoilTextFile"] != "NA":
+            
+            if hvac_dict[hvac_type]["coolCoilTextFile"] != "None":
                 coolCoilTextFile = os.path.join(set_dir, building_block_dir, hvac_coil_dir, hvac_dict[hvac_type]["coolCoilTextFile"])
             else:
-                coolCoilTextFile = "NA"
+                coolCoilTextFile = "None"
             fanTextFile = os.path.join(set_dir, building_block_dir, hvac_fan_dir, hvac_dict[hvac_type]["fanTextFile"])
+            
 
             AirLoopHVAC_HeatingCoil_ObjectType = hvac_dict[hvac_type]["AirLoopHVAC_HeatingCoil_ObjectType"]
             AirLoopHVAC_HeatingCoil_Name = hvac_dict[hvac_type]["AirLoopHVAC_HeatingCoil_Name"]
@@ -436,7 +449,7 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
 
             #... cooling capacity and capacity units
             if AirLoopHVAC_Unitary_ObjectName == "SS Heat Pump" or AirLoopHVAC_Unitary_ObjectName == "DS Heat Pump" or AirLoopHVAC_Unitary_ObjectName == "MS Heat Pump" \
-            or coolCoilTextFile != "NA":
+            or coolCoilTextFile != "None":
                 primaryClg_capacity_units = validate(primaryClgCapacityUnits_fieldname, dictionary[primaryClgCapacityUnits_fieldname], "list", 999, 999, primaryHVAC_capacity_units_list)
                 primary_cooling_capacity = validate(primaryClgCapacity_fieldname, dictionary[primaryClgCapacity_fieldname], "num_not_zero", 999, 999, dummy_list)
                 primary_cooling_capacity = convert_capacity(primaryClg_capacity_units, primary_cooling_capacity)
@@ -895,7 +908,7 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
 
         # Set capacity to use for sizing fans. If heating only, use heating capacity. If heating and cooling, use average capacity.
         if AirLoopHVAC_Unitary_ObjectName == "SS Heat Pump" or AirLoopHVAC_Unitary_ObjectName == "DS Heat Pump" or AirLoopHVAC_Unitary_ObjectName == "MS Heat Pump" \
-            or coolCoilTextFile != "NA":
+            or coolCoilTextFile != "None":
 
             sizing_capacity = convert_W_to_ton((primary_heating_capacity + primary_cooling_capacity)/2)
         else:
@@ -1013,7 +1026,7 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
             AFN_main_heating_coil_outlet_node = "HeatingOutletNode"
         
         # Establish HVAC nodes depending on whether HVAC system has a cooling coil or not...
-        if AirLoopHVAC_CoolingCoil_ObjectType == "NA":
+        if AirLoopHVAC_CoolingCoil_ObjectType == "None":
             airloop_main_fan_coil_outlet_node = "Heating Coil Air Inlet Node"
             AFN_main_fan_coil_outlet_node = "HeatingInletNode"
             AFN_nodes_coolingcoiladder_t = ""
@@ -1143,25 +1156,25 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
         with open(unitaryTextFile, 'r') as f:
             HVAC_equip_1_t = f"{f.read()}".format(**locals())
         # Add HVAC equipment text file 2, which is typically the air distribution unit
-        if airDistUnitTextFile == "NA":
+        if airDistUnitTextFile == "None":
             HVAC_equip_2_t = ""
         else:
             with open(airDistUnitTextFile, 'r') as f:
                 HVAC_equip_2_t = f"{f.read()}".format(**locals())
         # Add heating coil text file
-        if heatCoilTextFile == "NA":
+        if heatCoilTextFile == "None":
             heating_coil_t = ""
         else:
             with open(heatCoilTextFile, 'r') as f:
                 heating_coil_t = f"{f.read()}".format(**locals())
         # Add cooling coil text file
-        if coolCoilTextFile == "NA":    
+        if coolCoilTextFile == "None":    
             cooling_coil_t = ""
         else:
             with open(coolCoilTextFile, 'r') as f:
                 cooling_coil_t = f"{f.read()}".format(**locals())
         # Add fan text file
-        if fanTextFile == "NA":    
+        if fanTextFile == "None":    
             fan_t = ""
         else:
             with open(fanTextFile, 'r') as f:

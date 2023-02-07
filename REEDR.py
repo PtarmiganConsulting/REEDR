@@ -1,3 +1,24 @@
+#*******************************************************************************************************************************************************************
+
+#This file is part of REEDR.
+
+#REEDR is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, 
+#either version 3 of the License, or (at your option) any later version.
+
+#REEDR is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
+#PURPOSE. See the GNU General Public License for more details.
+
+#You should have received a copy of the GNU General Public License along with REEDR. If not, see <https://www.gnu.org/licenses/>. 
+
+#*******************************************************************************************************************************************************************
+
+print("***********************************************************************************************************************")
+print("Copyright (C) 2023 Ptarmigan Consulting LLC\n")
+print("This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.\n")
+print("This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.\n")
+print("You should have received a copy of the GNU General Public License along with this program. If not, see <http://www.gnu.org/licenses/>")
+print("***********************************************************************************************************************\n")
+
 print("Initializing REEDR interface...\n")
 
 import os # for making paths and directories
@@ -65,9 +86,9 @@ def main(gui_params):
         hit_error = genoutputs(gui_params, get_data_dict, control_panel_dict) # for debugging
 
     if hit_error == False:
-        input("REEDR run successful.  You may now close this window.")
+        input("REEDR run successful.  You may now close this window or press enter.")
     else:
-        input("REEDR experienced an error.  You may now close this window.")
+        input("REEDR experienced an error.  You may now close this window or press enter.")
 
 
 # the gui function

@@ -1,3 +1,17 @@
+#*******************************************************************************************************************************************************************
+
+#This file is part of REEDR.
+
+#REEDR is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, 
+#either version 3 of the License, or (at your option) any later version.
+
+#REEDR is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
+#PURPOSE. See the GNU General Public License for more details.
+
+#You should have received a copy of the GNU General Public License along with REEDR. If not, see <https://www.gnu.org/licenses/>. 
+
+#*******************************************************************************************************************************************************************
+
 def convert_WperFt2_to_WperM2(WperFt2):
     WperM2 = 10.76*WperFt2
     return WperM2
@@ -21,6 +35,10 @@ def convert_J_to_kWh(J):
 def convert_J_to_therm(J):
     therm = J*0.00000000948043
     return therm
+
+def convert_J_to_galLPG(J):
+    gal = J*0.0000000099247861544414
+    return gal    
 
 def convert_W_to_Btuh(W):
     Btuh = W*3.41

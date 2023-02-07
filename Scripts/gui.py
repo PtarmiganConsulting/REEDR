@@ -1,3 +1,17 @@
+#*******************************************************************************************************************************************************************
+
+#This file is part of REEDR.
+
+#REEDR is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, 
+#either version 3 of the License, or (at your option) any later version.
+
+#REEDR is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
+#PURPOSE. See the GNU General Public License for more details.
+
+#You should have received a copy of the GNU General Public License along with REEDR. If not, see <https://www.gnu.org/licenses/>. 
+
+#*******************************************************************************************************************************************************************
+
 # Imports
 import os
 from tkinter import *
@@ -307,8 +321,8 @@ def gui(func):
     frm = ttk.Frame(root, padding=20)
     frm.grid()
     root.title("REEDR Project Setup")
-    app_width = 800
-    app_height = 495
+    app_width = 795
+    app_height = 530
     # app_height = 470 # B4
     screen_width = root.winfo_screenwidth()
     screen_height = root.winfo_screenheight()
@@ -318,8 +332,8 @@ def gui(func):
         ## special thanks to codemy.com for help with the window-centering code
 
     # Main Window Labels
-    ttk.Label(frm, text="Residential Energy Efficiency and Demand Response (REEDR) Tool", style='Title.TLabel').grid(sticky=W, column=0, row=0, padx=10, columnspan=2)
-    ttk.Label(frm, text="v0.9.0", style='Version.TLabel').grid(sticky=W, column=0, row=1, padx=10)
+    ttk.Label(frm, text="The Residential Energy Efficiency and Demand Response Model (REEDR)", style='Title.TLabel').grid(sticky=W, column=0, row=0, padx=10, columnspan=2)
+    ttk.Label(frm, text="v1.0.0-beta", style='Version.TLabel').grid(sticky=W, column=0, row=1, padx=10)
 
     # Widget Formatting
     s = ttk.Style()
@@ -329,6 +343,8 @@ def gui(func):
     s.configure('Body.TEntry', font=('Helvetica', 11), relief = SUNKEN)
     s.configure('Browse.TButton', font=('Helvetica', 11))
     s.configure('Run.TButton', font=('Helvetica', 12, 'bold'))
+    s.configure('Copyright.TLabel', font=('Helvetica', 9))
+    s.configure('LicenseBody.TLabel', font=('Helvetica', 7))
 
     # Path
     ttk.Label(frm, text="EnergyPlus v9.5 Executable Path: ", style='Body.TLabel').grid(sticky=W, column=0, row=2, padx=10, pady=25)
@@ -414,6 +430,9 @@ def gui(func):
     # Run Button
     ttk.Button(frm, text="RUN", style='Run.TButton', width=15, command=threading.Thread(target=exe_main).start).grid(column=2, row=11, columnspan=3, padx=0, pady=15, sticky=E) # threaded v
     ttk.Button(frm, text="RUN", style='Run.TButton', width=15, command=exe_main).grid(column=2, row=11, columnspan=3, padx=0, pady=15, sticky=E)
+
+    # Copyright label
+    ttk.Label(frm, text="Copyright (C) 2023 Ptarmigan Consulting LLC", style='Copyright.TLabel').grid(sticky=W, column=0, row=16, padx=10, columnspan=5)
  
     # Activate Tracing
     path_input.trace_add("write", update)
