@@ -1,3 +1,17 @@
+#*******************************************************************************************************************************************************************
+
+#This file is part of REEDR.
+
+#REEDR is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, 
+#either version 3 of the License, or (at your option) any later version.
+
+#REEDR is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
+#PURPOSE. See the GNU General Public License for more details.
+
+#You should have received a copy of the GNU General Public License along with REEDR. If not, see <https://www.gnu.org/licenses/>. 
+
+#*******************************************************************************************************************************************************************
+
 ## Import "external" modules needed for REEDR...
 import pandas as pd # used to handle data tables, i.e. "dataframes", or "dfs"
 import os # used to remove files
