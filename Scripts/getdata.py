@@ -27,14 +27,10 @@ def getdata(gui_params):
 
     warnings.filterwarnings('ignore', category=UserWarning, module='openpyxl')
 
-    # Update simulation status...
-    # status = "Reading user input data..."
-    # print("Reading user input data...")
-
     # Get paths for the current and parent directories
     cwd = Path(os. getcwd())
-    # parent = cwd.parent.absolute() # actual parent
-    parent = cwd ## used to make newmain work, strongly consider renaming parent variable
+    #parent = cwd.parent.absolute()
+    parent = cwd #need to fix/rename this. confusing right now
 
     # Sets the directory.
     set_dir = parent

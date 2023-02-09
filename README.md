@@ -1,21 +1,27 @@
-# REEDR
-REEDR stands for the **R**esidential **E**nergy **E**fficiency and **D**emand **R**esponse tool - a tool designed to make building, running, and analyzing residential EnergyPlus models an easier task.
+# What is REEDR?
+REEDR stands for the **R**esidential **E**nergy **E**fficiency and **D**emand **R**esponse tool. REEDR is an open-source application written in Python that allows you to build, run, and analyze residential EnergyPlus models with relative ease. Some of its key features include:
+- ability to run large batches of parametric runs,
+- infinite scaling of building envelope and glazing,
+- simple inputs for building geometry, infiltration, scheduling, and envelope constructions, and
+- automatic aggregation of individual run outputs for easier analysis.
 
 # How to Install REEDR and EnergyPlus
-To get REEDR running on your machine, you need to install REEDR and a copy of EnergyPlus v9.5, the version of EnergyPlus with which REEDR is currently compatible. Note that REEDR currently runs only in Windows environments.
+To get REEDR running on your machine, you need to install REEDR and a copy of EnergyPlus *v9.5*, the version of EnergyPlus with which REEDR is currently compatible. Note that REEDR currently runs only in Windows environments.
 ## Installing REEDR
-To install REEDR, simply download *REEDR Setup.exe* and run it on your machine. *REEDR Setup.exe* is a Windows Installer that will ask where you want REEDR installed.
+To install REEDR, download *REEDR Setup.exe* from the [latest REEDR release](https://github.com/PtarmiganConsulting/REEDR/releases/tag/v1.0.0-beta) and run it on your machine. *REEDR Setup.exe* is a Windows Installer that will ask where you want REEDR installed.
+
+![REEDR Setup Screen](https://drive.google.com/file/d/1cUjaryZ7hYqxz5yusiueXhngRNNGRKRp/view?usp=share_link)
 
 ## Installing EnergyPlus v9.5
 To install EnergyPlus v9.5, download a copy from the [EnergyPlus v9.5 github page](https://github.com/NREL/EnergyPlus/releases/tag/v9.5.0) and install it onto your computer using its Windows installer. Remember where you install EnergyPlus on your computer, as you will need to tell REEDR where it is located.
 
 # How to Run REEDR
 There are two main files you need to define and run a REEDR project:
-- the *Model Input Template*
-- *REEDR.exe*
+- the *Model Input Template*, and
+- *REEDR.exe*.
 
 ## The Model Input Template
-First, you need to define your building energy models in the *Model Input Template.xlsx* file. Building energy model inputs are defined on the *Model Inputs* tab of this workbook. If you just want to run REEDR, there should already be some example building models defined on the *Model Inputs* tab. (Note that you must *always* make sure you save this file before running REEDR, as REEDR is taking inputs from the saved copy of  the *Model Input Template*, not the live, unsaved version.)
+The *Model Input Template* file is where you define your building models. Specifically, building energy model inputs are defined on the *Model Inputs* tab of this workbook. If you just want to run REEDR, there should already be some example building models defined on the *Model Inputs* tab. (Note that you must *always* make sure you save this file before running REEDR, as REEDR is taking inputs from the saved copy of  the *Model Input Template*, not the live, unsaved version.)
 
 ## REEDR.exe
 Once you have one or more models defined in the *Model Input Template*, you are ready to define your project details and run REEDR.
@@ -36,11 +42,11 @@ After you've entered the above information, you can start REEDR by clicking the 
 
 # How to View REEDR Output/Results
 In addition to the *Model Input Template* and *REEDR.exe*, the most other common thing you will interact with is the *Projects* folder. The *Projects* folder is where REEDR will store all raw EnergyPlus and processed REEDR output. At the highest level, REEDR creates a folder with the project name provided in the REEDR GUI. Under that, REEDR will create:
-- A sub-folder named for each building model with all original EnergyPlus output
-- A REEDR generated *Run Report* that aggregates all individual model output and also performs automatic unit conversions, relabeling, and reformatting.
+- A sub-folder named for each building model with all original EnergyPlus output, and
+- A REEDR-generated *Run Report* that aggregates all individual model output and also performs automatic unit conversions, relabeling, and reformatting.
 
 # Credits
-REEDR is copyrighted by Ptarmigan Consulting LLC and was developed by [Logan Douglass](https://www.linkedin.com/in/logan-douglass/) and [Christian Douglass](https://www.linkedin.com/in/buildingenergyprofessional/). For all inquiries regarding REEDR, please contact christian@ptarmiganconsulting.com.
+REEDR is copyrighted by Ptarmigan Consulting LLC and was developed by [Logan Douglass](https://www.linkedin.com/in/logan-douglass/) and [Christian Douglass](https://www.linkedin.com/in/buildingenergyprofessional/). For all inquiries regarding REEDR, please contact inquiries@ptarmiganconsulting.com.
 
 Significant funding for REEDR was provided by the [Regional Technical Forum (RTF)](https://rtf.nwcouncil.org/). The RTF is a technical advisory committee to the [Northwest Power and Conservation Council](https://www.nwcouncil.org/) established in 1999 to develop standards to verify and evaluate energy efficiency savings.
 
@@ -50,4 +56,3 @@ REEDR is free software: you can redistribute it and/or modify it under the terms
 REEDR is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License along with REEDR. If not, see <[https://www.gnu.org/licenses/](https://www.gnu.org/licenses/)>. 
-
