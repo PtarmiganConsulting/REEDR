@@ -10,7 +10,7 @@ To get REEDR running on your machine, you need to install REEDR and a copy of En
 ## Installing REEDR
 To install REEDR, download *REEDR Setup.exe* from the [latest REEDR release](https://github.com/PtarmiganConsulting/REEDR/releases/tag/v1.0.0-beta) and run it on your machine. *REEDR Setup.exe* is a Windows Installer that will ask where you want REEDR installed.
 
-<img src="/Resources/Screenshots/SetupScreen.png?raw=true" width="500" />
+<img src="/Resources/Screenshots/SetupScreen.png" width="500" />
 
 ## Installing EnergyPlus v9.5
 To install EnergyPlus v9.5, download a copy from the [EnergyPlus v9.5 github page](https://github.com/NREL/EnergyPlus/releases/tag/v9.5.0) and install it onto your computer using its Windows installer. Remember where you install EnergyPlus on your computer, as you will need to tell REEDR where it is located.
