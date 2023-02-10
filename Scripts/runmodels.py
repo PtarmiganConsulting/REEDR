@@ -99,8 +99,6 @@ def runmodels(gui_params, get_data_dict):
             time.sleep(.25)
             # Update simulation status box in REEDR.xlsm...
             status = "...running model " + str(i) + " of " + str(len(get_data_dict["df"])) + "..."
-            # print(status) # original placement
-            #sht1.range('status_line_2').value = status
 
             run_label = dictionary["Run Label"]
             location_pull = dictionary["Weather File"]
@@ -154,16 +152,11 @@ def runmodels(gui_params, get_data_dict):
     
             try:
                 plusterwolf(run_label, location_pull, get_data_dict["master_directory"], gui_params["path_val"], i, get_data_dict["df"])
-                # get_data_dict["runlog"].write("... model run for " + run_label + " complete. \n")
             except:
-                # get_data_dict["runlog"].write("!!! problem running model " + run_label + "\n")
-                # get_data_dict["runlog"].write("!!! REEDR experienced the following error: " + str(e) + "\n")
                 print("\n*** ERROR: Problem running EnergyPlus. Please check to make sure you have a valid EnergyPlus exe path.\n")
                 return True
     
             i = i + 1
-    
-        # get_data_dict["runlog"].write("... \n")
 
     print("...model runs complete.")
     print()
