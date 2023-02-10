@@ -434,7 +434,7 @@ def gui(func):
     ttk.Button(frm, text="RUN", style='Run.TButton', width=15, command=exe_main).grid(column=2, row=11, columnspan=3, padx=0, pady=15, sticky=E)
 
     # Copyright label
-    ttk.Label(frm, text="Copyright (C) 2023 Ptarmigan Consulting LLC", style='Copyright.TLabel').grid(sticky=W, column=0, row=16, padx=10, columnspan=5)
+    ttk.Label(frm, text="Copyright (C) 2023 Ptarmigan Consulting LLC. All rights reserved.", style='Copyright.TLabel').grid(sticky=W, column=0, row=16, padx=10, columnspan=5)
  
     # Activate Tracing
     path_input.trace_add("write", update)
