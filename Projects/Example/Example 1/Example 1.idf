@@ -15,7 +15,7 @@ SimulationControl,
 !-   ===========  ALL OBJECTS IN CLASS: BUILDING ===========
 
 Building,
-    Wood-Framed - 2x4 - 16 in OC - R-11 Cavity,                	!- Name
+    Example 1,                	!- Name
     0,      	!- North Axis {deg}
     Suburbs,                 	!- Terrain
     0.5,                    	!- Loads Convergence Tolerance Value, Note: originally 0.04
@@ -32,17 +32,17 @@ SurfaceConvectionAlgorithm:Inside,
 !-   ===========  ALL OBJECTS IN CLASS: TIMESTEP ===========
 
 Timestep,
-    4;                       !- Number of Timesteps per Hour
+    1;                       !- Number of Timesteps per Hour
 
 !-   ===========  ALL OBJECTS IN CLASS: RUNPERIOD ===========
 
 RunPeriod,
-    Annual,                  !- Name
+    Test Run,                  !- Name
     1,                       !- Begin Month
     1,                       !- Begin Day of Month
     ,                        !- Begin Year
-    12,                      !- End Month
-    31,                      !- End Day of Month
+    1,                      !- End Month
+    1,                      !- End Day of Month
     ,                        !- End Year
     Sunday,                  !- Day of Week for Start Day
     Yes,                     !- Use Weather File Holidays and Special Days
@@ -61,79 +61,81 @@ RunPeriod,
 !-   ===========  ALL OBJECTS IN CLASS: PERFORMANCEPRECISIONTRADEOFFS ===========
 
 PerformancePrecisionTradeoffs,
-    No,                     !- Use Coil Direct Solutions
+    Yes,                     !- Use Coil Direct Solutions
     CarrollMRT,              !- Zone Radiant Exchange Algorithm
-    Normal,                  !- Override Mode
-    0.5,                       !- MaxZoneTempDiff
-    0.01;                     !- MaxAllowedDelTemp
+    Mode07,                  !- Override Mode
+    1,                       !- MaxZoneTempDiff
+    0.05;                     !- MaxAllowedDelTemp
 
 !-   ===========  ALL OBJECTS IN CLASS: SITE:LOCATION ===========
 
-Site:Location,
-    Seattle-Tacoma Intl AP_WA_USA Design_Conditions,     !- Location Name
-     47.44,     !- Latitude {N+ S-}
-   -122.31,     !- Longitude {W- E+}
-     -8.00,     !- Time Zone Relative to GMT {GMT+/-}
-    122.00;     !- Elevation {m}
+ Site:Location,
+  Tacoma-JB.Lewis-McChord-Gray._WA_USA Design_Conditions,     !- Location Name
+      47.08,     !- Latitude {N+ S-}
+    -122.58,     !- Longitude {W- E+}
+      -8.00,     !- Time Zone Relative to GMT {GMT+/-}
+      87.00;     !- Elevation {m}
 
-! Seattle-Tacoma Intl AP_WA_USA Annual Heating 99%, MaxDB=-1.4C
-SizingPeriod:DesignDay,
-     Seattle-Tacoma Intl AP Ann Htg 99% Condns DB,     !- Name
-            12,      !- Month
-            21,      !- Day of Month
-     WinterDesignDay,!- Day Type
-          -1.4,      !- Maximum Dry-Bulb Temperature {C}
-           0.0,      !- Daily Dry-Bulb Temperature Range {C}
-    DefaultMultipliers, !- Dry-Bulb Temperature Range Modifier Type
-              ,      !- Dry-Bulb Temperature Range Modifier Day Schedule Name
-       Wetbulb,      !- Humidity Condition Type
-          -1.4,      !- Wetbulb at Maximum Dry-Bulb {C}
-              ,      !- Humidity Indicating Day Schedule Name
-              ,      !- Humidity Ratio at Maximum Dry-Bulb {kgWater/kgDryAir}
-              ,      !- Enthalpy at Maximum Dry-Bulb {J/kg}
-              ,      !- Daily Wet-Bulb Temperature Range {deltaC}
-        99868.,      !- Barometric Pressure {Pa}
-           3.9,      !- Wind Speed {m/s} design conditions vs. traditional 6.71 m/s (15 mph)
-            20,      !- Wind Direction {Degrees; N=0, S=180}
-            No,      !- Rain {Yes/No}
-            No,      !- Snow on ground {Yes/No}
-            No,      !- Daylight Savings Time Indicator
-     ASHRAEClearSky, !- Solar Model Indicator
-              ,      !- Beam Solar Day Schedule Name
-              ,      !- Diffuse Solar Day Schedule Name
-              ,      !- ASHRAE Clear Sky Optical Depth for Beam Irradiance (taub)
-              ,      !- ASHRAE Clear Sky Optical Depth for Diffuse Irradiance (taud)
-          0.00;      !- Clearness {0.0 to 1.1}
+ ! Tacoma-JB.Lewis-McChord-Gray._WA_USA Annual Heating Design Conditions Wind Speed=1.5m/s Wind Dir=140
+ ! Coldest Month=DEC
+ ! Tacoma-JB.Lewis-McChord-Gray._WA_USA Annual Heating 99.6%, MaxDB=-6.2C
+ SizingPeriod:DesignDay,
+  Tacoma-JB.Lewis-McChord-Gray. Ann Htg 99.6% Condns DB,     !- Name
+         12,      !- Month
+         21,      !- Day of Month
+  WinterDesignDay,!- Day Type
+       -6.2,      !- Maximum Dry-Bulb Temperature {C}
+        0.0,      !- Daily Dry-Bulb Temperature Range {C}
+ DefaultMultipliers, !- Dry-Bulb Temperature Range Modifier Type
+           ,      !- Dry-Bulb Temperature Range Modifier Day Schedule Name
+    Wetbulb,      !- Humidity Condition Type
+       -6.2,      !- Wetbulb at Maximum Dry-Bulb {C}
+           ,      !- Humidity Indicating Day Schedule Name
+           ,      !- Humidity Ratio at Maximum Dry-Bulb {kgWater/kgDryAir}
+           ,      !- Enthalpy at Maximum Dry-Bulb {J/kg}
+           ,      !- Daily Wet-Bulb Temperature Range {deltaC}
+    100284.,      !- Barometric Pressure {Pa}
+        1.5,      !- Wind Speed {m/s} design conditions vs. traditional 6.71 m/s (15 mph)
+        140,      !- Wind Direction {Degrees; N=0, S=180}
+         No,      !- Rain {Yes/No}
+         No,      !- Snow on ground {Yes/No}
+         No,      !- Daylight Savings Time Indicator
+  ASHRAEClearSky, !- Solar Model Indicator
+           ,      !- Beam Solar Day Schedule Name
+           ,      !- Diffuse Solar Day Schedule Name
+           ,      !- ASHRAE Clear Sky Optical Depth for Beam Irradiance (taub)
+           ,      !- ASHRAE Clear Sky Optical Depth for Diffuse Irradiance (taud)
+       0.00;      !- Clearness {0.0 to 1.1}
 
-! Seattle-Tacoma Intl AP Annual Cooling Design Conditions Wind Speed=3.9m/s Wind Dir=350
-! Hottest Month=AUG
-! Seattle-Tacoma Intl AP_WA_USA Annual Cooling (DB=>MWB) .4%, MaxDB=29.6C MWB=18.4C
-SizingPeriod:DesignDay,
-    Seattle-Tacoma Intl AP Ann Clg .4% Condns DB=>MWB,     !- Name
-            8,      !- Month
-           21,      !- Day of Month
-    SummerDesignDay,!- Day Type
-         29.6,      !- Maximum Dry-Bulb Temperature {C}
-         10.2,      !- Daily Dry-Bulb Temperature Range {C}
-    DefaultMultipliers, !- Dry-Bulb Temperature Range Modifier Type
-             ,      !- Dry-Bulb Temperature Range Modifier Day Schedule Name
-      Wetbulb,      !- Humidity Condition Type
-         18.4,      !- Wetbulb at Maximum Dry-Bulb {C}
-             ,      !- Humidity Indicating Day Schedule Name
-             ,      !- Humidity Ratio at Maximum Dry-Bulb {kgWater/kgDryAir}
-             ,      !- Enthalpy at Maximum Dry-Bulb {J/kg}
-             ,      !- Daily Wet-Bulb Temperature Range {deltaC}
-       99868.,      !- Barometric Pressure {Pa}
-          3.9,      !- Wind Speed {m/s} design conditions vs. traditional 3.35 m/s (7mph)
-          350,      !- Wind Direction {Degrees; N=0, S=180}
-           No,      !- Rain {Yes/No}
-           No,      !- Snow on ground {Yes/No}
-           No,      !- Daylight Savings Time Indicator
-         ASHRAETau, !- Solar Model Indicator
-             ,      !- Beam Solar Day Schedule Name
-             ,      !- Diffuse Solar Day Schedule Name
-        0.355,      !- ASHRAE Clear Sky Optical Depth for Beam Irradiance (taub)
-        2.497;      !- ASHRAE Clear Sky Optical Depth for Diffuse Irradiance (taud)
+ ! Tacoma-JB.Lewis-McChord-Gray. Annual Cooling Design Conditions Wind Speed=3.4m/s Wind Dir=0
+ ! Hottest Month=JUL
+ ! Tacoma-JB.Lewis-McChord-Gray._WA_USA Annual Cooling (DB=>MWB) .4%, MaxDB=31.0C MWB=19.0C
+ SizingPeriod:DesignDay,
+  Tacoma-JB.Lewis-McChord-Gray. Ann Clg .4% Condns DB=>MWB,     !- Name
+          7,      !- Month
+         21,      !- Day of Month
+  SummerDesignDay,!- Day Type
+       31.0,      !- Maximum Dry-Bulb Temperature {C}
+       13.0,      !- Daily Dry-Bulb Temperature Range {C}
+ DefaultMultipliers, !- Dry-Bulb Temperature Range Modifier Type
+           ,      !- Dry-Bulb Temperature Range Modifier Day Schedule Name
+    Wetbulb,      !- Humidity Condition Type
+       19.0,      !- Wetbulb at Maximum Dry-Bulb {C}
+           ,      !- Humidity Indicating Day Schedule Name
+           ,      !- Humidity Ratio at Maximum Dry-Bulb {kgWater/kgDryAir}
+           ,      !- Enthalpy at Maximum Dry-Bulb {J/kg}
+           ,      !- Daily Wet-Bulb Temperature Range {deltaC}
+    100284.,      !- Barometric Pressure {Pa}
+        3.4,      !- Wind Speed {m/s} design conditions vs. traditional 3.35 m/s (7mph)
+          0,      !- Wind Direction {Degrees; N=0, S=180}
+         No,      !- Rain {Yes/No}
+         No,      !- Snow on ground {Yes/No}
+         No,      !- Daylight Savings Time Indicator
+       ASHRAETau, !- Solar Model Indicator
+           ,      !- Beam Solar Day Schedule Name
+           ,      !- Diffuse Solar Day Schedule Name
+      0.349,      !- ASHRAE Clear Sky Optical Depth for Beam Irradiance (taub)
+      2.499;      !- ASHRAE Clear Sky Optical Depth for Diffuse Irradiance (taud)
 
 
 
@@ -1940,64 +1942,192 @@ Material,
   0.7;                                  ! Visible Absorptance
 
 
+!- CEILING AND ROOF MATERIALS
+
+!- Ceiling insulation and framing material: R0.0001; Insulation Grade: 1;
+!- Note: Represents wall insulation and framing material
+
 Material,
-    Drywall_1/2in,           !- Name
-    MediumSmooth,            !- Roughness
-    1.27000257446048E-02,    !- Thickness {m}
-    0.16009,                 !- Conductivity {W/m-K}
-    800.922646044499,        !- Density {kg/m3}
-    1087.84000823168;        !- Specific Heat {J/kg-K}
+    Rafters_w_No_Insulation,        !Name
+    Rough,                          !- Roughness
+    0.000254,                       !- Thickness {m}
+    12.989536,                      !- Conductivity {W/m-K}
+    55.074,                         !- Density {kg/m3}
+    916.9311;                       !- Specific Heat {J/kg-K}
+
+
+!- Ceiling insulation and framing material: R30; Insulation Grade: 1;
+!- Note: Represents wall insulation and framing material
+
+Material,
+    Rafters_w_R30_Insulation,           !Name
+    Rough,                              !- Roughness
+    0.284817435151397,                  !- Thickness {m}
+    0.0617176,                          !- Conductivity {W/m-K}
+    41.9286,                            !- Density {kg/m3}
+    776.25126;                          !- Specific Heat {J/kg-K}
+
+
+!- Ceiling insulation and framing material: R38; Insulation Grade: 1;
+!- Note: Represents wall insulation and framing material
+
+Material,
+    Rafters_w_R38_Insulation,           !Name
+    Rough,                              !- Roughness
+    0.34039219657243,                   !- Thickness {m}
+    0.0617176,                          !- Conductivity {W/m-K}
+    41.9286,                            !- Density {kg/m3}
+    776.25126;                          !- Specific Heat {J/kg-K}
+
+
+!- Ceiling insulation and framing material: R49; Insulation Grade: 1;
+!- Note: Represents wall insulation and framing material
+
+Material,
+    Rafters_w_R49_Insulation,           !Name
+    Rough,                              !- Roughness
+    0.400206234336168,                  !- Thickness {m}
+    0.0617176,                          !- Conductivity {W/m-K}
+    41.9286,                            !- Density {kg/m3}
+    776.25126;                          !- Specific Heat {J/kg-K}
+
+
+!- Ceiling insulation and framing material: R60; Insulation Grade: 1;
+!- Note: Represents wall insulation and framing material
+
+Material,
+    Rafters_w_R60_Insulation,       !Name
+    Rough,                          !- Roughness
+    0.444461299067702,              !- Thickness {m}
+    0.0617176,                      !- Conductivity {W/m-K}
+    41.9286,                        !- Density {kg/m3}
+    776.25126;                      !- Specific Heat {J/kg-K}
 
 
 !- EXTERIOR FLOOR AND FOUNDATION MATERIALS
 
 
 !- floor insulation and framing material: R0.0001; Insulation Grade: 1;
+!- Note: Represents wall insulation and framing material
+
  Material, 
-    Fiberglass_Batt_R0,     !Name 
-    Rough,                  !- Roughness
-    0.000254,               !- Thickness {m}
-    12.989536,              !- Conductivity {W/m-K}
-    55.074,                 !- Density {kg/m3}
-    916.9311;               !- Specific Heat {J/kg-K}
+    Joists_w_No_Insulation,     !Name 
+    Rough,                      !- Roughness
+    0.000254,                   !- Thickness {m}
+    12.989536,                  !- Conductivity {W/m-K}
+    55.074,                     !- Density {kg/m3}
+    916.9311;                   !- Specific Heat {J/kg-K}
+
 
 !- floor insulation and framing material: R13; Insulation Grade: 1;
+!- Note: Represents wall insulation and framing material
+
  Material,
-     Fiberglass_Batt_R13,   !Name 
-     Rough,                 !- Roughness
-     0.0889,                !- Thickness {m}
-     0.0464767692307692,    !- Conductivity {W/m-K}
-     55.074,                !- Density {kg/m3}
-     916.9311;              !- Specific Heat {J/kg-K}
+     Joists_w_R13_Insulation,   !Name 
+     Rough,                     !- Roughness
+     0.0889,                    !- Thickness {m}
+     0.0464767692307692,        !- Conductivity {W/m-K}
+     55.074,                    !- Density {kg/m3}
+     916.9311;                  !- Specific Heat {J/kg-K}
+
 
 !- floor insulation and framing material: R19; Insulation Grade: 1;
+!- Note: Represents wall insulation and framing material
+
  Material,
-     Fiberglass_Batt_R19,   !Name
-     Rough,                 !- Roughness
-     0.1397,                !- Thickness {m}
-     0.0491038947368421,    !- Conductivity {W/m-K}
-     55.074,                !- Density {kg/m3}
-     916.9311;              !- Specific Heat {J/kg-K}
+     Joists_w_R19_Insulation,   !Name
+     Rough,                     !- Roughness
+     0.1397,                    !- Thickness {m}
+     0.0491038947368421,        !- Conductivity {W/m-K}
+     55.074,                    !- Density {kg/m3}
+     916.9311;                  !- Specific Heat {J/kg-K}
+
 
 !- floor insulation and framing material: R30; Insulation Grade: 1;
+!- Note: Represents wall insulation and framing material
+
  Material,
-     Fiberglass_Batt_R30,   !Name
-     Rough,                 !- Roughness
-     0.23495,               !- Thickness {m}
-     0.0515515,             !- Conductivity {W/m-K}
-     55.074,                !- Density {kg/m3}
-     916.9311;              !- Specific Heat {J/kg-K}
+     Joists_w_R30_Insulation,   !Name
+     Rough,                     !- Roughness
+     0.23495,                   !- Thickness {m}
+     0.0515515,                 !- Conductivity {W/m-K}
+     55.074,                    !- Density {kg/m3}
+     916.9311;                  !- Specific Heat {J/kg-K}
+
 
 !- floor insulation and framing material: R38; Insulation Grade: 1;
+!- Note: Represents wall insulation and framing material
+
  Material,
-     Fiberglass_Batt_R38,   !Name
-     Rough,                 !- Roughness
-     0.28575,               !- Thickness {m}
-     0.0499577105263158,    !- Conductivity {W/m-K}
-     55.074,                !- Density {kg/m3}
-     916.9311;              !- Specific Heat {J/kg-K}
+     Joists_w_R38_Insulation,   !Name
+     Rough,                     !- Roughness
+     0.28575,                   !- Thickness {m}
+     0.0499577105263158,        !- Conductivity {W/m-K}
+     55.074,                    !- Density {kg/m3}
+     916.9311;                  !- Specific Heat {J/kg-K}
+
+!- floor insulation and framing material: R0.0001; Insulation Grade: 1;
+!- Note: Represents wall insulation and framing material
+
+ Material, 
+    FIBERGLASS_BATT_R0,     !Name 
+    Rough,                      !- Roughness
+    0.000254,                   !- Thickness {m}
+    12.989536,                  !- Conductivity {W/m-K}
+    55.074,                     !- Density {kg/m3}
+    916.9311;                   !- Specific Heat {J/kg-K}
+
+
+!- floor insulation and framing material: R13; Insulation Grade: 1;
+!- Note: Represents wall insulation and framing material
+
+ Material,
+     FIBERGLASS_BATT_R13,   !Name 
+     Rough,                     !- Roughness
+     0.0889,                    !- Thickness {m}
+     0.0464767692307692,        !- Conductivity {W/m-K}
+     55.074,                    !- Density {kg/m3}
+     916.9311;                  !- Specific Heat {J/kg-K}
+
+
+!- floor insulation and framing material: R19; Insulation Grade: 1;
+!- Note: Represents wall insulation and framing material
+
+ Material,
+     FIBERGLASS_BATT_R19,   !Name
+     Rough,                     !- Roughness
+     0.1397,                    !- Thickness {m}
+     0.0491038947368421,        !- Conductivity {W/m-K}
+     55.074,                    !- Density {kg/m3}
+     916.9311;                  !- Specific Heat {J/kg-K}
+
+
+!- floor insulation and framing material: R30; Insulation Grade: 1;
+!- Note: Represents wall insulation and framing material
+
+ Material,
+     FIBERGLASS_BATT_R30,   !Name
+     Rough,                     !- Roughness
+     0.23495,                   !- Thickness {m}
+     0.0515515,                 !- Conductivity {W/m-K}
+     55.074,                    !- Density {kg/m3}
+     916.9311;                  !- Specific Heat {J/kg-K}
+
+
+!- floor insulation and framing material: R38; Insulation Grade: 1;
+!- Note: Represents wall insulation and framing material
+
+ Material,
+     FIBERGLASS_BATT_R38,   !Name
+     Rough,                     !- Roughness
+     0.28575,                   !- Thickness {m}
+     0.0499577105263158,        !- Conductivity {W/m-K}
+     55.074,                    !- Density {kg/m3}
+     916.9311;                  !- Specific Heat {J/kg-K}
+
 
 !- bsmtwall insulation and framing material: R0.0001
+
  Material,
      bsmtwall_consol_layer,     !Name
      Rough,                     !- Roughness
@@ -2037,6 +2167,14 @@ Material,
      0.4,                       !- Solar Absorptance
      0.1;                       !- Visible Absorptance
 
+Material,
+    Drywall_1/2in,           !- Name
+    MediumSmooth,            !- Roughness
+    1.27000257446048E-02,    !- Thickness {m}
+    0.16009,                 !- Conductivity {W/m-K}
+    800.922646044499,        !- Density {kg/m3}
+    1087.84000823168;        !- Specific Heat {J/kg-K}
+
  Material,
      CopperPipe,              !- Name
      MediumRough,             !- Roughness
@@ -2055,14 +2193,6 @@ Material,
      45.28,                   !- Conductivity {W/m-K}
      7824,                    !- Density {kg/m3}
      500;                     !- Specific Heat {J/kg-K}
-
- Material,
-     Concrete_4in,            !- Name
-     Rough,                   !- Roughness
-     0.1014984,               !- Thickness {m}
-     1.312098,                !- Conductivity {W/m-K}
-     2242.8,                  !- Density {kg/m3}
-     465.2;                   !- Specific Heat {J/kg-K}
 
  Material,
      Asphalt_shingle,         !- Name
@@ -2098,10 +2228,6 @@ Material,
      1865.58	   ,            !- Density {kg/m3}
      878.640006648665;          !- Specific Heat {J/kg-K}
 
-
-
-
-
  Material,
      OSB_5/8in,               !- Name
      MediumSmooth,            !- Roughness
@@ -2109,8 +2235,6 @@ Material,
      0.1163,                  !- Conductivity {W/m-K}
      544.627399310259,        !- Density {kg/m3}
      1213.36000918149;        !- Specific Heat {J/kg-K}
-
-
 
  Material,
      Blown_R30,               !- Name
@@ -2277,6 +2401,30 @@ Material,
     0.65,                    !- Solar Absorptance
     0.65;                    !- Visible Absorptance
 
+ Material,
+    Concrete_4in,            !- Name
+    Rough,                   !- Roughness
+    0.1014984,               !- Thickness {m}
+    1.312098,                !- Conductivity {W/m-K}
+    2242.8,                  !- Density {kg/m3}
+    465.2;                   !- Specific Heat {J/kg-K}
+
+ Material,
+    Concrete_5in,            !- Name
+    Rough,                   !- Roughness
+    0.127,                   !- Thickness {m}
+    1.312098,                !- Conductivity {W/m-K}
+    2242.8,                  !- Density {kg/m3}
+    465.2;                   !- Specific Heat {J/kg-K}
+
+ Material,
+    Concrete_6in,            !- Name
+    Rough,                   !- Roughness
+    0.1524,                  !- Thickness {m}
+    1.312098,                !- Conductivity {W/m-K}
+    2242.8,                  !- Density {kg/m3}
+    465.2;                   !- Specific Heat {J/kg-K}
+
 Material,
     Basement Wall Material,  !- Name
     MediumRough,             !- Roughness
@@ -2369,14 +2517,6 @@ Material ,
      0.90,                    !- Back Side Infrared Hemispherical Emissivity
      0.90;                    !- Conductivity {W/m-K}
 
-!- Ceiling insulation and framing material: R49; Insulation Grade: 1;
- Material,
-     ceil_consol_layer,!Name
-     Rough,!- Roughness
-     0.400206234336168, !- Thickness {m}
-     0.0617176, !- Conductivity {W/m-K}
-     41.9286, !- Density {kg/m3}
-     776.25126; !- Specific Heat {J/kg-K}
 !- Window Glass properties based on IECC window U requirement...
 
  WindowMaterial:SimpleGlazingSystem,
@@ -2392,13 +2532,13 @@ Construction,
 
 !-   ===========  ALL OBJECTS IN CLASS: CONSTRUCTION ===========
 
-!- Note: Commas and semi-colons added by Python for the construction below
+!- Note: Commas and semi-colons are added by Python for the construction below
 Construction,
-    ag wall construction,
-    syn_stucco,
+    ag wall construction,   
+    syn_stucco,        
     sheathing_consol_layer,
     OSB_7/16in,
-    2x4_16inOC_w_R11_Cavity,
+    2x4_16inOC_w_R13_Cavity,
     Drywall_1/2in;
     !-,
     !-,
@@ -2407,49 +2547,40 @@ Construction,
     !-,
     !-,
 
+!- Note: Commas and semi-colons are added by Python for the construction below
 Construction,
-    Exterior Floor,          !- Name
-    Fiberglass_Batt_R0,                !- Outside Layer
-    Plywood_3/4in,           !- Layer 2
-    Carpet_n_pad;            !- Layer 3
+    ceiling construction,
+    Rafters_w_R30_Insulation,
+    Drywall_1/2in;
+    !-,
+    !-,
+    !-,
+    !-,
+
+!- Note: Commas and semi-colons are added by Python for the construction below
+Construction,
+    roof construction,
+    Asphalt_shingle,
+    OSB_1/2in;
+    !-,
+    !-,
+    !-,
+    !-,
+
+!- Note: Commas and semi-colons are added by Python for the construction below
+Construction,
+    main floor construction,
+    Joists_w_R19_Insulation,
+    Plywood_3/4in,
+    Carpet_n_pad;
+    !-,
+    !-,
+    !-,
 
 Construction,
     Interior Floor,          !- Name
     Plywood_3/4in,           !- Outside Layer
     Carpet_n_pad;            !- Layer 2
-
-Construction,
-    ceiling construction,        !- Name
-    ceil_consol_layer,              !- Outside Layer
-    Drywall_1/2in;           !- Layer 2
-
-Construction,
-    attic floor,             !- Name
-    Drywall_1/2in,           !- Outside Layer
-    ceil_consol_layer;              !- Layer 2
-
-Construction,
-    fndn_roof,              !- Name
-    Carpet_n_pad,            !- Outside Layer
-    Plywood_3/4in,           !- Layer 2
-    ceil_consol_layer;             !- Layer 3
-
-Construction,
-    interiorwall,            !- Name
-    Drywall_1/2in,           !- Outside Layer
-    OSB_5/8in,               !- Layer 2
-    Drywall_1/2in;           !- Layer 3
-
-Construction,
-    Interior Wall,           !- Name
-    Drywall_1/2in,           !- Outside Layer
-    Air_4_in_vert,           !- Layer 2
-    Drywall_1/2in;           !- Layer 3
-
-Construction,
-    roof construction,           !- Name
-    Asphalt_shingle,         !- Outside Layer
-    OSB_1/2in;               !- Layer 2
 
 Construction,
     Interior Window,         !- Name
@@ -2528,11 +2659,71 @@ Construction,
     Slab Material;                               !- Layer 2
 
 ElectricEquipment,
+	electric_range1,         !- Name
+	living,      !- Zone or ZoneList Name
+	CookingRange,            !- Schedule Name
+	EquipmentLevel,          	 !- Design Level Calculation Method
+	248.154224774405,        		 !- Design Level {{W}}
+	,,
+	0.3,      !- Fraction Latent
+	0.4,        !- Fraction Radiant
+	0.3,       !- Fraction Lost
+	electric_range;                !- End-Use Subcategory
+
+ElectricEquipment,
+	electric_dryer1,         !- Name
+	living,      !- Zone or ZoneList Name
+	ClothesDryer,            !- Schedule Name
+	EquipmentLevel,          	 !- Design Level Calculation Method
+	213.064557285022,        		 !- Design Level {{W}}
+	,,
+	0.05,      !- Fraction Latent
+	0.15,        !- Fraction Radiant
+	0.8,       !- Fraction Lost
+	electric_dryer;                !- End-Use Subcategory
+
+ElectricEquipment,
+	clotheswasher1,         !- Name
+	living,      !- Zone or ZoneList Name
+	ClothesWasher,            !- Schedule Name
+	EquipmentLevel,          	 !- Design Level Calculation Method
+	28.4784377542718,        		 !- Design Level {{W}}
+	,,
+	0,      !- Fraction Latent
+	0.8,        !- Fraction Radiant
+	0.2,       !- Fraction Lost
+	clotheswasher;                !- End-Use Subcategory
+
+ElectricEquipment,
+	dishwasher1,         !- Name
+	living,      !- Zone or ZoneList Name
+	DishWasher,            !- Schedule Name
+	EquipmentLevel,          	 !- Design Level Calculation Method
+	65.698787492023,        		 !- Design Level {{W}}
+	,,
+	0.15,      !- Fraction Latent
+	0.6,        !- Fraction Radiant
+	0.25,       !- Fraction Lost
+	dishwasher;                !- End-Use Subcategory
+
+ElectricEquipment,
+	refrigerator1,         !- Name
+	living,      !- Zone or ZoneList Name
+	Refrigerator,            !- Schedule Name
+	EquipmentLevel,          	 !- Design Level Calculation Method
+	91.0575745202123,        		 !- Design Level {{W}}
+	,,
+	0,      !- Fraction Latent
+	1,        !- Fraction Radiant
+	0,       !- Fraction Lost
+	refrigerator;                !- End-Use Subcategory
+
+ElectricEquipment,
 	electric_mels1,         !- Name
 	living,      			!- Zone or ZoneList Name
 	MiscElecPlugLoad,         	!- Schedule Name
 	EquipmentLevel,      	!- Design Level Calculation Method
-	1000,        	!- Design Level {W}
+	2000,        	!- Design Level {W}
 	,
 	,
 	0.06,      				!- Fraction Latent
@@ -2561,7 +2752,7 @@ People,
     living,     !- Zone or ZoneList Name
     Occupancy,               !- Number of People Schedule Name
     People,                  !- Number of People Calculation Method
-    1,                  !- Number of People
+    3,                  !- Number of People
     ,                        !- People per Zone Floor Area {person/m2}
     ,                        !- Zone Floor Area per Person {m2/person}
     0,                       !- Fraction Radiant
@@ -2579,7 +2770,7 @@ Lights,
     InteriorLightingHE,             !- Schedule Name
     Watts/Area,           		    !- Design Level Calculation Method
     ,        				        !- Lighting Level {W}
-    10.76,                	!- Watts per Zone Floor Area {W/m2}
+    5.38,                	!- Watts per Zone Floor Area {W/m2}
     ,                        		!- Watts per Person {W/person}
     0,                       		!- Return Air Fraction
     0.6,                     		!- Fraction Radiant
@@ -2591,12 +2782,12 @@ Lights,
 Exterior:Lights,
     Exterior Lights,                !- Name
     ExteriorLighting,         		!- Schedule Name
-    1000,                	!- Design Level {W}
+    100,                	!- Design Level {W}
     ,              	                !- Control Option
     Exterior-Lights;         		!- End-Use Subcategory
 
 SurfaceProperty:ExposedFoundationPerimeter,
-    floor_main,    !- Surface Name
+    floor_foundation,    !- Surface Name
     BySegment,               !- Exposed Perimeter Calculation Method
     ,                        !- Total Exposed Perimeter {m}
     ,                        !- Exposed Perimeter Fraction {dimensionless}
@@ -2618,9 +2809,9 @@ Foundation:Kiva:Settings,
 Foundation:Kiva,
     Kiva Foundation,            !- Name
     ,                           !- Initial Indoor Air Temperature {C}
-    XPS_R5,   !- Interior Horizontal Insulation Material Name
+    ,   !- Interior Horizontal Insulation Material Name
     0.0,      !- Interior Horizontal Insulation Depth {m}
-    0.6095702529716549,      !- Interior Horizontal Insulation Width {m}
+    ,      !- Interior Horizontal Insulation Width {m}
     ,    !- Interior Vertical Insulation Material Name
     ,       !- Interior Vertical Insulation Depth {m}
     ,                           !- Exterior Horizontal Insulation Material Name
@@ -2628,8 +2819,8 @@ Foundation:Kiva,
     ,                           !- Exterior Horizontal Insulation Width {m}
     ,    !- Exterior Vertical Insulation Material Name
     ,       !- Exterior Vertical Insulation Depth {m}
-    0.0,      !- Wall Height Above Grade {m}
-    0.0,       !- Wall Depth Below Slab {m}
+    0.15239256324291373,      !- Wall Height Above Grade {m}
+    0.30478512648582745,       !- Wall Depth Below Slab {m}
     ;                           !- Footing Wall Construction Name
 
 !-   ===========  ALL OBJECTS IN CLASS: GLOBALGEOMETRYRULES ===========
@@ -2656,10 +2847,10 @@ BuildingSurface:Detailed,
      WindExposed,  !- wind exposure
      autocalculate,  !- view factor to ground
      4,  !- number of vertices
-     0.0,0.0,2.4382810119,  !- vertex 1 coordinates
-     16.1284328775,0.0,2.4382810119,  !- vertex 2 coordinates
-     16.1284328775,5.7601545991,3.8098140811,  !- vertex 3 coordinates
-     0.0,5.7601545991,3.8098140811;  !- vertex 4 coordinates
+     0.0,0.0,2.7430661384,  !- vertex 1 coordinates
+     16.1284328775,0.0,2.7430661384,  !- vertex 2 coordinates
+     16.1284328775,5.7601545991,4.1145992076,  !- vertex 3 coordinates
+     0.0,5.7601545991,4.1145992076;  !- vertex 4 coordinates
 
 BuildingSurface:Detailed,  
      roof_back,  !- name
@@ -2672,10 +2863,10 @@ BuildingSurface:Detailed,
      WindExposed,  !- wind exposure
      autocalculate,  !- view factor to ground
      4,  !- number of vertices
-     16.1284328775,11.5203091982,2.4382810119,  !- vertex 1 coordinates
-     0.0,11.5203091982,2.4382810119,  !- vertex 2 coordinates
-     0.0,5.7601545991,3.8098140811,  !- vertex 3 coordinates
-     16.1284328775,5.7601545991,3.8098140811;  !- vertex 4 coordinates
+     16.1284328775,11.5203091982,2.7430661384,  !- vertex 1 coordinates
+     0.0,11.5203091982,2.7430661384,  !- vertex 2 coordinates
+     0.0,5.7601545991,4.1145992076,  !- vertex 3 coordinates
+     16.1284328775,5.7601545991,4.1145992076;  !- vertex 4 coordinates
 
 BuildingSurface:Detailed,  
      roof_right,  !- name
@@ -2688,9 +2879,9 @@ BuildingSurface:Detailed,
      WindExposed,  !- wind exposure
      autocalculate,  !- view factor to ground
      3,  !- number of vertices
-     16.1284328775,0.0,2.4382810119,  !- vertex 1 coordinates
-     16.1284328775,11.5203091982,2.4382810119,  !- vertex 2 coordinates
-     16.1284328775,5.7601545991,3.8098140811;  !- vertex 3 coordinates
+     16.1284328775,0.0,2.7430661384,  !- vertex 1 coordinates
+     16.1284328775,11.5203091982,2.7430661384,  !- vertex 2 coordinates
+     16.1284328775,5.7601545991,4.1145992076;  !- vertex 3 coordinates
 
 BuildingSurface:Detailed,  
      roof_left,  !- name
@@ -2703,9 +2894,9 @@ BuildingSurface:Detailed,
      WindExposed,  !- wind exposure
      autocalculate,  !- view factor to ground
      3,  !- number of vertices
-     0.0,11.5203091982,2.4382810119,  !- vertex 1 coordinates
-     0.0,0.0,2.4382810119,  !- vertex 2 coordinates
-     0.0,5.7601545991,3.8098140811;  !- vertex 3 coordinates
+     0.0,11.5203091982,2.7430661384,  !- vertex 1 coordinates
+     0.0,0.0,2.7430661384,  !- vertex 2 coordinates
+     0.0,5.7601545991,4.1145992076;  !- vertex 3 coordinates
 
 BuildingSurface:Detailed,  
      ceiling,  !- name
@@ -2718,10 +2909,10 @@ BuildingSurface:Detailed,
      NoWind,  !- wind exposure
      autocalculate,  !- view factor to ground
      4,  !- number of vertices
-     0.0,0.0,2.4382810119,  !- vertex 1 coordinates
-     16.1284328775,0.0,2.4382810119,  !- vertex 2 coordinates
-     16.1284328775,11.5203091982,2.4382810119,  !- vertex 3 coordinates
-     0.0,11.5203091982,2.4382810119;  !- vertex 4 coordinates
+     0.0,0.0,2.7430661384,  !- vertex 1 coordinates
+     16.1284328775,0.0,2.7430661384,  !- vertex 2 coordinates
+     16.1284328775,11.5203091982,2.7430661384,  !- vertex 3 coordinates
+     0.0,11.5203091982,2.7430661384;  !- vertex 4 coordinates
 
 BuildingSurface:Detailed,  
      wall_floor1_front,  !- name
@@ -2734,10 +2925,10 @@ BuildingSurface:Detailed,
      WindExposed,  !- wind exposure
      autocalculate,  !- view factor to ground
      4,  !- number of vertices
-     0.0,0.0,0.0,  !- vertex 1 coordinates
-     16.1284328775,0.0,0.0,  !- vertex 2 coordinates
-     16.1284328775,0.0,2.4382810119,  !- vertex 3 coordinates
-     0.0,0.0,2.4382810119;  !- vertex 4 coordinates
+     0.0,0.0,0.3047851265,  !- vertex 1 coordinates
+     16.1284328775,0.0,0.3047851265,  !- vertex 2 coordinates
+     16.1284328775,0.0,2.7430661384,  !- vertex 3 coordinates
+     0.0,0.0,2.7430661384;  !- vertex 4 coordinates
 
 BuildingSurface:Detailed,  
      wall_floor1_right,  !- name
@@ -2750,10 +2941,10 @@ BuildingSurface:Detailed,
      WindExposed,  !- wind exposure
      autocalculate,  !- view factor to ground
      4,  !- number of vertices
-     16.1284328775,0.0,0.0,  !- vertex 1 coordinates
-     16.1284328775,11.5203091982,0.0,  !- vertex 2 coordinates
-     16.1284328775,11.5203091982,2.4382810119,  !- vertex 3 coordinates
-     16.1284328775,0.0,2.4382810119;  !- vertex 4 coordinates
+     16.1284328775,0.0,0.3047851265,  !- vertex 1 coordinates
+     16.1284328775,11.5203091982,0.3047851265,  !- vertex 2 coordinates
+     16.1284328775,11.5203091982,2.7430661384,  !- vertex 3 coordinates
+     16.1284328775,0.0,2.7430661384;  !- vertex 4 coordinates
 
 BuildingSurface:Detailed,  
      wall_floor1_back,  !- name
@@ -2766,10 +2957,10 @@ BuildingSurface:Detailed,
      WindExposed,  !- wind exposure
      autocalculate,  !- view factor to ground
      4,  !- number of vertices
-     16.1284328775,11.5203091982,0.0,  !- vertex 1 coordinates
-     0.0,11.5203091982,0.0,  !- vertex 2 coordinates
-     0.0,11.5203091982,2.4382810119,  !- vertex 3 coordinates
-     16.1284328775,11.5203091982,2.4382810119;  !- vertex 4 coordinates
+     16.1284328775,11.5203091982,0.3047851265,  !- vertex 1 coordinates
+     0.0,11.5203091982,0.3047851265,  !- vertex 2 coordinates
+     0.0,11.5203091982,2.7430661384,  !- vertex 3 coordinates
+     16.1284328775,11.5203091982,2.7430661384;  !- vertex 4 coordinates
 
 BuildingSurface:Detailed,  
      wall_floor1_left,  !- name
@@ -2782,12 +2973,156 @@ BuildingSurface:Detailed,
      WindExposed,  !- wind exposure
      autocalculate,  !- view factor to ground
      4,  !- number of vertices
+     0.0,11.5203091982,0.3047851265,  !- vertex 1 coordinates
+     0.0,0.0,0.3047851265,  !- vertex 2 coordinates
+     0.0,0.0,2.7430661384,  !- vertex 3 coordinates
+     0.0,11.5203091982,2.7430661384;  !- vertex 4 coordinates
+
+
+
+BuildingSurface:Detailed,  
+     bgwall_upper_front,  !- name
+     Wall,  !- surface type
+     foundation wall construction,  !- construction name
+     crawlspace,  !- zone name
+     Outdoors,  !- outside boundary condition
+     ,  !- outside boundary condition object
+     SunExposed,  !- sun exposure
+     WindExposed,  !- wind exposure
+     autocalculate,  !- view factor to ground
+     4,  !- number of vertices
+     0.0,0.0,0.0,  !- vertex 1 coordinates
+     16.1284328775,0.0,0.0,  !- vertex 2 coordinates
+     16.1284328775,0.0,0.3047851265,  !- vertex 3 coordinates
+     0.0,0.0,0.3047851265;  !- vertex 4 coordinates
+
+BuildingSurface:Detailed,  
+     bgwall_lower_front,  !- name
+     Wall,  !- surface type
+     foundation wall construction,  !- construction name
+     crawlspace,  !- zone name
+     Foundation,  !- outside boundary condition
+     Kiva Foundation,  !- outside boundary condition object
+     NoSun,  !- sun exposure
+     NoWind,  !- wind exposure
+     autocalculate,  !- view factor to ground
+     4,  !- number of vertices
+     0.0,0.0,-0.609570253,  !- vertex 1 coordinates
+     16.1284328775,0.0,-0.609570253,  !- vertex 2 coordinates
+     16.1284328775,0.0,0.0,  !- vertex 3 coordinates
+     0.0,0.0,0.0;  !- vertex 4 coordinates
+
+BuildingSurface:Detailed,  
+     bgwall_upper_right,  !- name
+     Wall,  !- surface type
+     foundation wall construction,  !- construction name
+     crawlspace,  !- zone name
+     Outdoors,  !- outside boundary condition
+     ,  !- outside boundary condition object
+     SunExposed,  !- sun exposure
+     WindExposed,  !- wind exposure
+     autocalculate,  !- view factor to ground
+     4,  !- number of vertices
+     16.1284328775,0.0,0.0,  !- vertex 1 coordinates
+     16.1284328775,11.5203091982,0.0,  !- vertex 2 coordinates
+     16.1284328775,11.5203091982,0.3047851265,  !- vertex 3 coordinates
+     16.1284328775,0.0,0.3047851265;  !- vertex 4 coordinates
+
+BuildingSurface:Detailed,  
+     bgwall_lower_right,  !- name
+     Wall,  !- surface type
+     foundation wall construction,  !- construction name
+     crawlspace,  !- zone name
+     Foundation,  !- outside boundary condition
+     Kiva Foundation,  !- outside boundary condition object
+     NoSun,  !- sun exposure
+     NoWind,  !- wind exposure
+     autocalculate,  !- view factor to ground
+     4,  !- number of vertices
+     16.1284328775,0.0,-0.609570253,  !- vertex 1 coordinates
+     16.1284328775,11.5203091982,-0.609570253,  !- vertex 2 coordinates
+     16.1284328775,11.5203091982,0.0,  !- vertex 3 coordinates
+     16.1284328775,0.0,0.0;  !- vertex 4 coordinates
+
+BuildingSurface:Detailed,  
+     bgwall_upper_back,  !- name
+     Wall,  !- surface type
+     foundation wall construction,  !- construction name
+     crawlspace,  !- zone name
+     Outdoors,  !- outside boundary condition
+     ,  !- outside boundary condition object
+     SunExposed,  !- sun exposure
+     WindExposed,  !- wind exposure
+     autocalculate,  !- view factor to ground
+     4,  !- number of vertices
+     16.1284328775,11.5203091982,0.0,  !- vertex 1 coordinates
+     0.0,11.5203091982,0.0,  !- vertex 2 coordinates
+     0.0,11.5203091982,0.3047851265,  !- vertex 3 coordinates
+     16.1284328775,11.5203091982,0.3047851265;  !- vertex 4 coordinates
+
+BuildingSurface:Detailed,  
+     bgwall_lower_back,  !- name
+     Wall,  !- surface type
+     foundation wall construction,  !- construction name
+     crawlspace,  !- zone name
+     Foundation,  !- outside boundary condition
+     Kiva Foundation,  !- outside boundary condition object
+     NoSun,  !- sun exposure
+     NoWind,  !- wind exposure
+     autocalculate,  !- view factor to ground
+     4,  !- number of vertices
+     16.1284328775,11.5203091982,-0.609570253,  !- vertex 1 coordinates
+     0.0,11.5203091982,-0.609570253,  !- vertex 2 coordinates
+     0.0,11.5203091982,0.0,  !- vertex 3 coordinates
+     16.1284328775,11.5203091982,0.0;  !- vertex 4 coordinates
+
+BuildingSurface:Detailed,  
+     bgwall_upper_left,  !- name
+     Wall,  !- surface type
+     foundation wall construction,  !- construction name
+     crawlspace,  !- zone name
+     Outdoors,  !- outside boundary condition
+     ,  !- outside boundary condition object
+     SunExposed,  !- sun exposure
+     WindExposed,  !- wind exposure
+     autocalculate,  !- view factor to ground
+     4,  !- number of vertices
      0.0,11.5203091982,0.0,  !- vertex 1 coordinates
      0.0,0.0,0.0,  !- vertex 2 coordinates
-     0.0,0.0,2.4382810119,  !- vertex 3 coordinates
-     0.0,11.5203091982,2.4382810119;  !- vertex 4 coordinates
+     0.0,0.0,0.3047851265,  !- vertex 3 coordinates
+     0.0,11.5203091982,0.3047851265;  !- vertex 4 coordinates
 
+BuildingSurface:Detailed,  
+     bgwall_lower_left,  !- name
+     Wall,  !- surface type
+     foundation wall construction,  !- construction name
+     crawlspace,  !- zone name
+     Foundation,  !- outside boundary condition
+     Kiva Foundation,  !- outside boundary condition object
+     NoSun,  !- sun exposure
+     NoWind,  !- wind exposure
+     autocalculate,  !- view factor to ground
+     4,  !- number of vertices
+     0.0,11.5203091982,-0.609570253,  !- vertex 1 coordinates
+     0.0,0.0,-0.609570253,  !- vertex 2 coordinates
+     0.0,0.0,0.0,  !- vertex 3 coordinates
+     0.0,11.5203091982,0.0;  !- vertex 4 coordinates
 
+BuildingSurface:Detailed,  
+     floor_foundation,  !- name
+     Floor,  !- surface type
+     Slab Construction,  !- construction name
+     crawlspace,  !- zone name
+     Foundation,  !- outside boundary condition
+     Kiva Foundation,  !- outside boundary condition object
+     NoSun,  !- sun exposure
+     NoWind,  !- wind exposure
+     autocalculate,  !- view factor to ground
+     4,  !- number of vertices
+     0.0,0.0,-0.609570253,  !- vertex 1 coordinates
+     0.0,11.5203091982,-0.609570253,  !- vertex 2 coordinates
+     16.1284328775,11.5203091982,-0.609570253,  !- vertex 3 coordinates
+     16.1284328775,0.0,-0.609570253;  !- vertex 4 coordinates
 
 Window,  
      window_floor1_front,  !- Name
@@ -2853,21 +3188,30 @@ Zone,
     ,           !- Type
     1;          !- Multiplier
 
+Zone,
+    crawlspace,     !- Name
+    0.0,            !- Direction of Relative North {{deg}}
+    0.0,            !- X Origin {{m}}
+    0.0,            !- Y Origin {{m}}
+    0.0,            !- Z Origin {{m}}
+    ,               !- Type
+    1;              !- Multiplier
+
 BuildingSurface:Detailed,  
-     floor_main,  !- name
-     Floor,  !- surface type
-     Slab Construction,  !- construction name
-     living,  !- zone name
-     Foundation,  !- outside boundary condition
-     Kiva Foundation,  !- outside boundary condition object
-     NoSun,  !- sun exposure
-     NoWind,  !- wind exposure
-     autocalculate,  !- view factor to ground
-     4,  !- number of vertices
-     0.0,0.0,0.0,  !- vertex 1 coordinates
-     0.0,11.5203091982,0.0,  !- vertex 2 coordinates
-     16.1284328775,11.5203091982,0.0,  !- vertex 3 coordinates
-     16.1284328775,0.0,0.0;  !- vertex 4 coordinates
+     floor_main,                                                 !- name
+     Floor,                                                      !- surface type
+     main floor construction,                                    !- construction name
+     living,                                                     !- zone name
+     Zone,                    !- outside boundary condition
+     crawlspace,             !- outside boundary condition object
+     NoSun,                                                      !- sun exposure
+     NoWind,                                                     !- wind exposure
+     autocalculate,                                              !- view factor to ground
+     4,                                                          !- number of vertices
+     0.0,0.0,0.3047851265,               !- vertex 1 coordinates
+     0.0,11.5203091982,0.3047851265,         !- vertex 2 coordinates
+     16.1284328775,11.5203091982,0.3047851265,   !- vertex 3 coordinates
+     16.1284328775,0.0,0.3047851265;         !- vertex 4 coordinates
 
 !-   ===========  ALL OBJECTS IN CLASS: AIRFLOWNETWORK:SIMULATIONCONTROL ===========
 
@@ -2915,28 +3259,28 @@ AirflowNetwork:MultiZone:Zone,
 
 AirflowNetwork:MultiZone:Surface:EffectiveLeakageArea,
     ZoneLeak_FrontBackWall,     !- Name
-    0.012649102347224116,       !- Effective Leakage Area {m2} 0.00340012477060435
+    0.015956068308692777,       !- Effective Leakage Area {m2} 0.00340012477060435
     1.0,                       !- Discharge Coefficient {dimensionless}
     4,                          !- Reference Pressure Difference {Pa}
     0.65;                       !- Air Mass Flow Exponent {dimensionless}
 
 AirflowNetwork:MultiZone:Surface:EffectiveLeakageArea,
     ZoneLeak_LeftRightWall,     !- Name
-    0.009035073105155488,       !- Effective Leakage Area {m2} 0.00255009357795326
+    0.011397191649060473,       !- Effective Leakage Area {m2} 0.00255009357795326
     1.0,                       !- Discharge Coefficient {dimensionless}
     4,                          !- Reference Pressure Difference {Pa}
     0.65;                       !- Air Mass Flow Exponent {dimensionless}
 
 AirflowNetwork:MultiZone:Surface:EffectiveLeakageArea,
     ZoneLeak_Ceiling,           !- Name
-    0.059764058944834136,              !- Effective Leakage Area {m2}
+    0.07538870196095657,              !- Effective Leakage Area {m2}
     1.0,                       !- Discharge Coefficient {dimensionless}
     4,                          !- Reference Pressure Difference {Pa}
     0.65;                       !- Air Mass Flow Exponent {dimensionless}
 
 AirflowNetwork:MultiZone:Surface:EffectiveLeakageArea,
     AtticVent,                  !- Name
-    0.1228208032305057,    		            !- Effective Leakage Area {m2}	# modulated to yield 4.6 ach across the board...
+    0.12763447012899765,    		            !- Effective Leakage Area {m2}	# modulated to yield 4.6 ach across the board...
     1.0,                       !- Discharge Coefficient {dimensionless}
     4,                          !- Reference Pressure Difference {Pa}
     0.65;                       !- Air Mass Flow Exponent {dimensionless}
@@ -3157,11 +3501,11 @@ AirflowNetwork:Distribution:Linkage,
     Zoneoutletnode,         !- Node 1 Name
     ZoneReturnNode,         !- Node 2 Name
     ZoneReturn,             !- Component Name
-    attic;  !- Thermal Zone Name
+    crawlspace;  !- Thermal Zone Name
 
 AirflowNetwork:Distribution:Linkage,
     ZoneReturnLeakLink,     !- Name
-    attic,  !- Node 1 Name
+    crawlspace,  !- Node 1 Name
     ZoneReturnNode,         !- Node 2 Name
     ReturnLeak;             !- Component Name
 
@@ -3170,14 +3514,14 @@ AirflowNetwork:Distribution:Linkage,
     ZoneReturnNode,         !- Node 1 Name
     MixerNode,              !- Node 2 Name
     ZoneReturn,             !- Component Name
-    attic;  !- Thermal Zone Name
+    crawlspace;  !- Thermal Zone Name
 
 AirflowNetwork:Distribution:Linkage,
     MainReturnLink,         !- Name
     MixerNode,              !- Node 1 Name
     MainReturnNode,         !- Node 2 Name
     MainReturn,             !- Component Name
-    attic;  !- Thermal Zone Name
+    crawlspace;  !- Thermal Zone Name
 
 AirflowNetwork:Distribution:Linkage,
     SystemReturnLink,  !- Name
@@ -3203,6 +3547,94 @@ AirflowNetwork:Distribution:Linkage,
     EquipmentInletNode,                         !- Node 2 Name
     AirLoopSupply;                              !- Component Name
 
+AirflowNetwork:MultiZone:Zone,
+    crawlspace,         !- Zone Name
+    Constant,                !- Ventilation Control Mode
+    ,                        !- Ventilation Control Zone Temperature Setpoint Schedule Name
+    ,                        !- Minimum Venting Open Factor {{dimensionless}}
+    ,                        !- Indoor and Outdoor Temperature Difference Lower Limit For Maximum Venting Open Factor {{deltaC}}
+    100,                     !- Indoor and Outdoor Temperature Difference Upper Limit for Minimun Venting Open Factor {{deltaC}}
+    ,                        !- Indoor and Outdoor Enthalpy Difference Lower Limit For Maximum Venting Open Factor {{deltaJ/kg}}
+    300000,                  !- Indoor and Outdoor Enthalpy Difference Upper Limit for Minimun Venting Open Factor {{deltaJ/kg}}
+    inf_sch;                 !- Venting Availability Schedule Name
+
+AirflowNetwork:MultiZone:Surface:EffectiveLeakageArea,
+    CrawlVent,          !- Name
+    0.26653640351062796,    			!- Effective Leakage Area {m2}	# dummy originally 0.37
+    1.0,               !- Discharge Coefficient {dimensionless}
+    4,                  !- Reference Pressure Difference {Pa}
+    0.65;               !- Air Mass Flow Exponent {dimensionless}
+
+AirflowNetwork:MultiZone:Surface:EffectiveLeakageArea,
+    ZoneLeak_Floor,     !- Name
+    6.314325525141568e-05,        !- Effective Leakage Area {m2}
+    1.0,               !- Discharge Coefficient {dimensionless}
+    4,                  !- Reference Pressure Difference {Pa}
+    0.65;               !- Air Mass Flow Exponent {dimensionless}
+
+AirflowNetwork:MultiZone:Surface,
+    bgwall_upper_front,         !- Surface Name
+    CrawlVent,                  !- Leakage Component Name
+    ,                           !- External Node Name
+    1,                          !- Window/Door Opening Factor, or Crack Factor {{dimensionless}}
+    Constant,                   !- Ventilation Control Mode
+    ,                           !- Ventilation Control Zone Temperature Setpoint Schedule Name
+    ,                           !- Minimum Venting Open Factor {{dimensionless}}
+    ,                           !- Indoor and Outdoor Temperature Difference Lower Limit For Maximum Venting Open Factor {{deltaC}}
+    100,                        !- Indoor and Outdoor Temperature Difference Upper Limit for Minimun Venting Open Factor {{deltaC}}
+    ,                           !- Indoor and Outdoor Enthalpy Difference Lower Limit For Maximum Venting Open Factor {{deltaJ/kg}}
+    300000,                     !- Indoor and Outdoor Enthalpy Difference Upper Limit for Minimun Venting Open Factor {{deltaJ/kg}}
+    inf_sch;                    !- Venting Availability Schedule Name
+
+AirflowNetwork:MultiZone:Surface,
+    bgwall_upper_back,          !- Surface Name
+    CrawlVent,                  !- Leakage Component Name
+    ,                           !- External Node Name
+    1,                          !- Window/Door Opening Factor, or Crack Factor {{dimensionless}}
+    Constant,                   !- Ventilation Control Mode
+    ,                           !- Ventilation Control Zone Temperature Setpoint Schedule Name
+    ,                           !- Minimum Venting Open Factor {{dimensionless}}
+    ,                           !- Indoor and Outdoor Temperature Difference Lower Limit For Maximum Venting Open Factor {{deltaC}}
+    100,                        !- Indoor and Outdoor Temperature Difference Upper Limit for Minimun Venting Open Factor {{deltaC}}
+    ,                           !- Indoor and Outdoor Enthalpy Difference Lower Limit For Maximum Venting Open Factor {{deltaJ/kg}}
+    300000,                     !- Indoor and Outdoor Enthalpy Difference Upper Limit for Minimun Venting Open Factor {{deltaJ/kg}}
+    inf_sch;                    !- Venting Availability Schedule Name
+
+AirflowNetwork:MultiZone:Surface,
+    bgwall_upper_left,          !- Surface Name
+    CrawlVent,                  !- Leakage Component Name
+    ,                           !- External Node Name
+    1,                          !- Window/Door Opening Factor, or Crack Factor {{dimensionless}}
+    Constant,                   !- Ventilation Control Mode
+    ,                           !- Ventilation Control Zone Temperature Setpoint Schedule Name
+    ,                           !- Minimum Venting Open Factor {{dimensionless}}
+    ,                           !- Indoor and Outdoor Temperature Difference Lower Limit For Maximum Venting Open Factor {{deltaC}}
+    100,                        !- Indoor and Outdoor Temperature Difference Upper Limit for Minimun Venting Open Factor {{deltaC}}
+    ,                           !- Indoor and Outdoor Enthalpy Difference Lower Limit For Maximum Venting Open Factor {{deltaJ/kg}}
+    300000,                     !- Indoor and Outdoor Enthalpy Difference Upper Limit for Minimun Venting Open Factor {{deltaJ/kg}}
+    inf_sch;                    !- Venting Availability Schedule Name
+
+AirflowNetwork:MultiZone:Surface,
+    bgwall_upper_right,         !- Surface Name
+    CrawlVent,                  !- Leakage Component Name
+    ,                           !- External Node Name
+    1,                          !- Window/Door Opening Factor, or Crack Factor {{dimensionless}}
+    Constant,                   !- Ventilation Control Mode
+    ,                           !- Ventilation Control Zone Temperature Setpoint Schedule Name
+    ,                           !- Minimum Venting Open Factor {{dimensionless}}
+    ,                           !- Indoor and Outdoor Temperature Difference Lower Limit For Maximum Venting Open Factor {{deltaC}}
+    100,                        !- Indoor and Outdoor Temperature Difference Upper Limit for Minimun Venting Open Factor {{deltaC}}
+    ,                           !- Indoor and Outdoor Enthalpy Difference Lower Limit For Maximum Venting Open Factor {{deltaJ/kg}}
+    300000,                     !- Indoor and Outdoor Enthalpy Difference Upper Limit for Minimun Venting Open Factor {{deltaJ/kg}}
+    inf_sch;                    !- Venting Availability Schedule Name
+
+AirflowNetwork:MultiZone:Surface,
+    floor_main,                 !- Surface Name
+    ZoneLeak_Floor,             !- Leakage Component Name
+    ,                           !- External Node Name
+    1.0,                        !- Window/Door Opening Factor, or Crack Factor {{dimensionless}}
+    NoVent;                     !- Ventilation Control Mode
+
 !-   ===========  ALL OBJECTS IN CLASS: AIRFLOWNETWORK:DISTRIBUTION:COMPONENT:DUCT ===========
 
 AirflowNetwork:Distribution:Component:Duct,
@@ -3212,7 +3644,7 @@ AirflowNetwork:Distribution:Component:Duct,
     0.275216110019646,          !- Cross Section Area {m2}
     0.0009,                     !- Surface Roughness {m}
     0.01,                       !- Coefficient for Local Dynamic Loss Due to Fitting {dimensionless}
-    1.4186164743471774,      !- Overall Heat Transmittance Coefficient (U-Factor) from Air to Air {W/m2-K}
+    0.9457443162314516,      !- Overall Heat Transmittance Coefficient (U-Factor) from Air to Air {W/m2-K}
     0.0000001;                  !- Overall Moisture Transmittance Coefficient from Air to Air {kg/m2}
 
 AirflowNetwork:Distribution:Component:Duct,
@@ -3222,7 +3654,7 @@ AirflowNetwork:Distribution:Component:Duct,
     0.275216110019646,          !- Cross Section Area {m2}
     0.0009,                     !- Surface Roughness {m}
     10,                         !- Coefficient for Local Dynamic Loss Due to Fitting {dimensionless}
-    1.4186164743471774,      !- Overall Heat Transmittance Coefficient (U-Factor) from Air to Air {W/m2-K}
+    0.9457443162314516,      !- Overall Heat Transmittance Coefficient (U-Factor) from Air to Air {W/m2-K}
     0.0000001;                  !- Overall Moisture Transmittance Coefficient from Air to Air {kg/m2}
 
 AirflowNetwork:Distribution:Component:Duct,
@@ -3252,7 +3684,7 @@ AirflowNetwork:Distribution:Component:Duct,
     0.220172888015717,          !- Cross Section Area {m2}
     0.0009,                     !- Surface Roughness {m}
     9,                          !- Coefficient for Local Dynamic Loss Due to Fitting {dimensionless}
-    1.4186164743471774,      !- Overall Heat Transmittance Coefficient (U-Factor) from Air to Air {W/m2-K}
+    0.9457443162314516,      !- Overall Heat Transmittance Coefficient (U-Factor) from Air to Air {W/m2-K}
     0.0000001;                  !- Overall Moisture Transmittance Coefficient from Air to Air {kg/m2}
 
 AirflowNetwork:Distribution:Component:Duct,
@@ -3262,7 +3694,7 @@ AirflowNetwork:Distribution:Component:Duct,
     0.220172888015717,          !- Cross Section Area {m2}
     0.0009,                     !- Surface Roughness {m}
     0.01,                       !- Coefficient for Local Dynamic Loss Due to Fitting {dimensionless}
-    1.4186164743471774,      !- Overall Heat Transmittance Coefficient (U-Factor) from Air to Air {W/m2-K}
+    0.9457443162314516,      !- Overall Heat Transmittance Coefficient (U-Factor) from Air to Air {W/m2-K}
     0.0000001;                  !- Overall Moisture Transmittance Coefficient from Air to Air {kg/m2}
 
 AirflowNetwork:Distribution:Component:Duct,
@@ -3455,8 +3887,8 @@ AirLoopHVAC:UnitaryHeatPump:AirToAir,
     always_avail,         		                !- Availability Schedule Name
     Air Loop Inlet Node,    	                !- Air Inlet Node Name
     Air Loop Outlet Node,   	                !- Air Outlet Node Name
-    0.7079211750067032,                       !- Supply Air Flow Rate During Cooling Operation {m3/s}
-    0.7079211750067032,                       !- Supply Air Flow Rate During Heating Operation {m3/s}
+    0.4424507343791894,                       !- Supply Air Flow Rate During Cooling Operation {m3/s}
+    0.4424507343791894,                       !- Supply Air Flow Rate During Heating Operation {m3/s}
     0.0,                    		            !- Supply Air Flow Rate When No Cooling or Heating is Needed {m3/s}
     living,                 	                !- Controlling Zone or Thermostat Location
     Fan:OnOff,              		            !- Supply Air Fan Object Type
@@ -3487,7 +3919,7 @@ AirTerminal:SingleDuct:ConstantVolume:NoReheat,
     always_avail,               !- Availability Schedule Name
     Zone Inlet Node ATInlet,    !- Air Inlet Node Name
     Zone Inlet Node,           	!- Zone Supply Air Node Name
-    0.7079211750067032,                   !- Maximum Air Flow Rate {m3/s}
+    0.4424507343791894,                   !- Maximum Air Flow Rate {m3/s}
 	,                           !- Design Specification Outdoor Air Object Name
     ;                           !- Per Person Ventilation Rate Mode
 
@@ -3496,9 +3928,9 @@ AirTerminal:SingleDuct:ConstantVolume:NoReheat,
 Coil:Heating:DX:SingleSpeed,
   DX_Heating_Coil,   	                      !- Name
   always_avail,           		              !-Availability Schedule Name
-  14067.4113684,               		              !- Rated Total Heating Capacity {W}
-  3.7121366219933494,           	            !- Rated COP
-  0.7079211750067032,               		              !- Rated Air Flow Rate {m3/s}
+  8792.13210525,               		              !- Rated Total Heating Capacity {W}
+  3.9052983740941105,           	            !- Rated COP
+  0.4424507343791894,               		              !- Rated Air Flow Rate {m3/s}
   ,					                                !- Rated Evaporator Fan Power Per Volume Flow Rate {W/(m3/s)}
   Heating Coil Air Inlet Node,              !- Air Inlet Node Name
   Supp Heating Coil Air Inlet Node,         !- Air Outlet Node Name
@@ -3508,7 +3940,7 @@ Coil:Heating:DX:SingleSpeed,
   HP_Heat-EIR-fFF,         		              !- Energy Input Ratio Function of Flow Fraction Curve Name
   HP_Heat-PLF-fPLR,        		              !- Part Load Fraction Correlation Curve Name
   DefrostEIR,         		              !- Defrost Energy Input Ratio Function of Temperature Curve Name
-  -17.77777777777778,                 !- Minimum Outdoor Dry-Bulb Temperature for Compressor Operation {C}
+  -20.555555555555557,                 !- Minimum Outdoor Dry-Bulb Temperature for Compressor Operation {C}
   ,					                                !- Outdoor Dry-Bulb Temperature to Turn On Compressor
   5.0,                    		              !- Maximum Outdoor Dry-Bulb Temperature for Defrost Operation {C}
   200.0,                  		              !- Crankcase Heater Capacity {W}
@@ -3632,10 +4064,10 @@ AirflowNetwork:Distribution:Node,
 Coil:Cooling:DX:SingleSpeed,
   DX_Cooling_Coil,              !- Name
   always_avail,             	  !- Availability Schedule Name
-  14067.4113684,                     !- Gross Rated Total Cooling Capacity {W}
+  8792.13210525,                     !- Gross Rated Total Cooling Capacity {W}
   0.73,                     !- Gross Rated Sensible Heat Ratio
-  4.414045822617803,             !- Gross Rated Cooling COP {W/W}
-  0.7079211750067032,                     !- Rated Air Flow Rate {m3/s}
+  4.6297175344054455,             !- Gross Rated Cooling COP {W/W}
+  0.4424507343791894,                     !- Rated Air Flow Rate {m3/s}
   ,                        	    !- Rated Evaporator Fan Power Per Volume Flow Rate {W/(m3/s)}
   Cooling Coil Air Inlet Node,  !- Air Inlet Node Name
   Heating Coil Air Inlet Node,  !- Air Outlet Node Name
@@ -3712,7 +4144,7 @@ Fan:OnOff,
     always_avail,             	            !- Availability Schedule Name
     0.35,                                !- Fan Total Efficiency   #From the study from Dave... (assume lower of range from https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwi126iPupL6AhXRKH0KHY1aCRQQFnoECAcQAQ&url=https%3A%2F%2Fsimulationresearch.lbl.gov%2Fdirpubs%2Fun_articleEP04.pdf&usg=AOvVaw3FeuE2aG3V_bDC2gq5wXwM)
     125,              		                !- Pressure Rise {Pa}   #based on 0.5W/cfm assuming 1200 cfm,motor eff = 0.65 @ 400cfm/ton and fan eff = 0.58...
-    0.7079211750067032,                               !- Maximum Flow Rate {m3/s}
+    0.4424507343791894,                               !- Maximum Flow Rate {m3/s}
     0.65,        		                    !- Motor Efficiency   #From the study from Dave @ 400cfm/ton and back calculating for seer > 13...
     1,                                      !- Motor In Airstream Fraction
     Air Loop Inlet Node,                    !- Air Inlet Node Name
@@ -4056,7 +4488,7 @@ WaterUse:Equipment,
     Total Hot Water Load,       !- Name
     Domestic Hot Water,         !- End-Use Subcategory
     0.0002523607856,            !- Peak Flow Rate {m3/s} (equal to 4 gpm)
-    Year_1_Occupant_DHW,             !- Flow Rate Fraction Schedule Name
+    Year_3_Occupant_DHW,             !- Flow Rate Fraction Schedule Name
     dhw_setpt;                  !- Target Temperature Schedule Name
 
 !-   ===========  ALL OBJECTS IN CLASS: WATERUSE:CONNECTIONS ===========
@@ -4075,107 +4507,511 @@ WaterUse:Connections,
     Total Hot Water Load;               !- Water Use Equipment 1 Name
 
 Schedule:Year, 
-    Year_1_Occupant_DHW, 
+    Year_3_Occupant_DHW, 
     Fraction,
-    Week_1_Occupant_DHW, 
+    Week_3_Occupant_DHW, 
     1,
     1, 
     12,
     31;
 
-Schedule:Week:Daily, Week_1_Occupant_DHW,
-Day_1_1_Occupant_DHW,
-Day_2_1_Occupant_DHW,
-Day_3_1_Occupant_DHW,
-Day_4_1_Occupant_DHW,
-Day_5_1_Occupant_DHW,
-Day_7_1_Occupant_DHW,
-Day_6_1_Occupant_DHW,
-Day_6_1_Occupant_DHW,
-Day_2_1_Occupant_DHW,
-Day_2_1_Occupant_DHW,
-Day_2_1_Occupant_DHW,
-Day_2_1_Occupant_DHW;
+Schedule:Week:Daily, Week_3_Occupant_DHW,
+Day_1_3_Occupant_DHW,
+Day_2_3_Occupant_DHW,
+Day_3_3_Occupant_DHW,
+Day_4_3_Occupant_DHW,
+Day_5_3_Occupant_DHW,
+Day_6_3_Occupant_DHW,
+Day_7_3_Occupant_DHW,
+Day_7_3_Occupant_DHW,
+Day_1_3_Occupant_DHW,
+Day_1_3_Occupant_DHW,
+Day_1_3_Occupant_DHW,
+Day_1_3_Occupant_DHW;
 
 Schedule:Day:Interval,
-Day_1_1_Occupant_DHW, !- Name
-fraction, !- Schedule Type Limits Name
+Day_1_3_Occupant_DHW, !- Name
+Fraction, !- Schedule Type Limits Name
 Average, !- Interpolate to Timestep
-until: 12:12,
+until: 8:05,
 0,
-until: 12:13,
+until: 8:06,
 0.25,
-until: 12:45,
+until: 8:32,
 0,
-until: 12:46,
-1,
-until: 12:56,
-0,
-until: 12:57,
-1,
-until: 13:00,
-0,
-until: 13:01,
-0.25,
-until: 13:08,
-0,
-until: 13:09,
-0.25,
-until: 13:40,
-0,
-until: 13:41,
-0.25,
-until: 14:08,
-0,
-until: 14:09,
-0.25,
-until: 14:35,
-0,
-until: 14:36,
-0.25,
-until: 14:47,
-0,
-until: 14:48,
+until: 8:33,
 0.75,
-until: 14:48,
+until: 8:33,
 0,
-until: 14:49,
+until: 8:34,
 0.75,
-until: 14:49,
+until: 8:34,
 0,
-until: 14:50,
+until: 8:35,
+0.75,
+until: 8:35,
+0,
+until: 8:36,
+0.75,
+until: 8:36,
+0,
+until: 8:37,
 1,
+until: 9:08,
+0,
+until: 9:09,
+0.25,
+until: 9:13,
+0,
+until: 9:14,
+0.75,
+until: 9:14,
+0,
+until: 9:15,
+0.5,
+until: 9:22,
+0,
+until: 9:23,
+0.25,
+until: 9:35,
+0,
+until: 9:36,
+0.25,
+until: 9:39,
+0,
+until: 9:40,
+0.25,
+until: 9:41,
+0,
+until: 9:42,
+0.25,
+until: 9:50,
+0,
+until: 9:51,
+0.75,
+until: 9:51,
+0,
+until: 9:52,
+0.5,
+until: 10:04,
+0,
+until: 10:05,
+0.25,
+until: 10:14,
+0,
+until: 10:15,
+0.25,
+until: 10:18,
+0,
+until: 10:19,
+0.25,
+until: 16:06,
+0,
+until: 16:07,
+1,
+until: 16:22,
+0,
+until: 16:23,
+0.25,
+until: 17:03,
+0,
+until: 17:04,
+0.25,
+until: 17:21,
+0,
+until: 17:22,
+0.25,
+until: 17:41,
+0,
+until: 17:42,
+0.25,
+until: 17:45,
+0,
+until: 17:46,
+0.25,
+until: 17:46,
+0,
+until: 17:47,
+0.25,
+until: 17:55,
+0,
+until: 17:56,
+0.25,
+until: 18:18,
+0,
+until: 18:19,
+1,
+until: 18:39,
+0,
+until: 18:40,
+0.25,
+until: 18:51,
+0,
+until: 18:52,
+0.75,
+until: 18:52,
+0,
+until: 18:53,
+0.75,
+until: 18:53,
+0,
+until: 18:54,
+0.75,
+until: 18:54,
+0,
+until: 18:55,
+0.75,
+until: 18:55,
+0,
+until: 18:56,
+0.75,
+until: 18:56,
+0,
+until: 18:57,
+0.75,
+until: 18:57,
+0,
+until: 18:58,
+0.75,
+until: 18:58,
+0,
+until: 18:59,
+0.75,
+until: 19:31,
+0,
+until: 19:32,
+0.25,
 until: 24:00,
 0;
 
 Schedule:Day:Interval,
-Day_2_1_Occupant_DHW, !- Name
-fraction, !- Schedule Type Limits Name
+Day_2_3_Occupant_DHW, !- Name
+Fraction, !- Schedule Type Limits Name
 Average, !- Interpolate to Timestep
-until: 3:52,
+until: 6:08,
 0,
-until: 3:53,
+until: 6:09,
+1,
+until: 6:16,
+0,
+until: 6:17,
 0.25,
-until: 4:54,
+until: 6:32,
 0,
-until: 4:55,
+until: 6:33,
 0.25,
-until: 5:09,
+until: 6:40,
 0,
-until: 5:10,
+until: 6:41,
 0.75,
-until: 5:10,
+until: 6:41,
 0,
-until: 5:11,
+until: 6:42,
+0.75,
+until: 6:42,
+0,
+until: 6:43,
+1,
+until: 6:52,
+0,
+until: 6:53,
+0.25,
+until: 13:26,
+0,
+until: 13:27,
 0.5,
-until: 5:13,
+until: 13:29,
 0,
-until: 5:14,
+until: 13:30,
+1,
+until: 17:55,
+0,
+until: 17:56,
+0.5,
+until: 18:03,
+0,
+until: 18:04,
+0.5,
+until: 18:08,
+0,
+until: 18:09,
+0.5,
+until: 18:37,
+0,
+until: 18:38,
+0.5,
+until: 19:20,
+0,
+until: 19:21,
+0.75,
+until: 19:21,
+0,
+until: 19:22,
+1,
+until: 19:34,
+0,
+until: 19:35,
+0.5,
+until: 24:00,
+0;
+
+Schedule:Day:Interval,
+Day_3_3_Occupant_DHW, !- Name
+Fraction, !- Schedule Type Limits Name
+Average, !- Interpolate to Timestep
+until: 6:49,
+0,
+until: 6:50,
+0.75,
+until: 6:50,
+0,
+until: 6:51,
+0.5,
+until: 7:13,
+0,
+until: 7:14,
 0.25,
+until: 7:21,
+0,
+until: 7:22,
+0.25,
+until: 7:28,
+0,
+until: 7:29,
+0.25,
+until: 7:51,
+0,
+until: 7:52,
+0.75,
+until: 7:52,
+0,
+until: 7:53,
+0.75,
+until: 7:53,
+0,
+until: 7:54,
+1,
+until: 8:13,
+0,
+until: 8:14,
+0.25,
+until: 16:52,
+0,
+until: 16:53,
+0.25,
+until: 17:00,
+0,
+until: 17:01,
+0.25,
+until: 17:13,
+0,
+until: 17:14,
+0.25,
+until: 18:02,
+0,
+until: 18:03,
+0.25,
+until: 18:20,
+0,
+until: 18:21,
+0.25,
+until: 18:40,
+0,
+until: 18:41,
+0.25,
+until: 19:12,
+0,
+until: 19:13,
+0.75,
+until: 19:13,
+0,
+until: 19:14,
+0.75,
+until: 19:14,
+0,
+until: 19:15,
+1,
+until: 19:17,
+0,
+until: 19:18,
+0.75,
+until: 19:18,
+0,
+until: 19:19,
+0.5,
+until: 24:00,
+0;
+
+Schedule:Day:Interval,
+Day_4_3_Occupant_DHW, !- Name
+Fraction, !- Schedule Type Limits Name
+Average, !- Interpolate to Timestep
+until: 5:44,
+0,
 until: 5:45,
+1,
+until: 5:51,
 0,
-until: 5:46,
+until: 5:52,
 0.25,
+until: 6:15,
+0,
+until: 6:16,
+0.25,
+until: 6:20,
+0,
+until: 6:21,
+0.25,
+until: 6:51,
+0,
+until: 6:52,
+0.75,
+until: 6:52,
+0,
+until: 6:53,
+0.75,
+until: 6:53,
+0,
+until: 6:54,
+0.75,
+until: 6:54,
+0,
+until: 6:55,
+0.5,
+until: 14:00,
+0,
+until: 14:01,
+0.5,
+until: 14:33,
+0,
+until: 14:34,
+0.5,
+until: 15:06,
+0,
+until: 15:07,
+0.5,
+until: 15:37,
+0,
+until: 15:38,
+0.5,
+until: 15:41,
+0,
+until: 15:42,
+1,
+until: 19:02,
+0,
+until: 19:03,
+0.5,
+until: 19:05,
+0,
+until: 19:06,
+0.5,
+until: 19:40,
+0,
+until: 19:41,
+0.75,
+until: 19:41,
+0,
+until: 19:42,
+0.75,
+until: 19:42,
+0,
+until: 19:43,
+0.5,
+until: 20:00,
+0,
+until: 20:01,
+0.5,
+until: 24:00,
+0;
+
+Schedule:Day:Interval,
+Day_5_3_Occupant_DHW, !- Name
+Fraction, !- Schedule Type Limits Name
+Average, !- Interpolate to Timestep
+until: 6:01,
+0,
+until: 6:02,
+0.25,
+until: 6:07,
+0,
+until: 6:08,
+0.75,
+until: 6:08,
+0,
+until: 6:09,
+0.5,
+until: 6:41,
+0,
+until: 6:42,
+0.25,
+until: 6:44,
+0,
+until: 6:45,
+0.25,
+until: 6:57,
+0,
+until: 6:58,
+0.75,
+until: 6:58,
+0,
+until: 6:59,
+0.75,
+until: 6:59,
+0,
+until: 6:60,
+0.75,
+until: 7:00,
+0,
+until: 7:01,
+0.75,
+until: 7:38,
+0,
+until: 7:39,
+0.25,
+until: 16:24,
+0,
+until: 16:25,
+0.5,
+until: 16:30,
+0,
+until: 16:31,
+0.5,
+until: 16:43,
+0,
+until: 16:44,
+0.5,
+until: 17:48,
+0,
+until: 17:49,
+0.5,
+until: 17:51,
+0,
+until: 17:52,
+0.5,
+until: 18:28,
+0,
+until: 18:29,
+0.5,
+until: 18:34,
+0,
+until: 18:35,
+0.75,
+until: 18:35,
+0,
+until: 18:36,
+0.75,
+until: 18:36,
+0,
+until: 18:37,
+0.5,
+until: 24:00,
+0;
+
+Schedule:Day:Interval,
+Day_6_3_Occupant_DHW, !- Name
+Fraction, !- Schedule Type Limits Name
+Average, !- Interpolate to Timestep
 until: 5:48,
 0,
 until: 5:49,
@@ -4191,233 +5027,149 @@ until: 5:51,
 until: 5:51,
 0,
 until: 5:52,
-0.75,
-until: 5:52,
-0,
-until: 5:53,
-0.75,
-until: 5:53,
-0,
-until: 5:54,
 0.5,
-until: 6:02,
+until: 6:21,
 0,
-until: 6:03,
+until: 6:22,
 0.25,
-until: 6:48,
+until: 6:34,
 0,
-until: 6:49,
-0.25,
-until: 17:13,
-0,
-until: 17:14,
-0.5,
-until: 17:36,
-0,
-until: 17:37,
-0.5,
-until: 18:00,
-0,
-until: 18:01,
-0.5,
-until: 18:20,
-0,
-until: 18:21,
-0.5,
-until: 18:24,
-0,
-until: 18:25,
+until: 6:35,
 1,
-until: 18:48,
-0,
-until: 18:49,
-0.5,
-until: 24:00,
-0;
-
-Schedule:Day:Interval,
-Day_3_1_Occupant_DHW, !- Name
-fraction, !- Schedule Type Limits Name
-Average, !- Interpolate to Timestep
-until: 6:10,
-0,
-until: 6:11,
-0.75,
-until: 6:11,
-0,
-until: 6:12,
-0.75,
-until: 6:12,
-0,
-until: 6:13,
-0.75,
-until: 6:13,
-0,
-until: 6:14,
-0.5,
-until: 7:15,
-0,
-until: 7:16,
-0.5,
-until: 7:35,
-0,
-until: 7:36,
-0.75,
-until: 18:47,
-0,
-until: 18:48,
-1,
-until: 24:00,
-0;
-
-Schedule:Day:Interval,
-Day_4_1_Occupant_DHW, !- Name
-fraction, !- Schedule Type Limits Name
-Average, !- Interpolate to Timestep
-until: 7:30,
-0,
-until: 7:31,
-0.25,
-until: 7:54,
-0,
-until: 7:55,
-0.75,
-until: 7:55,
-0,
-until: 7:56,
-0.75,
-until: 7:56,
-0,
-until: 7:57,
-0.75,
-until: 7:57,
-0,
-until: 7:58,
-0.75,
-until: 8:04,
-0,
-until: 8:05,
-0.25,
-until: 8:06,
-0,
-until: 8:07,
-0.75,
-until: 24:00,
-0;
-
-Schedule:Day:Interval,
-Day_5_1_Occupant_DHW, !- Name
-fraction, !- Schedule Type Limits Name
-Average, !- Interpolate to Timestep
-until: 6:29,
-0,
-until: 6:30,
-0.75,
-until: 6:57,
-0,
-until: 6:58,
-0.25,
-until: 7:10,
-0,
-until: 7:11,
-0.25,
-until: 7:24,
-0,
-until: 7:25,
-0.75,
-until: 7:25,
-0,
-until: 7:26,
-0.75,
-until: 7:26,
-0,
-until: 7:27,
-0.75,
-until: 7:27,
-0,
-until: 7:28,
-0.5,
-until: 19:02,
-0,
-until: 19:03,
-1,
-until: 24:00,
-0;
-
-Schedule:Day:Interval,
-Day_6_1_Occupant_DHW, !- Name
-fraction, !- Schedule Type Limits Name
-Average, !- Interpolate to Timestep
-until: 9:12,
-0,
-until: 9:13,
-0.5,
-until: 9:23,
-0,
-until: 9:24,
-0.75,
-until: 9:24,
-0,
-until: 9:25,
-0.75,
-until: 9:25,
-0,
-until: 9:26,
-0.75,
-until: 9:26,
-0,
-until: 9:27,
-0.5,
-until: 9:54,
-0,
-until: 9:55,
-0.5,
-until: 10:53,
-0,
-until: 10:54,
-0.75,
-until: 24:00,
-0;
-
-Schedule:Day:Interval,
-Day_7_1_Occupant_DHW, !- Name
-fraction, !- Schedule Type Limits Name
-Average, !- Interpolate to Timestep
-until: 7:18,
-0,
 until: 7:19,
-0.5,
-until: 8:00,
 0,
-until: 8:01,
+until: 7:20,
+0.25,
+until: 7:22,
+0,
+until: 7:23,
+0.25,
+until: 8:03,
+0,
+until: 8:04,
+0.25,
+until: 14:44,
+0,
+until: 14:45,
+0.5,
+until: 15:24,
+0,
+until: 15:25,
+1,
+until: 15:27,
+0,
+until: 15:28,
+0.5,
+until: 15:59,
+0,
+until: 15:60,
+0.5,
+until: 16:10,
+0,
+until: 16:11,
+0.5,
+until: 19:57,
+0,
+until: 19:58,
+0.25,
+until: 20:22,
+0,
+until: 20:23,
 0.75,
-until: 8:01,
+until: 24:00,
+0;
+
+Schedule:Day:Interval,
+Day_7_3_Occupant_DHW, !- Name
+Fraction, !- Schedule Type Limits Name
+Average, !- Interpolate to Timestep
+until: 7:20,
 0,
-until: 8:02,
-0.5,
+until: 7:21,
+0.25,
+until: 7:41,
+0,
+until: 7:42,
+0.25,
+until: 8:10,
+0,
+until: 8:11,
+0.25,
+until: 8:20,
+0,
+until: 8:21,
+0.75,
+until: 8:21,
+0,
+until: 8:22,
+0.75,
+until: 8:43,
+0,
+until: 8:44,
+0.75,
+until: 8:44,
+0,
+until: 8:45,
+0.75,
 until: 8:45,
 0,
 until: 8:46,
-0.5,
-until: 16:18,
-0,
-until: 16:19,
-0.5,
-until: 16:31,
-0,
-until: 16:32,
-0.5,
-until: 17:16,
-0,
-until: 17:17,
-0.5,
-until: 18:16,
-0,
-until: 18:17,
 0.75,
-until: 18:17,
+until: 8:46,
 0,
-until: 18:18,
+until: 8:47,
+0.75,
+until: 8:47,
+0,
+until: 8:48,
+0.5,
+until: 8:57,
+0,
+until: 8:58,
+0.25,
+until: 9:23,
+0,
+until: 9:24,
+0.25,
+until: 10:02,
+0,
+until: 10:03,
+0.25,
+until: 10:36,
+0,
+until: 10:37,
+0.25,
+until: 17:40,
+0,
+until: 17:41,
+0.5,
+until: 17:52,
+0,
+until: 17:53,
+0.5,
+until: 17:53,
+0,
+until: 17:54,
+0.5,
+until: 18:08,
+0,
+until: 18:09,
+0.5,
+until: 18:14,
+0,
+until: 18:15,
+0.5,
+until: 18:45,
+0,
+until: 18:46,
+0.75,
+until: 18:46,
+0,
+until: 18:47,
+1,
+until: 19:24,
+0,
+until: 19:25,
 0.5,
 until: 24:00,
 0;
@@ -5171,136 +5923,47 @@ OutputControl:Table:Style,
     InchPound;               !- Unit Conversion
 
 Output:Diagnostics,DisplayExtraWarnings;
-!-   ===========  ALL OBJECTS IN CLASS: OUTPUT:METER ===========
-
-Output:Meter,
-    Electricity:Facility ,   !- Key Name
-    RunPeriod;                  !- Reporting Frequency
-
-Output:Meter,
-    Heating:Electricity ,    !- Key Name
-    RunPeriod;                  !- Reporting Frequency
-
-Output:Meter,
-    Cooling:Electricity ,    !- Key Name
-    RunPeriod;                  !- Reporting Frequency
-
-Output:Meter,
-    Fans:Electricity ,       !- Key Name
-    RunPeriod;                  !- Reporting Frequency
-
-Output:Meter,
-    Pumps:Electricity ,      !- Key Name
-    RunPeriod;                  !- Reporting Frequency
-
-Output:Meter,
-    WaterSystems:Electricity ,  !- Key Name
-    RunPeriod;                  !- Reporting Frequency
-
-Output:Meter,
-    InteriorLights:Electricity ,  !- Key Name
-    RunPeriod;                  !- Reporting Frequency
-
-Output:Meter,
-    ExteriorLights:Electricity ,  !- Key Name
-    RunPeriod;                  !- Reporting Frequency
-
-Output:Meter,
-    InteriorEquipment:Electricity ,  !- Key Name
-    RunPeriod;                  !- Reporting Frequency
-
-Output:Meter,
-    electric_range:InteriorEquipment:Electricity ,  !- Key Name
-    RunPeriod;                  !- Reporting Frequency
-
-Output:Meter,
-    electric_dryer:InteriorEquipment:Electricity ,  !- Key Name
-    RunPeriod;                  !- Reporting Frequency
-
-Output:Meter,
-    gas_dryer:InteriorEquipment:Electricity ,  !- Key Name
-    RunPeriod;                  !- Reporting Frequency
-
-Output:Meter,
-    clotheswasher:InteriorEquipment:Electricity ,  !- Key Name
-    RunPeriod;                  !- Reporting Frequency
-
-Output:Meter,
-    dishwasher:InteriorEquipment:Electricity ,  !- Key Name
-    RunPeriod;                  !- Reporting Frequency
-
-Output:Meter,
-    refrigerator:InteriorEquipment:Electricity ,  !- Key Name
-    RunPeriod;                  !- Reporting Frequency
-
-Output:Meter,
-    electric_mels:InteriorEquipment:Electricity ,  !- Key Name
-    RunPeriod;                  !- Reporting Frequency
-
-Output:Meter,
-    HeatRecovery:Electricity ,  !- Key Name
-    RunPeriod;                  !- Reporting Frequency
-
-Output:Meter,
-    NaturalGas:Facility ,   !- Key Name
-    RunPeriod;                  !- Reporting Frequency
-
-Output:Meter,
-    Heating:NaturalGas ,    !- Key Name
-    RunPeriod;                  !- Reporting Frequency
-
-Output:Meter,
-    WaterSystems:NaturalGas ,  !- Key Name
-    RunPeriod;                  !- Reporting Frequency
-
-Output:Meter,
-    InteriorEquipment:NaturalGas ,  !- Key Name
-    RunPeriod;                  !- Reporting Frequency
-
-Output:Meter,
-    gas_dryer:InteriorEquipment:NaturalGas ,  !- Key Name
-    RunPeriod;                  !- Reporting Frequency
-
-Output:Meter,
-    gas_mels:InteriorEquipment:NaturalGas  ,  !- Key Name
-    RunPeriod;                  !- Reporting Frequency
-
 !-   ===========  ALL OBJECTS IN CLASS: OUTPUT:VARIABLE ===========
 
 Output:Variable,
     *,                       !- Key Value
-    Facility Heating Setpoint Not Met Time ,  !- Variable Name
-    RunPeriod;                  !- Reporting Frequency
+    Heating Coil Electricity Rate ,  !- Variable Name
+    Hourly;                  !- Reporting Frequency
 
 Output:Variable,
     *,                       !- Key Value
-    Facility Cooling Setpoint Not Met Time ,  !- Variable Name
-    RunPeriod;                  !- Reporting Frequency
+    Heating Coil Defrost Electricity Rate ,  !- Variable Name
+    Hourly;                  !- Reporting Frequency
 
 Output:Variable,
     *,                       !- Key Value
-    AFN Zone Infiltration Air Change Rate ,  !- Variable Name
-    RunPeriod;                  !- Reporting Frequency
+    Heating Coil Crankcase Heater Electricity Rate ,  !- Variable Name
+    Hourly;                  !- Reporting Frequency
 
 Output:Variable,
     *,                       !- Key Value
-    Heating Coil Electricity Energy ,  !- Variable Name
-    RunPeriod;                  !- Reporting Frequency
+    Heating Coil NaturalGas Rate ,  !- Variable Name
+    Hourly;                  !- Reporting Frequency
 
 Output:Variable,
     *,                       !- Key Value
-    Heating Coil Defrost Electricity Energy ,  !- Variable Name
-    RunPeriod;                  !- Reporting Frequency
+    Heating Coil Propane Rate ,  !- Variable Name
+    Hourly;                  !- Reporting Frequency
 
 Output:Variable,
     *,                       !- Key Value
-    Heating Coil Crankcase Heater Electricity Energy ,  !- Variable Name
-    RunPeriod;                  !- Reporting Frequency
+    Fan Electricity Rate ,   !- Variable Name
+    Hourly;                  !- Reporting Frequency
 
 Output:Variable,
     *,                       !- Key Value
-    Baseboard Total Heating Energy ,  !- Variable Name
-    RunPeriod;                  !- Reporting Frequency
+    Zone Mean Air Temperature ,  !- Variable Name
+    Hourly;                  !- Reporting Frequency
+
+Output:Variable,
+    *,                       !- Key Value
+    Site Outdoor Air Drybulb Temperature ,  !- Variable Name
+    Hourly;                  !- Reporting Frequency
 
 !-   ===========  ALL OBJECTS IN CLASS: OUTPUTCONTROL:FILES ===========
 
