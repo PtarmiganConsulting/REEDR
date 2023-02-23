@@ -18,7 +18,7 @@ To install REEDR, download *REEDR Setup.exe* from the [latest REEDR release](htt
 ## Installing EnergyPlus v9.5
 To install EnergyPlus v9.5, download a copy from the [EnergyPlus v9.5 github page](https://github.com/NREL/EnergyPlus/releases/tag/v9.5.0) and install it onto your computer using its Windows installer. Remember where you install EnergyPlus on your computer, as you will need to tell REEDR where it is located.
 
-## How to Run REEDR
+## Running REEDR
 There are two main files you need to define and run a REEDR project:
 - the *Model Input Template*, and
 - *REEDR.exe*.
@@ -43,7 +43,7 @@ In addition to the inputs above, there are two radio buttons - one to enable mul
 
 After you've entered the above information, you can start REEDR by clicking the *Run* button. As REEDR runs, it will output its status and any error messages in the command prompt. REEDR will let you know once a run is completed, and when you can close the current session of REEDR.
 
-## How to View REEDR Output/Results
+## Viewing REEDR Output/Results
 In addition to the *Model Input Template* and *REEDR.exe*, the most other common thing you will interact with is the *Projects* folder. The *Projects* folder is where REEDR will store all raw EnergyPlus and processed REEDR output. At the highest level, REEDR creates a folder with the project name provided in the REEDR GUI. Under that, REEDR will create:
 - A sub-folder named for each building model with all original EnergyPlus output, and
 - A REEDR-generated *Run Report* that aggregates all individual model output and also performs automatic unit conversions, relabeling, and reformatting.
