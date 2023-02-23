@@ -5,23 +5,28 @@ REEDR stands for the **R**esidential **E**nergy **E**fficiency and **D**emand **
 - simple inputs for building geometry, infiltration, scheduling, and envelope constructions, and
 - automatic aggregation of individual run outputs for easier analysis.
 
-# How to Install REEDR and EnergyPlus
+# How to Get REEDR Installed and Running on Your Machine
+There are two ways to learn how to install and run REEDR on your machine:
+- **Watch how-to videos on YouTube**. There is currently a [Quick Start Guide](https://www.youtube.com/watch?v=5DuCjWeKPXY&t=1s) on YouTube, and there are plans to post more content on how to use REEDR in the future.
+- **Keep reading the instructions below**.
+
 To get REEDR running on your machine, you need to install REEDR and a copy of EnergyPlus *v9.5*, the version of EnergyPlus with which REEDR is currently compatible. Note that REEDR currently runs only in Windows environments.
+
 ## Installing REEDR
 To install REEDR, download *REEDR Setup.exe* from the [latest REEDR release](https://github.com/PtarmiganConsulting/REEDR/releases/tag/v1.0.0-beta) and run it on your machine. *REEDR Setup.exe* is a Windows Installer that will ask where you want REEDR installed.
 
 ## Installing EnergyPlus v9.5
 To install EnergyPlus v9.5, download a copy from the [EnergyPlus v9.5 github page](https://github.com/NREL/EnergyPlus/releases/tag/v9.5.0) and install it onto your computer using its Windows installer. Remember where you install EnergyPlus on your computer, as you will need to tell REEDR where it is located.
 
-# How to Run REEDR
+## How to Run REEDR
 There are two main files you need to define and run a REEDR project:
 - the *Model Input Template*, and
 - *REEDR.exe*.
 
-## The Model Input Template
+### The Model Input Template
 The *Model Input Template* file is where you define your building models. Specifically, building energy model inputs are defined on the *Model Inputs* tab of this workbook. If you just want to run REEDR, there should already be some example building models defined on the *Model Inputs* tab. (Note that you must *always* make sure you save this file before running REEDR, as REEDR is taking inputs from the saved copy of  the *Model Input Template*, not the live, unsaved version.)
 
-## REEDR.exe
+### REEDR.exe
 Once you have one or more models defined in the *Model Input Template*, you are ready to define your project details and run REEDR.
 
 To do this, double-click *REEDR.exe* or call it from a command window to launch "a session" of REEDR. You should see two windows open - one is a Python-driven graphical user interface (GUI) where you will define your inputs, and the other is a command window where REEDR will write status updates during the REEDR run.
@@ -38,7 +43,7 @@ In addition to the inputs above, there are two radio buttons - one to enable mul
 
 After you've entered the above information, you can start REEDR by clicking the *Run* button. As REEDR runs, it will output its status and any error messages in the command prompt. REEDR will let you know once a run is completed, and when you can close the current session of REEDR.
 
-# How to View REEDR Output/Results
+## How to View REEDR Output/Results
 In addition to the *Model Input Template* and *REEDR.exe*, the most other common thing you will interact with is the *Projects* folder. The *Projects* folder is where REEDR will store all raw EnergyPlus and processed REEDR output. At the highest level, REEDR creates a folder with the project name provided in the REEDR GUI. Under that, REEDR will create:
 - A sub-folder named for each building model with all original EnergyPlus output, and
 - A REEDR-generated *Run Report* that aggregates all individual model output and also performs automatic unit conversions, relabeling, and reformatting.
