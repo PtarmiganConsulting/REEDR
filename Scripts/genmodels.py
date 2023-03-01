@@ -159,7 +159,9 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
     stories_fieldname = model_input_temp_fieldnames_dict["stories_fieldname"][input_template_names_lookup_id]
     heightPerStory_fieldname = model_input_temp_fieldnames_dict["heightPerStory_fieldname"][input_template_names_lookup_id]
     bldgRatio_fieldname = model_input_temp_fieldnames_dict["bldgRatio_fieldname"][input_template_names_lookup_id]
+    wallInputMethod_fieldname  = model_input_temp_fieldnames_dict["wallInputMethod_fieldname"][input_template_names_lookup_id]
     wallCon_fieldname = model_input_temp_fieldnames_dict["wallCon_fieldname"][input_template_names_lookup_id]
+    wallRvalue_fieldname = model_input_temp_fieldnames_dict["wallRvalue_fieldname"][input_template_names_lookup_id]
     ceilingCon_fieldname = model_input_temp_fieldnames_dict["ceilingCon_fieldname"][input_template_names_lookup_id]
     floorCon_fieldname = model_input_temp_fieldnames_dict["floorCon_fieldname"][input_template_names_lookup_id]
     windowuUvalue_fieldname = model_input_temp_fieldnames_dict["windowuUvalue_fieldname"][input_template_names_lookup_id]
@@ -347,8 +349,30 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
             ratio_width_to_depth = validate(bldgRatio_fieldname, dictionary[bldgRatio_fieldname], "num_not_zero", 999, 999, dummy_list)
 
             #... above ground wall construction
+            # get above ground wall insulation input method, either "Pre-Defined Construction" or "Overall Effective R-Value"
+            above_ground_wall_input_method = dictionary[wallInputMethod_fieldname]
             above_ground_wall_list = nonfoundation_wall_dict.keys()
-            above_ground_wall_con = validate(wallCon_fieldname, dictionary[wallCon_fieldname], "list", 999, 999, above_ground_wall_list)
+            # if "Pre-Defined Construction", make sure construction exists and is defined
+            if above_ground_wall_input_method == "Pre-Defined Construction":
+                above_ground_wall_con = validate(wallCon_fieldname, dictionary[wallCon_fieldname], "list", 999, 999, above_ground_wall_list)
+                above_ground_wall_ins_depth = 999
+            # if "Overall Effective R-Value", make sure value magnitude makes sense
+            elif above_ground_wall_input_method == "Overall Effective R-Value":
+                wall_R_lo = 3.5
+                wall_R_hi = 80
+                above_ground_wall_R_value = validate(wallRvalue_fieldname, dictionary[wallRvalue_fieldname], "num_between", wall_R_lo, wall_R_hi, dummy_list)
+                above_ground_wall_con = validate(wallCon_fieldname, "Wall with Custom R-Value", "list", 999, 999, above_ground_wall_list)
+                if above_ground_wall_R_value <= 7:
+                    above_ground_wall_ins_depth = 0.0100374650*above_ground_wall_R_value - 0.0282398722
+                elif above_ground_wall_R_value <= 15:
+                    above_ground_wall_ins_depth = 0.0099181735*above_ground_wall_R_value - 0.0271154261
+                elif above_ground_wall_R_value <= 30:
+                    above_ground_wall_ins_depth = 0.0099956190*above_ground_wall_R_value - 0.0266703825
+                else:
+                    above_ground_wall_ins_depth = 0.0098995937*above_ground_wall_R_value - 0.0226454174
+            else:
+                print(str(wallInputMethod_fieldname) + " cannot be blank and must be set to either Pre-Defined Construction OR Overall Effective R-Value.")
+                return True
 
             #... ceiling and roof construction
             ceiling_and_roof_con_list = ceiling_and_roof_con_dict.keys()
@@ -810,7 +834,7 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
 
         # Materials
         with open(os.path.join(set_dir, building_block_dir, building_block_materials_file), 'r') as f:
-            mat_t = f.read()
+            mat_t = f"{f.read()}".format(**locals())
 
         # Performance Curves
         with open(os.path.join(set_dir, building_block_dir, building_block_performanceCurve_file), 'r') as f:
