@@ -43,6 +43,7 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
     buildingBlock_names_file = control_panel_names_dict["buildingBlock_names_file"][control_panel_names_lookup_id]
     inputTemplate_names_file = control_panel_names_dict["inputTemplate_names_file"][control_panel_names_lookup_id]
     found_type_assumptions_file = control_panel_names_dict["found_type_assumptions_file"][control_panel_names_lookup_id]
+    roof_pitch_file = control_panel_names_dict["roof_pitch_file"][control_panel_names_lookup_id]
     envelope_construction_dir = control_panel_names_dict["envelope_construction_dir"][control_panel_names_lookup_id]
     envelope_construction_ceilingRoof_file = control_panel_names_dict["envelope_construction_ceilingRoof_file"][control_panel_names_lookup_id]
     envelope_construction_nonFoundWall_file = control_panel_names_dict["envelope_construction_nonFoundWall_file"][control_panel_names_lookup_id]
@@ -159,10 +160,13 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
     stories_fieldname = model_input_temp_fieldnames_dict["stories_fieldname"][input_template_names_lookup_id]
     heightPerStory_fieldname = model_input_temp_fieldnames_dict["heightPerStory_fieldname"][input_template_names_lookup_id]
     bldgRatio_fieldname = model_input_temp_fieldnames_dict["bldgRatio_fieldname"][input_template_names_lookup_id]
+    roofPitch_fieldname = model_input_temp_fieldnames_dict["roofPitch_fieldname"][input_template_names_lookup_id]
     wallInputMethod_fieldname  = model_input_temp_fieldnames_dict["wallInputMethod_fieldname"][input_template_names_lookup_id]
     wallCon_fieldname = model_input_temp_fieldnames_dict["wallCon_fieldname"][input_template_names_lookup_id]
     wallRvalue_fieldname = model_input_temp_fieldnames_dict["wallRvalue_fieldname"][input_template_names_lookup_id]
+    ceilingInputMethod_fieldname  = model_input_temp_fieldnames_dict["ceilingInputMethod_fieldname"][input_template_names_lookup_id]
     ceilingCon_fieldname = model_input_temp_fieldnames_dict["ceilingCon_fieldname"][input_template_names_lookup_id]
+    ceilingRvalue_fieldname = model_input_temp_fieldnames_dict["ceilingRvalue_fieldname"][input_template_names_lookup_id]
     floorCon_fieldname = model_input_temp_fieldnames_dict["floorCon_fieldname"][input_template_names_lookup_id]
     windowuUvalue_fieldname = model_input_temp_fieldnames_dict["windowuUvalue_fieldname"][input_template_names_lookup_id]
     windowSHGC_fieldname = model_input_temp_fieldnames_dict["windowSHGC_fieldname"][input_template_names_lookup_id]
@@ -300,6 +304,9 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
     foundation_type_assumptions_path = os.path.join(set_dir, control_panel_folder_name, found_type_assumptions_file)
     foundation_type_assumptions_dict = dict_maker(foundation_type_assumptions_path)
 
+    # roof pitch dictionary
+    roof_pitch_path = os.path.join(set_dir, control_panel_folder_name, roof_pitch_file)
+    roof_pitch_dict = dict_maker(roof_pitch_path)
     
     ### --- IDF WRITER LOOP BEGINS HERE. --- ###
     # The loop covers every dictionary (effectively a runlabel row) in the big dictionary list.
@@ -348,6 +355,11 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
             #... Width to depth ratio
             ratio_width_to_depth = validate(bldgRatio_fieldname, dictionary[bldgRatio_fieldname], "num_not_zero", 999, 999, dummy_list)
 
+            #... roof pitch
+            valid_roof_pitch_options = roof_pitch_dict.keys()
+            roof_pitch_selection = validate(roofPitch_fieldname, dictionary[roofPitch_fieldname], "list", 999, 999, valid_roof_pitch_options)
+            roof_pitch_value = roof_pitch_dict[roof_pitch_selection]["pitch_value"]
+
             #... above ground wall construction
             # get above ground wall insulation input method, either "Pre-Defined Construction" or "Overall Effective R-Value"
             above_ground_wall_input_method = dictionary[wallInputMethod_fieldname]
@@ -361,7 +373,7 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
                 wall_R_lo = 3.5
                 wall_R_hi = 80
                 above_ground_wall_R_value = validate(wallRvalue_fieldname, dictionary[wallRvalue_fieldname], "num_between", wall_R_lo, wall_R_hi, dummy_list)
-                above_ground_wall_con = validate(wallCon_fieldname, "Wall with Custom R-Value", "list", 999, 999, above_ground_wall_list)
+                above_ground_wall_con = validate(wallCon_fieldname, "Wall with Overall Effective R-Value", "list", 999, 999, above_ground_wall_list)
                 if above_ground_wall_R_value <= 7:
                     above_ground_wall_ins_depth = 0.0100374650*above_ground_wall_R_value - 0.0282398722
                 elif above_ground_wall_R_value <= 15:
@@ -375,8 +387,28 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
                 return True
 
             #... ceiling and roof construction
+            # get ceiling insulation input method, either "Pre-Defined Construction" or "Ceiling Overall Effective R-Value (Assumes Simple Roof)"
+            ceiling_input_method = dictionary[ceilingInputMethod_fieldname]
             ceiling_and_roof_con_list = ceiling_and_roof_con_dict.keys()
-            ceiling_and_roof_con = validate(ceilingCon_fieldname, dictionary[ceilingCon_fieldname], "list", 999, 999, ceiling_and_roof_con_list)
+            if ceiling_input_method == "Pre-Defined Construction":
+                ceiling_and_roof_con = validate(ceilingCon_fieldname, dictionary[ceilingCon_fieldname], "list", 999, 999, ceiling_and_roof_con_list)
+                ceiling_ins_depth = 999
+            elif ceiling_input_method == "Ceiling Overall Effective R-Value (Assumes Uninsulated Roof)":
+                ceiling_R_lo = 3.5
+                ceiling_R_hi = 150
+                ceiling_R_value = validate(ceilingRvalue_fieldname, dictionary[ceilingRvalue_fieldname], "num_between", ceiling_R_lo, ceiling_R_hi, dummy_list)
+                ceiling_and_roof_con = validate(ceilingCon_fieldname, "Attic w Overall Effective R-Value", "list", 999, 999, ceiling_and_roof_con_list)
+                if ceiling_R_value <= 7:
+                    ceiling_ins_depth = 0.0109882982*ceiling_R_value - 0.0224857088
+                elif ceiling_R_value <= 15:
+                    ceiling_ins_depth = 0.0109882982*ceiling_R_value - 0.0224857088
+                elif ceiling_R_value <= 30:
+                    ceiling_ins_depth = 0.0107985849*ceiling_R_value - 0.0192404814
+                else:
+                    ceiling_ins_depth = 0.0107985849*ceiling_R_value - 0.0192404814
+            else:
+                print(str(ceilingInputMethod_fieldname) + " cannot be blank and must be set to either Pre-Defined Construction OR Ceiling Overall Effective R-Value (Assumes Simple Roof).")
+                return True
 
             #... foundation and floor construction
             foundation_and_floor_con = str(dictionary[floorCon_fieldname])
@@ -710,17 +742,17 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
         origin_x = convert_ft_to_m(0) 
         origin_y = convert_ft_to_m(0)
         origin_z = convert_ft_to_m(0)
-        roof_ht = convert_ft_to_m(4.5)
         number_of_stories = 1
 
         # Calculate intermediate geometry variables
+        building_width = round(ratio_width_to_depth * math.sqrt(conditioned_footprint_area / ratio_width_to_depth), 10)
+        building_depth = round(conditioned_footprint_area / building_width, 10)
+        roof_ridge_depth = round(building_depth / 2, 10)
+        roof_ht = (roof_pitch_value) * roof_ridge_depth
         avg_conditioned_envelope_ht = round(total_conditioned_volume / conditioned_footprint_area, 10)
         first_flr_ht_AG = round(foundationwall_ht_AG + avg_conditioned_envelope_ht, 10)
         top_flr_ht_AG = round(first_flr_ht_AG, 10)
         roof_ht_AG = round(top_flr_ht_AG + roof_ht, 10)
-        building_width = round(ratio_width_to_depth * math.sqrt(conditioned_footprint_area / ratio_width_to_depth), 10)
-        building_depth = round(conditioned_footprint_area / building_width, 10)
-        roof_ridge_depth = round(building_depth / 2, 10)
         wall_area_front = round(building_width * avg_conditioned_envelope_ht, 10)
         wall_area_right = round(building_depth * avg_conditioned_envelope_ht, 10)
         wall_area_left = round(building_depth * avg_conditioned_envelope_ht, 10)

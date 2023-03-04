@@ -31,6 +31,15 @@ Material,
     544.627399310259,        !- Density {{kg/m3}}
     1213.36000918149;        !- Specific Heat {{J/kg-K}}
 
+!- Note this next material is used to model a roof similarly to SEEM, which assumes 1 in of wood for the roof.
+
+Material,
+    OSB_1in,               !- Name
+    MediumSmooth,            !- Roughness
+    0.0254,       		    !- Thickness {{m}}
+    0.1163,                  !- Conductivity {{W/m-K}}
+    544.627399310259,        !- Density {{kg/m3}}
+    1213.36000918149;        !- Specific Heat {{J/kg-K}}
 
 !- Wood-Framed - Any R-Value Wall
 !- Note: Represents wall insulation and framing material
@@ -42,6 +51,20 @@ Material,
   0.057,                            ! Conductivity {{W/m-K}}
   120,                              ! Density {{kg/m3}}
   1550,                             ! Specific Heat {{J/kg-K}}
+  0.9,                              ! Thermal Absorptance
+  0.7,                              ! Solar Absorptance
+  0.7;                              ! Visible Absorptance
+
+!- Wood-Framed - Any R-Value Wall
+!- Note: Represents wall insulation and framing material
+
+Material,
+  Custom_Ceiling_Layer,             ! Name
+  Rough,                            ! Roughness
+  {ceiling_ins_depth},              ! Thickness {{m}}
+  0.0617176,                          !- Conductivity {{W/m-K}}
+  41.9286,                            !- Density {{kg/m3}}
+  776.25126,                          !- Specific Heat {{J/kg-K}}
   0.9,                              ! Thermal Absorptance
   0.7,                              ! Solar Absorptance
   0.7;                              ! Visible Absorptance
