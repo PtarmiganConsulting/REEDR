@@ -89,3 +89,57 @@ def formatLayerList(last_real_layer_num, list_layers):
             list_layers[i] = list_layers[i] + ","
 
     return list_layers
+
+def getFoundationIdentifier(user_found_type, floor_effective_Rvalue, slab_perimeter_Rvalue, under_slab_Rvalue, slab_thermalbreak_Rvalue, foundation_wall_Rvalue):
+
+    #Foundation Identifier Options:
+        #Vented Crawl w Insulated Floor
+        #Vented Crawl w Insulated Floor and Crawl Wall
+        #Slab w No Insulation
+        #Slab w Perimeter Insulation Only
+        #Slab w Thermal Break Only
+        #Slab w Perimeter and Thermal Break Insulation
+        #Slab w Full Under Insulation
+        #Slab w Full Under Insulation and Thermal Break
+        #Heated Basement w No Insulation
+        #Heated Basement w Wall Insulation
+        #Unheated Basement w Insulated Floor
+        #Unheated Basement w Insulated Floor and Wall
+
+    if user_found_type == "Vented Crawlspace":
+        if foundation_wall_Rvalue > 0:
+            foundation_identifier = "Vented Crawl w Insulated Floor and Crawl Wall"
+        else:
+            foundation_identifier = "Vented Crawl w Insulated Floor"
+
+    elif user_found_type == "Slab":
+        if under_slab_Rvalue > 0 and slab_thermalbreak_Rvalue > 0:
+            foundation_identifier = "Slab w Full Under Insulation and Thermal Break"
+        elif under_slab_Rvalue > 0:
+            foundation_identifier = "Slab w Full Under Insulation"
+        elif slab_perimeter_Rvalue > 0 and slab_thermalbreak_Rvalue > 0:
+            foundation_identifier = "Slab w Perimeter and Thermal Break Insulation"
+        elif slab_perimeter_Rvalue > 0:
+            foundation_identifier = "Slab w Perimeter Insulation Only"
+        elif slab_thermalbreak_Rvalue > 0:
+            foundation_identifier = "Slab w Thermal Break Only"
+        else:
+            foundation_identifier = "Slab w No Insulation"
+        
+    elif user_found_type == "Heated Basement":
+        if foundation_wall_Rvalue > 0:
+            foundation_identifier = "Heated Basement w Wall Insulation"
+        else:
+            foundation_identifier = "Heated Basement w No Insulation"
+
+    elif user_found_type == "Unheated Basement":
+        if foundation_wall_Rvalue > 0:
+            foundation_identifier = "Unheated Basement w Insulated Floor and Wall"
+        else:
+            foundation_identifier = "Unheated Basement w Insulated Floor"
+
+    else:
+        foundation_identifier = "ERROR"
+
+
+    return foundation_identifier
