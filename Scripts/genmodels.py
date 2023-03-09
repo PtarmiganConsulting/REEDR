@@ -423,7 +423,7 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
             if floor_input_method == "Pre-Defined Construction":
                 foundation_and_floor_con = str(dictionary[floorCon_fieldname])
                 foundation_and_floor_con = validate(floorCon_fieldname, dictionary[floorCon_fieldname], "list" , dummy_int, dummy_int, foundation_list)
-                floor_ins_depth = 999
+                floor_ins_depth = 0.0001
                 slab_perim_ins_depth = 999
                 under_slab_ins_depth = 999
                 thermal_break_depth = 999
@@ -443,18 +443,19 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
                 if floor_effective_Rvalue == 0:
                     floor_ins_depth = 0.0001
                 elif floor_effective_Rvalue <= 7:
-                    floor_ins_depth = 0.0109882982*floor_effective_Rvalue - 0.0224857088
+                    floor_ins_depth = 0.0088309555*floor_effective_Rvalue - 0.0217952236
                 elif floor_effective_Rvalue <= 15:
-                    floor_ins_depth = 0.0109882982*floor_effective_Rvalue - 0.0224857088
+                    floor_ins_depth = 0.0088309555*floor_effective_Rvalue - 0.0217952236
                 elif floor_effective_Rvalue <= 30:
-                    floor_ins_depth = 0.0107985849*floor_effective_Rvalue - 0.0192404814
+                    floor_ins_depth = 0.0088309555*floor_effective_Rvalue - 0.0217952236
                 else:
-                    floor_ins_depth = 0.0107985849*floor_effective_Rvalue - 0.0192404814
+                    floor_ins_depth = 0.0088309555*floor_effective_Rvalue - 0.0217952236
+  
                 # Determine slab and foundation wall insulation depths
-                slab_perim_ins_depth = max(0.00510 * slab_perimeter_Rvalue - 0.0006666667, 0.0001)
-                under_slab_ins_depth =  max(0.00510 * under_slab_Rvalue - 0.0006666667, 0.0001)
-                thermal_break_depth =  max(0.00510 * slab_thermalbreak_Rvalue - 0.0006666667, 0.0001)
-                found_wall_ins_depth =  max(0.00510 * foundation_wall_Rvalue - 0.0006666667, 0.0001)
+                slab_perim_ins_depth = max(0.0051073508 * slab_perimeter_Rvalue - 0.0000009870, 0.0001)
+                under_slab_ins_depth =  max(0.0051073508 * under_slab_Rvalue - 0.0000009870, 0.0001)
+                thermal_break_depth =  max(0.0051073508 * slab_thermalbreak_Rvalue - 0.0000009870, 0.0001)
+                found_wall_ins_depth =  max(0.0051073508 * foundation_wall_Rvalue - 0.0000009870, 0.0001)
                 
                 foundation_and_floor_con = validate(floorCon_fieldname, foundation_identifier, "list" , dummy_int, dummy_int, foundation_list)
             else:
