@@ -338,9 +338,23 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
             valid_timesteps = ["1","2","3","4","5","6","10","12","15","20","30","60"]
             timestep = validate(timestep_fieldname, str(dictionary[timestep_fieldname]), "list", dummy_int, dummy_int, valid_timesteps)
 
+            # #... location/weather file
+            # location_path = os.path.join(set_dir, building_block_dir, location_and_climate_dir)
+            # location_pull = validate(weather_fieldname, dictionary[weather_fieldname], "file", dummy_int, dummy_int, dummy_list, location_path)
+
             #... location/weather file
-            location_path = os.path.join(set_dir, building_block_dir, location_and_climate_dir)
-            location_pull = validate(weather_fieldname, dictionary[weather_fieldname], "file", dummy_int, dummy_int, dummy_list, location_path)
+            # check to see if Actual Meterological Year (AMY) file. If so, treat differently to properly find sizing file
+            if "AMY" in dictionary[weather_fieldname]:
+                Str = dictionary[weather_fieldname]
+                # strip off "AMY" and year
+                Str = Str[:len(Str)-8]
+                # convert to TMYx file to find proper design days
+                Str = Str + "TMYx.2004-2018"
+                location_path = os.path.join(set_dir, building_block_dir, location_and_climate_dir)
+                location_pull = validate(weather_fieldname, Str, "file", dummy_int, dummy_int, dummy_list, location_path)
+            else:
+                location_path = os.path.join(set_dir, building_block_dir, location_and_climate_dir)
+                location_pull = validate(weather_fieldname, dictionary[weather_fieldname], "file", dummy_int, dummy_int, dummy_list, location_path)
 
              #... building orientation
             bldg_orient_lo = 0
