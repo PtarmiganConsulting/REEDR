@@ -349,9 +349,9 @@ def gui(func):
     s.configure('LicenseBody.TLabel', font=('Helvetica', 7))
 
     # Path
-    ttk.Label(frm, text="EnergyPlus v9.5 Executable Path: ", style='Body.TLabel').grid(sticky=W, column=0, row=2, padx=10, pady=25)
+    ttk.Label(frm, text="EnergyPlus v22.2 Executable Path: ", style='Body.TLabel').grid(sticky=W, column=0, row=2, padx=10, pady=25)
     path_input = StringVar()
-    path_input.set("C:\EnergyPlusV9-5-0\energyplus.exe")
+    path_input.set("C:\EnergyPlusV22-2-0\energyplus.exe")
     path_entry = ttk.Entry(frm, width=60, style='Body.TEntry', textvariable=path_input, foreground="black") # path entry
     path_entry.grid(sticky=W, column=1, row=2, padx=10, pady=25, columnspan=2)
 
