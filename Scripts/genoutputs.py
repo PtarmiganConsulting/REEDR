@@ -207,7 +207,7 @@ def produce_output_report(output_dict, output_gran, output_type, get_data_dict, 
                 output_timesteps_per_hr = timestep
 
             # Skip the last rows corresponding to the HVAC design days
-            endrows_to_skip = 24*2*output_timesteps_per_hr
+            endrows_to_skip = 0 #24*2*output_timesteps_per_hr
             # Read in each individual EnergyPlus-generated output file, and skip the last design day rows
             eplus_out_df = pd.read_csv(eplus_out_path, engine='python', skipfooter=endrows_to_skip)
             # Strip leading or trailing whitespace from column names...

@@ -10,13 +10,17 @@ SurfaceProperty:ExposedFoundationPerimeter,
 
 Foundation:Kiva:Settings,
     1.8,                     !- Soil Conductivity {{W/m-K}}
-    3200,                    !- Soil Density {{kg/m3}}
-    836,                     !- Soil Specific Heat {{J/kg-K}}
+    1842.3,                    !- Soil Density {{kg/m3}}
+    418.70000000000005,                     !- Soil Specific Heat {{J/kg-K}}
     0.9,                     !- Ground Solar Absorptivity {{dimensionless}}
     0.9,                     !- Ground Thermal Absorptivity {{dimensionless}}
     0.03,                    !- Ground Surface Roughness {{m}}
     40,                      !- Far-Field Width {{m}}
-    Autoselect;              !- Deep-Ground Boundary Condition
+    ZeroFlux,              !- Deep-Ground Boundary Condition
+    40,                     !- Deep-Ground Depth {{m}}
+    0.02,                   !- Minimum Cell Dimension {{m}}
+    1.5,                    !- Maximum Cell Growth Coefficient
+    Hourly;                 !- Simulation Timestep
 
 Foundation:Kiva,
     Kiva Foundation,            !- Name
@@ -33,5 +37,9 @@ Foundation:Kiva,
     {ext_vert_ins_depth},       !- Exterior Vertical Insulation Depth {{m}}
     {wall_ht_above_grade},      !- Wall Height Above Grade {{m}}
     {wall_ht_below_slab},       !- Wall Depth Below Slab {{m}}
-    ;                           !- Footing Wall Construction Name
+    GrndFootingWall;            !- Footing Wall Construction Name
+
+Construction,
+   GrndFootingWall,   !- Name
+   Concrete-8in;      !- Layers
 
