@@ -338,10 +338,6 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
             valid_timesteps = ["1","2","3","4","5","6","10","12","15","20","30","60"]
             timestep = validate(timestep_fieldname, str(dictionary[timestep_fieldname]), "list", dummy_int, dummy_int, valid_timesteps)
 
-            # #... location/weather file
-            # location_path = os.path.join(set_dir, building_block_dir, location_and_climate_dir)
-            # location_pull = validate(weather_fieldname, dictionary[weather_fieldname], "file", dummy_int, dummy_int, dummy_list, location_path)
-
             #... location/weather file
             # check to see if Actual Meterological Year (AMY) file. If so, treat differently to properly find sizing file
             if "AMY" in dictionary[weather_fieldname]:
@@ -363,12 +359,14 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
 
             #... conditioned footprint area
             conditioned_footprint_area = float(validate(footprint_fieldname, round(convert_ft2_to_m2(dictionary[footprint_fieldname]),10), "num_not_zero", dummy_int, dummy_int, dummy_list))
+            conditioned_footprint_area_ft2 = dictionary[footprint_fieldname]
 
             #... average building stories
             avgStories = float(validate(stories_fieldname, round(dictionary[stories_fieldname],10), "num_not_zero", dummy_int, dummy_int, dummy_list))
 
             #... average height per story
             avgHtPerStory = float(validate(heightPerStory_fieldname, round(convert_ft_to_m(dictionary[heightPerStory_fieldname]),10), "num_not_zero", dummy_int, dummy_int, dummy_list))
+            avgHtPerStory_ft2 = dictionary[heightPerStory_fieldname]
 
             #... total conditioned volume
             total_conditioned_volume = conditioned_footprint_area * avgStories * avgHtPerStory
@@ -415,8 +413,8 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
                 ceiling_and_roof_con = validate(ceilingCon_fieldname, dictionary[ceilingCon_fieldname], "list", dummy_int, dummy_int, ceiling_and_roof_con_list)
                 ceiling_ins_depth = 999
             elif ceiling_input_method == "Ceiling Overall Effective R-Value (Assumes Uninsulated Roof)":
-                ceiling_R_lo = 3.5
-                ceiling_R_hi = 100
+                ceiling_R_lo = 2.0
+                ceiling_R_hi = 120
                 ceiling_R_value = validate(ceilingRvalue_fieldname, dictionary[ceilingRvalue_fieldname], "num_between", ceiling_R_lo, ceiling_R_hi, dummy_list)
                 ceiling_and_roof_con = validate(ceilingCon_fieldname, "Attic w Overall Effective R-Value", "list", dummy_int, dummy_int, ceiling_and_roof_con_list)
                 if ceiling_R_value <= 7:
@@ -501,9 +499,11 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
             #... Window shades
             window_shades_list = ["Yes", "No"]
             window_shades = validate(windowShade_fieldname, dictionary[windowShade_fieldname], "list", dummy_int, dummy_int, window_shades_list)
+            # Set window construction
+            win_construction = "Exterior Window"
 
             #... window to wall ratios
-            wtw_lo = 0.01
+            wtw_lo = 0.0001
             wtw_hi = 0.99
             wtw_ratio_front = validate(wtwFront_fieldname, dictionary[wtwFront_fieldname], "num_between", wtw_lo, wtw_hi, dummy_list)
             wtw_ratio_back = validate(wtwBack_fieldname, dictionary[wtwBack_fieldname], "num_between", wtw_lo, wtw_hi, dummy_list)
@@ -700,8 +700,7 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
         except:
             return True
         
-        # Set window construction
-        win_construction = "Exterior Window"
+        
 
         # Get wall construction layers
         wall_layers = []
@@ -789,8 +788,15 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
         floor_main_outside_boundary_condition_object = foundation_assumptions["floor_main_outside_boundary_condition_object"]
         foundation_zone_name = foundation_assumptions["foundation_zone_name"]
         foundationwall_ht_AG = round(convert_ft_to_m(float(foundation_assumptions["foundationwall_ht_AG[ft]"])),10)
+        foundationwall_ht_AG_ft = foundation_assumptions["foundationwall_ht_AG[ft]"]
         foundationwall_ht_BG = -1 * round(convert_ft_to_m(float(foundation_assumptions["foundationwall_ht_BG[ft]"])),10)
-        returnduct_location = foundation_assumptions["returnduct_location"]
+        foundationwall_ht_BG_ft = foundation_assumptions["foundationwall_ht_BG[ft]"]
+        if CentralOrZonal == "Central":
+            returnduct_location = foundation_assumptions["returnduct_location"]
+            supplyduct_location = "attic"
+        else:
+            returnduct_location = "living"
+            supplyduct_location = "living"
 
         # Set foundation insulation based on specific foundation selection
         int_horiz_ins_mat_name = other_found_chars["slab_perimeter_ins_name"]
@@ -1166,19 +1172,61 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
 
         # Estimate effective leakage areas (ELAs), used to represent building infiltration, in AFN model
         infiltrationInACH50 = infiltration
+        if foundation_type == "Heated Basement":
+            infiltrationVolume_ft3 = conditioned_footprint_area_ft2 * avgHtPerStory_ft2 * avgStories + \
+                                    (foundationwall_ht_AG_ft + foundationwall_ht_BG_ft) * conditioned_footprint_area_ft2
+        else:
+            infiltrationVolume_ft3 = conditioned_footprint_area_ft2 * avgHtPerStory_ft2 * avgStories
+        #print("infiltration volume: " + str(infiltrationVolume_ft3))
+        infiltrationInCFM50 = infiltrationInACH50/60 * infiltrationVolume_ft3
+        #print("infiltration CFM50: " + str(infiltrationInCFM50))
+        infiltrationInM3PerSec50Pa = infiltrationInCFM50 * 0.00047194745 #convert CFM to m^3/s
+        #print("infiltration m3/s at 50 Pa: " + str(infiltrationInM3PerSec50Pa))
+        infiltrationInM3PerSec4Pa = infiltrationInM3PerSec50Pa * (4/50)**0.65 #convert to airflow at 4Pa
+        #print("infiltration m3/s at 4 Pa: " + str(infiltrationInM3PerSec4Pa))
+        density_air = 1.205 # at sea level, 20 degrees C
+        ref_pressure = 4 # reference pressure in Pa
+        Cd = 1 # discharge coefficient
+        ELA_total_4Pa_m2 = infiltrationInM3PerSec4Pa * math.sqrt(density_air/(2*ref_pressure))/Cd
+        #print("ELA in m2 at 4 Pa: " + str(ELA_total_4Pa_m2))
+
+        # if foundation_type == "Heated Basement" or foundation_type == "Slab":
+        #     ELA_wall_frontback = ELA_total_4Pa_m2 * 1/3/2
+        #     ELA_wall_leftright = ELA_total_4Pa_m2 * 1/3/2
+        #     ELA_ceiling = ELA_total_4Pa_m2 * 1/3
+        #     ELA_floor = ELA_total_4Pa_m2 * 0
+        # else:
+        #     ELA_wall_frontback = ELA_total_4Pa_m2 * 1/4/2
+        #     ELA_wall_leftright = ELA_total_4Pa_m2 * 1/4/2
+        #     ELA_ceiling = ELA_total_4Pa_m2 * 1/4
+        #     ELA_floor = ELA_total_4Pa_m2 * 1/4
+
+        ELA_wall_frontback = ELA_total_4Pa_m2 * 1/4/2
+        ELA_wall_leftright = ELA_total_4Pa_m2 * 1/4/2
+        ELA_ceiling = ELA_total_4Pa_m2 * 1/2
+        ELA_floor = 0.00001
+
+        #print("ELA_wall_frontback: " + str(ELA_wall_frontback))
+        #print("ELA_wall_leftright: " + str(ELA_wall_leftright))
+        #print("Total wall ELA:" + str(2*ELA_wall_frontback + 2*ELA_wall_leftright))
+        #print("ELA_ceiling: " + str(ELA_ceiling))
+        #print("ELA_floor: " + str(ELA_floor))
+        #print("Total ELA:" + str(2*ELA_wall_frontback + 2*ELA_wall_leftright + ELA_ceiling + ELA_floor))
+
+
         total_envelope_height = dictionary[stories_fieldname] * dictionary[heightPerStory_fieldname]
         
         adjust = []
         adjust = estimateInfiltrationAdjustment(foundation_type, infiltrationInACH50, dictionary[footprint_fieldname], total_envelope_height, \
             living_infiltration_coeff_dict, attic_infiltration_coeff_dict, crawl_infiltration_coeff_dict)
-        living_adjust = adjust[0]
+        #living_adjust = adjust[0]
         attic_adjust = adjust[1]
         crawl_adjust = adjust[2]
         
-        ELA_wall_frontback = living_adjust * wall_area_front * 0.00010812648958345
-        ELA_wall_leftright = living_adjust * wall_area_left * 0.00010812648958345
-        ELA_ceiling = living_adjust * conditioned_footprint_area * 0.00010812648958345
-        ELA_floor = living_adjust * conditioned_footprint_area * 0.0000000905634180403216
+        # ELA_wall_frontback = living_adjust * wall_area_front * 0.00010812648958345
+        # ELA_wall_leftright = living_adjust * wall_area_left * 0.00010812648958345
+        # ELA_ceiling = living_adjust * conditioned_footprint_area * 0.00010812648958345
+        # ELA_floor = living_adjust * conditioned_footprint_area * 0.0000000905634180403216
         
         roof_hypotenuse = math.sqrt(roof_ht**2 + (building_depth/2)**2)
         attic_wall_area = 2*(0.5*building_depth*roof_ht) + 2*(roof_hypotenuse*building_width)
