@@ -172,7 +172,7 @@ def produce_output_report(output_dict, output_gran, output_type, get_data_dict, 
             #... skip the first rows corresponding to the HVAC design days
             rows_to_skip = range(1, 3)
             eplus_out_df = pd.read_csv (eplus_out_path, skiprows=rows_to_skip)
-            
+
             for column in column_header_list:
                 try:
                     if output_dict[column]["conversion_ID"] == "Run_Label":
@@ -181,19 +181,23 @@ def produce_output_report(output_dict, output_gran, output_type, get_data_dict, 
                     elif output_dict[column]["conversion_ID"] == "Elec":
                         # Convert electric output from joules to kWh
                         col_lookup = str(output_dict[column]["mapping_fieldname"]) + "(RunPeriod)"
-                        df_out.at[run_label, column] = convert_J_to_kWh(eplus_out_df[col_lookup].sum())
+                        if col_lookup in eplus_out_df.columns:
+                            df_out.at[run_label, column] = convert_J_to_kWh(eplus_out_df[col_lookup].sum())
                     elif output_dict[column]["conversion_ID"] == "Gas":
                         # Convert gas output from joules to therms
                         col_lookup = str(output_dict[column]["mapping_fieldname"]) + "(RunPeriod)"
-                        df_out.at[run_label, column] = convert_J_to_therm(eplus_out_df[col_lookup].sum())
+                        if col_lookup in eplus_out_df.columns:
+                            df_out.at[run_label, column] = convert_J_to_therm(eplus_out_df[col_lookup].sum())
                     elif output_dict[column]["conversion_ID"] == "Propane":
                         # Convert propane output from joules to gallons
                         col_lookup = str(output_dict[column]["mapping_fieldname"]) + "(RunPeriod)"
-                        df_out.at[run_label, column] = convert_J_to_galLPG(eplus_out_df[col_lookup].sum())
+                        if col_lookup in eplus_out_df.columns:
+                            df_out.at[run_label, column] = convert_J_to_galLPG(eplus_out_df[col_lookup].sum())
                     else:
                         # Units don't need to be converted; simply sum them up
                         col_lookup = str(output_dict[column]["mapping_fieldname"]) + "(RunPeriod)"
-                        df_out.at[run_label, column] = eplus_out_df[col_lookup].sum()
+                        if col_lookup in eplus_out_df.columns:
+                            df_out.at[run_label, column] = eplus_out_df[col_lookup].sum()
                 except:
                     # If it can't find an output, it means the EnergyPlus model doesn't have any equipment of this end use, so energy consumption is zero.
                     df_out.at[run_label, [column]] = 0
@@ -281,7 +285,7 @@ def produce_output_report(output_dict, output_gran, output_type, get_data_dict, 
     run_chars_df_transposed.to_excel(writer, sheet_name="Run Characteristics", header=False, index=True, startrow=0, startcol=0)
 
     # Close the Pandas Excel writer and output the Excel file.
-    writer.save()
+    writer.close()
 
 # getList is a function that takes a dictionary and returns the keys of that dictionary as a list.
 def getList(dict):
