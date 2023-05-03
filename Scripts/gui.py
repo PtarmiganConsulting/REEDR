@@ -74,7 +74,7 @@ def gui(func):
     sim_select = ["Annual", "Sub-Annual: enter start and end dates at right -->", "Test Run"]
     gran_select = dropdown_dict["annual_sim_granularity"]
     end_select = dropdown_dict["annual_gran_enduses"]
-    default_string = "C:\EnergyPlusV9-5-0\energyplus.exe!@##@!New Project!@##@!Annual!@##@!Annual!@##@!All_End_Uses!@##@!True!@##@!BLANKSTR!@##@!BLANKSTR!@##@!BLANKSTR!@##@!BLANKSTR!@##@!True"
+    default_string = "C:\EnergyPlusV22-2-0\energyplus.exe!@##@!New Project!@##@!Annual!@##@!Annual!@##@!All_End_Uses!@##@!True!@##@!BLANKSTR!@##@!BLANKSTR!@##@!BLANKSTR!@##@!BLANKSTR!@##@!True"
     ## even if the default string is not in use, it's handy for resetting defaults for version control.
 
     # Acquire User Settings Path
@@ -100,7 +100,7 @@ def gui(func):
                 data_storage.write(default_string)
         
         import_list = [
-            "C:\EnergyPlusV9-5-0\energyplus.exe",
+            "C:\EnergyPlusV22-2-0\energyplus.exe",
             "New Project",
             "Annual",
             "Annual",
