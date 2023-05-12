@@ -1,4 +1,4 @@
-Program Version,EnergyPlus, Version 22.2.0-c249759bad, YMD=2023.04.30 17:46
+Program Version,EnergyPlus, Version 22.2.0-c249759bad, YMD=2023.05.03 15:28
 ! <Version>, Version ID
  Version, 22.2
 ! <Timesteps per Hour>, #TimeSteps, Minutes per TimeStep {minutes}
@@ -152,17 +152,17 @@ Surface Heat Transfer Algorithm, KivaFoundation - TwoDimensionalFiniteDifference
  Zone Information, ATTIC,0.0,0.00,0.00,0.00,6.82,6.82,3.34,1,1,1,0.00,13.63,0.00,13.63,2.74,5.01,1.14,211.06,TARP,DOE-2,185.80,30.97,30.97,0.00,5,0,0,Yes
  Zone Information, CRAWLSPACE,0.0,0.00,0.00,0.00,6.82,6.82,-0.15,1,1,1,0.00,13.63,0.00,13.63,-0.61,0.30,0.91,169.89,TARP,DOE-2,185.80,16.62,16.62,0.00,10,0,0,Yes
 ! <Zone Internal Gains Nominal>,Zone Name, Floor Area {m2},# Occupants,Area per Occupant {m2/person},Occupant per Area {person/m2},Interior Lighting {W/m2},Electric Load {W/m2},Gas Load {W/m2},Other Load {W/m2},Hot Water Eq {W/m2},Steam Equipment {W/m2},Sum Loads per Area {W/m2},Outdoor Controlled Baseboard Heat
- Zone Internal Gains Nominal, LIVING,185.80,0.0,N/A,0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.000,No
+ Zone Internal Gains Nominal, LIVING,185.80,1.0,185.805,5.382E-003,0.000,0.000,0.000,0.000,0.000,0.000,0.000,No
  Zone Internal Gains Nominal, ATTIC,185.80,0.0,N/A,0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.000,No
  Zone Internal Gains Nominal, CRAWLSPACE,185.80,0.0,N/A,0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.000,No
 ! <People Internal Gains Nominal>,Name,Schedule Name,Zone Name,Zone Floor Area {m2},# Zone Occupants,Number of People {},People/Floor Area {person/m2},Floor Area per person {m2/person},Fraction Radiant,Fraction Convected,Sensible Fraction Calculation,Activity level,ASHRAE 55 Warnings,Carbon Dioxide Generation Rate,Nominal Minimum Number of People,Nominal Maximum Number of People
- People Internal Gains Nominal, PEOPLE_UNIT1,OCCUPANCY,LIVING,185.80,0.0,0.0,0.000,N/A,0.000,1.000,AutoCalculate,ACTIVITY_SCH,No,3.8200E-008,0,0
+ People Internal Gains Nominal, PEOPLE_UNIT1,OCCUPANCY,LIVING,185.80,1.0,1.0,5.382E-003,185.805,0.000,1.000,AutoCalculate,ACTIVITY_SCH,No,3.8200E-008,1,1
 ! <Lights Internal Gains Nominal>,Name,Schedule Name,Zone Name,Zone Floor Area {m2},# Zone Occupants,Lighting Level {W},Lights/Floor Area {W/m2},Lights per person {W/person},Fraction Return Air,Fraction Radiant,Fraction Short Wave,Fraction Convected,Fraction Replaceable,End-Use Category,Nominal Minimum Lighting Level {W},Nominal Maximum Lighting Level {W}
- Lights Internal Gains Nominal, INTERIOR LIGHTS,INTERIORLIGHTINGHE,LIVING,185.80,0.0,0.000,0.000,N/A,0.000,0.600,0.200,0.200,0.000,General,0.000,0.000
+ Lights Internal Gains Nominal, INTERIOR LIGHTS,INTERIORLIGHTINGHE,LIVING,185.80,1.0,0.000,0.000,0.000,0.000,0.600,0.200,0.200,0.000,General,0.000,0.000
 ! <ElectricEquipment Internal Gains Nominal>,Name,Schedule Name,Zone Name,Zone Floor Area {m2},# Zone Occupants,Equipment Level {W},Equipment/Floor Area {W/m2},Equipment per person {W/person},Fraction Latent,Fraction Radiant,Fraction Lost,Fraction Convected,End-Use SubCategory,Nominal Minimum Equipment Level {W},Nominal Maximum Equipment Level {W}
- ElectricEquipment Internal Gains Nominal, ELECTRIC_MELS1,MISCELECPLUGLOAD,LIVING,185.80,0.0,0.000,0.000,N/A,6.000E-002,0.690,0.250,0.000,electric_mels,0.000,0.000
+ ElectricEquipment Internal Gains Nominal, ELECTRIC_MELS1,MISCELECPLUGLOAD,LIVING,185.80,1.0,0.000,0.000,0.000,6.000E-002,0.690,0.250,0.000,electric_mels,0.000,0.000
 ! <GasEquipment Internal Gains Nominal>,Name,Schedule Name,Zone Name,Zone Floor Area {m2},# Zone Occupants,Equipment Level {W},Equipment/Floor Area {W/m2},Equipment per person {W/person},Fraction Latent,Fraction Radiant,Fraction Lost,Fraction Convected,End-Use SubCategory,Nominal Minimum Equipment Level {W},Nominal Maximum Equipment Level {W}
- GasEquipment Internal Gains Nominal, GAS_MELS1,MISCGASPLUGLOAD,LIVING,185.80,0.0,0.000,0.000,N/A,6.000E-002,0.690,0.250,0.000,gas_mels,0.000,0.000
+ GasEquipment Internal Gains Nominal, GAS_MELS1,MISCGASPLUGLOAD,LIVING,185.80,1.0,0.000,0.000,0.000,6.000E-002,0.690,0.250,0.000,gas_mels,0.000,0.000
 ! <Zone Volume Capacitance Multiplier>, Sensible Heat Capacity Multiplier, Moisture Capacity Multiplier, Carbon Dioxide Capacity Multiplier, Generic Contaminant Capacity Multiplier
 Zone Volume Capacitance Multiplier,   1.000 ,   1.000,   1.000,   1.000
 ! <Kiva Foundation Name>, Horizontal Cells, Vertical Cells, Total Cells, Total Exposed Perimeter, Perimeter Fraction, Wall Height, Wall Construction, Floor Surface, Wall Surface(s)
@@ -269,6 +269,9 @@ KIVA FOUNDATION,38,46,1748,54.52,1.00,0.61,FOUNDATION WALL CONSTRUCTION,FLOOR_FO
  WindowMaterial:Glazing,DIFFUSING ACRYLIC PLASTIC,SpectralAverage,,2.20000E-003,0.90000,8.00000E-002,8.00000E-002,0.90000,8.00000E-002,8.00000E-002,0.00000,0.90000,0.90000,0.90000,1.00000,No
 ! <Shadowing/Sun Position Calculations Annual Simulations>, Shading Calculation Method, Shading Calculation Update Frequency Method, Shading Calculation Update Frequency {days}, Maximum Figures in Shadow Overlap Calculations {}, Polygon Clipping Algorithm, Pixel Counting Resolution, Sky Diffuse Modeling Algorithm, Output External Shading Calculation Results, Disable Self-Shading Within Shading Zone Groups, Disable Self-Shading From Shading Zone Groups to Other Zones
 Shadowing/Sun Position Calculations Annual Simulations,PolygonClipping,Periodic,20,15000,SutherlandHodgman,512,SimpleSkyDiffuseModeling,No,No,No
+! <Water Heater Information>,Type,Name,Volume {m3},Maximum Capacity {W},Standard Rated Recovery Efficiency, Standard Rated Energy Factor
+! <Heat Pump Water Heater Information>,Type,Name,Volume {m3},Maximum Capacity {W},Standard Rated Recovery Efficiency,Standard Rated Energy Factor,"DX Coil Total Cooling Rate {W, HPWH Only}"
+! <Water Heater Stratified Node Information>,Node Number,Height {m},Volume {m3},Maximum Capacity {W},Off-Cycle UA {W/K},On-Cycle UA {W/K},Number Of Inlets,Number Of Outlets
 ! <RoomAir Model>, Zone Name, Mixing/Mundt/UCSDDV/UCSDCV/UCSDUFI/UCSDUFE/User Defined
 RoomAir Model,LIVING,Mixing/Well-Stirred
 RoomAir Model,ATTIC,Mixing/Well-Stirred
@@ -293,13 +296,13 @@ AirflowNetwork Model:Wind Pressure Coefficients, !WPCTABLE5, -0.73,-0.63,-0.54,-
 ! <Cooling Sizing Factor Information>, Sizing Factor ID, Value
  Cooling Sizing Factor Information, Global,   1.0000    
 ! <Zone Sizing Information>, Zone Name, Load Type, Calc Des Load {W}, User Des Load {W}, Calc Des Air Flow Rate {m3/s}, User Des Air Flow Rate {m3/s}, Design Day Name, Date/Time of Peak, Temperature at Peak {C}, Humidity Ratio at Peak {kgWater/kgDryAir}, Floor Area {m2}, # Occupants, Calc Outdoor Air Flow Rate {m3/s}, Calc DOAS Heat Addition Rate {W}
- Zone Sizing Information, LIVING, Cooling, 5752.87287, 5752.87287, 0.35063, 0.35063, SEATTLE-TACOMA INTL AP ANN CLG .4% CONDNS DB=>MWB, 8/21 16:00:00, 28.98800, 8.86466E-003, 185.80453, 0.00000, 0.00000, 0.00000
- Zone Sizing Information, LIVING, Heating, 5041.38044, 5041.38044, 0.14143, 0.14143, SEATTLE-TACOMA INTL AP ANN HTG 99% CONDNS DB, 12/21 24:00:00, -1.40000, 3.40836E-003, 185.80453, 0.00000, 0.00000, 0.00000
+ Zone Sizing Information, LIVING, Cooling, 5825.79495, 5825.79495, 0.35508, 0.35508, SEATTLE-TACOMA INTL AP ANN CLG .4% CONDNS DB=>MWB, 8/21 16:00:00, 28.98800, 8.86466E-003, 185.80453, 1.00000, 0.00000, 0.00000
+ Zone Sizing Information, LIVING, Heating, 4946.53626, 4946.53626, 0.13877, 0.13877, SEATTLE-TACOMA INTL AP ANN HTG 99% CONDNS DB, 12/21 24:00:00, -1.40000, 3.40836E-003, 185.80453, 1.00000, 0.00000, 0.00000
 ! <System Sizing Information>, System Name, Load Type, Peak Load Kind, User Design Capacity, Calc Des Air Flow Rate [m3/s], User Des Air Flow Rate [m3/s], Design Day Name, Date/Time of Peak
- System Sizing Information, CENTRAL SYSTEM, Cooling, Sensible, 5669.08, 0.35063, 0.35063, SEATTLE-TACOMA INTL AP ANN CLG .4% CONDNS DB=>MWB, 8/21 00:00:00
- System Sizing Information, CENTRAL SYSTEM, Heating, Sensible, 4967.95, 0.14143, 0.14143, SEATTLE-TACOMA INTL AP ANN HTG 99% CONDNS DB, 12/21 24:00:00
+ System Sizing Information, CENTRAL SYSTEM, Cooling, Sensible, 5740.94, 0.35508, 0.35508, SEATTLE-TACOMA INTL AP ANN CLG .4% CONDNS DB=>MWB, 8/21 00:00:00
+ System Sizing Information, CENTRAL SYSTEM, Heating, Sensible, 4874.49, 0.13877, 0.13877, SEATTLE-TACOMA INTL AP ANN HTG 99% CONDNS DB, 12/21 24:00:00
 ! <Component Sizing Information>, Component Type, Component Name, Input Field Description, Value
- Component Sizing Information, AirTerminal:SingleDuct:ConstantVolume:NoReheat, ZONEDIRECTAIR, Design Size Maximum Air Flow Rate [m3/s], 0.35063
+ Component Sizing Information, AirTerminal:SingleDuct:ConstantVolume:NoReheat, ZONEDIRECTAIR, Design Size Maximum Air Flow Rate [m3/s], 0.35508
  Component Sizing Information, AirTerminal:SingleDuct:ConstantVolume:NoReheat, ZONEDIRECTAIR, User-Specified Maximum Air Flow Rate [m3/s], 1.30841
  Component Sizing Information, AirLoopHVAC, CENTRAL SYSTEM, Sum of Air Terminal Maximum Heating Flow Rates [m3/s], 1.30841
  Component Sizing Information, AirLoopHVAC, CENTRAL SYSTEM, Sum of Air Terminal Minimum Heating Flow Rates [m3/s], 1.30841
@@ -313,6 +316,21 @@ AirflowNetwork Model:Wind Pressure Coefficients, !WPCTABLE5, -0.73,-0.63,-0.54,-
  Component Sizing Information, AirLoopHVAC:UnitaryHeatOnly, FURNACE, Fraction of Supply Air Flow That Goes Through the Controlling Zone, 1.00000
  Component Sizing Information, Fan:OnOff, FAN, User-Specified Maximum Flow Rate [m3/s], 1.30841
  Component Sizing Information, Coil:Heating:Electric, HEATING_RESISTANCE_MAIN, User-Specified Nominal Capacity [W], 30000.00000
+ Component Sizing Information, Fan:OnOff, HEAT PUMP WATER HEATER FAN, User-Specified Maximum Flow Rate [m3/s], 0.22653
+Heat Pump Water Heater Information,WaterHeater:HeatPump:WrappedCondenser,WATER HEATER,0.1703,1432.4,0.000,0.0000,972
+Water Heater Stratified Node Information,1,8.6125E-002,1.4191E-002,0.000,0.3268,0.3268,0,1
+Water Heater Stratified Node Information,2,8.6125E-002,1.4191E-002,0.000,0.1403,0.1403,0,0
+Water Heater Stratified Node Information,3,8.6125E-002,1.4191E-002,0.000,0.1403,0.1403,0,0
+Water Heater Stratified Node Information,4,8.6125E-002,1.4191E-002,4500.000,0.1403,0.1403,0,0
+Water Heater Stratified Node Information,5,8.6125E-002,1.4191E-002,0.000,0.1403,0.1403,0,0
+Water Heater Stratified Node Information,6,8.6125E-002,1.4191E-002,0.000,0.1403,0.1403,0,0
+Water Heater Stratified Node Information,7,8.6125E-002,1.4191E-002,0.000,0.1403,0.1403,0,0
+Water Heater Stratified Node Information,8,8.6125E-002,1.4191E-002,0.000,0.1403,0.1403,0,0
+Water Heater Stratified Node Information,9,8.6125E-002,1.4191E-002,0.000,0.1403,0.1403,0,0
+Water Heater Stratified Node Information,10,8.6125E-002,1.4191E-002,4500.000,0.1403,0.1403,0,0
+Water Heater Stratified Node Information,11,8.6125E-002,1.4191E-002,0.000,0.1403,0.1403,0,0
+Water Heater Stratified Node Information,12,8.6125E-002,1.4191E-002,0.000,0.3268,0.3268,1,0
+ Component Sizing Information, Pump:VariableSpeed, MAINS PRESSURE, Design Flow Rate [m3/s], 2.52361E-004
 ! <Environment>,Environment Name,Environment Type, Start Date, End Date, Start DayOfWeek, Duration {#days}, Source:Start DayOfWeek,  Use Daylight Saving, Use Holidays, Apply Weekend Holiday Rule,  Use Rain Values, Use Snow Values, Sky Temperature Model
 ! <Environment:Special Days>, Special Day Name, Special Day Type, Source, Start Date, Duration {#days}
 ! <Environment:Daylight Saving>, Daylight Saving Indicator, Source, Start Date, End Date
@@ -325,23 +343,23 @@ Environment:Design Day Data,-1.40,0.00,DefaultMultipliers,Wetbulb,-1.40,{C},9986
 Environment:Design Day Misc,355,1232.8,0.1424,5.7719E-002,1.0,2.45,-23.5,ASHRAEClearSky
 Environment:WarmupDays,  3
 ! <Warmup Convergence Information>,Zone Name,Environment Type/Name,Average Warmup Temperature Difference {deltaC},Std Dev Warmup Temperature Difference {deltaC},Max Temperature Pass/Fail Convergence,Min Temperature Pass/Fail Convergence,Average Warmup Load Difference {W},Std Dev Warmup Load Difference {W},Heating Load Pass/Fail Convergence,Cooling Load Pass/Fail Convergence
- Warmup Convergence Information,LIVING,SizingPeriod: SEATTLE-TACOMA INTL AP ANN HTG 99% CONDNS DB,6.6602982063E-006,2.9218364010E-005,Pass,Pass,6.2857078516E-004,2.0111298173E-004,Pass,Pass
- Warmup Convergence Information,ATTIC,SizingPeriod: SEATTLE-TACOMA INTL AP ANN HTG 99% CONDNS DB,1.0024625440E-004,3.8720481928E-005,Pass,Pass,0.0000000000,0.0000000000,Pass,Pass
- Warmup Convergence Information,CRAWLSPACE,SizingPeriod: SEATTLE-TACOMA INTL AP ANN HTG 99% CONDNS DB,6.8469178353E-002,0.2127132324,Pass,Pass,0.0000000000,0.0000000000,Pass,Pass
+ Warmup Convergence Information,LIVING,SizingPeriod: SEATTLE-TACOMA INTL AP ANN HTG 99% CONDNS DB,9.4761565091E-006,2.9431778109E-005,Pass,Pass,7.2670111204E-004,6.5830236518E-004,Pass,Pass
+ Warmup Convergence Information,ATTIC,SizingPeriod: SEATTLE-TACOMA INTL AP ANN HTG 99% CONDNS DB,1.0023594908E-004,3.8806526864E-005,Pass,Pass,0.0000000000,0.0000000000,Pass,Pass
+ Warmup Convergence Information,CRAWLSPACE,SizingPeriod: SEATTLE-TACOMA INTL AP ANN HTG 99% CONDNS DB,6.8469156780E-002,0.2127132027,Pass,Pass,0.0000000000,0.0000000000,Pass,Pass
 Environment,SEATTLE-TACOMA INTL AP ANN CLG .4% CONDNS DB=>MWB,SizingPeriod:DesignDay,08/21,08/21,SummerDesignDay,1,N/A,N/A,N/A,N/A,N/A,N/A,Clark and Allen
 Environment:Daylight Saving,No,SizingPeriod:DesignDay
 Environment:Design Day Data,29.60,10.20,DefaultMultipliers,Wetbulb,18.40,{C},99868,350,3.9,0.00,No,No
 Environment:Design Day Misc,233,1106.3,0.2000,0.1216,1.0,-3.33,12.4,ASHRAETau
 Environment:WarmupDays,  4
- Warmup Convergence Information,LIVING,SizingPeriod: SEATTLE-TACOMA INTL AP ANN CLG .4% CONDNS DB=>MWB,0.3390894191,0.1330932588,Pass,Pass,0.0000000000,0.0000000000,Pass,Pass
- Warmup Convergence Information,ATTIC,SizingPeriod: SEATTLE-TACOMA INTL AP ANN CLG .4% CONDNS DB=>MWB,0.5661368155,0.4158213098,Pass,Pass,0.0000000000,0.0000000000,Pass,Pass
- Warmup Convergence Information,CRAWLSPACE,SizingPeriod: SEATTLE-TACOMA INTL AP ANN CLG .4% CONDNS DB=>MWB,7.4909785329E-002,4.2745883313E-002,Pass,Pass,0.0000000000,0.0000000000,Pass,Pass
+ Warmup Convergence Information,LIVING,SizingPeriod: SEATTLE-TACOMA INTL AP ANN CLG .4% CONDNS DB=>MWB,0.3641417359,0.2096751184,Pass,Pass,2.1629573266E-002,0.1379377691,Pass,Pass
+ Warmup Convergence Information,ATTIC,SizingPeriod: SEATTLE-TACOMA INTL AP ANN CLG .4% CONDNS DB=>MWB,0.5650078065,0.4183270901,Pass,Pass,0.0000000000,0.0000000000,Pass,Pass
+ Warmup Convergence Information,CRAWLSPACE,SizingPeriod: SEATTLE-TACOMA INTL AP ANN CLG .4% CONDNS DB=>MWB,7.4738886046E-002,4.2389637943E-002,Pass,Pass,0.0000000000,0.0000000000,Pass,Pass
 Environment,ANNUAL,WeatherFileRunPeriod,01/01/2017,12/31/2017,Sunday,365,Use RunPeriod Specified Day,Yes,Yes,No,Yes,Yes,Clark and Allen
 Environment:Daylight Saving,No,
 Environment:WarmupDays,  3
- Warmup Convergence Information,LIVING,RunPeriod: ANNUAL,7.9197280766E-005,1.6480729157E-004,Pass,Pass,2.1007654350E-002,1.3357663580E-002,Pass,Pass
- Warmup Convergence Information,ATTIC,RunPeriod: ANNUAL,0.1275930645,0.1375741746,Pass,Pass,0.0000000000,0.0000000000,Pass,Pass
- Warmup Convergence Information,CRAWLSPACE,RunPeriod: ANNUAL,0.2018385199,0.1782134286,Pass,Pass,0.0000000000,0.0000000000,Pass,Pass
+ Warmup Convergence Information,LIVING,RunPeriod: ANNUAL,7.9101786016E-005,1.6180516677E-004,Pass,Pass,2.1962049801E-002,1.4260811092E-002,Pass,Pass
+ Warmup Convergence Information,ATTIC,RunPeriod: ANNUAL,0.1275905844,0.1376023742,Pass,Pass,0.0000000000,0.0000000000,Pass,Pass
+ Warmup Convergence Information,CRAWLSPACE,RunPeriod: ANNUAL,0.2018387657,0.1782138607,Pass,Pass,0.0000000000,0.0000000000,Pass,Pass
 ! <Program Control Information:Threads/Parallel Sims>, Threading Supported,Maximum Number of Threads, Env Set Threads (OMP_NUM_THREADS), EP Env Set Threads (EP_OMP_NUM_THREADS), IDF Set Threads, Number of Threads Used (Interior Radiant Exchange), Number Nominal Surfaces, Number Parallel Sims
 Program Control:Threads/Parallel Sims, No,1, N/A, N/A, N/A, N/A, N/A, N/A
 End of Data

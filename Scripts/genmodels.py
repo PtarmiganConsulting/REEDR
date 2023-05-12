@@ -84,7 +84,7 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
     schedule_DHW_draws_dir = building_block_names_dict["schedule_DHW_draws_dir"][bldg_blk_names_lookup_id]
     schedule_CSV = building_block_names_dict["schedule_CSV"][bldg_blk_names_lookup_id]
     schedule_file = building_block_names_dict["schedule_file"][bldg_blk_names_lookup_id]
-    location_and_climate_dir = building_block_names_dict["location_and_climate_dir"][bldg_blk_names_lookup_id]
+    #location_and_climate_dir = building_block_names_dict["location_and_climate_dir"][bldg_blk_names_lookup_id]
     dhw_main_dir = building_block_names_dict["dhw_main_dir"][bldg_blk_names_lookup_id]
     dhw_wh_type_dir = building_block_names_dict["dhw_wh_type_dir"][bldg_blk_names_lookup_id]
     dhw_sys_file = building_block_names_dict["dhw_sys_file"][bldg_blk_names_lookup_id]
@@ -346,17 +346,18 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
 
             #... location/weather file
             # check to see if Actual Meterological Year (AMY) file. If so, treat differently to properly find sizing file
-            if "AMY" in dictionary[weather_fieldname]:
-                Str = dictionary[weather_fieldname]
-                # strip off "AMY" and year
-                Str = Str[:len(Str)-8]
-                # convert to TMYx file to find proper design days
-                Str = Str + "TMYx.2004-2018"
-                location_path = os.path.join(set_dir, building_block_dir, location_and_climate_dir)
-                location_pull = validate(weather_fieldname, Str, "file", dummy_int, dummy_int, dummy_list, location_path)
-            else:
-                location_path = os.path.join(set_dir, building_block_dir, location_and_climate_dir)
-                location_pull = validate(weather_fieldname, dictionary[weather_fieldname], "file", dummy_int, dummy_int, dummy_list, location_path)
+            # NOTE: THIS ISN'T CURRENTLY NEEDED OR USED, BECAUSE THE WEATHER FILES ARE USED FOR DESIGN DAYS.
+            # if "AMY" in dictionary[weather_fieldname]:
+            #     Str = dictionary[weather_fieldname]
+            #     # strip off "AMY" and year
+            #     Str = Str[:len(Str)-8]
+            #     # convert to TMYx file to find proper design days
+            #     Str = Str + "TMYx.2004-2018"
+            #     location_path = os.path.join(set_dir, building_block_dir, location_and_climate_dir)
+            #     location_pull = validate(weather_fieldname, Str, "file", dummy_int, dummy_int, dummy_list, location_path)
+            # else:
+            #     location_path = os.path.join(set_dir, building_block_dir, location_and_climate_dir)
+            #     location_pull = validate(weather_fieldname, dictionary[weather_fieldname], "file", dummy_int, dummy_int, dummy_list, location_path)
 
              #... building orientation
             bldg_orient_lo = 0
@@ -396,7 +397,7 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
             # if "Overall Effective R-Value", make sure value magnitude makes sense
             elif above_ground_wall_input_method == "Overall Effective R-Value":
                 wall_R_lo = 3.5
-                wall_R_hi = 80
+                wall_R_hi = 60
                 above_ground_wall_R_value = validate(wallRvalue_fieldname, dictionary[wallRvalue_fieldname], "num_between", wall_R_lo, wall_R_hi, dummy_list)
                 above_ground_wall_con = validate(wallCon_fieldname, "Wall with Overall Effective R-Value", "list", dummy_int, dummy_int, above_ground_wall_list)
                 if above_ground_wall_R_value <= 7:
@@ -934,10 +935,11 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
             win_construction_t = f.read()
 
         # Location & Climate
-        #... also includes design day 
-        location_design_day_file = location_pull + ".txt"
-        with open(os.path.join(set_dir, building_block_dir, location_and_climate_dir, location_design_day_file), 'r') as f: # our location & climate dictionary in action
-            locations_t = f.read()
+        # NOTE: THIS ISN'T CURRENTLY NEEDED OR USED, BECAUSE THE WEATHER FILES ARE USED FOR DESIGN DAYS.
+        #... also includes design day
+        # location_design_day_file = location_pull + ".txt"
+        # with open(os.path.join(set_dir, building_block_dir, location_and_climate_dir, location_design_day_file), 'r') as f: # our location & climate dictionary in action
+        #     locations_t = f.read()
 
         # Materials
         with open(os.path.join(set_dir, building_block_dir, building_block_materials_file), 'r') as f:
@@ -1183,56 +1185,28 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
                                     (foundationwall_ht_AG_ft + foundationwall_ht_BG_ft) * conditioned_footprint_area_ft2
         else:
             infiltrationVolume_ft3 = conditioned_footprint_area_ft2 * avgHtPerStory_ft2 * avgStories
-        #print("infiltration volume: " + str(infiltrationVolume_ft3))
+     
         infiltrationInCFM50 = infiltrationInACH50/60 * infiltrationVolume_ft3
-        #print("infiltration CFM50: " + str(infiltrationInCFM50))
         infiltrationInM3PerSec50Pa = infiltrationInCFM50 * 0.00047194745 #convert CFM to m^3/s
-        #print("infiltration m3/s at 50 Pa: " + str(infiltrationInM3PerSec50Pa))
         infiltrationInM3PerSec4Pa = infiltrationInM3PerSec50Pa * (4/50)**0.65 #convert to airflow at 4Pa
-        #print("infiltration m3/s at 4 Pa: " + str(infiltrationInM3PerSec4Pa))
         density_air = 1.205 # at sea level, 20 degrees C
         ref_pressure = 4 # reference pressure in Pa
         Cd = 1 # discharge coefficient
         ELA_total_4Pa_m2 = infiltrationInM3PerSec4Pa * math.sqrt(density_air/(2*ref_pressure))/Cd
-        #print("ELA in m2 at 4 Pa: " + str(ELA_total_4Pa_m2))
-
-        # if foundation_type == "Heated Basement" or foundation_type == "Slab":
-        #     ELA_wall_frontback = ELA_total_4Pa_m2 * 1/3/2
-        #     ELA_wall_leftright = ELA_total_4Pa_m2 * 1/3/2
-        #     ELA_ceiling = ELA_total_4Pa_m2 * 1/3
-        #     ELA_floor = ELA_total_4Pa_m2 * 0
-        # else:
-        #     ELA_wall_frontback = ELA_total_4Pa_m2 * 1/4/2
-        #     ELA_wall_leftright = ELA_total_4Pa_m2 * 1/4/2
-        #     ELA_ceiling = ELA_total_4Pa_m2 * 1/4
-        #     ELA_floor = ELA_total_4Pa_m2 * 1/4
 
         ELA_wall_frontback = ELA_total_4Pa_m2 * 1/4/2
         ELA_wall_leftright = ELA_total_4Pa_m2 * 1/4/2
         ELA_ceiling = ELA_total_4Pa_m2 * 1/2
         ELA_floor = 0.00001
 
-        #print("ELA_wall_frontback: " + str(ELA_wall_frontback))
-        #print("ELA_wall_leftright: " + str(ELA_wall_leftright))
-        #print("Total wall ELA:" + str(2*ELA_wall_frontback + 2*ELA_wall_leftright))
-        #print("ELA_ceiling: " + str(ELA_ceiling))
-        #print("ELA_floor: " + str(ELA_floor))
-        #print("Total ELA:" + str(2*ELA_wall_frontback + 2*ELA_wall_leftright + ELA_ceiling + ELA_floor))
-
-
         total_envelope_height = dictionary[stories_fieldname] * dictionary[heightPerStory_fieldname]
         
         adjust = []
         adjust = estimateInfiltrationAdjustment(foundation_type, infiltrationInACH50, dictionary[footprint_fieldname], total_envelope_height, \
             living_infiltration_coeff_dict, attic_infiltration_coeff_dict, crawl_infiltration_coeff_dict)
-        #living_adjust = adjust[0]
+
         attic_adjust = adjust[1]
         crawl_adjust = adjust[2]
-        
-        # ELA_wall_frontback = living_adjust * wall_area_front * 0.00010812648958345
-        # ELA_wall_leftright = living_adjust * wall_area_left * 0.00010812648958345
-        # ELA_ceiling = living_adjust * conditioned_footprint_area * 0.00010812648958345
-        # ELA_floor = living_adjust * conditioned_footprint_area * 0.0000000905634180403216
         
         roof_hypotenuse = math.sqrt(roof_ht**2 + (building_depth/2)**2)
         attic_wall_area = 2*(0.5*building_depth*roof_ht) + 2*(roof_hypotenuse*building_width)
@@ -1394,7 +1368,7 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
         # Nests all the .txt files, now morphed into strings, in a listin the order they are to be written to the new idfs.
         # Nesting them this way allows us to easily write the full idf file, because we can simply iterate over the list
         master_tl = [
-            simparam_t, performanceprecision_t, locations_t, sched_t, misc_elec_sched_t, misc_gas_sched_t, \
+            simparam_t, performanceprecision_t, sched_t, misc_elec_sched_t, misc_gas_sched_t, \
             mat_t, glazing_t, win_construction_t, construction_t, \
             range_t, dryer_t, clotheswasher_t, dishwasher_t, frig_t, misc_elec_t, misc_gas_t, people_t, lights_t, \
             foundation_type_t, geom_rules_t, internal_mass_t, geom_main_envelope_t, geom_nonslab_adder_t, geom_main_windows_t, \
@@ -1405,6 +1379,7 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
             zone_equip_list_t, HVAC_equip_1_t, HVAC_equip_2_t, heating_coil_t, supp_heating_coil_t, cooling_coil_t, fan_t, \
             baseboard_t, thermostat_t, zone_sizing_t, water_heater_t, dhw_t, dhw_draw_sch_t, perf_t, output_t, user_output_t, outputcontrol_t
             ]
+        #locations_t
 
         #the idf writing actually begins here
         fullidf = "" # the full idf begins as a blank string
