@@ -1,7 +1,7 @@
 !-   ===========  ALL OBJECTS IN CLASS: VERSION ===========
 
 Version,
-    9.5;                     !- Version Identifier
+    22.2;                     !- Version Identifier
 
 !-   ===========  ALL OBJECTS IN CLASS: SIMULATIONCONTROL ===========
 
@@ -15,12 +15,12 @@ SimulationControl,
 !-   ===========  ALL OBJECTS IN CLASS: BUILDING ===========
 
 Building,
-    {run_label},                	!- Name
-    {bldg_orient},      	!- North Axis {{deg}}
+    {run_label},                !- Name
+    {bldg_orient},      	    !- North Axis {{deg}}
     Suburbs,                 	!- Terrain
-    0.5,                    	!- Loads Convergence Tolerance Value, Note: originally 0.04
-    0.5,                     	!- Temperature Convergence Tolerance Value {{deltaC}}
-    MinimalShadowing, 		!- Solar Distribution
+    0.05,                    	!- Loads Convergence Tolerance Value, Note: originally 0.04
+    0.05,                     	!- Temperature Convergence Tolerance Value {{deltaC}}
+    MinimalShadowing, 		    !- Solar Distribution
     25,                      	!- Maximum Number of Warmup Days
     3;                      	!- Minimum Number of Warmup Days
 
@@ -28,6 +28,15 @@ Building,
 
 SurfaceConvectionAlgorithm:Inside,
     TARP;                  !- Algorithm
+
+!-   ===========  ALL OBJECTS IN CLASS: SURFACECONVECTIONALGORITHM:OUTSIDE ===========
+
+SurfaceConvectionAlgorithm:Outside,
+    DOE-2;                  !- Algorithm
+
+HeatBalanceAlgorithm,
+   ConductionTransferFunction,   !- Algorithm
+   200;                          !- Surface Temperature Upper Limit {{degC}}
 
 !-   ===========  ALL OBJECTS IN CLASS: TIMESTEP ===========
 
@@ -52,9 +61,19 @@ RunPeriod,
     Yes,                     !- Use Weather File Snow Indicators
     ;                        !- Treat Weather as Actual
 
+!-   ===========  ALL OBJECTS IN CLASS: SIZINGPERIOD:WEATHERFILECONDITIONTYPE ===========
+
+SizingPeriod:WeatherFileConditionType,
+    Extreme_Winter,          !- Name
+    WinterExtreme;           !- Period Selection
+
+SizingPeriod:WeatherFileConditionType,
+    Extreme_Summer,          !- Name
+    SummerExtreme;           !- Period Selection
+
  Site:WaterMainsTemperature,
-     CorrelationFromWeatherFile,	!- Calculation method
-     , 		!- Temperature schedule name
-     , !- Annual average outdoor air temperature {{C}}
-     ;	!- Maximum difference in monthly average outdoor air temperatures {{C}}
+     Schedule,	            !- Calculation method
+     MainsWaterTemp, 	    !- Temperature schedule name
+     ,                      !- Annual average outdoor air temperature {{C}}
+     ;	                    !- Maximum difference in monthly average outdoor air temperatures {{C}}
 

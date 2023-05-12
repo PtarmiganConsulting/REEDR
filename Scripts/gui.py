@@ -74,7 +74,7 @@ def gui(func):
     sim_select = ["Annual", "Sub-Annual: enter start and end dates at right -->", "Test Run"]
     gran_select = dropdown_dict["annual_sim_granularity"]
     end_select = dropdown_dict["annual_gran_enduses"]
-    default_string = "C:\EnergyPlusV9-5-0\energyplus.exe!@##@!New Project!@##@!Annual!@##@!Annual!@##@!All_End_Uses!@##@!True!@##@!BLANKSTR!@##@!BLANKSTR!@##@!BLANKSTR!@##@!BLANKSTR!@##@!True"
+    default_string = "C:\EnergyPlusV22-2-0\energyplus.exe!@##@!New Project!@##@!Annual!@##@!Annual!@##@!All_End_Uses!@##@!True!@##@!BLANKSTR!@##@!BLANKSTR!@##@!BLANKSTR!@##@!BLANKSTR!@##@!True"
     ## even if the default string is not in use, it's handy for resetting defaults for version control.
 
     # Acquire User Settings Path
@@ -100,7 +100,7 @@ def gui(func):
                 data_storage.write(default_string)
         
         import_list = [
-            "C:\EnergyPlusV9-5-0\energyplus.exe",
+            "C:\EnergyPlusV22-2-0\energyplus.exe",
             "New Project",
             "Annual",
             "Annual",
@@ -335,7 +335,7 @@ def gui(func):
 
     # Main Window Labels
     ttk.Label(frm, text="the Residential Energy Efficiency and Demand Response tool (REEDR)", style='Title.TLabel').grid(sticky=W, column=0, row=0, padx=10, columnspan=2)
-    ttk.Label(frm, text="v1.0.0-beta", style='Version.TLabel').grid(sticky=W, column=0, row=1, padx=10)
+    ttk.Label(frm, text="v1.1.0-beta", style='Version.TLabel').grid(sticky=W, column=0, row=1, padx=10)
 
     # Widget Formatting
     s = ttk.Style()
@@ -349,9 +349,9 @@ def gui(func):
     s.configure('LicenseBody.TLabel', font=('Helvetica', 7))
 
     # Path
-    ttk.Label(frm, text="EnergyPlus v9.5 Executable Path: ", style='Body.TLabel').grid(sticky=W, column=0, row=2, padx=10, pady=25)
+    ttk.Label(frm, text="EnergyPlus v22.2 Executable Path: ", style='Body.TLabel').grid(sticky=W, column=0, row=2, padx=10, pady=25)
     path_input = StringVar()
-    path_input.set("C:\EnergyPlusV9-5-0\energyplus.exe")
+    path_input.set("C:\EnergyPlusV22-2-0\energyplus.exe")
     path_entry = ttk.Entry(frm, width=60, style='Body.TEntry', textvariable=path_input, foreground="black") # path entry
     path_entry.grid(sticky=W, column=1, row=2, padx=10, pady=25, columnspan=2)
 

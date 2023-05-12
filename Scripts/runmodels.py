@@ -52,7 +52,7 @@ def runmodels(gui_params, get_data_dict):
 
         ## define eplus path, IDF file, and weather file
         eplus_path = epluslocation
-        ##eplus_path = r'C:\EnergyPlusV9-5-0\energyplus.exe'
+
         runidf = runlabel + ".idf"
         eplus_file = os.path.join(set_dir, projname, runlabel, runidf)
 
@@ -87,11 +87,26 @@ def runmodels(gui_params, get_data_dict):
     ## iterates over the master dictionary list and calls eplus on all of them
     ## remember, each dictionary is effectively a complete runlabel row...
     ## and that's how we can catch every runlabel with one short loop!
-    # get_data_dict["runlog"].write("Starting model runs... \n")
     i = 1
 
+    cpuCount = os.cpu_count()
+    
+    try:
+        if cpuCount == 2:
+            thread_limit = 2
+        elif cpuCount <= 8:
+            thread_limit = 4
+        elif cpuCount <= 16:
+            thread_limit = 8
+        elif cpuCount <= 24:
+            thread_limit = 12
+        else:
+            thread_limit = 4
+    except:
+        thread_limit = 4
 
-    thread_limit = 4
+    #thread_limit = 15
+
     if multi:
 
         threads = []
@@ -124,17 +139,11 @@ def runmodels(gui_params, get_data_dict):
                 threads.append(t)
                 t.start()
 
-                # plusterwolf(run_label, location_pull, get_data_dict["master_directory"], gui_params["path_val"], i, get_data_dict["df"])
-                # get_data_dict["runlog"].write("... model run for " + str(run_label) + " complete. \n")
             except:
-                # get_data_dict["runlog"].write("!!! problem running model " + str(run_label) + "\n")
-                # get_data_dict["runlog"].write("!!! REEDR experienced the following error: " + str(e) + "\n")
                 print("\n*** ERROR: Problem running EnergyPlus. Please check to make sure you have a valid EnergyPlus exe path.\n")
                 return True
 
             i = i + 1
-
-        # get_data_dict["runlog"].write("... \n")
 
         for thread in threads:
             # print(thread)
