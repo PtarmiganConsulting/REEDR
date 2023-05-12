@@ -335,7 +335,7 @@ def gui(func):
 
     # Main Window Labels
     ttk.Label(frm, text="the Residential Energy Efficiency and Demand Response tool (REEDR)", style='Title.TLabel').grid(sticky=W, column=0, row=0, padx=10, columnspan=2)
-    ttk.Label(frm, text="v1.0.0-beta", style='Version.TLabel').grid(sticky=W, column=0, row=1, padx=10)
+    ttk.Label(frm, text="v1.1.0-beta", style='Version.TLabel').grid(sticky=W, column=0, row=1, padx=10)
 
     # Widget Formatting
     s = ttk.Style()

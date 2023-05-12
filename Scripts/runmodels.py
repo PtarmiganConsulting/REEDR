@@ -87,11 +87,26 @@ def runmodels(gui_params, get_data_dict):
     ## iterates over the master dictionary list and calls eplus on all of them
     ## remember, each dictionary is effectively a complete runlabel row...
     ## and that's how we can catch every runlabel with one short loop!
-    # get_data_dict["runlog"].write("Starting model runs... \n")
     i = 1
 
+    cpuCount = os.cpu_count()
+    
+    try:
+        if cpuCount == 2:
+            thread_limit = 2
+        elif cpuCount <= 8:
+            thread_limit = 4
+        elif cpuCount <= 16:
+            thread_limit = 8
+        elif cpuCount <= 24:
+            thread_limit = 12
+        else:
+            thread_limit = 4
+    except:
+        thread_limit = 4
 
-    thread_limit = 4
+    #thread_limit = 15
+
     if multi:
 
         threads = []
