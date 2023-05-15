@@ -10,13 +10,13 @@ There are two ways to learn how to install and run REEDR on your machine:
 - **Watch how-to videos on YouTube**. There is currently a [Quick Start Guide](https://www.youtube.com/watch?v=5DuCjWeKPXY&t=1s) on YouTube, and there are plans to post more content on how to use REEDR in the future.
 - **Keep reading the instructions below**.
 
-To get REEDR running on your machine, you need to install REEDR and a copy of EnergyPlus *v9.5*, the version of EnergyPlus with which REEDR is currently compatible. Note that REEDR currently runs only in Windows environments.
+To get REEDR running on your machine, you need to install REEDR and a copy of EnergyPlus *v22.2.0*, the version of EnergyPlus with which REEDR is currently compatible. Note that REEDR currently runs only in Windows environments.
 
 ## Installing REEDR
-To install REEDR, download *REEDR Setup.exe* from the [latest REEDR release](https://github.com/PtarmiganConsulting/REEDR/releases/tag/v1.0.0-beta) and run it on your machine. *REEDR Setup.exe* is a Windows Installer that will ask where you want REEDR installed.
+To install REEDR, download *REEDR Setup.exe* from the [latest REEDR release](https://github.com/PtarmiganConsulting/REEDR/releases/tag/v1.1.0-beta) and run it on your machine. *REEDR Setup.exe* is a Windows Installer that will ask where you want REEDR installed.
 
-## Installing EnergyPlus v9.5
-To install EnergyPlus v9.5, download a copy from the [EnergyPlus v9.5 github page](https://github.com/NREL/EnergyPlus/releases/tag/v9.5.0) and install it onto your computer using its Windows installer. Remember where you install EnergyPlus on your computer, as you will need to tell REEDR where it is located.
+## Installing EnergyPlus v22.2.0
+To install EnergyPlus v22.2.0, download a copy from the [EnergyPlus v22.2.0 github page](https://github.com/NREL/EnergyPlus/releases/tag/v22.2.0) and install it onto your computer using its Windows installer. Remember where you install EnergyPlus on your computer, as you will need to tell REEDR where it is located.
 
 ## Running REEDR
 There are two main files you need to define and run a REEDR project:
