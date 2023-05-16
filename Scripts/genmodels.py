@@ -190,6 +190,7 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
     wtwRight_fieldname = model_input_temp_fieldnames_dict["wtwRight_fieldname"][input_template_names_lookup_id]
     infiltration_fieldname = model_input_temp_fieldnames_dict["infiltration_fieldname"][input_template_names_lookup_id]
     primaryHVAC_fieldname = model_input_temp_fieldnames_dict["primaryHVAC_fieldname"][input_template_names_lookup_id]
+    hvacSizingMethod_fieldname = model_input_temp_fieldnames_dict["hvacSizingMethod_fieldname"][input_template_names_lookup_id]
     primaryHtgCapacityUnits_fieldname = model_input_temp_fieldnames_dict["primaryHtgCapacityUnits_fieldname"][input_template_names_lookup_id]
     primaryHtgCapacity_fieldname = model_input_temp_fieldnames_dict["primaryHtgCapacity_fieldname"][input_template_names_lookup_id]
     primaryClgCapacityUnits_fieldname = model_input_temp_fieldnames_dict["primaryClgCapacityUnits_fieldname"][input_template_names_lookup_id]
@@ -524,6 +525,10 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
             hvac_type_list = hvac_dict.keys()
             hvac_type = validate(primaryHVAC_fieldname, dictionary[primaryHVAC_fieldname], "list", dummy_int, dummy_int, hvac_type_list)
 
+            #... HVAC sizing method
+            hvacSizingMethod_list = ["Manual", "Autosize"]
+            hvacSizingMethod = validate(hvacSizingMethod_fieldname, dictionary[hvacSizingMethod_fieldname], "list", dummy_int, dummy_int, hvacSizingMethod_list)
+
             #... get HVAC characteristics for primary HVAC type
             CentralOrZonal = hvac_dict[hvac_type]["CentralOrZonal"]
             ZoneEquipment1ObjectType = hvac_dict[hvac_type]["ZoneEquipment1ObjectType"]
@@ -570,18 +575,26 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
             
             #... heating capacity units
             primaryHVAC_capacity_units_list = ["kBtu/h", "kW", "ton"]
-            primaryHtg_capacity_units = validate(primaryHtgCapacityUnits_fieldname, dictionary[primaryHtgCapacityUnits_fieldname], "list", dummy_int, dummy_int, primaryHVAC_capacity_units_list)
-            
+            if hvacSizingMethod == "Manual":
+                primaryHtg_capacity_units = validate(primaryHtgCapacityUnits_fieldname, dictionary[primaryHtgCapacityUnits_fieldname], "list", dummy_int, dummy_int, primaryHVAC_capacity_units_list)
+
             #... primary heating capacity
-            primary_heating_capacity = validate(primaryHtgCapacity_fieldname, dictionary[primaryHtgCapacity_fieldname], "num_not_zero", dummy_int, dummy_int, dummy_list)
-            primary_heating_capacity = convert_capacity(primaryHtg_capacity_units, primary_heating_capacity)
+            if hvacSizingMethod == "Manual":
+                primary_heating_capacity = validate(primaryHtgCapacity_fieldname, dictionary[primaryHtgCapacity_fieldname], "num_not_zero", dummy_int, dummy_int, dummy_list)
+                primary_heating_capacity = convert_capacity(primaryHtg_capacity_units, primary_heating_capacity)
+            else:
+                primary_heating_capacity = "Autosize"
 
             #... cooling capacity and capacity units
             if AirLoopHVAC_Unitary_ObjectName == "SS Heat Pump" or AirLoopHVAC_Unitary_ObjectName == "DS Heat Pump" or AirLoopHVAC_Unitary_ObjectName == "MS Heat Pump" \
             or coolCoilTextFile != "No":
-                primaryClg_capacity_units = validate(primaryClgCapacityUnits_fieldname, dictionary[primaryClgCapacityUnits_fieldname], "list", dummy_int, dummy_int, primaryHVAC_capacity_units_list)
-                primary_cooling_capacity = validate(primaryClgCapacity_fieldname, dictionary[primaryClgCapacity_fieldname], "num_not_zero", dummy_int, dummy_int, dummy_list)
-                primary_cooling_capacity = convert_capacity(primaryClg_capacity_units, primary_cooling_capacity)
+                if hvacSizingMethod == "Manual":
+                    primaryClg_capacity_units = validate(primaryClgCapacityUnits_fieldname, dictionary[primaryClgCapacityUnits_fieldname], "list", dummy_int, dummy_int, primaryHVAC_capacity_units_list)
+                    primary_cooling_capacity = validate(primaryClgCapacity_fieldname, dictionary[primaryClgCapacity_fieldname], "num_not_zero", dummy_int, dummy_int, dummy_list)
+                    primary_cooling_capacity = convert_capacity(primaryClg_capacity_units, primary_cooling_capacity)
+                else:
+                    primary_cooling_capacity = "Autosize"
+
                 #... cooling setpoint schedule
                 clg_stpt_sch = validate(clgSched_fieldname, dictionary[clgSched_fieldname], "list", dummy_int, dummy_int, sched_validation_list)
             else:
@@ -594,11 +607,15 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
                 #... ASHP backup heat type
                 hp_supp_heat_type_list = ["Electric", "Gas"]
                 hp_supp_heat_type = validate(hpBackupType_fieldname, dictionary[hpBackupType_fieldname], "list", dummy_int, dummy_int, hp_supp_heat_type_list)
-                #... ASHP backup heat capacity units
-                ASHPbackup_capacity_units_list = ["kBtu/h", "kW"]
-                ASHPbackup_capacity_units = validate(hpBackupCapacityUnits_fieldname, dictionary[hpBackupCapacityUnits_fieldname], "list", dummy_int, dummy_int, ASHPbackup_capacity_units_list)
-                #... ASHP backup heat capacity
-                hp_supp_heat_capacity = convert_capacity(ASHPbackup_capacity_units, validate(hpBackupCapacity_fieldname, dictionary[hpBackupCapacity_fieldname], "num_not_zero", dummy_int, dummy_int, dummy_list))
+                if hvacSizingMethod == "Manual":
+                    #... ASHP backup heat capacity units
+                    ASHPbackup_capacity_units_list = ["kBtu/h", "kW"]
+                    ASHPbackup_capacity_units = validate(hpBackupCapacityUnits_fieldname, dictionary[hpBackupCapacityUnits_fieldname], "list", dummy_int, dummy_int, ASHPbackup_capacity_units_list)
+                    #... ASHP backup heat capacity
+                    hp_supp_heat_capacity = convert_capacity(ASHPbackup_capacity_units, validate(hpBackupCapacity_fieldname, dictionary[hpBackupCapacity_fieldname], "num_not_zero", dummy_int, dummy_int, dummy_list))
+                else:
+                    hp_supp_heat_capacity = "Autosize"
+                
                 #... backup heat lockout
                 hp_max_resistance_temp = validate(hpBackupLockout_fieldname, convert_degF_to_degC(dictionary[hpBackupLockout_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
                 #... compressor lockout
@@ -608,7 +625,7 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
                 hp_supp_heat_capacity = 0
 
             #... baseboard heating capacity
-            if str(dictionary[backupBaseboardCapacity_fieldname]) == "nan":
+            if str(dictionary[backupBaseboardCapacity_fieldname]) == "nan" or hvacSizingMethod == "Manual":
                 baseboard_heat_capacity = 0
             else:
                 baseboard_heat_capacity = convert_capacity("kW", validate(backupBaseboardCapacity_fieldname, dictionary[backupBaseboardCapacity_fieldname], "any_num", dummy_int, dummy_int, dummy_list))
@@ -1046,32 +1063,50 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
             hp_min_compressor_temp = convert_degF_to_degC(-20)
 
         # Set capacity to use for sizing fans. If heating only, use heating capacity. If heating and cooling, use average capacity.
-        if AirLoopHVAC_Unitary_ObjectName == "SS Heat Pump" or AirLoopHVAC_Unitary_ObjectName == "DS Heat Pump" or AirLoopHVAC_Unitary_ObjectName == "MS Heat Pump" \
-            or coolCoilTextFile != "No":
+        if hvacSizingMethod == "Manual":
+            if AirLoopHVAC_Unitary_ObjectName == "SS Heat Pump" or AirLoopHVAC_Unitary_ObjectName == "DS Heat Pump" or AirLoopHVAC_Unitary_ObjectName == "MS Heat Pump" \
+                or coolCoilTextFile != "No":
 
-            sizing_capacity = convert_W_to_ton((primary_heating_capacity + primary_cooling_capacity)/2)
-        else:
-            sizing_capacity = convert_W_to_ton(primary_heating_capacity)
+                sizing_capacity = convert_W_to_ton((primary_heating_capacity + primary_cooling_capacity)/2)
+            else:
+                sizing_capacity = convert_W_to_ton(primary_heating_capacity)
 
         # Set max fan speed using the proper user inputted total HVAC capacity
-        fan_m3PerSec_max = convert_CFM_to_m3PerSec(fan_CFMperTon_max * sizing_capacity)
+        if hvacSizingMethod == "Manual":
+            fan_m3PerSec_max = convert_CFM_to_m3PerSec(fan_CFMperTon_max * sizing_capacity)
         
         # Set fan speeds and capacities using characteristics from HVAC dictionary and user selected HVAC type.
         # Variable speed equipment is modeled using four speeds.
-        fan_m3PerSec_spd_1 = fan_CFMmult_spd_1 * fan_m3PerSec_max
-        fan_m3PerSec_spd_2 = fan_CFMmult_spd_2 * fan_m3PerSec_max
-        fan_m3PerSec_spd_3 = fan_CFMmult_spd_3 * fan_m3PerSec_max
-        fan_m3PerSec_spd_4 = fan_CFMmult_spd_4 * fan_m3PerSec_max
-        htg_capacity_spd_1 = capacitymult_spd_1 * primary_heating_capacity
-        htg_capacity_spd_2 = capacitymult_spd_2 * primary_heating_capacity
-        htg_capacity_spd_3 = capacitymult_spd_3 * primary_heating_capacity
-        htg_capacity_spd_4 = capacitymult_spd_4 * primary_heating_capacity
-        clg_capacity_spd_1 = capacitymult_spd_1 * primary_cooling_capacity
-        clg_capacity_spd_2 = capacitymult_spd_2 * primary_cooling_capacity
-        clg_capacity_spd_3 = capacitymult_spd_3 * primary_cooling_capacity
-        clg_capacity_spd_4 = capacitymult_spd_4 * primary_cooling_capacity
+        if hvacSizingMethod == "Manual":
+            fan_m3PerSec_spd_1 = fan_CFMmult_spd_1 * fan_m3PerSec_max
+            fan_m3PerSec_spd_2 = fan_CFMmult_spd_2 * fan_m3PerSec_max
+            fan_m3PerSec_spd_3 = fan_CFMmult_spd_3 * fan_m3PerSec_max
+            fan_m3PerSec_spd_4 = fan_CFMmult_spd_4 * fan_m3PerSec_max
+            htg_capacity_spd_1 = capacitymult_spd_1 * primary_heating_capacity
+            htg_capacity_spd_2 = capacitymult_spd_2 * primary_heating_capacity
+            htg_capacity_spd_3 = capacitymult_spd_3 * primary_heating_capacity
+            htg_capacity_spd_4 = capacitymult_spd_4 * primary_heating_capacity
+            clg_capacity_spd_1 = capacitymult_spd_1 * primary_cooling_capacity
+            clg_capacity_spd_2 = capacitymult_spd_2 * primary_cooling_capacity
+            clg_capacity_spd_3 = capacitymult_spd_3 * primary_cooling_capacity
+            clg_capacity_spd_4 = capacitymult_spd_4 * primary_cooling_capacity
 
-        fan_max_flow_allowed = 1 * fan_m3PerSec_max
+            fan_max_flow_allowed = 1 * fan_m3PerSec_max
+        else:
+            fan_m3PerSec_spd_1 = "Autosize"
+            fan_m3PerSec_spd_2 = "Autosize"
+            fan_m3PerSec_spd_3 = "Autosize"
+            fan_m3PerSec_spd_4 = "Autosize"
+            htg_capacity_spd_1 = "Autosize"
+            htg_capacity_spd_2 = "Autosize"
+            htg_capacity_spd_3 = "Autosize"
+            htg_capacity_spd_4 = "Autosize"
+            clg_capacity_spd_1 = "Autosize"
+            clg_capacity_spd_2 = "Autosize"
+            clg_capacity_spd_3 = "Autosize"
+            clg_capacity_spd_4 = "Autosize"
+
+            fan_max_flow_allowed = "Autosize"
 
         # Add baseboard capacity if defined, and properly handle assingment of HPWH
         if baseboard_heat_capacity != 0 and HPWH == 0:
