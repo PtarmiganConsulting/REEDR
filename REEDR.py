@@ -26,6 +26,7 @@ print("Initializing REEDR interface...\n")
 import os # for making paths and directories
 from pathlib import Path # for getting current directory path
 import sys
+import time
 from pprint import pprint
 
 cwd = Path(os. getcwd())
@@ -48,6 +49,12 @@ from Scripts.dictmaker import dict_maker
 # the main function
 
 def main(gui_params):
+
+    # For timing REEDER.  Swap booleans to toggle run-timing on and off
+    # time_val = False
+    time_val = True
+    if time_val:
+        start_time = time.time()
     
     # A switch used to skip subsequent code if an error is hit
     hit_error = False
@@ -85,6 +92,10 @@ def main(gui_params):
         hit_error = genoutputs(gui_params, get_data_dict, control_panel_dict) # for debugging
 
     if hit_error == False:
+        if time_val:
+            end_time = time.time()
+            print(f"Run time = {end_time - start_time} seconds. \n")
+            
         input("REEDR run successful.  You may now close this window or press enter.")
     else:
         input("REEDR experienced an error.  You may now close this window or press enter.")
