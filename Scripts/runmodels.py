@@ -92,8 +92,8 @@ def runmodels(gui_params, get_data_dict):
     cpu_count = os.cpu_count()
     thread_limit = ((cpu_count * (3/4)) // 1)
 
-    print(f"cpu count = {cpu_count}")
-    print(f"thread limit = {thread_limit}")
+    # print(f"cpu count = {cpu_count}")
+    # print(f"thread limit = {thread_limit}")
     
 
     if multi:
