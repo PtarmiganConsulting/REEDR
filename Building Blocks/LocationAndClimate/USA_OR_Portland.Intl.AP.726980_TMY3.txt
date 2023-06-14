@@ -1,0 +1,72 @@
+!-   ===========  ALL OBJECTS IN CLASS: SITE:LOCATION ===========
+
+Site:Location,
+    Portland Intl AP_OR_USA Design_Conditions,     !- Location Name
+     45.60,     !- Latitude {N+ S-}
+   -122.62,     !- Longitude {W- E+}
+     -8.00,     !- Time Zone Relative to GMT {GMT+/-}
+      6.00;     !- Elevation {m}
+
+! Portland Intl AP_OR_USA Annual Heating Design Conditions Wind Speed=4.5m/s Wind Dir=120
+! Coldest Month=DEC
+! Portland Intl AP_OR_USA Annual Heating 99.6%, MaxDB=-3.9C
+SizingPeriod:DesignDay,
+    Portland Intl AP Ann Htg 99.6% Condns DB,     !- Name
+           12,      !- Month
+           21,      !- Day of Month
+    WinterDesignDay,!- Day Type
+         -3.9,      !- Maximum Dry-Bulb Temperature {C}
+          0.0,      !- Daily Dry-Bulb Temperature Range {C}
+    DefaultMultipliers, !- Dry-Bulb Temperature Range Modifier Type
+             ,      !- Dry-Bulb Temperature Range Modifier Day Schedule Name
+      Wetbulb,      !- Humidity Condition Type
+         -3.9,      !- Wetbulb at Maximum Dry-Bulb {C}
+             ,      !- Humidity Indicating Day Schedule Name
+             ,      !- Humidity Ratio at Maximum Dry-Bulb {kgWater/kgDryAir}
+             ,      !- Enthalpy at Maximum Dry-Bulb {J/kg}
+             ,      !- Daily Wet-Bulb Temperature Range {deltaC}
+      101253.,      !- Barometric Pressure {Pa}
+          4.5,      !- Wind Speed {m/s} design conditions vs. traditional 6.71 m/s (15 mph)
+          120,      !- Wind Direction {Degrees; N=0, S=180}
+           No,      !- Rain {Yes/No}
+           No,      !- Snow on ground {Yes/No}
+           No,      !- Daylight Savings Time Indicator
+    ASHRAEClearSky, !- Solar Model Indicator
+             ,      !- Beam Solar Day Schedule Name
+             ,      !- Diffuse Solar Day Schedule Name
+             ,      !- ASHRAE Clear Sky Optical Depth for Beam Irradiance (taub)
+             ,      !- ASHRAE Clear Sky Optical Depth for Diffuse Irradiance (taud)
+         0.00;      !- Clearness {0.0 to 1.1}
+
+! Portland Intl AP Annual Cooling Design Conditions Wind Speed=4.6m/s Wind Dir=310
+! Hottest Month=AUG
+! Portland Intl AP_OR_USA Annual Cooling (DB=>MWB) .4%, MaxDB=32.9C MWB=19.7C
+SizingPeriod:DesignDay,
+    Portland Intl AP Ann Clg .4% Condns DB=>MWB,     !- Name
+            8,      !- Month
+           21,      !- Day of Month
+    SummerDesignDay,!- Day Type
+         32.9,      !- Maximum Dry-Bulb Temperature {C}
+         11.9,      !- Daily Dry-Bulb Temperature Range {C}
+    DefaultMultipliers, !- Dry-Bulb Temperature Range Modifier Type
+             ,      !- Dry-Bulb Temperature Range Modifier Day Schedule Name
+      Wetbulb,      !- Humidity Condition Type
+         19.7,      !- Wetbulb at Maximum Dry-Bulb {C}
+             ,      !- Humidity Indicating Day Schedule Name
+             ,      !- Humidity Ratio at Maximum Dry-Bulb {kgWater/kgDryAir}
+             ,      !- Enthalpy at Maximum Dry-Bulb {J/kg}
+             ,      !- Daily Wet-Bulb Temperature Range {deltaC}
+      101253.,      !- Barometric Pressure {Pa}
+          4.6,      !- Wind Speed {m/s} design conditions vs. traditional 3.35 m/s (7mph)
+          310,      !- Wind Direction {Degrees; N=0, S=180}
+           No,      !- Rain {Yes/No}
+           No,      !- Snow on ground {Yes/No}
+           No,      !- Daylight Savings Time Indicator
+         ASHRAETau, !- Solar Model Indicator
+             ,      !- Beam Solar Day Schedule Name
+             ,      !- Diffuse Solar Day Schedule Name
+        0.357,      !- ASHRAE Clear Sky Optical Depth for Beam Irradiance (taub)
+        2.486;      !- ASHRAE Clear Sky Optical Depth for Diffuse Irradiance (taud)
+
+
+

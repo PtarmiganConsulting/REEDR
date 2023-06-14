@@ -1,0 +1,20 @@
+Fan:OnOff,
+    Fan,                             !- Name
+    always_avail,             	            !- Availability Schedule Name
+    0.35,                                !- Fan Total Efficiency   #From the study from Dave... (assume lower of range from https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwi126iPupL6AhXRKH0KHY1aCRQQFnoECAcQAQ&url=https%3A%2F%2Fsimulationresearch.lbl.gov%2Fdirpubs%2Fun_articleEP04.pdf&usg=AOvVaw3FeuE2aG3V_bDC2gq5wXwM)
+    125,              		                !- Pressure Rise {{Pa}}   #based on 0.5W/cfm assuming 1200 cfm,motor eff = 0.65 @ 400cfm/ton and fan eff = 0.58...
+    {fan_max_flow_allowed},                               !- Maximum Flow Rate {{m3/s}}
+    0.65,        		                    !- Motor Efficiency   #From the study from Dave @ 400cfm/ton and back calculating for seer > 13...
+    1,                                      !- Motor In Airstream Fraction
+    Air Loop Inlet Node,                    !- Air Inlet Node Name
+    {airloop_main_fan_coil_outlet_node},    !- Air Outlet Node Name
+    ,                                       !- Fan Power Ratio Function of Speed Ratio Curve Name
+    ,                 		                !- Fan Efficiency Ratio Function of Speed Ratio Curve Name
+    General;                                !- End-Use Subcategory
+
+!-   ===========  ALL OBJECTS IN CLASS: AIRFLOWNETWORK:DISTRIBUTION:COMPONENT:Fan ===========
+
+AirflowNetwork:Distribution:Component:Fan,
+    Fan,            !- Fan Name
+    Fan:OnOff;              !- Supply Fan Object Type
+

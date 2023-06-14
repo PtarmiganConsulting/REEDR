@@ -1,0 +1,24 @@
+!-   ===========  ALL OBJECTS IN CLASS: LIGHTS ===========
+
+Lights,
+    Interior Lights, 	            !- Name
+    living,            	            !- Zone or ZoneList Name
+    InteriorLightingHE,             !- Schedule Name
+    Watts/Area,           		    !- Design Level Calculation Method
+    ,        				        !- Lighting Level {{W}}
+    {interior_lpd},                	!- Watts per Zone Floor Area {{W/m2}}
+    ,                        		!- Watts per Person {{W/person}}
+    0,                       		!- Return Air Fraction
+    0.6,                     		!- Fraction Radiant
+    0.2,                     		!- Fraction Visible
+    0;                       		!- Fraction Replaceable
+
+!-   ===========  ALL OBJECTS IN CLASS: EXTERIOR:LIGHTS ===========
+
+Exterior:Lights,
+    Exterior Lights,                !- Name
+    ExteriorLighting,         		!- Schedule Name
+    {exterior_lp},                	!- Design Level {{W}}
+    ,              	                !- Control Option
+    Exterior-Lights;         		!- End-Use Subcategory
+
