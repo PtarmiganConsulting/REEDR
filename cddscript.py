@@ -110,7 +110,7 @@ output_vals = []
 output_runlabels = []
 
 
-# split runlabels and cddS into their own vars for output spreadsheet
+# split runlabels and cdds into their own vars for output spreadsheet
 for pair in final_structure:
     output_runlabels.append(pair[0])
     output_vals.append(pair[1])
