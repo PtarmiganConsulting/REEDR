@@ -1,0 +1,88 @@
+Program Version,EnergyPlus, Version 22.2.0-c249759bad, YMD=2023.06.19 12:32,
+   ************* Beginning Zone Sizing Calculations
+   ** Warning ** Foundation:Kiva="KIVA FOUNDATION", no Interior Horizontal Insulation Material Name defined
+   **   ~~~   ** Interior Horizontal Insulation Depth will not be used.
+   ** Warning ** CheckUsedConstructions: There are 15 nominally unused constructions in input.
+   **   ~~~   ** Each Unused construction is shown.
+   ************* Construction=INTERIOR FLOOR
+   ************* Construction=INTERIOR WINDOW
+   ************* Construction=EXTERIOR DOOR
+   ************* Construction=INTERIOR DOOR
+   ************* Construction=GABLE CONSTRUCTION
+   ************* Construction=CRAWL_FLOOR
+   ************* Construction=INSULATED PIPE
+   ************* Construction=PLAIN PIPE
+   ************* Construction=TDD PIPE
+   ************* Construction=TDD DOME
+   ************* Construction=TDD DIFFUSER
+   ************* Construction=CRAWL WALL
+   ************* Construction=CEILING-FLOOR-LAYER
+   ************* Construction=SLAB CONSTRUCTION W FULL R10 INSULATION
+   ************* Construction=SLAB CONSTRUCTION W FULL R5 INSULATION
+   ************* Beginning System Sizing Calculations
+   ** Warning ** ManageSizing: For a plant sizing run, there must be at least 1 Sizing:Plant object input. SimulationControl Plant Sizing option ignored.
+   ** Warning ** SizeDXCoil Coil:Cooling:DX:SingleSpeed DX_COOLING_COIL
+   **   ~~~   ** ...Gross Rated Total Cooling Capacity [W] will be limited by the maximum rated volume flow per rated total capacity ratio.
+   **   ~~~   ** ...DX coil volume flow rate ( m3/s ) = 0.561623
+   **   ~~~   ** ...Requested capacity ( W ) = 8782.024
+   **   ~~~   ** ...Requested flow/capacity ratio ( m3/s/W ) = 6.395E-005
+   **   ~~~   ** ...Maximum flow/capacity ratio ( m3/s/W ) = 6.041E-005
+   **   ~~~   ** ...Adjusted capacity ( W ) = 9296.861
+   ** Warning ** The Standard Ratings is calculated for Coil:Cooling:DX:SingleSpeed = DX_COOLING_COIL but not at the AHRI test condition due to curve out of bound.
+   **   ~~~   **  Review the Standard Ratings calculations in the Engineering Reference for this coil type. Also, use Output:Diagnostics, DisplayExtraWarnings for further guidance.
+   **   ~~~   ** CheckCurveLimitsForStandardRatings: The max and/or min limits specified in the corresponding curve objects
+   **   ~~~   **  do not include the AHRI test conditions required to calculate one or more of the Standard Rating values.
+   **   ~~~   ** Coil:Cooling:DX:SingleSpeed=DX_COOLING_COIL:  Integrated Energy Efficiency Ratio (IEER) calculated is not at the AHRI test condition.
+   **   ~~~   **  Check limits in Total Cooling Capacity Function of Temperature Curve, Curve Type = Curve:Biquadratic, Curve Name = COOL-CAP-FT
+   **   ~~~   **  Check limits in EIR Function of Temperature Curve, Curve Type = Curve:Biquadratic, Curve Name = COOL-EIR-FT
+   ** Warning ** Output:Meter: invalid Key Name="PUMPS:ELECTRICITY" - not found.
+   ** Warning ** Output:Meter: invalid Key Name="WATERSYSTEMS:ELECTRICITY" - not found.
+   ** Warning ** Output:Meter: invalid Key Name="ELECTRIC_RANGE:INTERIOREQUIPMENT:ELECTRICITY" - not found.
+   ** Warning ** Output:Meter: invalid Key Name="ELECTRIC_DRYER:INTERIOREQUIPMENT:ELECTRICITY" - not found.
+   ** Warning ** Output:Meter: invalid Key Name="HEATRECOVERY:ELECTRICITY" - not found.
+   ** Warning ** Output:Meter: invalid Key Name="WATERSYSTEMS:NATURALGAS" - not found.
+   ** Warning ** Output:Meter: invalid Key Name="PROPANE:FACILITY" - not found.
+   ** Warning ** Output:Meter: invalid Key Name="HEATING:PROPANE" - not found.
+   ************* Testing Individual Branch Integrity
+   ************* All Branches passed integrity testing
+   ************* Testing Individual Supply Air Path Integrity
+   ************* All Supply Air Paths passed integrity testing
+   ************* Testing Individual Return Air Path Integrity
+   ************* All Return Air Paths passed integrity testing
+   ************* No node connection errors were found.
+   ************* Beginning Simulation
+   ** Warning ** CalcDoe2DXCoil: Coil:Cooling:DX:SingleSpeed "DX_COOLING_COIL" - Air-cooled condenser inlet dry-bulb temperature below 0 C. Outdoor dry-bulb temperature = -0.20
+   **   ~~~   **  ... Occurrence info = ANNUAL, 11/29 16:30 - 16:33
+   **   ~~~   ** ... Operation at low ambient temperatures may require special performance curves.
+   ************* Simulation Error Summary *************
+   ** Warning ** The following Report Variables were requested but not generated -- check.rdd file
+   **   ~~~   ** Either the IDF did not contain these elements, the variable name is misspelled,
+   **   ~~~   ** or the requested variable is an advanced output which requires Output : Diagnostics, DisplayAdvancedReportVariables;
+   ************* Key=*, VarName=HEATING COIL DEFROST ELECTRICITY ENERGY, Frequency=
+   ************* Key=*, VarName=HEATING COIL CRANKCASE HEATER ELECTRICITY ENERGY, Frequency=
+   ************* Key=*, VarName=BASEBOARD TOTAL HEATING ENERGY, Frequency=
+   ************* There are 34 unused schedules in input.
+   ************* There are 389 unused week schedules in input.
+   ************* There are 397 unused day schedules in input.
+   ************* Use Output:Diagnostics,DisplayUnusedSchedules; to see them.
+   *************
+   ************* ===== Recurring Error Summary =====
+   ************* The following recurring error messages occurred.
+   *************
+   *************  ** Warning ** CalcDoe2DXCoil: Coil:Cooling:DX:SingleSpeed="DX_COOLING_COIL" - Low condenser dry-bulb temperature error continues...
+   *************  **   ~~~   **   This error occurred 6 total times;
+   *************  **   ~~~   **   during Warmup 0 times;
+   *************  **   ~~~   **   during Sizing 0 times.
+   *************  **   ~~~   **   Max=-0.2 [C]  Min=-0.4 [C]
+   *************
+   *************
+   ************* ===== Final Error Summary =====
+   ************* The following error categories occurred.  Consider correcting or noting.
+   ************* Nominally Unused Constructions
+   ************* ..The nominally unused constructions warning is provided to alert you to potential conditions that can cause
+   ************* ..extra time during simulation. Each construction is calculated by the algorithm indicated in the HeatBalanceAlgorithm
+   ************* ..object. You may remove the constructions indicated (when you use the DisplayExtraWarnings option).
+   *************
+   ************* EnergyPlus Warmup Error Summary. During Warmup: 0 Warning; 0 Severe Errors.
+   ************* EnergyPlus Sizing Error Summary. During Sizing: 3 Warning; 0 Severe Errors.
+   ************* EnergyPlus Completed Successfully-- 20 Warning; 0 Severe Errors; Elapsed Time=00hr 01min 49.58sec

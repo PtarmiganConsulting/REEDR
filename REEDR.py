@@ -51,8 +51,8 @@ from Scripts.dictmaker import dict_maker
 def main(gui_params):
 
     # For timing REEDER.  Swap booleans to toggle run-timing on and off
-    time_val = False
-    # time_val = True
+    # time_val = False
+    time_val = True
     if time_val:
         start_time = time.time()
     
