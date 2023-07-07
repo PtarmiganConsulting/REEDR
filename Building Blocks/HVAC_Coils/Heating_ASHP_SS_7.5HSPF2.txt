@@ -1,0 +1,106 @@
+!- Source for heating coil is Beopt v3.0.1.0
+!-   ===========  ALL OBJECTS IN CLASS: COIL:HEATING ===========
+
+Coil:Heating:DX:SingleSpeed,
+  DX_Heating_Coil,   	                  !- Name
+  always_avail,           		            !-Availability Schedule Name
+  {htg_capacity_spd_1},               	   !- Rated Total Heating Capacity {{W}}
+  3.92247518780408,           	         !- Rated COP
+  {fan_m3PerSec_spd_1},               	   !- Rated Air Flow Rate {{m3/s}}
+  ,					                        !- 2017 Rated Evaporator Fan Power Per Volume Flow Rate {{W/(m3/s)}}
+  ,                                       !- 2023 Rated Evaporator Fan Power Per Volume Flow Rate {{W/(m3/s)}}
+  Heating Coil Air Inlet Node,            !- Air Inlet Node Name
+  Supp Heating Coil Air Inlet Node,       !- Air Outlet Node Name
+  Heat-CAP-fT1,                           !- Heating Capacity Function of Temperature Curve Name
+  Heat-CAP-fFF1,                          !- Heating Capacity Function of Flow Fraction Curve Name
+  Heat-EIR-fT1,                           !- Energy Input Ratio Function of Temperature Curve Name
+  Heat-EIR-fFF1,                          !- Energy Input Ratio Function of Flow Fraction Curve Name
+  Heat-PLF-fPLR1,                         !- Part Load Fraction Correlation Curve Name
+  Defrosteir,                             !- Defrost Energy Input Ratio Function of Temperature Curve Name
+  {hp_min_compressor_temp},               !- Minimum Outdoor Dry-Bulb Temperature for Compressor Operation {{C}}
+  ,					                        !- Outdoor Dry-Bulb Temperature to Turn On Compressor
+  5.0,                    		            !- Maximum Outdoor Dry-Bulb Temperature for Defrost Operation {{C}}
+  200.0,                  		            !- Crankcase Heater Capacity {{W}}
+  10.0,                   		            !- Maximum Outdoor Dry-Bulb Temperature for Crankcase Heater Operation {{C}}
+  ReverseCycle,           		            !- Defrost Strategy
+  OnDemand,               		            !- Defrost Control
+  , 			    		                     !- Defrost Time Period Fraction
+  , 			    		                     !- Resistive Defrost Heater Capacity {{W}}
+  ,					                        !- Region number for calculating HSPF
+  ;					                        !- Evaporator Air Inlet Node Name
+
+AirflowNetwork:Distribution:Component:Coil,
+  DX_Heating_Coil,                      !- Coil Name
+  Coil:Heating:DX:SingleSpeed,          !- Coil Object Type
+  0.1,                                  !- Air Path Length {{m}}
+  1.000;                                !- Air Path Hydraulic Diameter {{m}}
+
+Curve:Biquadratic,
+  Heat-CAP-fT1,                           !- Name
+  0.878143655,                            !- Coefficient1 Constant
+  -0.0029148552,                          !- Coefficient2 x
+  -3.3372e-05,                            !- Coefficient3 x**2
+  0.0223866612,                           !- Coefficient4 y
+  0.000163944,                            !- Coefficient5 y**2
+  -2.187e-05,                             !- Coefficient6 x*y
+  -100,                                   !- Minimum Value of x {{BasedOnField A2}}
+  100,                                    !- Maximum Value of x {{BasedOnField A2}}
+  -100,                                   !- Minimum Value of y {{BasedOnField A3}}
+  100;                                    !- Maximum Value of y {{BasedOnField A3}}
+
+Curve:Quadratic,
+  Heat-CAP-fFF1,                          !- Name
+  0.694045465,                            !- Coefficient1 Constant
+  0.474207981,                            !- Coefficient2 x
+  -0.168253446,                           !- Coefficient3 x**2
+  0,                                      !- Minimum Value of x {{BasedOnField A2}}
+  2,                                      !- Maximum Value of x {{BasedOnField A2}}
+  0,                                      !- Minimum Curve Output {{BasedOnField A3}}
+  2;                                      !- Maximum Curve Output {{BasedOnField A3}}
+
+Curve:Biquadratic,
+  Heat-EIR-fT1,                           !- Name
+  0.716518071,                            !- Coefficient1 Constant
+  0.0102759012,                           !- Coefficient2 x
+  0.00046073448,                          !- Coefficient3 x**2
+  -0.0064803654,                          !- Coefficient4 y
+  0.000456354,                            !- Coefficient5 y**2
+  -0.00069764004,                         !- Coefficient6 x*y
+  -100,                                   !- Minimum Value of x {{BasedOnField A2}}
+  100,                                    !- Maximum Value of x {{BasedOnField A2}}
+  -100,                                   !- Minimum Value of y {{BasedOnField A3}}
+  100;                                    !- Maximum Value of y {{BasedOnField A3}}
+
+Curve:Quadratic,
+  Heat-EIR-fFF1,                          !- Name
+  2.185418751,                            !- Coefficient1 Constant
+  -1.942827919,                           !- Coefficient2 x
+  0.757409168,                            !- Coefficient3 x**2
+  0,                                      !- Minimum Value of x {{BasedOnField A2}}
+  2,                                      !- Maximum Value of x {{BasedOnField A2}}
+  0,                                      !- Minimum Curve Output {{BasedOnField A3}}
+  2;                                      !- Maximum Curve Output {{BasedOnField A3}}
+
+Curve:Quadratic,
+  Heat-PLF-fPLR1,                         !- Name
+  0.89,                                   !- Coefficient1 Constant
+  0.11,                                   !- Coefficient2 x
+  0,                                      !- Coefficient3 x**2
+  0,                                      !- Minimum Value of x {{BasedOnField A2}}
+  1,                                      !- Maximum Value of x {{BasedOnField A2}}
+  0.7,                                    !- Minimum Curve Output {{BasedOnField A3}}
+  1;                                      !- Maximum Curve Output {{BasedOnField A3}}
+
+Curve:Biquadratic,
+  Defrosteir,                             !- Name
+  0.1528,                                 !- Coefficient1 Constant
+  0,                                      !- Coefficient2 x
+  0,                                      !- Coefficient3 x**2
+  0,                                      !- Coefficient4 y
+  0,                                      !- Coefficient5 y**2
+  0,                                      !- Coefficient6 x*y
+  -100,                                   !- Minimum Value of x {{BasedOnField A2}}
+  100,                                    !- Maximum Value of x {{BasedOnField A2}}
+  -100,                                   !- Minimum Value of y {{BasedOnField A3}}
+  100;                                    !- Maximum Value of y {{BasedOnField A3}}
+

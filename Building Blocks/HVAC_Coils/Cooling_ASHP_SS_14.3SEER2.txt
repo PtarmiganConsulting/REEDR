@@ -1,0 +1,85 @@
+!- Source for cooling coil is Beopt v3.0.1.0
+!-   ===========  ALL OBJECTS IN CLASS: COIL:COOLING:DX:SINGLESPEED ===========
+
+Coil:Cooling:DX:SingleSpeed,
+	   DX_Cooling_Coil,         		!- Name
+    	always_avail,            		!- Availability Schedule Name
+    	{clg_capacity_spd_1},         	!- Gross Rated Total Cooling Capacity {{W}}
+   	    0.736303132466851,              !- Gross Rated Sensible Heat Ratio
+    	4.29568256095575,       		!- Gross Rated Cooling COP {{W/W}}
+    	{fan_m3PerSec_spd_1},      		!- Rated Air Flow Rate {{m3/s}}
+    	,                        		!- 2017 Rated Evaporator Fan Power Per Volume Flow Rate {{W/(m3/s)}}
+    	,  						        !- 2023 Rated Evaporator Fan Power Per Volume Flow Rate {{W/(m3/s)}}
+    	Cooling Coil Air Inlet Node,  	!- Air Inlet Node Name
+    	Heating Coil Air Inlet Node,    !- Air Outlet Node Name
+    	Cool-CAP-fT1,                           !- Total Cooling Capacity Function of Temperature Curve Name
+        Cool-CAP-fFF1,                          !- Total Cooling Capacity Function of Flow Fraction Curve Name
+        Cool-EIR-fT1,                           !- Energy Input Ratio Function of Temperature Curve Name
+        Cool-EIR-fFF1,                          !- Energy Input Ratio Function of Flow Fraction Curve Name
+        Cool-PLF-fPLR1,                         !- Part Load Fraction Correlation Curve Name
+    	,                        		!- Minimum Outdoor Dry-Bulb Temperature for Compressor Operation {{C}}
+    	,                        		!- Nominal Time for Condensate Removal to Begin {{s}}
+    	;                        		!- Ratio of Initial Moisture Evaporation Rate and Steady State Latent Capacity {{dimensionless}}
+
+AirflowNetwork:Distribution:Component:Coil,
+  DX_Cooling_Coil,                   !- Coil Name
+  Coil:Cooling:DX:SingleSpeed,              !- Coil Object Type
+  0.1,                                      !- Air Path Length {{m}}
+  1.000;                                    !- Air Path Hydraulic Diameter {{m}}
+
+Curve:Biquadratic,
+  Cool-CAP-fT1,                           !- Name
+  1.557359706,                            !- Coefficient1 Constant
+  -0.0744481692,                          !- Coefficient2 x
+  0.00309859668,                          !- Coefficient3 x**2
+  0.0014595786,                           !- Coefficient4 y
+  -4.1148e-05,                            !- Coefficient5 y**2
+  -0.00042671448,                         !- Coefficient6 x*y
+  -100,                                   !- Minimum Value of x {{BasedOnField A2}}
+  100,                                    !- Maximum Value of x {{BasedOnField A2}}
+  -100,                                   !- Minimum Value of y {{BasedOnField A3}}
+  100;                                    !- Maximum Value of y {{BasedOnField A3}}
+
+Curve:Quadratic,
+  Cool-CAP-fFF1,                          !- Name
+  0.718664047,                            !- Coefficient1 Constant
+  0.41797409,                             !- Coefficient2 x
+  -0.136638137,                           !- Coefficient3 x**2
+  0,                                      !- Minimum Value of x {{BasedOnField A2}}
+  2,                                      !- Maximum Value of x {{BasedOnField A2}}
+  0,                                      !- Minimum Curve Output {{BasedOnField A3}}
+  2;                                      !- Maximum Curve Output {{BasedOnField A3}}
+
+Curve:Biquadratic,
+  Cool-EIR-fT1,                           !- Name
+  -0.350447695,                           !- Coefficient1 Constant
+  0.116809893,                            !- Coefficient2 x
+  -0.00339950844,                         !- Coefficient3 x**2
+  -0.001226088,                           !- Coefficient4 y
+  0.0006008094,                           !- Coefficient5 y**2
+  -0.000466884,                           !- Coefficient6 x*y
+  -100,                                   !- Minimum Value of x {{BasedOnField A2}}
+  100,                                    !- Maximum Value of x {{BasedOnField A2}}
+  -100,                                   !- Minimum Value of y {{BasedOnField A3}}
+  100;                                    !- Maximum Value of y {{BasedOnField A3}}
+
+Curve:Quadratic,
+  Cool-EIR-fFF1,                          !- Name
+  1.143487507,                            !- Coefficient1 Constant
+  -0.13943972,                            !- Coefficient2 x
+  -0.004047787,                           !- Coefficient3 x**2
+  0,                                      !- Minimum Value of x {{BasedOnField A2}}
+  2,                                      !- Maximum Value of x {{BasedOnField A2}}
+  0,                                      !- Minimum Curve Output {{BasedOnField A3}}
+  2;                                      !- Maximum Curve Output {{BasedOnField A3}}
+
+Curve:Quadratic,
+  Cool-PLF-fPLR1,                         !- Name
+  0.93,                                   !- Coefficient1 Constant
+  0.07,                                   !- Coefficient2 x
+  0,                                      !- Coefficient3 x**2
+  0,                                      !- Minimum Value of x {{BasedOnField A2}}
+  1,                                      !- Maximum Value of x {{BasedOnField A2}}
+  0.7,                                    !- Minimum Curve Output {{BasedOnField A3}}
+  1;                                      !- Maximum Curve Output {{BasedOnField A3}}
+
