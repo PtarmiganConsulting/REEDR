@@ -48,7 +48,7 @@ def estimateInfiltrationAdjustment(foundation_type, ACH50, footprint, total_enve
 
     attic_adjust = math.exp(ln_of_attic_adjust)
 
-    if foundation_type == "Vented Crawlspace" or foundation_type == "Unheated Basement":
+    if foundation_type == "Crawlspace" or foundation_type == "Unheated Basement":
 
         crawl_intercept = crawl_infiltration_coeff_dict[adjustmentLookupID]["Intercept"]
         crawl_footprint_coeff = crawl_infiltration_coeff_dict[adjustmentLookupID]["coeff_footprint"]
@@ -93,8 +93,8 @@ def formatLayerList(last_real_layer_num, list_layers):
 def getFoundationIdentifier(user_found_type, floor_effective_Rvalue, slab_perimeter_Rvalue, under_slab_Rvalue, slab_thermalbreak_Rvalue, foundation_wall_Rvalue):
 
     #Foundation Identifier Options:
-        #Vented Crawl w Insulated Floor
-        #Vented Crawl w Insulated Floor and Crawl Wall
+        #Crawl w Insulated Floor
+        #Crawl w Insulated Floor and Crawl Wall
         #Slab w No Insulation
         #Slab w Perimeter Insulation Only
         #Slab w Thermal Break Only
@@ -106,11 +106,11 @@ def getFoundationIdentifier(user_found_type, floor_effective_Rvalue, slab_perime
         #Unheated Basement w Insulated Floor
         #Unheated Basement w Insulated Floor and Wall
 
-    if user_found_type == "Vented Crawlspace":
+    if user_found_type == "Crawlspace":
         if foundation_wall_Rvalue > 0:
-            foundation_identifier = "Vented Crawl w Insulated Floor and Crawl Wall"
+            foundation_identifier = "Crawl w Insulated Floor and Crawl Wall"
         else:
-            foundation_identifier = "Vented Crawl w Insulated Floor"
+            foundation_identifier = "Crawl w Insulated Floor"
 
     elif user_found_type == "Slab":
         if under_slab_Rvalue > 0 and slab_thermalbreak_Rvalue > 0:
