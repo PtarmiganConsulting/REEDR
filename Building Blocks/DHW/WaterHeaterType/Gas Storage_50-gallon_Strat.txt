@@ -1,0 +1,83 @@
+  WaterHeater:Stratified,
+    Water Heater,             !- Name
+    Domestic Hot Water,       !- End-Use Subcategory
+    0.1703,                  !- Tank Volume {m3}
+    1.4,                     !- Tank Height {m}
+    VerticalCylinder,        !- Tank Shape
+    ,                        !- Tank Perimeter {m}
+    82.2222,                 !- Maximum Temperature Limit {C}
+    MasterSlave,             !- Heater Priority Control
+    dhw_setpt,  !- Heater 1 Setpoint Temperature Schedule Name
+    2.0,                     !- Heater 1 Deadband Temperature Difference {deltaC}
+    11712,                    !- Heater 1 Capacity {W}
+    0,                     !- Heater 1 Height {m}
+    ,  !- Heater 2 Setpoint Temperature Schedule Name
+    ,                     !- Heater 2 Deadband Temperature Difference {deltaC}
+    ,                    !- Heater 2 Capacity {W}
+    ,                     !- Heater 2 Height {m}
+    NaturalGas,             !- Heater Fuel Type
+    0.77,                    !- Heater Thermal Efficiency
+    ,                      !- Off Cycle Parasitic Fuel Consumption Rate {W}
+    NaturalGas,             !- Off Cycle Parasitic Fuel Type
+    0.8,                       !- Off Cycle Parasitic Heat Fraction to Tank
+    ,                        !- Off Cycle Parasitic Height {m}
+    ,                      !- On Cycle Parasitic Fuel Consumption Rate {W}
+    ,                     !- On Cycle Parasitic Fuel Type
+    ,                       !- On Cycle Parasitic Heat Fraction to Tank
+    ,                        !- On Cycle Parasitic Height {m}
+    Zone,                     !- Ambient Temperature Indicator
+    ,                         !- Ambient Temperature Schedule Name
+    living,                        !- Ambient Temperature Zone Name
+    ,                        !- Ambient Temperature Outdoor Air Node Name
+    1.13221367205827,      !- Uniform Skin Loss Coefficient per Unit Area to Ambient Temperature {W/m2-K}
+    ,                        !- Skin Loss Fraction to Zone
+    ,                        !- Off Cycle Flue Loss Coefficient to Ambient Temperature {W/K}
+    ,                        !- Off Cycle Flue Loss Fraction to Zone
+    ,                        !- Peak Use Flow Rate {m3/s}
+    ,                        !- Use Flow Rate Fraction Schedule Name
+    ,                        !- Cold Water Supply Temperature Schedule Name
+    Water Heater use inlet node,  !- Use Side Inlet Node Name
+    Water Heater use outlet node,  !- Use Side Outlet Node Name
+    1.0,                     !- Use Side Effectiveness
+    ,                        !- Use Side Inlet Height {m}
+    ,                        !- Use Side Outlet Height {m}
+    ,  !- Source Side Inlet Node Name
+    ,   !- Source Side Outlet Node Name
+    ,                        !- Source Side Effectiveness
+    ,                        !- Source Side Inlet Height {m}
+    ,                        !- Source Side Outlet Height {m}
+    FIXED,                   !- Inlet Mode
+    0.00283433494640006,                !- Use Side Design Flow Rate {m3/s}
+    0.00115525,              !- Source Side Design Flow Rate {m3/s}
+    ,                        !- Indirect Water Heating Recovery Time {hr}
+    4,                       !- Number of Nodes
+    ,                     !- Additional Destratification Conductivity {W/m-K}
+    ,                    !- Node 1 Additional Loss Coefficient {W/K}
+    ,                        !- Node 2 Additional Loss Coefficient {W/K}
+    ,                        !- Node 3 Additional Loss Coefficient {W/K}
+    ,                        !- Node 4 Additional Loss Coefficient {W/K}
+    ,                        !- Node 5 Additional Loss Coefficient {W/K}
+    ;                     !- Node 6 Additional Loss Coefficient {W/K}
+
+WaterHeater:Sizing,
+  Water Heater,                      !- WaterHeater Name
+  PeakDraw,                               !- Design Mode
+  0.538503,                               !- Time Storage Can Meet Peak Draw {hr}
+  0,                                      !- Time for Tank Recovery {hr}
+  1;                                      !- Nominal Tank Volume for Autosizing Plant Connections {m3}
+
+Branch,
+  Water Heater Branch,            !- Name
+  ,                               !- Pressure Drop Curve Name
+  WaterHeater:Stratified,              !- Component 1 Object Type
+  Water Heater,                   !- Component 1 Name
+  Water Heater Use Inlet Node,    !- Component 1 Inlet Node Name
+  Water Heater Use Outlet Node;   !- Component 1 Outlet Node Name
+
+!-   ===========  ALL OBJECTS IN CLASS: PLANTEQUIPMENTLIST ===========
+
+PlantEquipmentList,
+  DHW Plant Equipment,     !- Name
+  WaterHeater:Stratified,       !- Equipment 1 Object Type
+  Water Heater;            !- Equipment 1 Name
+
