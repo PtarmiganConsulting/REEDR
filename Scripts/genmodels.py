@@ -810,7 +810,12 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
         foundationwall_ht_BG_ft = foundation_assumptions["foundationwall_ht_BG[ft]"]
         if CentralOrZonal == "Central":
             returnduct_location = foundation_assumptions["returnduct_location"]
-            supplyduct_location = "attic"
+            if foundation_type == "Crawlspace":
+                supplyduct_location = "crawlspace"
+            elif foundation_type == "Unheated Basement":
+                supplyduct_location = "unheatedbsmt"
+            else:
+                supplyduct_location = "attic"
         else:
             returnduct_location = "living"
             supplyduct_location = "living"
@@ -1220,17 +1225,17 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
         ELA_ceiling = ELA_total_4Pa_m2 * 1/2
         ELA_floor = 0.00001
 
-        total_envelope_height = dictionary[stories_fieldname] * dictionary[heightPerStory_fieldname]
+        # total_envelope_height = dictionary[stories_fieldname] * dictionary[heightPerStory_fieldname]
         
-        adjust = []
-        adjust = estimateInfiltrationAdjustment(foundation_type, infiltrationInACH50, dictionary[footprint_fieldname], total_envelope_height, \
-            living_infiltration_coeff_dict, attic_infiltration_coeff_dict, crawl_infiltration_coeff_dict)
+        # adjust = []
+        # adjust = estimateInfiltrationAdjustment(foundation_type, infiltrationInACH50, dictionary[footprint_fieldname], total_envelope_height, \
+        #     living_infiltration_coeff_dict, attic_infiltration_coeff_dict, crawl_infiltration_coeff_dict)
 
-        attic_adjust = adjust[1]
-        crawl_adjust = adjust[2]
+        # attic_adjust = adjust[1]
+        # crawl_adjust = adjust[2]
         
-        roof_hypotenuse = math.sqrt(roof_ht**2 + (building_depth/2)**2)
-        attic_wall_area = 2*(0.5*building_depth*roof_ht) + 2*(roof_hypotenuse*building_width)
+        # roof_hypotenuse = math.sqrt(roof_ht**2 + (building_depth/2)**2)
+        # attic_wall_area = 2*(0.5*building_depth*roof_ht) + 2*(roof_hypotenuse*building_width)
 
         # Estimate attic volume and ELA
         roofVolume_m3 = (building_depth * building_width * roof_ht)/2
@@ -1270,17 +1275,6 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
 
         #... determine ELA per attic vent
         ELA_found_per_vent = ELA_foundTotal_4Pa_m2/4 #4 attic vents in total
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        crawl_wall_area = 2*(abs(foundationwall_ht_AG) + abs(foundationwall_ht_BG))*building_depth + 2*(abs(foundationwall_ht_AG) + abs(foundationwall_ht_BG))*building_width
-        ELA_crawl = 0.000000001 #crawl_adjust * crawl_wall_area * 0.00010812648958345
         
         ### --- Add Air Flow Network (AFN) and airloop. Currently all HVAC systems are modeled with ducts. "Ductless" systems are modeled with "perfect" ducts. --- ### 
         AFN_control = "MultizoneWithDistribution"
