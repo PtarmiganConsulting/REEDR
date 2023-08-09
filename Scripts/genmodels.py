@@ -25,7 +25,7 @@ import datetime
 from Scripts.unitconversions import convert_WperFt2_to_WperM2, convert_degF_to_degC, convert_IP_Uvalue_to_SI_Uvalue, convert_ft_to_m, convert_ft2_to_m2, \
     convert_Btuh_to_W, convert_CFM_to_m3PerSec, convert_W_to_ton, convert_m3_to_ft3
 from Scripts.datavalidation import validate, convert_capacity
-from Scripts.utilfunctions import estimateInfiltrationAdjustment, findLastRealLayer, formatLayerList, getFoundationIdentifier
+from Scripts.utilfunctions import findLastRealLayer, formatLayerList, getFoundationIdentifier
 from Scripts.dictmaker import dict_maker
 
 
@@ -56,10 +56,6 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
     envelope_construction_floorFound_file = control_panel_names_dict["envelope_construction_floorFound_file"][control_panel_names_lookup_id]
     hvac_systems_dir = control_panel_names_dict["hvac_systems_dir"][control_panel_names_lookup_id]
     hvac_systems_primary_file = control_panel_names_dict["hvac_systems_primary_file"][control_panel_names_lookup_id]
-    infil_regression_coeff_dir = control_panel_names_dict["infil_regression_coeff_dir"][control_panel_names_lookup_id]
-    infil_regression_coeff_attic_file = control_panel_names_dict["infil_regression_coeff_attic_file"][control_panel_names_lookup_id]
-    infil_regression_coeff_crawl_file = control_panel_names_dict["infil_regression_coeff_crawl_file"][control_panel_names_lookup_id]
-    infil_regression_coeff_living_file = control_panel_names_dict["infil_regression_coeff_living_file"][control_panel_names_lookup_id]
 
     ### --- Define building block directory and file names as variables, so they can be established only once here, and flow throughout. --- ###
     #... get folder and file names from CSV
@@ -303,18 +299,6 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
     # hvac type dictionary
     hvac_path = os.path.join(set_dir, control_panel_folder_name, hvac_systems_dir, hvac_systems_primary_file)
     hvac_dict = dict_maker(hvac_path)
-
-    # living zone infiltration regression coefficient dictionary
-    living_infiltration_coeff_path = os.path.join(set_dir, control_panel_folder_name, infil_regression_coeff_dir, infil_regression_coeff_living_file)
-    living_infiltration_coeff_dict = dict_maker(living_infiltration_coeff_path)
-
-    # attic zone infiltration regression coefficients dictionary
-    attic_infiltration_coeff_path = os.path.join(set_dir, control_panel_folder_name, infil_regression_coeff_dir, infil_regression_coeff_attic_file)
-    attic_infiltration_coeff_dict = dict_maker(attic_infiltration_coeff_path)
-    
-    # crawl zone infiltration regression coefficients dictionary
-    crawl_infiltration_coeff_path = os.path.join(set_dir, control_panel_folder_name, infil_regression_coeff_dir, infil_regression_coeff_crawl_file)
-    crawl_infiltration_coeff_dict = dict_maker(crawl_infiltration_coeff_path)
 
     # foundation type assumptions dictionary
     foundation_type_assumptions_path = os.path.join(set_dir, control_panel_folder_name, found_type_assumptions_file)
@@ -1225,18 +1209,6 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
         ELA_ceiling = ELA_total_4Pa_m2 * 1/2
         ELA_floor = 0.00001
 
-        # total_envelope_height = dictionary[stories_fieldname] * dictionary[heightPerStory_fieldname]
-        
-        # adjust = []
-        # adjust = estimateInfiltrationAdjustment(foundation_type, infiltrationInACH50, dictionary[footprint_fieldname], total_envelope_height, \
-        #     living_infiltration_coeff_dict, attic_infiltration_coeff_dict, crawl_infiltration_coeff_dict)
-
-        # attic_adjust = adjust[1]
-        # crawl_adjust = adjust[2]
-        
-        # roof_hypotenuse = math.sqrt(roof_ht**2 + (building_depth/2)**2)
-        # attic_wall_area = 2*(0.5*building_depth*roof_ht) + 2*(roof_hypotenuse*building_width)
-
         # Estimate attic volume and ELA
         roofVolume_m3 = (building_depth * building_width * roof_ht)/2
         roofVolume_ft3 = convert_m3_to_ft3(roofVolume_m3)
@@ -1263,9 +1235,9 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
         
         #... determine attic infiltration rate depending on whether it is vented or not
         if foundation_vented == "Yes":
-            foundInfiltrationInACH50 = 4.5 * 78 #40 is a multiplier iteratively selected to hit about 4.5ACHn on average across about 1,000 RBSA model homes
+            foundInfiltrationInACH50 = 4.5 * 78 #78 is a multiplier iteratively selected to hit about 4.5ACHn on average across about 1,000 RBSA model homes
         else:
-            foundInfiltrationInACH50 = 0.5 * 75 #55 is a multiplier iteratively selected to hit about 0.5ACHn on average across about 1,000 RBSA model homes
+            foundInfiltrationInACH50 = 0.5 * 75 #75 is a multiplier iteratively selected to hit about 0.5ACHn on average across about 1,000 RBSA model homes
         
         #... determine total attic ELA
         foundInfiltrationInCFM50 = foundInfiltrationInACH50/60 * foundVolume_ft3
