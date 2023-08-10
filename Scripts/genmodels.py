@@ -204,7 +204,17 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
     supplyRvalue_fieldname = model_input_temp_fieldnames_dict["supplyRvalue_fieldname"][input_template_names_lookup_id]
     returnLeakage_fieldname = model_input_temp_fieldnames_dict["returnLeakage_fieldname"][input_template_names_lookup_id]
     returnRvalue_fieldname = model_input_temp_fieldnames_dict["returnRvalue_fieldname"][input_template_names_lookup_id]
+    htgInputMethod_fieldname = model_input_temp_fieldnames_dict["htgInputMethod_fieldname"][input_template_names_lookup_id]
+    htgSetpoint_fieldname = model_input_temp_fieldnames_dict["htgSetpoint_fieldname"][input_template_names_lookup_id]
+    htgSetback_fieldname = model_input_temp_fieldnames_dict["htgSetback_fieldname"][input_template_names_lookup_id]
+    htgSetbackStart_fieldname = model_input_temp_fieldnames_dict["htgSetbackStart_fieldname"][input_template_names_lookup_id]
+    htgSetbackEnd_fieldname = model_input_temp_fieldnames_dict["htgSetbackEnd_fieldname"][input_template_names_lookup_id]
     htgSched_fieldname = model_input_temp_fieldnames_dict["htgSched_fieldname"][input_template_names_lookup_id]
+    clgInputMethod_fieldname = model_input_temp_fieldnames_dict["clgInputMethod_fieldname"][input_template_names_lookup_id]
+    clgSetpoint_fieldname = model_input_temp_fieldnames_dict["clgSetpoint_fieldname"][input_template_names_lookup_id]
+    clgSetback_fieldname = model_input_temp_fieldnames_dict["clgSetback_fieldname"][input_template_names_lookup_id]
+    clgSetbackStart_fieldname = model_input_temp_fieldnames_dict["clgSetbackStart_fieldname"][input_template_names_lookup_id]
+    clgSetbackEnd_fieldname = model_input_temp_fieldnames_dict["clgSetbackEnd_fieldname"][input_template_names_lookup_id]
     clgSched_fieldname = model_input_temp_fieldnames_dict["clgSched_fieldname"][input_template_names_lookup_id]
     dhwType_fieldname = model_input_temp_fieldnames_dict["dhwType_fieldname"][input_template_names_lookup_id]
     dhwSched_fieldname = model_input_temp_fieldnames_dict["dhwSched_fieldname"][input_template_names_lookup_id]
@@ -563,7 +573,9 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
                 primary_heating_capacity = convert_capacity(primaryHtg_capacity_units, primary_heating_capacity)
             else:
                 primary_heating_capacity = "Autosize"
-
+            
+            hour_lo = 0 # hour lo and high needed if setback is present for heating or cooling
+            hour_hi = 23
             #... cooling capacity and capacity units
             if AirLoopHVAC_Unitary_ObjectName == "SS Heat Pump" or AirLoopHVAC_Unitary_ObjectName == "DS Heat Pump" or AirLoopHVAC_Unitary_ObjectName == "MS Heat Pump" \
             or coolCoilTextFile != "No":
@@ -575,11 +587,56 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
                     primary_cooling_capacity = "Autosize"
 
                 #... cooling setpoint schedule
-                clg_stpt_sch = validate(clgSched_fieldname, dictionary[clgSched_fieldname], "list", dummy_int, dummy_int, sched_validation_list)
+                clgInputMethod_list = ["Constant Setpoint", "Setpoint with Night Setback", "Schedule"]
+                clgInputMethod = validate(clgInputMethod_fieldname, dictionary[clgInputMethod_fieldname], "list", dummy_int, dummy_int, clgInputMethod_list)
+                if clgInputMethod == "Constant Setpoint":
+                    clgSetpoint = validate(clgSetpoint_fieldname, convert_degF_to_degC(dictionary[clgSetpoint_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
+                    #... set setback equal to setpoint
+                    clgSetback = validate(clgSetback_fieldname, convert_degF_to_degC(dictionary[clgSetpoint_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
+                    #... set other variables to dummy values so they are not needed
+                    clgSetbackStart = validate(clgSetbackStart_fieldname, 20, "any_num", hour_lo, hour_hi, dummy_list)
+                    clgSetbackEnd = validate(clgSetbackEnd_fieldname, 6, "any_num", hour_lo, hour_hi, dummy_list)
+                    clg_stpt_sch = validate(clgSched_fieldname, "Cool_EZ_Sch_1", "list", dummy_int, dummy_int, sched_validation_list)
+                    #... use compact cooling schedule instead of file-based schedule
+                    compact_clg_sch = "cooling_sch"
+                    file_clg_sch = "cooling_sch_not_used"
+                
+                elif clgInputMethod == "Setpoint with Night Setback":
+                    clgSetpoint = validate(clgSetpoint_fieldname, convert_degF_to_degC(dictionary[clgSetpoint_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
+                    clgSetback = validate(clgSetback_fieldname, convert_degF_to_degC(dictionary[clgSetback_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
+                    clgSetbackStart = validate(clgSetbackStart_fieldname, int(dictionary[clgSetbackStart_fieldname]), "num_between", hour_lo, hour_hi, dummy_list)
+                    clgSetbackEnd = validate(clgSetbackEnd_fieldname, int(dictionary[clgSetbackEnd_fieldname]), "num_between", hour_lo, hour_hi, dummy_list)
+                    #... set other variables to dummy values so they are not needed
+                    clg_stpt_sch = validate(clgSched_fieldname, "Cool_EZ_Sch_1", "list", dummy_int, dummy_int, sched_validation_list)
+                    #... check that night setback end hour is less than night setback start hour
+                    if int(clgSetbackEnd) > int(clgSetbackStart):
+                        print("\n*** ERROR: Cooling setback end hour must be less than cooling setback start hour. For non-night setbacks, please use the schedule option. \n")
+                        return True
+                    #... use compact cooling schedule instead of file-based schedule
+                    compact_clg_sch = "cooling_sch"
+                    file_clg_sch = "cooling_sch_not_used"
+                else:
+                    clg_stpt_sch = validate(clgSched_fieldname, dictionary[clgSched_fieldname], "list", dummy_int, dummy_int, sched_validation_list)
+                    #... set other non-schedule variables to dummy values so they are not needed
+                    clgSetpoint = validate(clgSetpoint_fieldname, convert_degF_to_degC(75), "any_num", dummy_int, dummy_int, dummy_list)
+                    clgSetback = validate(clgSetback_fieldname, convert_degF_to_degC(80), "any_num", dummy_int, dummy_int, dummy_list)
+                    clgSetbackStart = validate(clgSetbackStart_fieldname, 20, "any_num", hour_lo, hour_hi, dummy_list)
+                    clgSetbackEnd = validate(clgSetbackEnd_fieldname, 6, "any_num", hour_lo, hour_hi, dummy_list)
+                    #... use file-based cooling schedule instead of compact schedule
+                    compact_clg_sch = "cooling_sch_not_used"
+                    file_clg_sch = "cooling_sch"
+                
             else:
+                #... provide dummy values because there is no cooling
                 primary_cooling_capacity = 0
                 clg_stpt_sch = validate(clgSched_fieldname, "Cool_EZ_Sch_1", "list", dummy_int, dummy_int, sched_validation_list)
-
+                clgSetpoint = validate(clgSetpoint_fieldname, convert_degF_to_degC(75), "any_num", dummy_int, dummy_int, dummy_list)
+                clgSetback = validate(clgSetback_fieldname, convert_degF_to_degC(80), "any_num", dummy_int, dummy_int, dummy_list)
+                clgSetbackStart = validate(clgSetbackStart_fieldname, 20, "any_num", hour_lo, hour_hi, dummy_list)
+                clgSetbackEnd = validate(clgSetbackEnd_fieldname, 6, "any_num", hour_lo, hour_hi, dummy_list)
+                compact_clg_sch = "cooling_sch_not_used"
+                file_clg_sch = "cooling_sch"
+            
             #... heat pump specific inputs
             if AirLoopHVAC_Unitary_ObjectName == "SS Heat Pump" or AirLoopHVAC_Unitary_ObjectName == "DS Heat Pump" or AirLoopHVAC_Unitary_ObjectName == "MS Heat Pump" \
             and CentralOrZonal == "Central":
@@ -633,10 +690,49 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
                 return_leak = 0.0001
                 supplyUvalue = 0.0001
                 returnUvalue = 0.0001
-
+            
             #... heating setpoint schedule
-            htg_stpt_sch = validate(htgSched_fieldname, dictionary[htgSched_fieldname], "list", dummy_int, dummy_int, sched_validation_list)
-
+            htgInputMethod_list = ["Constant Setpoint", "Setpoint with Night Setback", "Schedule"]
+            htgInputMethod = validate(htgInputMethod_fieldname, dictionary[htgInputMethod_fieldname], "list", dummy_int, dummy_int, htgInputMethod_list)
+            
+            if htgInputMethod == "Constant Setpoint":
+                htgSetpoint = validate(htgSetpoint_fieldname, convert_degF_to_degC(dictionary[htgSetpoint_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
+                #... set setback equal to setpoint
+                htgSetback = validate(htgSetback_fieldname, convert_degF_to_degC(dictionary[htgSetpoint_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
+                #... set other variables to dummy values so they are not needed
+                htgSetbackStart = validate(htgSetbackStart_fieldname, 20, "any_num", hour_lo, hour_hi, dummy_list)
+                htgSetbackEnd = validate(htgSetbackEnd_fieldname, 6, "any_num", hour_lo, hour_hi, dummy_list)
+                htg_stpt_sch = validate(htgSched_fieldname, "Heat_EZ_Sch_1", "list", dummy_int, dummy_int, sched_validation_list)
+                #... use compact heating schedule instead of file-based schedule
+                compact_htg_sch = "heating_sch"
+                file_htg_sch = "heating_sch_not_used"
+            
+            elif htgInputMethod == "Setpoint with Night Setback":
+                htgSetpoint = validate(htgSetpoint_fieldname, convert_degF_to_degC(dictionary[htgSetpoint_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
+                htgSetback = validate(htgSetback_fieldname, convert_degF_to_degC(dictionary[htgSetback_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
+                htgSetbackStart = validate(htgSetbackStart_fieldname, int(dictionary[htgSetbackStart_fieldname]), "num_between", hour_lo, hour_hi, dummy_list)
+                htgSetbackEnd = validate(htgSetbackEnd_fieldname, int(dictionary[htgSetbackEnd_fieldname]), "num_between", hour_lo, hour_hi, dummy_list)
+                #... set other variables to dummy values so they are not needed
+                htg_stpt_sch = validate(htgSched_fieldname, "Heat_EZ_Sch_1", "list", dummy_int, dummy_int, sched_validation_list)
+                #... check that night setback end hour is less than night setback start hour
+                if int(htgSetbackEnd) > int(htgSetbackStart):
+                    print("\n*** ERROR: Heating setback end hour must be less than heating setback start hour. For non-night setbacks, please use the schedule option. \n")
+                    return True
+                #... use compact heating schedule instead of file-based schedule
+                compact_htg_sch = "heating_sch"
+                file_htg_sch = "heating_sch_not_used"
+                
+            else:
+                htg_stpt_sch = validate(htgSched_fieldname, dictionary[htgSched_fieldname], "list", dummy_int, dummy_int, sched_validation_list)
+                #... set other non-schedule variables to dummy values so they are not needed
+                htgSetpoint = validate(htgSetpoint_fieldname, convert_degF_to_degC(68), "any_num", dummy_int, dummy_int, dummy_list)
+                htgSetback = validate(htgSetback_fieldname, convert_degF_to_degC(65), "any_num", dummy_int, dummy_int, dummy_list)
+                htgSetbackStart = validate(htgSetbackStart_fieldname, 20, "any_num", hour_lo, hour_hi, dummy_list)
+                htgSetbackEnd = validate(htgSetbackEnd_fieldname, 6, "any_num", hour_lo, hour_hi, dummy_list)
+                #... use file heating schedule instead of compact schedule
+                compact_htg_sch = "heating_sch_not_used"
+                file_htg_sch = "heating_sch"
+            
             #... gas furnace AFUE
             if AirLoopHVAC_HeatingCoil_Name == "Heating_Fuel_Main" or hp_supp_heat_type == "Gas":
                 AFUE_lo = 0.5
