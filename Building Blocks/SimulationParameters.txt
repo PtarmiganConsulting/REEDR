@@ -8,7 +8,7 @@ Version,
 SimulationControl,
     Yes,                     !- Do Zone Sizing Calculation
     Yes,                     !- Do System Sizing Calculation
-    Yes,                      !- Do Plant Sizing Calculation
+    Yes,                        !- Do Plant Sizing Calculation
     Yes,                     !- Run Simulation for Sizing Periods
     Yes;                     !- Run Simulation for Weather File Run Periods
 
@@ -20,9 +20,23 @@ Building,
     Suburbs,                 	!- Terrain
     0.05,                    	!- Loads Convergence Tolerance Value, Note: originally 0.04
     0.05,                     	!- Temperature Convergence Tolerance Value {{deltaC}}
-    MinimalShadowing, 		    !- Solar Distribution
+    FullInteriorAndExteriorWithReflections,    !- Solar Distribution
     25,                      	!- Maximum Number of Warmup Days
     3;                      	!- Minimum Number of Warmup Days
+
+!-   ===========  ALL OBJECTS IN CLASS: SHADOWCALCULATION ===========
+
+ShadowCalculation,
+    PolygonClipping,         !- Shading Calculation Method
+    Periodic,                !- Shading Calculation Update Frequency Method
+    20,                      !- Shading Calculation Update Frequency
+    15000,                   !- Maximum Figures in Shadow Overlap Calculations
+    SutherlandHodgman,       !- Polygon Clipping Algorithm
+    512,                     !- Pixel Counting Resolution
+    SimpleSkyDiffuseModeling,!- Sky Diffuse Modeling Algorithm
+    No,                      !- Output External Shading Calculation Results
+    No,                      !- Disable Self-Shading Within Shading Zone Groups
+    No;                      !- Disable Self-Shading From Shading Zone Groups to Other Zones
 
 !-   ===========  ALL OBJECTS IN CLASS: SURFACECONVECTIONALGORITHM:INSIDE ===========
 

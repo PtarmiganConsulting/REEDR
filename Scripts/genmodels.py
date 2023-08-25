@@ -240,9 +240,9 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
     output_gran = gui_params["output_gran"]
     output_enduses = gui_params["output_enduses"]
 
-    ### --- Allows tstat to overrun setpoint by a certain amount and drift back down to setpoint before kicking on again. A value of 0.79 empirically results in 
-    ### average room temps that are +/- 1 degree F about the desired setpoint. ###
-    deadband = 0 #0.79
+    ### --- Allows tstat to overrun setpoint by a certain amount and drift back down to setpoint before kicking on again.
+    deadband = 2.22222222222 #3 degrees F
+    deadband_offset = deadband/2
 
     ### --- Update simulation status in command prompt. --- ###
     print("Starting model build...")
@@ -591,8 +591,10 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
                 clgInputMethod = validate(clgInputMethod_fieldname, dictionary[clgInputMethod_fieldname], "list", dummy_int, dummy_int, clgInputMethod_list)
                 if clgInputMethod == "Constant Setpoint":
                     clgSetpoint = validate(clgSetpoint_fieldname, convert_degF_to_degC(dictionary[clgSetpoint_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
+                    clgSetpoint = clgSetpoint + deadband_offset # add one degree F to account for tstat deadband
                     #... set setback equal to setpoint
                     clgSetback = validate(clgSetback_fieldname, convert_degF_to_degC(dictionary[clgSetpoint_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
+                    clgSetback = clgSetback + deadband_offset # add one degree F to account for tstat deadband
                     #... set other variables to dummy values so they are not needed
                     clgSetbackStart = validate(clgSetbackStart_fieldname, 20, "any_num", hour_lo, hour_hi, dummy_list)
                     clgSetbackEnd = validate(clgSetbackEnd_fieldname, 6, "any_num", hour_lo, hour_hi, dummy_list)
@@ -603,7 +605,9 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
                 
                 elif clgInputMethod == "Setpoint with Night Setback":
                     clgSetpoint = validate(clgSetpoint_fieldname, convert_degF_to_degC(dictionary[clgSetpoint_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
+                    clgSetpoint = clgSetpoint + deadband_offset # add one degree F to account for tstat deadband
                     clgSetback = validate(clgSetback_fieldname, convert_degF_to_degC(dictionary[clgSetback_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
+                    clgSetback = clgSetback + deadband_offset # add one degree F to account for tstat deadband
                     clgSetbackStart = validate(clgSetbackStart_fieldname, int(dictionary[clgSetbackStart_fieldname]), "num_between", hour_lo, hour_hi, dummy_list)
                     clgSetbackEnd = validate(clgSetbackEnd_fieldname, int(dictionary[clgSetbackEnd_fieldname]), "num_between", hour_lo, hour_hi, dummy_list)
                     #... set other variables to dummy values so they are not needed
@@ -625,6 +629,7 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
                     #... use file-based cooling schedule instead of compact schedule
                     compact_clg_sch = "cooling_sch_not_used"
                     file_clg_sch = "cooling_sch"
+
                 
             else:
                 #... provide dummy values because there is no cooling
@@ -697,8 +702,10 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
             
             if htgInputMethod == "Constant Setpoint":
                 htgSetpoint = validate(htgSetpoint_fieldname, convert_degF_to_degC(dictionary[htgSetpoint_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
+                htgSetpoint = htgSetpoint - deadband_offset # add one degree F to account for tstat deadband
                 #... set setback equal to setpoint
                 htgSetback = validate(htgSetback_fieldname, convert_degF_to_degC(dictionary[htgSetpoint_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
+                htgSetback = htgSetback - deadband_offset # add one degree F to account for tstat deadband
                 #... set other variables to dummy values so they are not needed
                 htgSetbackStart = validate(htgSetbackStart_fieldname, 20, "any_num", hour_lo, hour_hi, dummy_list)
                 htgSetbackEnd = validate(htgSetbackEnd_fieldname, 6, "any_num", hour_lo, hour_hi, dummy_list)
@@ -709,7 +716,9 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
             
             elif htgInputMethod == "Setpoint with Night Setback":
                 htgSetpoint = validate(htgSetpoint_fieldname, convert_degF_to_degC(dictionary[htgSetpoint_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
+                htgSetpoint = htgSetpoint - deadband_offset # add one degree F to account for tstat deadband
                 htgSetback = validate(htgSetback_fieldname, convert_degF_to_degC(dictionary[htgSetback_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
+                htgSetback = htgSetback - deadband_offset # add one degree F to account for tstat deadband
                 htgSetbackStart = validate(htgSetbackStart_fieldname, int(dictionary[htgSetbackStart_fieldname]), "num_between", hour_lo, hour_hi, dummy_list)
                 htgSetbackEnd = validate(htgSetbackEnd_fieldname, int(dictionary[htgSetbackEnd_fieldname]), "num_between", hour_lo, hour_hi, dummy_list)
                 #... set other variables to dummy values so they are not needed

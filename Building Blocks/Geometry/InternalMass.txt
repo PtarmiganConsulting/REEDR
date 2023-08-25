@@ -1,7 +1,20 @@
-InternalMass,
-    Internalmass,           !- Name
-    InteriorFurnishings,    !- Construction Name
-    living,                 !- Zone Name
-    ,                        !- Space or SpaceList Name
-    9.89591078066915;       !- Surface Area {m2} 9.89591078066915
+!-InternalMass,
+!-    Internalmass,           !- Name
+!-    InteriorFurnishings,    !- Construction Name
+!-    living,                 !- Zone Name
+!-    ,                        !- Space or SpaceList Name
+!-    9.89591078066915;       !- Surface Area {m2} 9.89591078066915
+
+!- Using zone capacitance to represent internal mass. See:
+!- https://escholarship.org/content/qt07w1t272/qt07w1t272.pdf?t=ps8d8c
+
+!-   ===========  ALL OBJECTS IN CLASS: ZONECAPACITANCEMULTIPLIER:RESEARCHSPECIAL ===========
+
+ZoneCapacitanceMultiplier:ResearchSpecial,
+    living_capacitance, !- Name
+    living,     !- Zone or ZoneList 
+    10,          !- Temperature Capacity Multiplier
+    10,         !- Humidity Capacity Multiplier
+    1,          !- Carbon Dioxide Capacity Multiplier
+    1.0;        !- Generic Contaminant Capacity Multiplier
 
