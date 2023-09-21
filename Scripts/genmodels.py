@@ -1248,7 +1248,7 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
         ELA_attic = attic_adjust * attic_wall_area * 0.00010812648958345
 
         crawl_wall_area = 2*(abs(foundationwall_ht_AG) + abs(foundationwall_ht_BG))*building_depth + 2*(abs(foundationwall_ht_AG) + abs(foundationwall_ht_BG))*building_width
-        ELA_crawl = crawl_adjust * crawl_wall_area * 0.00010812648958345
+        ELA_crawl = 0.0001 # crawl_adjust * crawl_wall_area * 0.00010812648958345
         
         ### --- Add Air Flow Network (AFN) and airloop. Currently all HVAC systems are modeled with ducts. "Ductless" systems are modeled with "perfect" ducts. --- ### 
         AFN_control = "MultizoneWithDistribution"

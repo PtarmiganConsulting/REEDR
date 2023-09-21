@@ -1,0 +1,197 @@
+Program Version,EnergyPlus, Version 22.2.0-c249759bad, YMD=2023.09.01 19:22,
+   ************* Beginning Zone Sizing Calculations
+   ** Warning ** ProcessScheduleInput: Schedule:Constant="ALWAYS ON DISCRETE", Schedule Type Limits Name="ONOFF" not found -- will not be validated
+   ** Warning ** Foundation:Kiva="KIVA FOUNDATION", no Interior Horizontal Insulation Material Name defined
+   **   ~~~   ** Interior Horizontal Insulation Depth will not be used.
+   ** Warning ** CheckUsedConstructions: There are 15 nominally unused constructions in input.
+   **   ~~~   ** Each Unused construction is shown.
+   ************* Construction=INTERIOR FLOOR
+   ************* Construction=INTERIOR WINDOW
+   ************* Construction=EXTERIOR DOOR
+   ************* Construction=INTERIOR DOOR
+   ************* Construction=GABLE CONSTRUCTION
+   ************* Construction=CRAWL_FLOOR
+   ************* Construction=INSULATED PIPE
+   ************* Construction=PLAIN PIPE
+   ************* Construction=TDD PIPE
+   ************* Construction=TDD DOME
+   ************* Construction=TDD DIFFUSER
+   ************* Construction=CRAWL WALL
+   ************* Construction=CEILING-FLOOR-LAYER
+   ************* Construction=SLAB CONSTRUCTION W FULL R10 INSULATION
+   ************* Construction=SLAB CONSTRUCTION W FULL R5 INSULATION
+   ** Warning ** GetDXCoils: Coil:Heating:DX:SingleSpeed="DX_HEATING_COIL" curve values
+   **   ~~~   ** ... Defrost Energy Input Ratio Function of Temperature Curve Name = DEFROSTEIR output is not equal to 1.0 (+ or - 10%) at rated conditions.
+   **   ~~~   ** ... Curve output at rated conditions = 0.152
+   ************* Beginning System Sizing Calculations
+   ************* Beginning Plant Sizing Calculations
+   ** Warning ** SizeDXCoil Coil:Cooling:DX:SingleSpeed DX_COOLING_COIL
+   **   ~~~   ** ...Gross Rated Total Cooling Capacity [W] will be limited by the maximum rated volume flow per rated total capacity ratio.
+   **   ~~~   ** ...DX coil volume flow rate ( m3/s ) = 0.414392
+   **   ~~~   ** ...Requested capacity ( W ) = 6850.931
+   **   ~~~   ** ...Requested flow/capacity ratio ( m3/s/W ) = 6.048E-005
+   **   ~~~   ** ...Maximum flow/capacity ratio ( m3/s/W ) = 6.041E-005
+   **   ~~~   ** ...Adjusted capacity ( W ) = 6859.660
+   ** Warning ** Coil:WaterHeating:AirToWaterHeatPump:Wrapped "HEAT PUMP WATER HEATER EVAPORATOR": Rated air volume flow rate per watt of rated total water heating capacity is out of range
+   **   ~~~   ** Min Rated Vol Flow Per Watt=[4.027E-005], Rated Vol Flow Per Watt=[1.510E-004], Max Rated Vol Flow Per Watt=[8.056E-005]. See Input-Output Reference Manual for valid range.
+   ************* SizeFan: : Potential issue with equipment sizing for Fan:OnOff HEAT PUMP WATER HEATER FAN
+   **   ~~~   ** User-Specified Maximum Flow Rate [m3/s] = 0.22653
+   **   ~~~   ** differs from Design Size Maximum Flow Rate [m3/s] = 7.55250E-002
+   **   ~~~   ** This may, or may not, indicate mismatched component sizes.
+   **   ~~~   ** Verify that the value entered is intended and is consistent with other components.
+   ** Warning ** Water heater = WATER HEATER TANK:  Recovery Efficiency and Energy Factor could not be calculated during the test for standard ratings
+   **   ~~~   ** Setpoint was never recovered and/or heater never turned on
+   ** Warning ** Check input. Pump nominal power or motor efficiency is set to 0, for pump=MAINS PRESSURE
+   ** Warning ** Output:Meter: invalid Key Name="ELECTRIC_RANGE:INTERIOREQUIPMENT:ELECTRICITY" - not found.
+   ** Warning ** Output:Meter: invalid Key Name="ELECTRIC_DRYER:INTERIOREQUIPMENT:ELECTRICITY" - not found.
+   ** Warning ** Output:Meter: invalid Key Name="HEATRECOVERY:ELECTRICITY" - not found.
+   ** Warning ** Output:Meter: invalid Key Name="HEATING:NATURALGAS" - not found.
+   ** Warning ** Output:Meter: invalid Key Name="WATERSYSTEMS:NATURALGAS" - not found.
+   ** Warning ** Output:Meter: invalid Key Name="PROPANE:FACILITY" - not found.
+   ** Warning ** Output:Meter: invalid Key Name="HEATING:PROPANE" - not found.
+   ************* Testing Individual Branch Integrity
+   ************* All Branches passed integrity testing
+   ************* Testing Individual Supply Air Path Integrity
+   ************* All Supply Air Paths passed integrity testing
+   ************* Testing Individual Return Air Path Integrity
+   ************* All Return Air Paths passed integrity testing
+   ************* No node connection errors were found.
+   ************* Beginning Simulation
+   ** Warning ** AirflowNetwork::Solver::validate_distribution: Heat pump water heater is simulated along with an AirflowNetwork but is not included in the AirflowNetwork.
+   ** Warning ** CalcEquipmentFlowRates: "TOTAL HOT WATER LOAD" - Target water temperature is greater than the hot water temperature by (0.59 C)
+   **   ~~~   **  Environment=EXTREME_WINTER, at Simulation time=01/13 06:00 - 06:15
+   **   ~~~   ** ...target water temperature     = 53.33 C
+   **   ~~~   ** ...hot water temperature        = 52.74 C
+   **   ~~~   ** ...Target water temperature should be less than or equal to the hot water temperature. Verify temperature setpoints and schedules.
+   ** Warning ** SimHVAC: Maximum iterations (20) exceeded for all HVAC loops, at ANNUAL, 01/01 11:10 - 11:15
+   **   ~~~   ** The solution for one or more of the Air Loop HVAC systems did not appear to converge
+   **   ~~~   ** Air System Named = CENTRAL SYSTEM did not converge for mass flow rate
+   **   ~~~   ** Check values should be zero. Most Recent values listed first.
+   **   ~~~   ** Demand-to-Supply interface mass flow rate check value iteration history trace: 6.596019E-002,6.596019E-002,6.596019E-002,6.596019E-002,6.596019E-002,6.596019E-002,6.596019E-002,6.596019E-002,6.596019E-002,6.596019E-002,
+   **   ~~~   ** Supply-to-demand interface deck 1 mass flow rate check value iteration history trace: 6.596019E-002,6.596019E-002,6.596019E-002,6.596019E-002,6.596019E-002,6.596019E-002,6.596019E-002,6.596019E-002,6.596019E-002,6.596019E-002,
+   **   ~~~   ** Air System Named = CENTRAL SYSTEM did not converge for energy
+   **   ~~~   ** Check values should be zero. Most Recent values listed first.
+   **   ~~~   ** Demand-to-Supply interface energy check value iteration history trace: 1295.447056,1295.447056,1295.447056,1295.447055,1295.447055,1295.447055,1295.447055,1295.447055,1295.447055,1295.447055,
+   **   ~~~   ** Supply-to-demand interface deck 1 energy check value iteration history trace: 2280.772452,2280.772452,2280.772452,2280.772452,2280.772451,2280.772451,2280.772451,2280.772451,2280.772451,2280.772451,
+   ** Warning ** SimHVAC: Maximum iterations (20) exceeded for all HVAC loops, at ANNUAL, 01/22 09:55 - 09:57
+   **   ~~~   ** The solution for one or more of the Air Loop HVAC systems did not appear to converge
+   **   ~~~   ** Air System Named = CENTRAL SYSTEM did not converge for mass flow rate
+   **   ~~~   ** Check values should be zero. Most Recent values listed first.
+   **   ~~~   ** Demand-to-Supply interface mass flow rate check value iteration history trace: 7.481594E-002,7.481594E-002,7.481594E-002,7.481594E-002,7.481594E-002,7.481594E-002,7.481594E-002,7.481594E-002,7.481594E-002,7.481594E-002,
+   **   ~~~   ** Supply-to-demand interface deck 1 mass flow rate check value iteration history trace: 7.481594E-002,7.481594E-002,7.481594E-002,7.481594E-002,7.481594E-002,7.481594E-002,7.481594E-002,7.481594E-002,7.481594E-002,7.481594E-002,
+   **   ~~~   ** Air System Named = CENTRAL SYSTEM did not converge for energy
+   **   ~~~   ** Check values should be zero. Most Recent values listed first.
+   **   ~~~   ** Demand-to-Supply interface energy check value iteration history trace: 1478.057516,1478.057516,1478.057516,1478.057516,1478.057516,1478.057516,1478.057516,1478.057516,1478.057516,1478.057516,
+   **   ~~~   ** Supply-to-demand interface deck 1 energy check value iteration history trace: 2577.584592,2577.584592,2577.584592,2577.584592,2577.584592,2577.584592,2577.584591,2577.584591,2577.584591,2577.584591,
+   ** Warning ** SimHVAC: Maximum iterations (20) exceeded for all HVAC loops, at ANNUAL, 02/14 08:30 - 08:38
+   **   ~~~   ** The solution for one or more of the Air Loop HVAC systems did not appear to converge
+   **   ~~~   ** Air System Named = CENTRAL SYSTEM did not converge for mass flow rate
+   **   ~~~   ** Check values should be zero. Most Recent values listed first.
+   **   ~~~   ** Demand-to-Supply interface mass flow rate check value iteration history trace: 4.720444E-002,4.720444E-002,4.720444E-002,4.720444E-002,4.720444E-002,4.720444E-002,4.720444E-002,4.720444E-002,4.720444E-002,4.720444E-002,
+   **   ~~~   ** Supply-to-demand interface deck 1 mass flow rate check value iteration history trace: 4.720444E-002,4.720444E-002,4.720444E-002,4.720444E-002,4.720444E-002,4.720444E-002,4.720444E-002,4.720444E-002,4.720444E-002,4.720444E-002,
+   **   ~~~   ** Air System Named = CENTRAL SYSTEM did not converge for energy
+   **   ~~~   ** Check values should be zero. Most Recent values listed first.
+   **   ~~~   ** Demand-to-Supply interface energy check value iteration history trace: 924.044591,924.044591,924.044591,924.044591,924.044591,924.044591,924.044591,924.044591,924.044590,924.044590,
+   **   ~~~   ** Supply-to-demand interface deck 1 energy check value iteration history trace: 1710.075889,1710.075889,1710.075889,1710.075889,1710.075889,1710.075888,1710.075888,1710.075888,1710.075888,1710.075888,
+   ** Warning ** SimHVAC: Maximum iterations (20) exceeded for all HVAC loops, at ANNUAL, 03/22 05:08 - 05:15
+   **   ~~~   ** The solution for one or more of the Air Loop HVAC systems did not appear to converge
+   **   ~~~   ** Air System Named = CENTRAL SYSTEM did not converge for mass flow rate
+   **   ~~~   ** Check values should be zero. Most Recent values listed first.
+   **   ~~~   ** Demand-to-Supply interface mass flow rate check value iteration history trace: 7.764557E-002,7.764557E-002,7.764557E-002,7.764557E-002,7.764557E-002,7.764557E-002,7.764557E-002,7.764557E-002,7.764557E-002,7.764557E-002,
+   **   ~~~   ** Supply-to-demand interface deck 1 mass flow rate check value iteration history trace: 7.764557E-002,7.764557E-002,7.764557E-002,7.764557E-002,7.764557E-002,7.764557E-002,7.764557E-002,7.764557E-002,7.764557E-002,7.764557E-002,
+   **   ~~~   ** Air System Named = CENTRAL SYSTEM did not converge for energy
+   **   ~~~   ** Check values should be zero. Most Recent values listed first.
+   **   ~~~   ** Demand-to-Supply interface energy check value iteration history trace: 1862.659545,1862.659546,1862.659547,1862.659548,1862.659548,1862.659549,1862.659550,1862.659550,1862.659551,1862.659552,
+   **   ~~~   ** Supply-to-demand interface deck 1 energy check value iteration history trace: 1102.354113,1102.354113,1102.354113,1102.354114,1102.354114,1102.354115,1102.354115,1102.354115,1102.354116,1102.354116,
+   ** Warning ** SimHVAC: Maximum iterations (20) exceeded for all HVAC loops, at ANNUAL, 04/09 08:30 - 08:45
+   **   ~~~   ** The solution for one or more of the Air Loop HVAC systems did not appear to converge
+   **   ~~~   ** Air System Named = CENTRAL SYSTEM did not converge for mass flow rate
+   **   ~~~   ** Check values should be zero. Most Recent values listed first.
+   **   ~~~   ** Demand-to-Supply interface mass flow rate check value iteration history trace: 3.593482E-002,3.593482E-002,3.593482E-002,3.593482E-002,3.593482E-002,3.593482E-002,3.593482E-002,3.593482E-002,3.593482E-002,3.593482E-002,
+   **   ~~~   ** Supply-to-demand interface deck 1 mass flow rate check value iteration history trace: 3.593482E-002,3.593482E-002,3.593482E-002,3.593482E-002,3.593482E-002,3.593482E-002,3.593482E-002,3.593482E-002,3.593482E-002,3.593482E-002,
+   **   ~~~   ** Air System Named = CENTRAL SYSTEM did not converge for energy
+   **   ~~~   ** Check values should be zero. Most Recent values listed first.
+   **   ~~~   ** Demand-to-Supply interface energy check value iteration history trace: 862.185509,862.185509,862.185509,862.185509,862.185509,862.185509,862.185509,862.185509,862.185509,862.185509,
+   **   ~~~   ** Supply-to-demand interface deck 1 energy check value iteration history trace: 469.261419,469.261419,469.261419,469.261419,469.261419,469.261419,469.261419,469.261419,469.261419,469.261419,
+   ** Warning ** SimHVAC: Maximum iterations (20) exceeded for all HVAC loops, at ANNUAL, 04/09 09:26 - 09:30
+   **   ~~~   ** The solution for one or more of the Air Loop HVAC systems did not appear to converge
+   **   ~~~   ** Air System Named = CENTRAL SYSTEM did not converge for mass flow rate
+   **   ~~~   ** Check values should be zero. Most Recent values listed first.
+   **   ~~~   ** Demand-to-Supply interface mass flow rate check value iteration history trace: 0.229350,0.229350,0.229350,0.229350,0.229350,0.229350,0.229350,0.229350,0.229350,0.229350,
+   **   ~~~   ** Supply-to-demand interface deck 1 mass flow rate check value iteration history trace: 0.229350,0.229350,0.229350,0.229350,0.229350,0.229350,0.229350,0.229350,0.229350,0.229350,
+   **   ~~~   ** Air System Named = CENTRAL SYSTEM did not converge for energy
+   **   ~~~   ** Check values should be zero. Most Recent values listed first.
+   **   ~~~   ** Demand-to-Supply interface energy check value iteration history trace: 5478.459776,5478.459776,5478.459777,5478.459777,5478.459778,5478.459778,5478.459779,5478.459779,5478.459779,5478.459780,
+   **   ~~~   ** Supply-to-demand interface deck 1 energy check value iteration history trace: 2940.052389,2940.052389,2940.052389,2940.052389,2940.052390,2940.052390,2940.052390,2940.052390,2940.052391,2940.052391,
+   ** Warning ** SimHVAC: Maximum iterations (20) exceeded for all HVAC loops, at ANNUAL, 12/01 19:35 - 19:40
+   **   ~~~   ** The solution for one or more of the Air Loop HVAC systems did not appear to converge
+   **   ~~~   ** Air System Named = CENTRAL SYSTEM did not converge for mass flow rate
+   **   ~~~   ** Check values should be zero. Most Recent values listed first.
+   **   ~~~   ** Demand-to-Supply interface mass flow rate check value iteration history trace: 0.233465,0.233465,0.233465,0.233465,0.233465,0.233465,0.233465,0.233465,0.233465,0.233465,
+   **   ~~~   ** Supply-to-demand interface deck 1 mass flow rate check value iteration history trace: 0.233465,0.233465,0.233465,0.233465,0.233465,0.233465,0.233465,0.233465,0.233465,0.233465,
+   **   ~~~   ** Air System Named = CENTRAL SYSTEM did not converge for energy
+   **   ~~~   ** Check values should be zero. Most Recent values listed first.
+   **   ~~~   ** Demand-to-Supply interface energy check value iteration history trace: 5618.461089,5618.461089,5618.461089,5618.461090,5618.461090,5618.461090,5618.461091,5618.461091,5618.461092,5618.461092,
+   **   ~~~   ** Supply-to-demand interface deck 1 energy check value iteration history trace: 2308.216416,2308.216416,2308.216416,2308.216416,2308.216416,2308.216417,2308.216417,2308.216417,2308.216417,2308.216417,
+   ** Warning ** SimHVAC: Maximum iterations (20) exceeded for all HVAC loops, at ANNUAL, 12/03 12:08 - 12:15
+   **   ~~~   ** The solution for one or more of the Air Loop HVAC systems did not appear to converge
+   **   ~~~   ** Air System Named = CENTRAL SYSTEM did not converge for mass flow rate
+   **   ~~~   ** Check values should be zero. Most Recent values listed first.
+   **   ~~~   ** Demand-to-Supply interface mass flow rate check value iteration history trace: 0.151182,0.151182,0.151182,0.151182,0.151182,0.151182,0.151182,0.151182,0.151182,0.151182,
+   **   ~~~   ** Supply-to-demand interface deck 1 mass flow rate check value iteration history trace: 0.151182,0.151182,0.151182,0.151182,0.151182,0.151182,0.151182,0.151182,0.151182,0.151182,
+   **   ~~~   ** Air System Named = CENTRAL SYSTEM did not converge for energy
+   **   ~~~   ** Check values should be zero. Most Recent values listed first.
+   **   ~~~   ** Demand-to-Supply interface energy check value iteration history trace: 3559.458016,3559.458016,3559.458016,3559.458016,3559.458017,3559.458017,3559.458017,3559.458017,3559.458018,3559.458018,
+   **   ~~~   ** Supply-to-demand interface deck 1 energy check value iteration history trace: 1733.712035,1733.712035,1733.712035,1733.712035,1733.712035,1733.712035,1733.712035,1733.712035,1733.712036,1733.712036,
+   ** Warning ** SimHVAC: Maximum iterations (20) exceeded for all HVAC loops, at ANNUAL, 12/09 01:15 - 01:30
+   **   ~~~   ** The solution for one or more of the Air Loop HVAC systems did not appear to converge
+   **   ~~~   ** Air System Named = CENTRAL SYSTEM did not converge for mass flow rate
+   **   ~~~   ** Check values should be zero. Most Recent values listed first.
+   **   ~~~   ** Demand-to-Supply interface mass flow rate check value iteration history trace: 4.508119E-002,4.508119E-002,4.508119E-002,4.508119E-002,4.508119E-002,4.508119E-002,4.508119E-002,4.508119E-002,4.508119E-002,4.508119E-002,
+   **   ~~~   ** Supply-to-demand interface deck 1 mass flow rate check value iteration history trace: 4.508119E-002,4.508119E-002,4.508119E-002,4.508119E-002,4.508119E-002,4.508119E-002,4.508119E-002,4.508119E-002,4.508119E-002,4.508119E-002,
+   **   ~~~   ** Air System Named = CENTRAL SYSTEM did not converge for energy
+   **   ~~~   ** Check values should be zero. Most Recent values listed first.
+   **   ~~~   ** Demand-to-Supply interface energy check value iteration history trace: 841.763161,841.763161,841.763161,841.763161,841.763161,841.763161,841.763161,841.763161,841.763160,841.763160,
+   **   ~~~   ** Supply-to-demand interface deck 1 energy check value iteration history trace: 1254.846855,1254.846854,1254.846854,1254.846854,1254.846854,1254.846854,1254.846854,1254.846854,1254.846854,1254.846854,
+   ** Warning ** SimHVAC: Maximum iterations (20) exceeded for all HVAC loops, at ANNUAL, 12/12 08:26 - 08:30
+   **   ~~~   ** The solution for one or more of the Air Loop HVAC systems did not appear to converge
+   **   ~~~   ** Air System Named = CENTRAL SYSTEM did not converge for mass flow rate
+   **   ~~~   ** Check values should be zero. Most Recent values listed first.
+   **   ~~~   ** Demand-to-Supply interface mass flow rate check value iteration history trace: 6.428957E-002,6.428957E-002,6.428957E-002,6.428957E-002,6.428957E-002,6.428957E-002,6.428957E-002,6.428957E-002,6.428957E-002,6.428957E-002,
+   **   ~~~   ** Supply-to-demand interface deck 1 mass flow rate check value iteration history trace: 6.428957E-002,6.428957E-002,6.428957E-002,6.428957E-002,6.428957E-002,6.428957E-002,6.428957E-002,6.428957E-002,6.428957E-002,6.428957E-002,
+   **   ~~~   ** Air System Named = CENTRAL SYSTEM did not converge for energy
+   **   ~~~   ** Check values should be zero. Most Recent values listed first.
+   **   ~~~   ** Demand-to-Supply interface energy check value iteration history trace: 1271.310111,1271.310111,1271.310110,1271.310110,1271.310110,1271.310110,1271.310110,1271.310110,1271.310110,1271.310110,
+   **   ~~~   ** Supply-to-demand interface deck 1 energy check value iteration history trace: 2208.416421,2208.416421,2208.416421,2208.416421,2208.416421,2208.416421,2208.416421,2208.416421,2208.416421,2208.416420,
+   ************* Simulation Error Summary *************
+   ** Warning ** The following Report Variables were requested but not generated -- check.rdd file
+   **   ~~~   ** Either the IDF did not contain these elements, the variable name is misspelled,
+   **   ~~~   ** or the requested variable is an advanced output which requires Output : Diagnostics, DisplayAdvancedReportVariables;
+   ************* Key=*, VarName=BASEBOARD TOTAL HEATING ENERGY, Frequency=
+   ************* Key=*, VarName=WATER HEATER NATURALGAS ENERGY, Frequency=
+   ************* Key=*, VarName=COOLING COIL TOTAL HEATING ENERGY, Frequency=
+   ************* There are 34 unused schedules in input.
+   ************* There are 388 unused week schedules in input.
+   ************* There are 396 unused day schedules in input.
+   ************* Use Output:Diagnostics,DisplayUnusedSchedules; to see them.
+   *************
+   ************* ===== Recurring Error Summary =====
+   ************* The following recurring error messages occurred.
+   *************
+   *************  ** Warning ** "TOTAL HOT WATER LOAD" - Target water temperature should be less than or equal to the hot water temperature error continues...
+   *************  **   ~~~   **   This error occurred 152481 total times;
+   *************  **   ~~~   **   during Warmup 0 times;
+   *************  **   ~~~   **   during Sizing 0 times.
+   *************  **   ~~~   **   Max=8.759039  Min=4.253844E-004
+   *************
+   *************
+   ************* ===== Final Error Summary =====
+   ************* The following error categories occurred.  Consider correcting or noting.
+   ************* Nominally Unused Constructions
+   ************* ..The nominally unused constructions warning is provided to alert you to potential conditions that can cause
+   ************* ..extra time during simulation. Each construction is calculated by the algorithm indicated in the HeatBalanceAlgorithm
+   ************* ..object. You may remove the constructions indicated (when you use the DisplayExtraWarnings option).
+   *************
+   ************* EnergyPlus Warmup Error Summary. During Warmup: 1 Warning; 0 Severe Errors.
+   ************* EnergyPlus Sizing Error Summary. During Sizing: 4 Warning; 0 Severe Errors.
+   ************* EnergyPlus Completed Successfully-- 152509 Warning; 0 Severe Errors; Elapsed Time=00hr 01min 45.84sec
