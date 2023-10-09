@@ -241,7 +241,7 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
     output_enduses = gui_params["output_enduses"]
 
     ### --- Allows tstat to overrun setpoint by a certain amount and drift back down to setpoint before kicking on again.
-    deadband = 1.1111111111 #4 degrees F
+    deadband = 1.1111111111/2 #4 degrees F
     deadband_offset = deadband/2
 
     ### --- Update simulation status in command prompt. --- ###

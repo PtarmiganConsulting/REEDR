@@ -1,0 +1,115 @@
+!-   ===========  ALL OBJECTS IN CLASS: COIL:COOLING:DX:SINGLESPEED ===========
+
+Coil:Cooling:DX:SingleSpeed,
+	   DX_Cooling_Coil,         		!- Name
+    	always_avail,            		!- Availability Schedule Name
+    	{clg_capacity_spd_1},         !- Gross Rated Total Cooling Capacity {{W}}
+   	 0.73,                    		!- Gross Rated Sensible Heat Ratio
+    	4.1,       	                  !- Gross Rated Cooling COP {{W/W}} was 4.414045822617803
+    	{fan_m3PerSec_spd_1},         !- Rated Air Flow Rate {{m3/s}}
+    	,                        		!- 2017 Rated Evaporator Fan Power Per Volume Flow Rate {{W/(m3/s)}}
+    	,  						         !- 2023 Rated Evaporator Fan Power Per Volume Flow Rate {{W/(m3/s)}}
+    	Cooling Coil Air Inlet Node,  !- Air Inlet Node Name
+    	Heating Coil Air Inlet Node,  !- Air Outlet Node Name
+    	ACCoolingCAPFTemp,            		!- Total Cooling Capacity Function of Temperature Curve Name
+    	ACCoolingCAPFFF,             		!- Total Cooling Capacity Function of Flow Fraction Curve Name
+    	ACCoolingEIRFTemp,            		!- Energy Input Ratio Function of Temperature Curve Name
+    	ACCoolingEIRFFF,           		!- Energy Input Ratio Function of Flow Fraction Curve Name
+    	ACCoolingPLFFPLR,                !- Part Load Fraction Correlation Curve Name
+    	,                        		!- Minimum Outdoor Dry-Bulb Temperature for Compressor Operation {{C}}
+    	,                        		!- Nominal Time for Condensate Removal to Begin {{s}}
+    	;                        		!- Ratio of Initial Moisture Evaporation Rate and Steady State Latent Capacity {{dimensionless}}
+
+AirflowNetwork:Distribution:Component:Coil,
+  DX_Cooling_Coil,                   !- Coil Name
+  Coil:Cooling:DX:SingleSpeed,              !- Coil Object Type
+  0.1,                                      !- Air Path Length {{m}}
+  1.000;                                    !- Air Path Hydraulic Diameter {{m}}
+
+!  These coefficients were taken directly from the report below. For further details users may need
+!  to refer this report.
+!  D. Cutler, J. Winkler, N. Kruis, and C. Christensen
+!  National Renewable Energy Laboratory
+!  M. Brandemuehl
+!  University of Colorado
+!
+!  Improved Modeling of Residential Air Conditioners and Heat Pumps for Energy Calculations
+!
+!  Technical Report
+!  NREL/TP-5500-56354
+!  January 2013
+!
+!
+!  Air Conditioner Performance Curves were taken from: Tables 9, 10, 16 and 17:
+
+  Curve:Biquadratic,
+    ACCoolingCAPFTemp,       !- Name
+    1.5509,                  !- Coefficient1 Constant
+    -0.07505,                !- Coefficient2 x
+    0.0031,                  !- Coefficient3 x**2
+    0.0024,                  !- Coefficient4 y
+    -0.00005,                !- Coefficient5 y**2
+    -0.00043,                !- Coefficient6 x*y
+    0,                       !- Minimum Value of x
+    50,                      !- Maximum Value of x
+    0,                       !- Minimum Value of y
+    50,                      !- Maximum Value of y
+    0,                       !- Minimum Curve Output
+    5,                       !- Maximum Curve Output
+    Temperature,             !- Input Unit Type for X
+    Temperature,             !- Input Unit Type for Y
+    Dimensionless;           !- Output Unit Type
+
+  Curve:Biquadratic,
+    ACCoolingEIRFTemp,       !- Name
+    -0.30428,                !- Coefficient1 Constant
+    0.11805,                 !- Coefficient2 x
+    -0.00342,                !- Coefficient3 x**2
+    -0.00626,                !- Coefficient4 y
+    0.0007,                  !- Coefficient5 y**2
+    -0.00047,                !- Coefficient6 x*y
+    0,                       !- Minimum Value of x
+    50,                      !- Maximum Value of x
+    0,                       !- Minimum Value of y
+    50,                      !- Maximum Value of y
+    0,                       !- Minimum Curve Output
+    5,                       !- Maximum Curve Output
+    Temperature,             !- Input Unit Type for X
+    Temperature,             !- Input Unit Type for Y
+    Dimensionless;           !- Output Unit Type
+
+  Curve:Quadratic,
+    ACCoolingCAPFFF,         !- Name
+    0.718605468,             !- Coefficient1 Constant
+    0.410099989,             !- Coefficient2 x
+    -0.128705457,            !- Coefficient3 x**2
+    0,                       !- Minimum Value of x
+    1.5,                     !- Maximum Value of x
+    0,                       !- Minimum Curve Output
+    2,                       !- Maximum Curve Output
+    Dimensionless,           !- Input Unit Type for X
+    Dimensionless;           !- Output Unit Type
+
+  Curve:Quadratic,
+    ACCoolingEIRFFF,         !- Name
+    1.32299905,              !- Coefficient1 Constant
+    -0.477711207,            !- Coefficient2 x
+    0.154712157,             !- Coefficient3 x**2
+    0,                       !- Minimum Value of x
+    1.5,                     !- Maximum Value of x
+    0,                       !- Minimum Curve Output
+    2,                       !- Maximum Curve Output
+    Dimensionless,           !- Input Unit Type for X
+    Dimensionless;           !- Output Unit Type
+
+! Part Load Fraction curve as a function of Part Load Ratio is default from
+! Table 6. BEopt AC Rated Value Inputs of NREL report NREL/TP-5500-56354
+
+  Curve:Quadratic,
+    ACCoolingPLFFPLR,        !- Name
+    0.90,                    !- Coefficient1 Constant
+    0.10,                    !- Coefficient2 x
+    0.0,                     !- Coefficient3 x**2
+    0.0,                     !- Minimum Value of x
+    1.0;                     !- Maximum Value of x
+
