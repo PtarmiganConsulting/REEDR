@@ -1,10 +1,11 @@
 Coil:Heating:Electric,
     Heating_Resistance_Backup,  		    !- Name
-    always_avail,             		        !- Availability Schedule Name
+    heating_avail,             		        !- Availability Schedule Name
     1,                        		        !- Efficiency
     {hp_supp_heat_capacity},                !- Nominal Capacity {{W}}
     Supp Heating Coil Air Inlet Node,       !- Air Inlet Node Name
     Air Loop Outlet Node;     	            !- Air Outlet Node Name
+!-    Air Loop Outlet Node; this node needs to be added for setpoint control
 
 !-   ===========  ALL OBJECTS IN CLASS: AIRFLOWNETWORK:DISTRIBUTION:COMPONENT:COIL ===========
 
@@ -22,7 +23,7 @@ AirflowNetwork:Distribution:Linkage,
 
 AirflowNetwork:Distribution:Node,
     SuppHeatingInletNode,         	    !- Name
-    Supp Heating coil air inlet Node,   !- Component Name or Node Name
+    Supp Heating Coil Air Inlet Node,   !- Component Name or Node Name
     Other,                      		!- Component Object Type or Node Type
     3.0;                        		!- Node Height {{m}}
 

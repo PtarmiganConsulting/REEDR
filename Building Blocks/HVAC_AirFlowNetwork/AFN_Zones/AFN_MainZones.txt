@@ -2,14 +2,14 @@
 
 AirflowNetwork:MultiZone:Zone,
     living,         !- Zone Name
-    NoVent,    !- Ventilation Control Mode
-    ,               !- Ventilation Control Zone Temperature Setpoint Schedule Name
+    Temperature,    !- Ventilation Control Mode
+    WindowVentSched,               !- Ventilation Control Zone Temperature Setpoint Schedule Name
     0.3,              !- Minimum Venting Open Factor {dimensionless}
     5,            !- Indoor and Outdoor Temperature Difference Lower Limit For Maximum Venting Open Factor {deltaC}
     10,          !- Indoor and Outdoor Temperature Difference Upper Limit for Minimun Venting Open Factor {deltaC}
     0.0,            !- Indoor and Outdoor Enthalpy Difference Lower Limit For Maximum Venting Open Factor {deltaJ/kg}
     300000.0,       !- Indoor and Outdoor Enthalpy Difference Upper Limit for Minimun Venting Open Factor {deltaJ/kg}
-    ;               !- Venting Availability Schedule Name - can be "OccupantVentilatioControl"
+    VentingAvailable;               !- Venting Availability Schedule Name - can be "OccupantVentilatioControl"
 
 AirflowNetwork:MultiZone:Zone,
     attic,          !- Zone Name
@@ -21,4 +21,33 @@ AirflowNetwork:MultiZone:Zone,
     ,               !- Indoor and Outdoor Enthalpy Difference Lower Limit For Maximum Venting Open Factor {deltaJ/kg}
     300000,         !- Indoor and Outdoor Enthalpy Difference Upper Limit for Minimun Venting Open Factor {deltaJ/kg}
     inf_sch;        !- Venting Availability Schedule Name
+
+Schedule:Compact,
+    VentingAvailable,            !- Name
+    any number,              !- Schedule Type Limits Name
+    Through: 5/1,           !- Field 1
+    For: AllDays,            !- Field 2
+    Until 24:00,             !- Field 3
+    0,                    !- Field 4
+    Through: 10/1,           !- Field 5
+    For: AllDays,            !- Field 6
+    Until 24:00,             !- Field 7
+    1,                     !- Field 8
+    Through: 12/31,          !- Field 9
+    For: AllDays,            !- Field 10
+    Until: 24:00,            !- Field 11
+    0;                    !- Field 12
+
+  Schedule:Compact,
+    WindowVentSched,         !- Name
+    Any Number,              !- Schedule Type Limits Name
+    Through: 12/31,          !- Field 1
+    For: Wednesday Thursday Friday Saturday, !- Field 2
+    Until: 24:00,23.888889,      !- Field 3
+    For: Holiday SummerDesignDay, !- Field 5
+    Until: 24:00,23.888889,      !- Field 6
+    For: Sunday Monday Tuesday, !- Field 8
+    Until: 24:00,23.888889,      !- Field 9
+    For: WinterDesignDay CustomDay1 CustomDay2, !- Field 11
+    Until: 24:00,23.888889;      !- Field 12
 

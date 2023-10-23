@@ -241,7 +241,7 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
     output_enduses = gui_params["output_enduses"]
 
     ### --- Allows tstat to overrun setpoint by a certain amount and drift back down to setpoint before kicking on again.
-    deadband = 1.1111111111/2 #4 degrees F
+    deadband = 1.1111111111/12 #1.1111111111/2
     deadband_offset = deadband/2
 
     ### --- Update simulation status in command prompt. --- ###
@@ -578,7 +578,7 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
             hour_hi = 23
             #... cooling capacity and capacity units
             if AirLoopHVAC_Unitary_ObjectName == "SS Heat Pump" or AirLoopHVAC_Unitary_ObjectName == "DS Heat Pump" or AirLoopHVAC_Unitary_ObjectName == "MS Heat Pump" \
-            or coolCoilTextFile != "No":
+            or AirLoopHVAC_Unitary_ObjectName == "UnitarySystem_SPControl" or coolCoilTextFile != "No":
                 if hvacSizingMethod == "Manual":
                     primaryClg_capacity_units = validate(primaryClgCapacityUnits_fieldname, dictionary[primaryClgCapacityUnits_fieldname], "list", dummy_int, dummy_int, primaryHVAC_capacity_units_list)
                     primary_cooling_capacity = validate(primaryClgCapacity_fieldname, dictionary[primaryClgCapacity_fieldname], "num_not_zero", dummy_int, dummy_int, dummy_list)
@@ -644,7 +644,7 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
             
             #... heat pump specific inputs
             if AirLoopHVAC_Unitary_ObjectName == "SS Heat Pump" or AirLoopHVAC_Unitary_ObjectName == "DS Heat Pump" or AirLoopHVAC_Unitary_ObjectName == "MS Heat Pump" \
-            and CentralOrZonal == "Central":
+            or AirLoopHVAC_Unitary_ObjectName == "UnitarySystem_SPControl" and CentralOrZonal == "Central":
                 #... ASHP backup heat type
                 hp_supp_heat_type_list = ["Electric", "Gas"]
                 hp_supp_heat_type = validate(hpBackupType_fieldname, dictionary[hpBackupType_fieldname], "list", dummy_int, dummy_int, hp_supp_heat_type_list)
@@ -654,8 +654,10 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
                     ASHPbackup_capacity_units = validate(hpBackupCapacityUnits_fieldname, dictionary[hpBackupCapacityUnits_fieldname], "list", dummy_int, dummy_int, ASHPbackup_capacity_units_list)
                     #... ASHP backup heat capacity
                     hp_supp_heat_capacity = convert_capacity(ASHPbackup_capacity_units, validate(hpBackupCapacity_fieldname, dictionary[hpBackupCapacity_fieldname], "num_not_zero", dummy_int, dummy_int, dummy_list))
+                    hp_supp_heat_capacity_multistage = hp_supp_heat_capacity/3
                 else:
                     hp_supp_heat_capacity = "Autosize"
+                    hp_supp_heat_capacity_multistage = "Autosize"
                 
                 #... backup heat lockout
                 hp_max_resistance_temp = validate(hpBackupLockout_fieldname, convert_degF_to_degC(dictionary[hpBackupLockout_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
@@ -664,6 +666,7 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
             else:
                 hp_supp_heat_type = "No"
                 hp_supp_heat_capacity = 0
+                hp_supp_heat_capacity_multistage = 0
 
             #... baseboard heating capacity
             if str(dictionary[backupBaseboardCapacity_fieldname]) == "nan" or hvacSizingMethod == "Manual":
@@ -1145,7 +1148,7 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
         # Set capacity to use for sizing fans. If heating only, use heating capacity. If heating and cooling, use average capacity.
         if hvacSizingMethod == "Manual":
             if AirLoopHVAC_Unitary_ObjectName == "SS Heat Pump" or AirLoopHVAC_Unitary_ObjectName == "DS Heat Pump" or AirLoopHVAC_Unitary_ObjectName == "MS Heat Pump" \
-                or coolCoilTextFile != "No":
+                or AirLoopHVAC_Unitary_ObjectName == "UnitarySystem_SPControl" or coolCoilTextFile != "No":
 
                 sizing_capacity = convert_W_to_ton((primary_heating_capacity + primary_cooling_capacity)/2)
             else:
@@ -1269,7 +1272,19 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
             AFN_main_heating_coil_outlet_node = "SuppHeatingInletNode"
             with open(os.path.join(set_dir, building_block_dir, hvac_coil_dir, 'Heating_Fuel_Backup.txt'), 'r') as f:
                 supp_heating_coil_t = f"{f.read()}".format(**locals())
+        elif AirLoopHVAC_Unitary_ObjectType == "AirLoopHVAC:UnitarySystem" and hp_supp_heat_type == "Gas":    
+            AirLoopHVAC_SuppHeatingCoil_ObjectType = "Coil:Heating:Fuel"
+            AirLoopHVAC_SuppHeatingCoil_Name = "Heating_Fuel_Backup"
+            AFN_main_heating_coil_outlet_node = "SuppHeatingInletNode"
+            with open(os.path.join(set_dir, building_block_dir, hvac_coil_dir, 'Heating_Fuel_Backup.txt'), 'r') as f:
+                supp_heating_coil_t = f"{f.read()}".format(**locals())
         elif AirLoopHVAC_Unitary_ObjectType == "AirLoopHVAC:UnitaryHeatPump:AirtoAir" or AirLoopHVAC_Unitary_ObjectType == "AirLoopHVAC:UnitaryHeatPump:AirToAir:MultiSpeed":
+            AirLoopHVAC_SuppHeatingCoil_ObjectType = "Coil:Heating:Electric"
+            AirLoopHVAC_SuppHeatingCoil_Name = "Heating_Resistance_Backup"
+            AFN_main_heating_coil_outlet_node = "SuppHeatingInletNode"
+            with open(os.path.join(set_dir, building_block_dir, hvac_coil_dir, 'Heating_Resistance_Backup.txt'), 'r') as f:
+                supp_heating_coil_t = f"{f.read()}".format(**locals())
+        elif AirLoopHVAC_Unitary_ObjectType == "AirLoopHVAC:UnitarySystem":
             AirLoopHVAC_SuppHeatingCoil_ObjectType = "Coil:Heating:Electric"
             AirLoopHVAC_SuppHeatingCoil_Name = "Heating_Resistance_Backup"
             AFN_main_heating_coil_outlet_node = "SuppHeatingInletNode"
