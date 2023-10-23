@@ -4,12 +4,12 @@ WindowShadingControl,
     Shades,                 !- Name
     living,                 !- Zone Name
     1,                       !- Shading Control Sequence Number
-    InteriorBlind,           !- Shading Type
+    InteriorShade,           !- Shading Type - was InteriorBlind
     window_w_blinds,         !- Construction with Shading Name
-    OnIfScheduleAllows,      !- Shading Control Type
-    shading_2009iecc,        !- Schedule Name
-    ,                        !- Setpoint {W/m2, W or deg C}
-    Yes,                     !- Shading Control Is Scheduled
+    OnIfHighSolarOnWindow,     !- Shading Control Type - was OnIfHighSolarOnWindow
+    ,       !- Schedule Name - was shading_2009iecc
+    50,                        !- Setpoint {W/m2, W or deg C} 20
+    No,                     !- Shading Control Is Scheduled - was Yes
     No,                      !- Glare Control Is Active
     ,                        !- Shading Device Material Name
     ,                        !- Type of Slat Angle Control for Blinds
@@ -57,6 +57,40 @@ WindowMaterial:Blind,
     ,                        !- Minimum Slat Angle {deg}
     ;                        !- Maximum Slat Angle {deg}
 
+  WindowMaterial:Shade,
+    DRAPES - CLOSE WEAVE MEDIUM,  !- Name
+    0.05,                    !- Solar Transmittance {dimensionless}
+    0.3000000,               !- Solar Reflectance {dimensionless}
+    0.05,                    !- Visible Transmittance {dimensionless}
+    0.3000000,               !- Visible Reflectance {dimensionless}
+    0.9000000,               !- Infrared Hemispherical Emissivity {dimensionless}
+    0.0,                     !- Infrared Transmittance {dimensionless}
+    0.003,                   !- Thickness {m}
+    0.1,                     !- Conductivity {W/m-K}
+    0.050,                   !- Shade to Glass Distance {m}
+    1.0,                     !- Top Opening Multiplier
+    1.0,                     !- Bottom Opening Multiplier
+    0.0,                     !- Left-Side Opening Multiplier
+    0.0,                     !- Right-Side Opening Multiplier
+    0.0;                     !- Airflow Permeability {dimensionless}
+
+  WindowMaterial:Shade,
+    SHADE ROLL - LIGHT OPAQUE,  !- Name
+    0.05,                    !- Solar Transmittance {dimensionless}
+    0.5000000,               !- Solar Reflectance {dimensionless}
+    0.05,                    !- Visible Transmittance {dimensionless}
+    0.8000000,               !- Visible Reflectance {dimensionless}
+    0.9000000,               !- Infrared Hemispherical Emissivity {dimensionless}
+    0.0,                     !- Infrared Transmittance {dimensionless}
+    0.003,                   !- Thickness {m}
+    0.1,                     !- Conductivity {W/m-K}
+    0.050,                   !- Shade to Glass Distance {m}
+    1.0,                     !- Top Opening Multiplier
+    1.0,                     !- Bottom Opening Multiplier
+    0.0,                     !- Left-Side Opening Multiplier
+    0.0,                     !- Right-Side Opening Multiplier
+    0.0;                     !- Airflow Permeability {dimensionless}
+
 Construction,
     Exterior Window,         !- Name
     Glass;                   !- Outside Layer
@@ -64,5 +98,5 @@ Construction,
 Construction,
     window_w_blinds,         !- Name
     Glass,                   !- Outside Layer
-    int_blind;               !- Layer 2
+    SHADE ROLL - LIGHT OPAQUE;               !- Layer 2
 

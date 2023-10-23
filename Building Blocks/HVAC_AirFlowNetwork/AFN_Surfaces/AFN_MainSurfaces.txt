@@ -91,3 +91,57 @@ AirflowNetwork:MultiZone:Surface,
     1,                          !- Window/Door Opening Factor, or Crack Factor {dimensionless}
     NoVent;                     !- Ventilation Control Mode
 
+!- Windows
+
+  AirflowNetwork:MultiZone:Surface,
+    window_floor1_front,                !- Surface Name
+    WiOpen1,                 !- Leakage Component Name
+    ,                 !- External Node Name
+    0.5;                     !- Window/Door Opening Factor, or Crack Factor {dimensionless}
+
+  AirflowNetwork:MultiZone:Surface,
+    window_floor1_back,                !- Surface Name
+    WiOpen1,                 !- Leakage Component Name
+    ,                 !- External Node Name
+    0.5;                     !- Window/Door Opening Factor, or Crack Factor {dimensionless}
+
+  AirflowNetwork:MultiZone:Surface,
+    window_floor1_right,                !- Surface Name
+    WiOpen1,                 !- Leakage Component Name
+    ,                 !- External Node Name
+    0.5;                     !- Window/Door Opening Factor, or Crack Factor {dimensionless}
+
+  AirflowNetwork:MultiZone:Surface,
+    window_floor1_left,                !- Surface Name
+    WiOpen1,                 !- Leakage Component Name
+    ,                 !- External Node Name
+    0.5;                     !- Window/Door Opening Factor, or Crack Factor {dimensionless}
+
+  AirflowNetwork:MultiZone:Component:DetailedOpening,
+    WiOpen1,                 !- Name
+    0.001,                   !- Air Mass Flow Coefficient When Opening is Closed {kg/s-m}
+    0.667,                   !- Air Mass Flow Exponent When Opening is Closed {dimensionless}
+    NonPivoted,              !- Type of Rectangular Large Vertical Opening (LVO)
+    0.0,                     !- Extra Crack Length or Height of Pivoting Axis {m}
+    2,                       !- Number of Sets of Opening Factor Data
+    0.0,                     !- Opening Factor 1 {dimensionless}
+    0.5,                     !- Discharge Coefficient for Opening Factor 1 {dimensionless}
+    0.0,                     !- Width Factor for Opening Factor 1 {dimensionless}
+    1.0,                     !- Height Factor for Opening Factor 1 {dimensionless}
+    0.0,                     !- Start Height Factor for Opening Factor 1 {dimensionless}
+    1.0,                     !- Opening Factor 2 {dimensionless}
+    0.6,                     !- Discharge Coefficient for Opening Factor 2 {dimensionless}
+    1.0,                     !- Width Factor for Opening Factor 2 {dimensionless}
+    1.0,                     !- Height Factor for Opening Factor 2 {dimensionless}
+    0.0,                     !- Start Height Factor for Opening Factor 2 {dimensionless}
+    0,                       !- Opening Factor 3 {dimensionless}
+    0,                       !- Discharge Coefficient for Opening Factor 3 {dimensionless}
+    0,                       !- Width Factor for Opening Factor 3 {dimensionless}
+    0,                       !- Height Factor for Opening Factor 3 {dimensionless}
+    0,                       !- Start Height Factor for Opening Factor 3 {dimensionless}
+    0,                       !- Opening Factor 4 {dimensionless}
+    0,                       !- Discharge Coefficient for Opening Factor 4 {dimensionless}
+    0,                       !- Width Factor for Opening Factor 4 {dimensionless}
+    0,                       !- Height Factor for Opening Factor 4 {dimensionless}
+    0;                       !- Start Height Factor for Opening Factor 4 {dimensionless}
+

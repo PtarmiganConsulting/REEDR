@@ -89,23 +89,15 @@ def runmodels(gui_params, get_data_dict):
     ## and that's how we can catch every runlabel with one short loop!
     i = 1
 
-    cpuCount = os.cpu_count()
-    
-    try:
-        if cpuCount == 2:
-            thread_limit = 2
-        elif cpuCount <= 8:
-            thread_limit = 4
-        elif cpuCount <= 16:
-            thread_limit = 8
-        elif cpuCount <= 24:
-            thread_limit = 12
-        else:
-            thread_limit = 4
-    except:
-        thread_limit = 4
+    cpu_count = os.cpu_count()
+    if cpu_count == 1:
+        thread_limit = 1
+    else:
+        thread_limit = ((cpu_count * (3/4)) // 1)
 
-    #thread_limit = 15
+    # print(f"cpu count = {cpu_count}")
+    # print(f"thread limit = {thread_limit}")
+    
 
     if multi:
 

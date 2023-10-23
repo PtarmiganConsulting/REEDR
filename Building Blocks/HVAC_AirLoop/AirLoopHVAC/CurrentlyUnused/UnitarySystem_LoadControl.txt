@@ -1,0 +1,57 @@
+!-   ===========  ALL OBJECTS IN CLASS: AIRLOOPHVAC:UnitarySystem ===========
+
+  AirLoopHVAC:UnitarySystem,
+    UnitarySystem_LoadControl,                  !- Name
+    Load,                                       !- Control Type
+    living,                                     !- Controlling Zone or Thermostat Location
+    None,                                       !- Dehumidification Control Type
+    always_avail,                               !- Availability Schedule Name
+    Air Loop Inlet Node,                        !- Air Inlet Node Name
+    Air Loop Outlet Node,                       !- Air Outlet Node Name
+    Fan:OnOff,                                  !- Supply Fan Object Type
+    {fan_name},                                 !- Supply Fan Name
+    BlowThrough,                                !- Fan Placement
+    fan_cycle,                                  !- Supply Air Fan Operating Mode Schedule Name
+    {AirLoopHVAC_HeatingCoil_ObjectType},       !- Heating Coil Object Type
+    {AirLoopHVAC_HeatingCoil_Name},             !- Heating Coil Name
+    1,                                          !- DX Heating Coil Sizing Ratio
+    {AirLoopHVAC_CoolingCoil_ObjectType},       !- Cooling Coil Object Type
+    {AirLoopHVAC_CoolingCoil_Name},             !- Cooling Coil Name
+    No,                                         !- Use DOAS DX Cooling Coil
+    2,                                          !- Minimum Supply Air Temperature {{C}}
+    SensibleOnlyLoadControl,                    !- Latent Load Control
+    {AirLoopHVAC_SuppHeatingCoil_ObjectType},   !- Supplemental Heating Coil Object Type
+    {AirLoopHVAC_SuppHeatingCoil_Name},         !- Supplemental Heating Coil Name
+    SupplyAirFlowRate,                          !- Cooling Supply Air Flow Rate Method
+    {fan_m3PerSec_spd_1},                       !- Cooling Supply Air Flow Rate {{m3/s}}
+    ,                                           !- Cooling Supply Air Flow Rate Per Floor Area {{m3/s-m2}}
+    ,                                           !- Cooling Fraction of Autosized Cooling Supply Air Flow Rate
+    ,                                           !- Cooling Supply Air Flow Rate Per Unit of Capacity {{m3/s-W}}
+    SupplyAirFlowRate,                          !- Heating Supply Air Flow Rate Method
+    {fan_m3PerSec_spd_1},                       !- Heating Supply Air Flow Rate {{m3/s}}
+    ,                                           !- Heating Supply Air Flow Rate Per Floor Area {{m3/s-m2}}
+    ,                                           !- Heating Fraction of Autosized Heating Supply Air Flow Rate
+    ,                                           !- Heating Supply Air Flow Rate Per Unit of Capacity {{m3/s-W}}
+    ,                                           !- No Load Supply Air Flow Rate Method
+    0,                                          !- No Load Supply Air Flow Rate {{m3/s}}
+    ,                                           !- No Load Supply Air Flow Rate Per Floor Area {{m3/s-m2}}
+    ,                                           !- No Load Fraction of Autosized Cooling Supply Air Flow Rate
+    ,                                           !- No Load Fraction of Autosized Heating Supply Air Flow Rate
+    ,                                           !- No Load Supply Air Flow Rate Per Unit of Capacity During Cooling Operation {{m3/s-W}}
+    ,                                           !- No Load Supply Air Flow Rate Per Unit of Capacity During Heating Operation {{m3/s-W}}
+    45.0,                                       !- Maximum Supply Air Temperature {{C}}
+    {hp_max_resistance_temp},                   !- Maximum Outdoor Dry-Bulb Temperature for Supplemental Heater Operation {{C}}
+    ,                                           !- Outdoor Dry-Bulb Temperature Sensor Node Name
+    2.5,                                        !- Maximum Cycling Rate {{cycles/hr}}
+    60,                                         !- Heat Pump Time Constant {{s}}
+    0.01,                                       !- Fraction of On-Cycle Power Use
+    60,                                         !- Heat Pump Fan Delay Time {{s}}
+    0,                                          !- Ancillary On-Cycle Electric Power {{W}}
+    0,                                          !- Ancillary Off-Cycle Electric Power {{W}}
+    ,                                           !- Design Heat Recovery Water Flow Rate {{m3/s}}
+    ,                                           !- Maximum Temperature for Heat Recovery {{C}}
+    ,                                           !- Heat Recovery Water Inlet Node Name
+    ,                                           !- Heat Recovery Water Outlet Node Name
+    ,                                           !- Design Specification Multispeed Object Type
+    ;                                           !- Design Specification Multispeed Object Name
+

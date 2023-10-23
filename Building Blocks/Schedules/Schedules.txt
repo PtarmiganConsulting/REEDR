@@ -1298,6 +1298,39 @@ Schedule:Compact,
     1;                      !- Field 4
 
 Schedule:Compact,
+    heating_avail,           !- Name
+    On/Off,                 !- Schedule Type Limits Name
+    Through: 6/15,           !- Field 1
+    For: AllDays,            !- Field 2
+    Until 24:00,             !- Field 3
+    1,                    !- Field 4
+    Through: 8/31,           !- Field 5
+    For: AllDays,            !- Field 6
+    Until 24:00,             !- Field 7
+    0,                     !- Field 8
+    Through: 12/31,          !- Field 9
+    For: AllDays,            !- Field 10
+    Until: 24:00,            !- Field 11
+    1;                    !- Field 12
+
+Schedule:Compact,
+    cooling_avail,           !- Name
+    On/Off,                 !- Schedule Type Limits Name
+    Through: 3/31,           !- Field 1
+    For: AllDays,            !- Field 2
+    Until 24:00,             !- Field 3
+    0,                    !- Field 4
+    Through: 10/31,           !- Field 5
+    For: AllDays,            !- Field 6
+    Until 24:00,             !- Field 7
+    1,                     !- Field 8
+    Through: 12/31,          !- Field 9
+    For: AllDays,            !- Field 10
+    Until: 24:00,            !- Field 11
+    0;                    !- Field 12
+
+
+Schedule:Compact,
     always_off,           !- Name
     On/Off,                 !- Schedule Type Limits Name
     Through: 12/31,         !- Field 1
@@ -1330,6 +1363,11 @@ Schedule:Compact,
     For: AllDays,            !- Field 2
     Until: 24:00,            !- Field 3
     0;                       !- Field 4
+
+  Schedule:Constant,
+    Always On Discrete,
+    Any Number,
+    1;
 
 !-   ===========  ALL OBJECTS IN CLASS: SCHEDULE:CONSTANT ===========
 
@@ -1427,10 +1465,34 @@ Schedule:Constant,
 !-    Temperature,             !- Schedule Type Limits Name
 !-    53.333;                     !- Hourly Value
 
+Schedule:Compact,
+    {compact_htg_sch},              !- Name
+    Temperature,                    !- Schedule Type Limits Name
+    Through: 12/31,                 !- Field 1
+    For: AllDays,                   !- Field 2
+    Until: {htgSetbackEnd}:00,      !- Field 3
+    {htgSetback},                   !- Field 4
+    Until: {htgSetbackStart}:00,    !- Field 5
+    {htgSetpoint},                  !- Field 6
+    Until: 24:00,                   !- Field 7
+    {htgSetback};                   !- Field 8
+
+Schedule:Compact,
+    {compact_clg_sch},       !- Name
+    Temperature,             !- Schedule Type Limits Name
+    Through: 12/31,                 !- Field 1
+    For: AllDays,                   !- Field 2
+    Until: {clgSetbackEnd}:00,      !- Field 3
+    {clgSetback},                   !- Field 4
+    Until: {clgSetbackStart}:00,    !- Field 5
+    {clgSetpoint},                  !- Field 6
+    Until: 24:00,                   !- Field 7
+    {clgSetback};                   !- Field 8
+
 !-   ===========  ALL OBJECTS IN CLASS: SCHEDULE:FILE ===========
 
 Schedule:File,
-    heating_sch,             !- Name
+    {file_htg_sch},             !- Name
     Temperature,             !- Schedule Type Limits Name
     ..\..\..\Building Blocks\Schedules\Schedules.csv,        !- File Name
     {htg_sch_num},                       !- Column Number
@@ -1440,7 +1502,7 @@ Schedule:File,
     Yes;                     !- Interpolate to Timestep
 
 Schedule:File,
-    cooling_sch,             !- Name
+    {file_clg_sch},             !- Name
     Temperature,             !- Schedule Type Limits Name
     ..\..\..\Building Blocks\Schedules\Schedules.csv,        !- File Name
     {clg_sch_num},                       !- Column Number

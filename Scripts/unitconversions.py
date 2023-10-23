@@ -65,6 +65,10 @@ def convert_ft3_to_m3(ft3):
     m3 = ft3/35.315
     return m3
 
+def convert_m3_to_ft3(m3):
+    ft3 = m3*35.315
+    return ft3
+
 def convert_kW_to_ton(kW):
     ton = kW/3.517
     return ton

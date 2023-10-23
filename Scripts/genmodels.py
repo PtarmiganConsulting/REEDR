@@ -23,9 +23,9 @@ from pprint import pprint
 from pathlib import Path
 import datetime
 from Scripts.unitconversions import convert_WperFt2_to_WperM2, convert_degF_to_degC, convert_IP_Uvalue_to_SI_Uvalue, convert_ft_to_m, convert_ft2_to_m2, \
-    convert_Btuh_to_W, convert_CFM_to_m3PerSec, convert_W_to_ton
+    convert_Btuh_to_W, convert_CFM_to_m3PerSec, convert_W_to_ton, convert_m3_to_ft3
 from Scripts.datavalidation import validate, convert_capacity
-from Scripts.utilfunctions import estimateInfiltrationAdjustment, findLastRealLayer, formatLayerList, getFoundationIdentifier
+from Scripts.utilfunctions import findLastRealLayer, formatLayerList, getFoundationIdentifier
 from Scripts.dictmaker import dict_maker
 
 
@@ -56,10 +56,6 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
     envelope_construction_floorFound_file = control_panel_names_dict["envelope_construction_floorFound_file"][control_panel_names_lookup_id]
     hvac_systems_dir = control_panel_names_dict["hvac_systems_dir"][control_panel_names_lookup_id]
     hvac_systems_primary_file = control_panel_names_dict["hvac_systems_primary_file"][control_panel_names_lookup_id]
-    infil_regression_coeff_dir = control_panel_names_dict["infil_regression_coeff_dir"][control_panel_names_lookup_id]
-    infil_regression_coeff_attic_file = control_panel_names_dict["infil_regression_coeff_attic_file"][control_panel_names_lookup_id]
-    infil_regression_coeff_crawl_file = control_panel_names_dict["infil_regression_coeff_crawl_file"][control_panel_names_lookup_id]
-    infil_regression_coeff_living_file = control_panel_names_dict["infil_regression_coeff_living_file"][control_panel_names_lookup_id]
 
     ### --- Define building block directory and file names as variables, so they can be established only once here, and flow throughout. --- ###
     #... get folder and file names from CSV
@@ -173,6 +169,7 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
     ceilingInputMethod_fieldname  = model_input_temp_fieldnames_dict["ceilingInputMethod_fieldname"][input_template_names_lookup_id]
     ceilingCon_fieldname = model_input_temp_fieldnames_dict["ceilingCon_fieldname"][input_template_names_lookup_id]
     ceilingRvalue_fieldname = model_input_temp_fieldnames_dict["ceilingRvalue_fieldname"][input_template_names_lookup_id]
+    atticVented_fieldname = model_input_temp_fieldnames_dict["atticVented_fieldname"][input_template_names_lookup_id]
     floorInputMethod_fieldname = model_input_temp_fieldnames_dict["floorInputMethod_fieldname"][input_template_names_lookup_id]
     floorCon_fieldname = model_input_temp_fieldnames_dict["floorCon_fieldname"][input_template_names_lookup_id]
     foundType_fieldname = model_input_temp_fieldnames_dict["foundType_fieldname"][input_template_names_lookup_id]
@@ -181,6 +178,7 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
     slabUnderRvalue_fieldname = model_input_temp_fieldnames_dict["slabUnderRvalue_fieldname"][input_template_names_lookup_id]
     slabTBvalue_fieldname = model_input_temp_fieldnames_dict["slabTBvalue_fieldname"][input_template_names_lookup_id]
     foundWallRvalue_fieldname = model_input_temp_fieldnames_dict["foundWallRvalue_fieldname"][input_template_names_lookup_id]
+    foundationVented_fieldname = model_input_temp_fieldnames_dict["foundationVented_fieldname"][input_template_names_lookup_id]
     windowuUvalue_fieldname = model_input_temp_fieldnames_dict["windowuUvalue_fieldname"][input_template_names_lookup_id]
     windowSHGC_fieldname = model_input_temp_fieldnames_dict["windowSHGC_fieldname"][input_template_names_lookup_id]
     windowShade_fieldname = model_input_temp_fieldnames_dict["windowShade_fieldname"][input_template_names_lookup_id]
@@ -206,7 +204,17 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
     supplyRvalue_fieldname = model_input_temp_fieldnames_dict["supplyRvalue_fieldname"][input_template_names_lookup_id]
     returnLeakage_fieldname = model_input_temp_fieldnames_dict["returnLeakage_fieldname"][input_template_names_lookup_id]
     returnRvalue_fieldname = model_input_temp_fieldnames_dict["returnRvalue_fieldname"][input_template_names_lookup_id]
+    htgInputMethod_fieldname = model_input_temp_fieldnames_dict["htgInputMethod_fieldname"][input_template_names_lookup_id]
+    htgSetpoint_fieldname = model_input_temp_fieldnames_dict["htgSetpoint_fieldname"][input_template_names_lookup_id]
+    htgSetback_fieldname = model_input_temp_fieldnames_dict["htgSetback_fieldname"][input_template_names_lookup_id]
+    htgSetbackStart_fieldname = model_input_temp_fieldnames_dict["htgSetbackStart_fieldname"][input_template_names_lookup_id]
+    htgSetbackEnd_fieldname = model_input_temp_fieldnames_dict["htgSetbackEnd_fieldname"][input_template_names_lookup_id]
     htgSched_fieldname = model_input_temp_fieldnames_dict["htgSched_fieldname"][input_template_names_lookup_id]
+    clgInputMethod_fieldname = model_input_temp_fieldnames_dict["clgInputMethod_fieldname"][input_template_names_lookup_id]
+    clgSetpoint_fieldname = model_input_temp_fieldnames_dict["clgSetpoint_fieldname"][input_template_names_lookup_id]
+    clgSetback_fieldname = model_input_temp_fieldnames_dict["clgSetback_fieldname"][input_template_names_lookup_id]
+    clgSetbackStart_fieldname = model_input_temp_fieldnames_dict["clgSetbackStart_fieldname"][input_template_names_lookup_id]
+    clgSetbackEnd_fieldname = model_input_temp_fieldnames_dict["clgSetbackEnd_fieldname"][input_template_names_lookup_id]
     clgSched_fieldname = model_input_temp_fieldnames_dict["clgSched_fieldname"][input_template_names_lookup_id]
     dhwType_fieldname = model_input_temp_fieldnames_dict["dhwType_fieldname"][input_template_names_lookup_id]
     dhwSched_fieldname = model_input_temp_fieldnames_dict["dhwSched_fieldname"][input_template_names_lookup_id]
@@ -232,9 +240,9 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
     output_gran = gui_params["output_gran"]
     output_enduses = gui_params["output_enduses"]
 
-    ### --- Allows tstat to overrun setpoint by a certain amount and drift back down to setpoint before kicking on again. A value of 0.79 empirically results in 
-    ### average room temps that are +/- 1 degree F about the desired setpoint. ###
-    deadband = "" #0.79
+    ### --- Allows tstat to overrun setpoint by a certain amount and drift back down to setpoint before kicking on again.
+    deadband = 1.1111111111/12 #1.1111111111/2
+    deadband_offset = deadband/2
 
     ### --- Update simulation status in command prompt. --- ###
     print("Starting model build...")
@@ -302,18 +310,6 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
     hvac_path = os.path.join(set_dir, control_panel_folder_name, hvac_systems_dir, hvac_systems_primary_file)
     hvac_dict = dict_maker(hvac_path)
 
-    # living zone infiltration regression coefficient dictionary
-    living_infiltration_coeff_path = os.path.join(set_dir, control_panel_folder_name, infil_regression_coeff_dir, infil_regression_coeff_living_file)
-    living_infiltration_coeff_dict = dict_maker(living_infiltration_coeff_path)
-
-    # attic zone infiltration regression coefficients dictionary
-    attic_infiltration_coeff_path = os.path.join(set_dir, control_panel_folder_name, infil_regression_coeff_dir, infil_regression_coeff_attic_file)
-    attic_infiltration_coeff_dict = dict_maker(attic_infiltration_coeff_path)
-    
-    # crawl zone infiltration regression coefficients dictionary
-    crawl_infiltration_coeff_path = os.path.join(set_dir, control_panel_folder_name, infil_regression_coeff_dir, infil_regression_coeff_crawl_file)
-    crawl_infiltration_coeff_dict = dict_maker(crawl_infiltration_coeff_path)
-
     # foundation type assumptions dictionary
     foundation_type_assumptions_path = os.path.join(set_dir, control_panel_folder_name, found_type_assumptions_file)
     foundation_type_assumptions_dict = dict_maker(foundation_type_assumptions_path)
@@ -344,21 +340,6 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
             #... timestep
             valid_timesteps = ["1","2","3","4","5","6","10","12","15","20","30","60"]
             timestep = validate(timestep_fieldname, str(dictionary[timestep_fieldname]), "list", dummy_int, dummy_int, valid_timesteps)
-
-            #... location/weather file
-            # check to see if Actual Meterological Year (AMY) file. If so, treat differently to properly find sizing file
-            # NOTE: THIS ISN'T CURRENTLY NEEDED OR USED, BECAUSE THE WEATHER FILES ARE USED FOR DESIGN DAYS.
-            # if "AMY" in dictionary[weather_fieldname]:
-            #     Str = dictionary[weather_fieldname]
-            #     # strip off "AMY" and year
-            #     Str = Str[:len(Str)-8]
-            #     # convert to TMYx file to find proper design days
-            #     Str = Str + "TMYx.2004-2018"
-            #     location_path = os.path.join(set_dir, building_block_dir, location_and_climate_dir)
-            #     location_pull = validate(weather_fieldname, Str, "file", dummy_int, dummy_int, dummy_list, location_path)
-            # else:
-            #     location_path = os.path.join(set_dir, building_block_dir, location_and_climate_dir)
-            #     location_pull = validate(weather_fieldname, dictionary[weather_fieldname], "file", dummy_int, dummy_int, dummy_list, location_path)
 
              #... building orientation
             bldg_orient_lo = 0
@@ -437,6 +418,10 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
                 print(str(ceilingInputMethod_fieldname) + " cannot be blank and must be set to either Pre-Defined Construction OR Ceiling Overall Effective R-Value (Assumes Simple Roof).")
                 return True
 
+            #... attic venting
+            attic_vented_options = ["Yes", "No"]
+            attic_vented = validate(atticVented_fieldname, dictionary[atticVented_fieldname], "list", dummy_int, dummy_int, attic_vented_options)
+
             #... foundation and floor construction
             floor_input_method = dictionary[floorInputMethod_fieldname]
             foundation_list = foundation_and_floor_dict.keys()
@@ -450,7 +435,7 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
                 found_wall_ins_depth = 999
             elif floor_input_method == "Foundation Type with Effective R-Values":
                 # Get floor and foundation custom inputs from user
-                found_type_list = ["Vented Crawlspace","Slab","Heated Basement","Unheated Basement"]
+                found_type_list = ["Crawlspace","Slab","Heated Basement","Unheated Basement"]
                 user_found_type = validate(foundType_fieldname, dictionary[foundType_fieldname], "list", dummy_int, dummy_int, found_type_list)
                 floor_effective_Rvalue = validate(floorRvalue_fieldname, dictionary[floorRvalue_fieldname], "any_num", dummy_int, dummy_int, dummy_list)
                 slab_perimeter_Rvalue = validate(slabPerimRvalue_fieldname, dictionary[slabPerimRvalue_fieldname], "any_num", dummy_int, dummy_int, dummy_list)
@@ -481,7 +466,7 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
             else:
                 print(str(floorInputMethod_fieldname) + " cannot be blank and must be set to either Pre-Defined Construction OR Foundation Type with Effective R-Values.")
                 return True
-
+            
             # Establish foundation type
             other_found_chars = {}
             other_found_chars["foundation_type"] = foundation_and_floor_dict[foundation_and_floor_con]["foundation_type"]
@@ -492,6 +477,10 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
                 hasSlabOrHtdBsmnt = 1
             else:
                 hasSlabOrHtdBsmnt = 0
+
+            #... foundation venting
+            foundation_vented_options = ["Yes", "No"]
+            foundation_vented = validate(foundationVented_fieldname, dictionary[foundationVented_fieldname], "list", dummy_int, dummy_int, foundation_vented_options)
 
             #... window U-value
             u_lo = 0.1
@@ -584,10 +573,12 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
                 primary_heating_capacity = convert_capacity(primaryHtg_capacity_units, primary_heating_capacity)
             else:
                 primary_heating_capacity = "Autosize"
-
+            
+            hour_lo = 0 # hour lo and high needed if setback is present for heating or cooling
+            hour_hi = 23
             #... cooling capacity and capacity units
             if AirLoopHVAC_Unitary_ObjectName == "SS Heat Pump" or AirLoopHVAC_Unitary_ObjectName == "DS Heat Pump" or AirLoopHVAC_Unitary_ObjectName == "MS Heat Pump" \
-            or coolCoilTextFile != "No":
+            or AirLoopHVAC_Unitary_ObjectName == "UnitarySystem_SPControl" or coolCoilTextFile != "No":
                 if hvacSizingMethod == "Manual":
                     primaryClg_capacity_units = validate(primaryClgCapacityUnits_fieldname, dictionary[primaryClgCapacityUnits_fieldname], "list", dummy_int, dummy_int, primaryHVAC_capacity_units_list)
                     primary_cooling_capacity = validate(primaryClgCapacity_fieldname, dictionary[primaryClgCapacity_fieldname], "num_not_zero", dummy_int, dummy_int, dummy_list)
@@ -596,14 +587,64 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
                     primary_cooling_capacity = "Autosize"
 
                 #... cooling setpoint schedule
-                clg_stpt_sch = validate(clgSched_fieldname, dictionary[clgSched_fieldname], "list", dummy_int, dummy_int, sched_validation_list)
+                clgInputMethod_list = ["Constant Setpoint", "Setpoint with Night Setback", "Schedule"]
+                clgInputMethod = validate(clgInputMethod_fieldname, dictionary[clgInputMethod_fieldname], "list", dummy_int, dummy_int, clgInputMethod_list)
+                if clgInputMethod == "Constant Setpoint":
+                    clgSetpoint = validate(clgSetpoint_fieldname, convert_degF_to_degC(dictionary[clgSetpoint_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
+                    clgSetpoint = clgSetpoint + deadband_offset # add one degree F to account for tstat deadband
+                    #... set setback equal to setpoint
+                    clgSetback = validate(clgSetback_fieldname, convert_degF_to_degC(dictionary[clgSetpoint_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
+                    clgSetback = clgSetback + deadband_offset # add one degree F to account for tstat deadband
+                    #... set other variables to dummy values so they are not needed
+                    clgSetbackStart = validate(clgSetbackStart_fieldname, 20, "any_num", hour_lo, hour_hi, dummy_list)
+                    clgSetbackEnd = validate(clgSetbackEnd_fieldname, 6, "any_num", hour_lo, hour_hi, dummy_list)
+                    clg_stpt_sch = validate(clgSched_fieldname, "Cool_EZ_Sch_1", "list", dummy_int, dummy_int, sched_validation_list)
+                    #... use compact cooling schedule instead of file-based schedule
+                    compact_clg_sch = "cooling_sch"
+                    file_clg_sch = "cooling_sch_not_used"
+                
+                elif clgInputMethod == "Setpoint with Night Setback":
+                    clgSetpoint = validate(clgSetpoint_fieldname, convert_degF_to_degC(dictionary[clgSetpoint_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
+                    clgSetpoint = clgSetpoint + deadband_offset # add one degree F to account for tstat deadband
+                    clgSetback = validate(clgSetback_fieldname, convert_degF_to_degC(dictionary[clgSetback_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
+                    clgSetback = clgSetback + deadband_offset # add one degree F to account for tstat deadband
+                    clgSetbackStart = validate(clgSetbackStart_fieldname, int(dictionary[clgSetbackStart_fieldname]), "num_between", hour_lo, hour_hi, dummy_list)
+                    clgSetbackEnd = validate(clgSetbackEnd_fieldname, int(dictionary[clgSetbackEnd_fieldname]), "num_between", hour_lo, hour_hi, dummy_list)
+                    #... set other variables to dummy values so they are not needed
+                    clg_stpt_sch = validate(clgSched_fieldname, "Cool_EZ_Sch_1", "list", dummy_int, dummy_int, sched_validation_list)
+                    #... check that night setback end hour is less than night setback start hour
+                    if int(clgSetbackEnd) > int(clgSetbackStart):
+                        print("\n*** ERROR: Cooling setback end hour must be less than cooling setback start hour. For non-night setbacks, please use the schedule option. \n")
+                        return True
+                    #... use compact cooling schedule instead of file-based schedule
+                    compact_clg_sch = "cooling_sch"
+                    file_clg_sch = "cooling_sch_not_used"
+                else:
+                    clg_stpt_sch = validate(clgSched_fieldname, dictionary[clgSched_fieldname], "list", dummy_int, dummy_int, sched_validation_list)
+                    #... set other non-schedule variables to dummy values so they are not needed
+                    clgSetpoint = validate(clgSetpoint_fieldname, convert_degF_to_degC(75), "any_num", dummy_int, dummy_int, dummy_list)
+                    clgSetback = validate(clgSetback_fieldname, convert_degF_to_degC(80), "any_num", dummy_int, dummy_int, dummy_list)
+                    clgSetbackStart = validate(clgSetbackStart_fieldname, 20, "any_num", hour_lo, hour_hi, dummy_list)
+                    clgSetbackEnd = validate(clgSetbackEnd_fieldname, 6, "any_num", hour_lo, hour_hi, dummy_list)
+                    #... use file-based cooling schedule instead of compact schedule
+                    compact_clg_sch = "cooling_sch_not_used"
+                    file_clg_sch = "cooling_sch"
+
+                
             else:
+                #... provide dummy values because there is no cooling
                 primary_cooling_capacity = 0
                 clg_stpt_sch = validate(clgSched_fieldname, "Cool_EZ_Sch_1", "list", dummy_int, dummy_int, sched_validation_list)
-
+                clgSetpoint = validate(clgSetpoint_fieldname, convert_degF_to_degC(75), "any_num", dummy_int, dummy_int, dummy_list)
+                clgSetback = validate(clgSetback_fieldname, convert_degF_to_degC(80), "any_num", dummy_int, dummy_int, dummy_list)
+                clgSetbackStart = validate(clgSetbackStart_fieldname, 20, "any_num", hour_lo, hour_hi, dummy_list)
+                clgSetbackEnd = validate(clgSetbackEnd_fieldname, 6, "any_num", hour_lo, hour_hi, dummy_list)
+                compact_clg_sch = "cooling_sch_not_used"
+                file_clg_sch = "cooling_sch"
+            
             #... heat pump specific inputs
             if AirLoopHVAC_Unitary_ObjectName == "SS Heat Pump" or AirLoopHVAC_Unitary_ObjectName == "DS Heat Pump" or AirLoopHVAC_Unitary_ObjectName == "MS Heat Pump" \
-            and CentralOrZonal == "Central":
+            or AirLoopHVAC_Unitary_ObjectName == "UnitarySystem_SPControl" and CentralOrZonal == "Central":
                 #... ASHP backup heat type
                 hp_supp_heat_type_list = ["Electric", "Gas"]
                 hp_supp_heat_type = validate(hpBackupType_fieldname, dictionary[hpBackupType_fieldname], "list", dummy_int, dummy_int, hp_supp_heat_type_list)
@@ -613,8 +654,10 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
                     ASHPbackup_capacity_units = validate(hpBackupCapacityUnits_fieldname, dictionary[hpBackupCapacityUnits_fieldname], "list", dummy_int, dummy_int, ASHPbackup_capacity_units_list)
                     #... ASHP backup heat capacity
                     hp_supp_heat_capacity = convert_capacity(ASHPbackup_capacity_units, validate(hpBackupCapacity_fieldname, dictionary[hpBackupCapacity_fieldname], "num_not_zero", dummy_int, dummy_int, dummy_list))
+                    hp_supp_heat_capacity_multistage = hp_supp_heat_capacity/3
                 else:
                     hp_supp_heat_capacity = "Autosize"
+                    hp_supp_heat_capacity_multistage = "Autosize"
                 
                 #... backup heat lockout
                 hp_max_resistance_temp = validate(hpBackupLockout_fieldname, convert_degF_to_degC(dictionary[hpBackupLockout_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
@@ -623,6 +666,7 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
             else:
                 hp_supp_heat_type = "No"
                 hp_supp_heat_capacity = 0
+                hp_supp_heat_capacity_multistage = 0
 
             #... baseboard heating capacity
             if str(dictionary[backupBaseboardCapacity_fieldname]) == "nan" or hvacSizingMethod == "Manual":
@@ -654,10 +698,53 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
                 return_leak = 0.0001
                 supplyUvalue = 0.0001
                 returnUvalue = 0.0001
-
+            
             #... heating setpoint schedule
-            htg_stpt_sch = validate(htgSched_fieldname, dictionary[htgSched_fieldname], "list", dummy_int, dummy_int, sched_validation_list)
-
+            htgInputMethod_list = ["Constant Setpoint", "Setpoint with Night Setback", "Schedule"]
+            htgInputMethod = validate(htgInputMethod_fieldname, dictionary[htgInputMethod_fieldname], "list", dummy_int, dummy_int, htgInputMethod_list)
+            
+            if htgInputMethod == "Constant Setpoint":
+                htgSetpoint = validate(htgSetpoint_fieldname, convert_degF_to_degC(dictionary[htgSetpoint_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
+                htgSetpoint = htgSetpoint - deadband_offset # add one degree F to account for tstat deadband
+                #... set setback equal to setpoint
+                htgSetback = validate(htgSetback_fieldname, convert_degF_to_degC(dictionary[htgSetpoint_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
+                htgSetback = htgSetback - deadband_offset # add one degree F to account for tstat deadband
+                #... set other variables to dummy values so they are not needed
+                htgSetbackStart = validate(htgSetbackStart_fieldname, 20, "any_num", hour_lo, hour_hi, dummy_list)
+                htgSetbackEnd = validate(htgSetbackEnd_fieldname, 6, "any_num", hour_lo, hour_hi, dummy_list)
+                htg_stpt_sch = validate(htgSched_fieldname, "Heat_EZ_Sch_1", "list", dummy_int, dummy_int, sched_validation_list)
+                #... use compact heating schedule instead of file-based schedule
+                compact_htg_sch = "heating_sch"
+                file_htg_sch = "heating_sch_not_used"
+            
+            elif htgInputMethod == "Setpoint with Night Setback":
+                htgSetpoint = validate(htgSetpoint_fieldname, convert_degF_to_degC(dictionary[htgSetpoint_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
+                htgSetpoint = htgSetpoint - deadband_offset # add one degree F to account for tstat deadband
+                htgSetback = validate(htgSetback_fieldname, convert_degF_to_degC(dictionary[htgSetback_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
+                htgSetback = htgSetback - deadband_offset # add one degree F to account for tstat deadband
+                htgSetbackStart = validate(htgSetbackStart_fieldname, int(dictionary[htgSetbackStart_fieldname]), "num_between", hour_lo, hour_hi, dummy_list)
+                htgSetbackEnd = validate(htgSetbackEnd_fieldname, int(dictionary[htgSetbackEnd_fieldname]), "num_between", hour_lo, hour_hi, dummy_list)
+                #... set other variables to dummy values so they are not needed
+                htg_stpt_sch = validate(htgSched_fieldname, "Heat_EZ_Sch_1", "list", dummy_int, dummy_int, sched_validation_list)
+                #... check that night setback end hour is less than night setback start hour
+                if int(htgSetbackEnd) > int(htgSetbackStart):
+                    print("\n*** ERROR: Heating setback end hour must be less than heating setback start hour. For non-night setbacks, please use the schedule option. \n")
+                    return True
+                #... use compact heating schedule instead of file-based schedule
+                compact_htg_sch = "heating_sch"
+                file_htg_sch = "heating_sch_not_used"
+                
+            else:
+                htg_stpt_sch = validate(htgSched_fieldname, dictionary[htgSched_fieldname], "list", dummy_int, dummy_int, sched_validation_list)
+                #... set other non-schedule variables to dummy values so they are not needed
+                htgSetpoint = validate(htgSetpoint_fieldname, convert_degF_to_degC(68), "any_num", dummy_int, dummy_int, dummy_list)
+                htgSetback = validate(htgSetback_fieldname, convert_degF_to_degC(65), "any_num", dummy_int, dummy_int, dummy_list)
+                htgSetbackStart = validate(htgSetbackStart_fieldname, 20, "any_num", hour_lo, hour_hi, dummy_list)
+                htgSetbackEnd = validate(htgSetbackEnd_fieldname, 6, "any_num", hour_lo, hour_hi, dummy_list)
+                #... use file heating schedule instead of compact schedule
+                compact_htg_sch = "heating_sch_not_used"
+                file_htg_sch = "heating_sch"
+            
             #... gas furnace AFUE
             if AirLoopHVAC_HeatingCoil_Name == "Heating_Fuel_Main" or hp_supp_heat_type == "Gas":
                 AFUE_lo = 0.5
@@ -724,8 +811,6 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
         except:
             return True
         
-        
-
         # Get wall construction layers
         wall_layers = []
         wall_layers.append(nonfoundation_wall_dict[above_ground_wall_con]["exterior_wall_layer"])
@@ -817,7 +902,12 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
         foundationwall_ht_BG_ft = foundation_assumptions["foundationwall_ht_BG[ft]"]
         if CentralOrZonal == "Central":
             returnduct_location = foundation_assumptions["returnduct_location"]
-            supplyduct_location = "attic"
+            if foundation_type == "Crawlspace":
+                supplyduct_location = "crawlspace"
+            elif foundation_type == "Unheated Basement":
+                supplyduct_location = "unheatedbsmt"
+            else:
+                supplyduct_location = "attic"
         else:
             returnduct_location = "living"
             supplyduct_location = "living"
@@ -951,13 +1041,6 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
         with open(os.path.join(set_dir, building_block_dir, window_main_dir, window_blinds_dir, window_con_file), 'r') as f:
             win_construction_t = f.read()
 
-        # Location & Climate
-        # NOTE: THIS ISN'T CURRENTLY NEEDED OR USED, BECAUSE THE WEATHER FILES ARE USED FOR DESIGN DAYS.
-        #... also includes design day
-        # location_design_day_file = location_pull + ".txt"
-        # with open(os.path.join(set_dir, building_block_dir, location_and_climate_dir, location_design_day_file), 'r') as f: # our location & climate dictionary in action
-        #     locations_t = f.read()
-
         # Materials
         with open(os.path.join(set_dir, building_block_dir, building_block_materials_file), 'r') as f:
             mat_t = f"{f.read()}".format(**locals())
@@ -1037,8 +1120,8 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
             geom_nonhtdbsmt_adder_t = ""
             with open(os.path.join(set_dir, building_block_dir, geometry_main_dir, geometry_envelope_dir, geometry_envelope_nonslabAdder_file), 'r') as f:
                 geom_nonslab_adder_t = f"{f.read()}".format(**locals())
-        #...if foundation type is a vented crawl, add necessary crawl geometry and set non-crawl geometry files as empty strings
-        elif foundation_type == "Vented Crawlspace":
+        #...if foundation type is a crawl, add necessary crawl geometry and set non-crawl geometry files as empty strings
+        elif foundation_type == "Crawlspace":
             unheatedbsmt_zone_t = ""
             with open(os.path.join(set_dir, building_block_dir, geometry_main_dir, geometry_zone_dir, geometry_crawlspace_file), 'r') as f:
                 crawlspace_zone_t = f.read()
@@ -1065,7 +1148,7 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
         # Set capacity to use for sizing fans. If heating only, use heating capacity. If heating and cooling, use average capacity.
         if hvacSizingMethod == "Manual":
             if AirLoopHVAC_Unitary_ObjectName == "SS Heat Pump" or AirLoopHVAC_Unitary_ObjectName == "DS Heat Pump" or AirLoopHVAC_Unitary_ObjectName == "MS Heat Pump" \
-                or coolCoilTextFile != "No":
+                or AirLoopHVAC_Unitary_ObjectName == "UnitarySystem_SPControl" or coolCoilTextFile != "No":
 
                 sizing_capacity = convert_W_to_ton((primary_heating_capacity + primary_cooling_capacity)/2)
             else:
@@ -1189,7 +1272,19 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
             AFN_main_heating_coil_outlet_node = "SuppHeatingInletNode"
             with open(os.path.join(set_dir, building_block_dir, hvac_coil_dir, 'Heating_Fuel_Backup.txt'), 'r') as f:
                 supp_heating_coil_t = f"{f.read()}".format(**locals())
+        elif AirLoopHVAC_Unitary_ObjectType == "AirLoopHVAC:UnitarySystem" and hp_supp_heat_type == "Gas":    
+            AirLoopHVAC_SuppHeatingCoil_ObjectType = "Coil:Heating:Fuel"
+            AirLoopHVAC_SuppHeatingCoil_Name = "Heating_Fuel_Backup"
+            AFN_main_heating_coil_outlet_node = "SuppHeatingInletNode"
+            with open(os.path.join(set_dir, building_block_dir, hvac_coil_dir, 'Heating_Fuel_Backup.txt'), 'r') as f:
+                supp_heating_coil_t = f"{f.read()}".format(**locals())
         elif AirLoopHVAC_Unitary_ObjectType == "AirLoopHVAC:UnitaryHeatPump:AirtoAir" or AirLoopHVAC_Unitary_ObjectType == "AirLoopHVAC:UnitaryHeatPump:AirToAir:MultiSpeed":
+            AirLoopHVAC_SuppHeatingCoil_ObjectType = "Coil:Heating:Electric"
+            AirLoopHVAC_SuppHeatingCoil_Name = "Heating_Resistance_Backup"
+            AFN_main_heating_coil_outlet_node = "SuppHeatingInletNode"
+            with open(os.path.join(set_dir, building_block_dir, hvac_coil_dir, 'Heating_Resistance_Backup.txt'), 'r') as f:
+                supp_heating_coil_t = f"{f.read()}".format(**locals())
+        elif AirLoopHVAC_Unitary_ObjectType == "AirLoopHVAC:UnitarySystem":
             AirLoopHVAC_SuppHeatingCoil_ObjectType = "Coil:Heating:Electric"
             AirLoopHVAC_SuppHeatingCoil_Name = "Heating_Resistance_Backup"
             AFN_main_heating_coil_outlet_node = "SuppHeatingInletNode"
@@ -1234,21 +1329,44 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
         ELA_ceiling = ELA_total_4Pa_m2 * 1/2
         ELA_floor = 0.00001
 
-        total_envelope_height = dictionary[stories_fieldname] * dictionary[heightPerStory_fieldname]
+        # Estimate attic volume and ELA
+        roofVolume_m3 = (building_depth * building_width * roof_ht)/2
+        roofVolume_ft3 = convert_m3_to_ft3(roofVolume_m3)
         
-        adjust = []
-        adjust = estimateInfiltrationAdjustment(foundation_type, infiltrationInACH50, dictionary[footprint_fieldname], total_envelope_height, \
-            living_infiltration_coeff_dict, attic_infiltration_coeff_dict, crawl_infiltration_coeff_dict)
-
-        attic_adjust = adjust[1]
-        crawl_adjust = adjust[2]
+        #... determine attic infiltration rate depending on whether it is vented or not
+        if attic_vented == "Yes":
+            atticInfiltrationInACH50 = 4.5 * 40 #40 is a multiplier iteratively selected to hit about 4.5ACHn on average across about 1,000 RBSA model homes
+        else:
+            atticInfiltrationInACH50 = 0.5 * 55 #55 is a multiplier iteratively selected to hit about 0.5ACHn on average across about 1,000 RBSA model homes
         
-        roof_hypotenuse = math.sqrt(roof_ht**2 + (building_depth/2)**2)
-        attic_wall_area = 2*(0.5*building_depth*roof_ht) + 2*(roof_hypotenuse*building_width)
-        ELA_attic = attic_adjust * attic_wall_area * 0.00010812648958345
+        #... determine total attic ELA
+        atticInfiltrationInCFM50 = atticInfiltrationInACH50/60 * roofVolume_ft3
+        atticInfiltrationInM3PerSec50Pa = atticInfiltrationInCFM50 * 0.00047194745 #convert CFM to m^3/s
+        atticInfiltrationInM3PerSec4Pa = atticInfiltrationInM3PerSec50Pa * (4/50)**0.65 #convert to airflow at 4Pa
+        ELA_atticTotal_4Pa_m2 = atticInfiltrationInM3PerSec4Pa * math.sqrt(density_air/(2*ref_pressure))/Cd
 
-        crawl_wall_area = 2*(abs(foundationwall_ht_AG) + abs(foundationwall_ht_BG))*building_depth + 2*(abs(foundationwall_ht_AG) + abs(foundationwall_ht_BG))*building_width
-        ELA_crawl = crawl_adjust * crawl_wall_area * 0.00010812648958345
+        #... determine ELA per attic vent
+        ELA_attic_per_vent = ELA_atticTotal_4Pa_m2/4 #4 attic vents in total
+
+        # Estimate unheated foundation volume (crawlspace or unheated basement) and ELA
+        foundationTotalHt = foundationwall_ht_AG - foundationwall_ht_BG #note: it's minus because foundationwall_ht_BG is negative number for EnergyPlus
+        foundVolume_m3 = (building_depth * building_width * foundationTotalHt)
+        foundVolume_ft3 = convert_m3_to_ft3(foundVolume_m3)
+        
+        #... determine attic infiltration rate depending on whether it is vented or not
+        if foundation_vented == "Yes":
+            foundInfiltrationInACH50 = 4.5 * 78 #78 is a multiplier iteratively selected to hit about 4.5ACHn on average across about 1,000 RBSA model homes
+        else:
+            foundInfiltrationInACH50 = 0.5 * 75 #75 is a multiplier iteratively selected to hit about 0.5ACHn on average across about 1,000 RBSA model homes
+        
+        #... determine total attic ELA
+        foundInfiltrationInCFM50 = foundInfiltrationInACH50/60 * foundVolume_ft3
+        foundInfiltrationInM3PerSec50Pa = foundInfiltrationInCFM50 * 0.00047194745 #convert CFM to m^3/s
+        foundInfiltrationInM3PerSec4Pa = foundInfiltrationInM3PerSec50Pa * (4/50)**0.65 #convert to airflow at 4Pa
+        ELA_foundTotal_4Pa_m2 = foundInfiltrationInM3PerSec4Pa * math.sqrt(density_air/(2*ref_pressure))/Cd
+
+        #... determine ELA per attic vent
+        ELA_found_per_vent = ELA_foundTotal_4Pa_m2/4 #4 attic vents in total
         
         ### --- Add Air Flow Network (AFN) and airloop. Currently all HVAC systems are modeled with ducts. "Ductless" systems are modeled with "perfect" ducts. --- ### 
         AFN_control = "MultizoneWithDistribution"
@@ -1284,7 +1402,7 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
             AFN_unheatedbsmt_zone_t = ""
             AFN_crawl_unheatedbsmt_leakage_adder_t = ""
             AFN_crawl_unheatedbsmt_surface_adder_t = ""
-        elif foundation_type == "Vented Crawlspace":
+        elif foundation_type == "Crawlspace":
             AFN_unheatedbsmt_zone_t = ""
             #...add a crawlspace AFN zone
             with open(os.path.join(set_dir, building_block_dir, hvac_afn_main_dir, hvac_afn_zone_dir, hvac_afn_zone_crawl_adder_file), 'r') as f:
