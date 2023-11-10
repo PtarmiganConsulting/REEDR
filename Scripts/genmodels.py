@@ -643,33 +643,33 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
                 file_clg_sch = "cooling_sch"
             
             #... heat pump specific inputs
-            if AirLoopHVAC_Unitary_ObjectName == "SS Heat Pump" or AirLoopHVAC_Unitary_ObjectName == "DS Heat Pump" or AirLoopHVAC_Unitary_ObjectName == "MS Heat Pump" \
-            or AirLoopHVAC_Unitary_ObjectName == "UnitarySystem_SPControl" and CentralOrZonal == "Central":
-                #... ASHP backup heat type
-                hp_supp_heat_type_list = ["Electric", "Gas"]
-                hp_supp_heat_type = validate(hpBackupType_fieldname, dictionary[hpBackupType_fieldname], "list", dummy_int, dummy_int, hp_supp_heat_type_list)
-                if hvacSizingMethod == "Manual":
-                    #... ASHP backup heat capacity units
-                    ASHPbackup_capacity_units_list = ["kBtu/h", "kW"]
-                    ASHPbackup_capacity_units = validate(hpBackupCapacityUnits_fieldname, dictionary[hpBackupCapacityUnits_fieldname], "list", dummy_int, dummy_int, ASHPbackup_capacity_units_list)
-                    #... ASHP backup heat capacity
-                    hp_supp_heat_capacity = convert_capacity(ASHPbackup_capacity_units, validate(hpBackupCapacity_fieldname, dictionary[hpBackupCapacity_fieldname], "num_not_zero", dummy_int, dummy_int, dummy_list))
-                    hp_supp_heat_capacity_multistage = hp_supp_heat_capacity/3
-                else:
-                    hp_supp_heat_capacity = "Autosize"
-                    hp_supp_heat_capacity_multistage = "Autosize"
-                
-                #... backup heat lockout
-                hp_max_resistance_temp = validate(hpBackupLockout_fieldname, convert_degF_to_degC(dictionary[hpBackupLockout_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
-                #... compressor lockout
-                hp_min_compressor_temp = validate(hpCompressorLockout_fieldname, convert_degF_to_degC(dictionary[hpCompressorLockout_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
+            if (AirLoopHVAC_Unitary_ObjectName == "SS Heat Pump" or AirLoopHVAC_Unitary_ObjectName == "DS Heat Pump" or AirLoopHVAC_Unitary_ObjectName == "MS Heat Pump" \
+                or AirLoopHVAC_Unitary_ObjectName == "UnitarySystem_SPControl") and CentralOrZonal == "Central":
+                    #... ASHP backup heat type
+                    hp_supp_heat_type_list = ["Electric", "Gas"]
+                    hp_supp_heat_type = validate(hpBackupType_fieldname, dictionary[hpBackupType_fieldname], "list", dummy_int, dummy_int, hp_supp_heat_type_list)
+                    if hvacSizingMethod == "Manual":
+                        #... ASHP backup heat capacity units
+                        ASHPbackup_capacity_units_list = ["kBtu/h", "kW"]
+                        ASHPbackup_capacity_units = validate(hpBackupCapacityUnits_fieldname, dictionary[hpBackupCapacityUnits_fieldname], "list", dummy_int, dummy_int, ASHPbackup_capacity_units_list)
+                        #... ASHP backup heat capacity
+                        hp_supp_heat_capacity = convert_capacity(ASHPbackup_capacity_units, validate(hpBackupCapacity_fieldname, dictionary[hpBackupCapacity_fieldname], "num_not_zero", dummy_int, dummy_int, dummy_list))
+                        hp_supp_heat_capacity_multistage = hp_supp_heat_capacity/3
+                    else:
+                        hp_supp_heat_capacity = "Autosize"
+                        hp_supp_heat_capacity_multistage = "Autosize"
+                    
+                    #... backup heat lockout
+                    hp_max_resistance_temp = validate(hpBackupLockout_fieldname, convert_degF_to_degC(dictionary[hpBackupLockout_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
+                    #... compressor lockout
+                    hp_min_compressor_temp = validate(hpCompressorLockout_fieldname, convert_degF_to_degC(dictionary[hpCompressorLockout_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
             else:
                 hp_supp_heat_type = "No"
                 hp_supp_heat_capacity = 0
                 hp_supp_heat_capacity_multistage = 0
 
             #... baseboard heating capacity
-            if str(dictionary[backupBaseboardCapacity_fieldname]) == "nan" or hvacSizingMethod == "Manual":
+            if str(dictionary[backupBaseboardCapacity_fieldname]) == "nan": # had "or hvacSizingMethod == "Manual"" here but unsure why
                 baseboard_heat_capacity = 0
             else:
                 baseboard_heat_capacity = convert_capacity("kW", validate(backupBaseboardCapacity_fieldname, dictionary[backupBaseboardCapacity_fieldname], "any_num", dummy_int, dummy_int, dummy_list))
@@ -1201,10 +1201,14 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
             
             ZoneEquipment2ObjectType = "ZoneHVAC:Baseboard:Convective:Electric"
             ZoneEquipment2Name = "BaseboardElectric"
-            ZoneEquipment2CoolingSequence = "2"
-            ZoneEquipment2HeatingSequence = "2"
+            ZoneEquipment2CoolingSequence = "1" # was 2
+            ZoneEquipment2HeatingSequence = "1" # was 2
             with open(os.path.join(set_dir, building_block_dir, hvac_zone_main_dir, hvac_zone_hvac_dir, 'BaseboardHeat.txt'), 'r') as f:
                 baseboard_t = f"{f.read()}".format(**locals())
+            # new
+            ZoneEquipment1CoolingSequence = "2"
+            ZoneEquipment1HeatingSequence = "2"
+
             
         elif baseboard_heat_capacity != 0 and HPWH == 1:
             
