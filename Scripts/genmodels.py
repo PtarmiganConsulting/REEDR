@@ -80,7 +80,6 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
     schedule_DHW_draws_dir = building_block_names_dict["schedule_DHW_draws_dir"][bldg_blk_names_lookup_id]
     schedule_CSV = building_block_names_dict["schedule_CSV"][bldg_blk_names_lookup_id]
     schedule_file = building_block_names_dict["schedule_file"][bldg_blk_names_lookup_id]
-    #location_and_climate_dir = building_block_names_dict["location_and_climate_dir"][bldg_blk_names_lookup_id]
     dhw_main_dir = building_block_names_dict["dhw_main_dir"][bldg_blk_names_lookup_id]
     dhw_wh_type_dir = building_block_names_dict["dhw_wh_type_dir"][bldg_blk_names_lookup_id]
     dhw_sys_file = building_block_names_dict["dhw_sys_file"][bldg_blk_names_lookup_id]
@@ -196,7 +195,7 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
     hpBackupType_fieldname = model_input_temp_fieldnames_dict["hpBackupType_fieldname"][input_template_names_lookup_id]
     hpBackupCapacityUnits_fieldname = model_input_temp_fieldnames_dict["hpBackupCapacityUnits_fieldname"][input_template_names_lookup_id]
     hpBackupCapacity_fieldname = model_input_temp_fieldnames_dict["hpBackupCapacity_fieldname"][input_template_names_lookup_id]
-    backupBaseboardCapacity_fieldname = model_input_temp_fieldnames_dict["backupBaseboardCapacity_fieldname"][input_template_names_lookup_id]
+    #backupBaseboardCapacity_fieldname = model_input_temp_fieldnames_dict["backupBaseboardCapacity_fieldname"][input_template_names_lookup_id]
     hpBackupLockout_fieldname = model_input_temp_fieldnames_dict["hpBackupLockout_fieldname"][input_template_names_lookup_id]
     hpCompressorLockout_fieldname = model_input_temp_fieldnames_dict["hpCompressorLockout_fieldname"][input_template_names_lookup_id]
     AFUE_fieldname = model_input_temp_fieldnames_dict["AFUE_fieldname"][input_template_names_lookup_id]
@@ -204,6 +203,11 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
     supplyRvalue_fieldname = model_input_temp_fieldnames_dict["supplyRvalue_fieldname"][input_template_names_lookup_id]
     returnLeakage_fieldname = model_input_temp_fieldnames_dict["returnLeakage_fieldname"][input_template_names_lookup_id]
     returnRvalue_fieldname = model_input_temp_fieldnames_dict["returnRvalue_fieldname"][input_template_names_lookup_id]
+    suppHeatSource_fieldname = model_input_temp_fieldnames_dict["suppHeatSource_fieldname"][input_template_names_lookup_id]
+    suppHeatSourceCapUnits_fieldname = model_input_temp_fieldnames_dict["suppHeatSourceCapUnits_fieldname"][input_template_names_lookup_id]
+    suppHeatSourceCapacity_fieldname = model_input_temp_fieldnames_dict["suppHeatSourceCapacity_fieldname"][input_template_names_lookup_id]
+    suppHeatSourceEfficiency_fieldname = model_input_temp_fieldnames_dict["suppHeatSourceEfficiency_fieldname"][input_template_names_lookup_id]
+    suppHeatSourceFraction_fieldname = model_input_temp_fieldnames_dict["suppHeatSourceFraction_fieldname"][input_template_names_lookup_id]
     htgInputMethod_fieldname = model_input_temp_fieldnames_dict["htgInputMethod_fieldname"][input_template_names_lookup_id]
     htgSetpoint_fieldname = model_input_temp_fieldnames_dict["htgSetpoint_fieldname"][input_template_names_lookup_id]
     htgSetback_fieldname = model_input_temp_fieldnames_dict["htgSetback_fieldname"][input_template_names_lookup_id]
@@ -216,6 +220,7 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
     clgSetbackStart_fieldname = model_input_temp_fieldnames_dict["clgSetbackStart_fieldname"][input_template_names_lookup_id]
     clgSetbackEnd_fieldname = model_input_temp_fieldnames_dict["clgSetbackEnd_fieldname"][input_template_names_lookup_id]
     clgSched_fieldname = model_input_temp_fieldnames_dict["clgSched_fieldname"][input_template_names_lookup_id]
+    hysteresis_fieldname = model_input_temp_fieldnames_dict["hysteresis_fieldname"][input_template_names_lookup_id]
     dhwType_fieldname = model_input_temp_fieldnames_dict["dhwType_fieldname"][input_template_names_lookup_id]
     dhwSched_fieldname = model_input_temp_fieldnames_dict["dhwSched_fieldname"][input_template_names_lookup_id]
     numOfPeople_fieldname = model_input_temp_fieldnames_dict["numOfPeople_fieldname"][input_template_names_lookup_id]
@@ -239,10 +244,6 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
     sim_type = get_data_dict["sim_type"]
     output_gran = gui_params["output_gran"]
     output_enduses = gui_params["output_enduses"]
-
-    ### --- Allows tstat to overrun setpoint by a certain amount and drift back down to setpoint before kicking on again.
-    deadband = 1.1111111111/12 #1.1111111111/2
-    deadband_offset = deadband/2
 
     ### --- Update simulation status in command prompt. --- ###
     print("Starting model build...")
@@ -510,6 +511,14 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
             #... infiltration
             infiltration = validate(infiltration_fieldname, dictionary[infiltration_fieldname], "num_not_zero", dummy_int, dummy_int, dummy_list)
 
+            #... hysteresis
+            ### --- Allows tstat to overrun setpoint by a certain amount and drift back down to setpoint before kicking on again.
+            deadband_F = validate(hysteresis_fieldname, dictionary[hysteresis_fieldname], "num_not_zero", dummy_int, dummy_int, dummy_list) #1.1111111111/12 for heat pumps
+            # convert to a delta in degrees C
+            deadband = 5/9 * deadband_F 
+            # calculate half of the full range to know the amount above and below the setpoint
+            deadband_offset = deadband/2
+            
             #... primary HVAC type
             hvac_type_list = hvac_dict.keys()
             hvac_type = validate(primaryHVAC_fieldname, dictionary[primaryHVAC_fieldname], "list", dummy_int, dummy_int, hvac_type_list)
@@ -630,7 +639,6 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
                     compact_clg_sch = "cooling_sch_not_used"
                     file_clg_sch = "cooling_sch"
 
-                
             else:
                 #... provide dummy values because there is no cooling
                 primary_cooling_capacity = 0
@@ -643,37 +651,58 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
                 file_clg_sch = "cooling_sch"
             
             #... heat pump specific inputs
-            if AirLoopHVAC_Unitary_ObjectName == "SS Heat Pump" or AirLoopHVAC_Unitary_ObjectName == "DS Heat Pump" or AirLoopHVAC_Unitary_ObjectName == "MS Heat Pump" \
-            or AirLoopHVAC_Unitary_ObjectName == "UnitarySystem_SPControl" and CentralOrZonal == "Central":
-                #... ASHP backup heat type
-                hp_supp_heat_type_list = ["Electric", "Gas"]
-                hp_supp_heat_type = validate(hpBackupType_fieldname, dictionary[hpBackupType_fieldname], "list", dummy_int, dummy_int, hp_supp_heat_type_list)
-                if hvacSizingMethod == "Manual":
-                    #... ASHP backup heat capacity units
-                    ASHPbackup_capacity_units_list = ["kBtu/h", "kW"]
-                    ASHPbackup_capacity_units = validate(hpBackupCapacityUnits_fieldname, dictionary[hpBackupCapacityUnits_fieldname], "list", dummy_int, dummy_int, ASHPbackup_capacity_units_list)
-                    #... ASHP backup heat capacity
-                    hp_supp_heat_capacity = convert_capacity(ASHPbackup_capacity_units, validate(hpBackupCapacity_fieldname, dictionary[hpBackupCapacity_fieldname], "num_not_zero", dummy_int, dummy_int, dummy_list))
-                    hp_supp_heat_capacity_multistage = hp_supp_heat_capacity/3
-                else:
-                    hp_supp_heat_capacity = "Autosize"
-                    hp_supp_heat_capacity_multistage = "Autosize"
-                
-                #... backup heat lockout
-                hp_max_resistance_temp = validate(hpBackupLockout_fieldname, convert_degF_to_degC(dictionary[hpBackupLockout_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
-                #... compressor lockout
-                hp_min_compressor_temp = validate(hpCompressorLockout_fieldname, convert_degF_to_degC(dictionary[hpCompressorLockout_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
+            if (AirLoopHVAC_Unitary_ObjectName == "SS Heat Pump" or AirLoopHVAC_Unitary_ObjectName == "DS Heat Pump" or AirLoopHVAC_Unitary_ObjectName == "MS Heat Pump" \
+                or AirLoopHVAC_Unitary_ObjectName == "UnitarySystem_SPControl") and CentralOrZonal == "Central":
+                    #... ASHP backup heat type
+                    hp_supp_heat_type_list = ["Electric", "Gas"]
+                    hp_supp_heat_type = validate(hpBackupType_fieldname, dictionary[hpBackupType_fieldname], "list", dummy_int, dummy_int, hp_supp_heat_type_list)
+                    if hvacSizingMethod == "Manual":
+                        #... ASHP backup heat capacity units
+                        ASHPbackup_capacity_units_list = ["kBtu/h", "kW"]
+                        ASHPbackup_capacity_units = validate(hpBackupCapacityUnits_fieldname, dictionary[hpBackupCapacityUnits_fieldname], "list", dummy_int, dummy_int, ASHPbackup_capacity_units_list)
+                        #... ASHP backup heat capacity
+                        hp_supp_heat_capacity = convert_capacity(ASHPbackup_capacity_units, validate(hpBackupCapacity_fieldname, dictionary[hpBackupCapacity_fieldname], "num_not_zero", dummy_int, dummy_int, dummy_list))
+                        hp_supp_heat_capacity_multistage = hp_supp_heat_capacity/3
+                    else:
+                        hp_supp_heat_capacity = "Autosize"
+                        hp_supp_heat_capacity_multistage = "Autosize"
+                    
+                    #... backup heat lockout
+                    hp_max_resistance_temp = validate(hpBackupLockout_fieldname, convert_degF_to_degC(dictionary[hpBackupLockout_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
+                    #... compressor lockout
+                    hp_min_compressor_temp = validate(hpCompressorLockout_fieldname, convert_degF_to_degC(dictionary[hpCompressorLockout_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
             else:
                 hp_supp_heat_type = "No"
                 hp_supp_heat_capacity = 0
                 hp_supp_heat_capacity_multistage = 0
 
-            #... baseboard heating capacity
-            if str(dictionary[backupBaseboardCapacity_fieldname]) == "nan" or hvacSizingMethod == "Manual":
-                baseboard_heat_capacity = 0
+            #... supplemental heating source details
+            if str(dictionary[suppHeatSource_fieldname]) == "nan" or str(dictionary[suppHeatSource_fieldname]) == "None":
+                suppHeatSource = "None"
+                suppHeatSourceCapUnits = "None"
+                suppHeatSourceCapacity = 0
+                suppHeatSourceEfficiency = 1
+                suppHeatSourceFraction = 0
+                primHeatSourceFraction = 1
             else:
-                baseboard_heat_capacity = convert_capacity("kW", validate(backupBaseboardCapacity_fieldname, dictionary[backupBaseboardCapacity_fieldname], "any_num", dummy_int, dummy_int, dummy_list))
-            
+                #...... supplemental heating source, including "none"
+                suppHeatSource_list = ["None", "Electric Resistance", "Natural Gas", "Propane", "Wood"]
+                suppHeatSource = validate(suppHeatSource_fieldname, dictionary[suppHeatSource_fieldname], "list", dummy_int, dummy_int, suppHeatSource_list)
+                #...... supplemental heating source capacity units
+                suppHeatSourceCapUnits_list = ["kW", "kBtu/h"]
+                suppHeatSourceCapUnits = validate(suppHeatSourceCapUnits_fieldname, dictionary[suppHeatSourceCapUnits_fieldname], "list", dummy_int, dummy_int, suppHeatSourceCapUnits_list)
+                #...... supplemental heating source capacity
+                suppHeatSourceCapacity = convert_capacity(suppHeatSourceCapUnits, validate(suppHeatSourceCapacity_fieldname, dictionary[suppHeatSourceCapacity_fieldname], "num_not_zero", dummy_int, dummy_int, dummy_list))
+                #...... supplemental heating source efficiency
+                suppEfficiencyLo = 0.1
+                suppEfficiencyHi = 1
+                suppHeatSourceEfficiency = validate(suppHeatSourceEfficiency_fieldname, dictionary[suppHeatSourceEfficiency_fieldname], "num_between", suppEfficiencyLo, suppEfficiencyHi, dummy_list)
+                #...... supplemental heating source fraction of load served
+                frac_hi = 1
+                frac_lo = 0.01
+                suppHeatSourceFraction = validate(suppHeatSourceFraction_fieldname, float(dictionary[suppHeatSourceFraction_fieldname]), "num_between", frac_lo, frac_hi, dummy_list)      
+                primHeatSourceFraction = float(1 - suppHeatSourceFraction)
+
             #... duct inputs
             if CentralOrZonal == "Central":
                 #... duct leakage
@@ -810,7 +839,8 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
             
         except:
             return True
-        
+    
+
         # Get wall construction layers
         wall_layers = []
         wall_layers.append(nonfoundation_wall_dict[above_ground_wall_con]["exterior_wall_layer"])
@@ -1191,46 +1221,140 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
 
             fan_max_flow_allowed = "Autosize"
 
-        # Add baseboard capacity if defined, and properly handle assingment of HPWH
-        if baseboard_heat_capacity != 0 and HPWH == 0:
-
+        # Add supplemental heat if defined, and properly handle assingment of HPWH
+        if suppHeatSourceCapacity != 0 and HPWH == 0:
+            
             ZoneEquipment3ObjectType = "!-"
             ZoneEquipment3Name = "!-"
             ZoneEquipment3CoolingSequence = "!-"
             ZoneEquipment3HeatingSequence = "!-"
+            
+            if suppHeatSourceFraction == 1:
+                ZoneEquipment1CoolingSequence = "1"
+                ZoneEquipment1HeatingSequence = "1"
+                ZoneEquipment2CoolingSequence = "2"
+                ZoneEquipment2HeatingSequence = "2"
+                ZoneEquipment1CoolingFracSch = ""
+                ZoneEquipment1HeatingFracSch = ""
+                ZoneEquipment2CoolingFracSch = ""
+                ZoneEquipment2HeatingFracSch = ""
+                ZoneEquipment3CoolingFracSch = ""
+                ZoneEquipment3HeatingFracSch = ""
+                supp_frac_sched_t = ""
+            else:
+                ZoneEquipment1CoolingSequence = "2"
+                ZoneEquipment1HeatingSequence = "2"
+                ZoneEquipment2CoolingSequence = "1"
+                ZoneEquipment2HeatingSequence = "1"
+                ZoneEquipment1CoolingFracSch = "PrimaryCoolFraction"
+                ZoneEquipment1HeatingFracSch = "PrimaryHeatFraction"
+                ZoneEquipment2CoolingFracSch = "SupplementalCoolFraction"
+                ZoneEquipment2HeatingFracSch = "SupplementalHeatFraction"
+                ZoneEquipment3CoolingFracSch = ""
+                ZoneEquipment3HeatingFracSch = ""
+
+                with open(os.path.join(set_dir, building_block_dir, schedule_dir,  'SupplementalHeatFraction.txt'), 'r') as f:
+                    supp_frac_sched_t = f"{f.read()}".format(**locals())
             
             ZoneEquipment2ObjectType = "ZoneHVAC:Baseboard:Convective:Electric"
-            ZoneEquipment2Name = "BaseboardElectric"
-            ZoneEquipment2CoolingSequence = "2"
-            ZoneEquipment2HeatingSequence = "2"
-            with open(os.path.join(set_dir, building_block_dir, hvac_zone_main_dir, hvac_zone_hvac_dir, 'BaseboardHeat.txt'), 'r') as f:
-                baseboard_t = f"{f.read()}".format(**locals())
-            
-        elif baseboard_heat_capacity != 0 and HPWH == 1:
-            
-            ZoneEquipment3ObjectType = "ZoneHVAC:Baseboard:Convective:Electric"
-            ZoneEquipment3Name = "BaseboardElectric"
-            ZoneEquipment3CoolingSequence = "3"
-            ZoneEquipment3HeatingSequence = "3"
-            with open(os.path.join(set_dir, building_block_dir, hvac_zone_main_dir, hvac_zone_hvac_dir, 'BaseboardHeat.txt'), 'r') as f:
-                baseboard_t = f"{f.read()}".format(**locals())
 
-            ZoneEquipment2ObjectType = ZoneEquipment1ObjectType
-            ZoneEquipment2Name = ZoneEquipment1Name
-            ZoneEquipment2CoolingSequence = 2
-            ZoneEquipment2HeatingSequence = 2
+            if suppHeatSource == "Electric Resistance":
+                ZoneEquipment2Name = "SupplementalHeater_ElectricResistance"
+                SupplementalHeaterName = "SupplementalHeater_ElectricResistance"
+                
+            elif suppHeatSource == "Natural Gas":
+                ZoneEquipment2Name = "SupplementalHeater_NaturalGas"
+                SupplementalHeaterName = "SupplementalHeater_NaturalGas"
+                
+            elif suppHeatSource == "Propane":
+                ZoneEquipment2Name = "SupplementalHeater_Propane"
+                SupplementalHeaterName = "SupplementalHeater_Propane"
+
+            elif suppHeatSource == "Wood":
+                ZoneEquipment2Name = "SupplementalHeater_Wood"
+                SupplementalHeaterName = "SupplementalHeater_Wood"
+
+            else: # assume resistance by default
+                ZoneEquipment2Name = "SupplementalHeater_ElectricResistance"
+                SupplementalHeaterName = "SupplementalHeater_ElectricResistance"
+
+            with open(os.path.join(set_dir, building_block_dir, hvac_zone_main_dir, hvac_zone_hvac_dir, 'BaseboardHeat.txt'), 'r') as f:
+                unitheater_t = f"{f.read()}".format(**locals())
+            
+        elif suppHeatSourceCapacity != 0 and HPWH == 1:
+            
+            if suppHeatSourceFraction == 1:
+                ZoneEquipment2ObjectType = ZoneEquipment1ObjectType
+                ZoneEquipment2Name = ZoneEquipment1Name
+                ZoneEquipment2CoolingSequence = 2
+                ZoneEquipment2HeatingSequence = 2
+
+                ZoneEquipment3ObjectType = "ZoneHVAC:Baseboard:Convective:Electric"
+                ZoneEquipment3CoolingSequence = "3"
+                ZoneEquipment3HeatingSequence = "3"
+
+                ZoneEquipment1CoolingFracSch = ""
+                ZoneEquipment1HeatingFracSch = ""
+                ZoneEquipment2CoolingFracSch = ""
+                ZoneEquipment2HeatingFracSch = ""
+                ZoneEquipment3CoolingFracSch = ""
+                ZoneEquipment3HeatingFracSch = ""
+                supp_frac_sched_t = ""
+            else:
+                ZoneEquipment2ObjectType = ZoneEquipment1ObjectType
+                ZoneEquipment2Name = ZoneEquipment1Name
+                ZoneEquipment2CoolingSequence = 3
+                ZoneEquipment2HeatingSequence = 3
+
+                ZoneEquipment3ObjectType = "ZoneHVAC:Baseboard:Convective:Electric"
+                ZoneEquipment3CoolingSequence = "2"
+                ZoneEquipment3HeatingSequence = "2"
+
+                ZoneEquipment1CoolingFracSch = ""
+                ZoneEquipment1HeatingFracSch = ""
+                ZoneEquipment2CoolingFracSch = "PrimaryCoolFraction"
+                ZoneEquipment2HeatingFracSch = "PrimaryHeatFraction"
+                ZoneEquipment3CoolingFracSch = "SupplementalCoolFraction"
+                ZoneEquipment3HeatingFracSch = "SupplementalHeatFraction"
+
+                with open(os.path.join(set_dir, building_block_dir, schedule_dir,  'SupplementalHeatFraction.txt'), 'r') as f:
+                    supp_frac_sched_t = f"{f.read()}".format(**locals())
 
             ZoneEquipment1ObjectType = "WaterHeater:HeatPump:WrappedCondenser"
             ZoneEquipment1Name = "Water Heater"
             ZoneEquipment1CoolingSequence = 1
             ZoneEquipment1HeatingSequence = 1
+            
+            if suppHeatSource == "Electric Resistance":
+                ZoneEquipment3Name = "SupplementalHeater_ElectricResistance"
+                SupplementalHeaterName = "SupplementalHeater_ElectricResistance"
+                
+            elif suppHeatSource == "Natural Gas":
+                ZoneEquipment3Name = "SupplementalHeater_NaturalGas"
+                SupplementalHeaterName = "SupplementalHeater_NaturalGas"
+                
+            elif suppHeatSource == "Propane":
+                ZoneEquipment3Name = "SupplementalHeater_Propane"
+                SupplementalHeaterName = "SupplementalHeater_Propane"
+
+            elif suppHeatSource == "Wood":
+                ZoneEquipment3Name = "SupplementalHeater_Wood"
+                SupplementalHeaterName = "SupplementalHeater_Wood"
+
+            else: # assume resistance by default
+                ZoneEquipment3Name = "SupplementalHeater_ElectricResistance"
+                SupplementalHeaterName = "SupplementalHeater_ElectricResistance"
+
+            with open(os.path.join(set_dir, building_block_dir, hvac_zone_main_dir, hvac_zone_hvac_dir, 'BaseboardHeat.txt'), 'r') as f:
+                unitheater_t = f"{f.read()}".format(**locals())
 
             ZoneAirInletNodeName = "Zone Inlet Nodes"
             ZoneAirExhaustNodeName = "Zone Exhaust Node"
 
-        elif baseboard_heat_capacity == 0 and HPWH == 1:
+        elif suppHeatSourceCapacity == 0 and HPWH == 1:
 
-            baseboard_t = ""
+            unitheater_t = ""
+            supp_frac_sched_t = ""
 
             ZoneEquipment3ObjectType = "!-"
             ZoneEquipment3Name = "!-"
@@ -1249,15 +1373,30 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
 
             ZoneAirInletNodeName = "Zone Inlet Nodes"
             ZoneAirExhaustNodeName = "Zone Exhaust Node"
+
+            ZoneEquipment1CoolingFracSch = ""
+            ZoneEquipment1HeatingFracSch = ""
+            ZoneEquipment2CoolingFracSch = ""
+            ZoneEquipment2HeatingFracSch = ""
+            ZoneEquipment3CoolingFracSch = ""
+            ZoneEquipment3HeatingFracSch = ""
 
         else:
 
-            baseboard_t = ""
+            unitheater_t = ""
+            supp_frac_sched_t = ""
 
             ZoneEquipment3ObjectType = "!-"
             ZoneEquipment3Name = "!-"
             ZoneEquipment3CoolingSequence = "!-"
             ZoneEquipment3HeatingSequence = "!-"
+
+            ZoneEquipment1CoolingFracSch = ""
+            ZoneEquipment1HeatingFracSch = ""
+            ZoneEquipment2CoolingFracSch = ""
+            ZoneEquipment2HeatingFracSch = ""
+            ZoneEquipment3CoolingFracSch = ""
+            ZoneEquipment3HeatingFracSch = ""
         
         # Establish supplemental (backup) heat source for ASHPs...
         if AirLoopHVAC_Unitary_ObjectType == "AirLoopHVAC:UnitaryHeatPump:AirtoAir" and hp_supp_heat_type == "Gas":
@@ -1530,7 +1669,7 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
             AFN_crawl_zone_t, AFN_unheatedbsmt_zone_t, AFN_crawl_unheatedbsmt_leakage_adder_t, AFN_crawl_unheatedbsmt_surface_adder_t, \
             AFN_ducts_t, system_sizing_t, airloop_t, AFN_linkage_coolingcoiladder_t, AFN_nodes_coolingcoiladder_t, \
             zone_equip_list_t, HVAC_equip_1_t, HVAC_equip_2_t, heating_coil_t, supp_heating_coil_t, cooling_coil_t, fan_t, \
-            baseboard_t, thermostat_t, zone_sizing_t, water_heater_t, dhw_t, dhw_draw_sch_t, perf_t, output_t, user_output_t, outputcontrol_t
+            unitheater_t, supp_frac_sched_t, thermostat_t, zone_sizing_t, water_heater_t, dhw_t, dhw_draw_sch_t, perf_t, output_t, user_output_t, outputcontrol_t
             ]
         #locations_t
 

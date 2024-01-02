@@ -40,7 +40,11 @@ def convert_J_to_therm(J):
 
 def convert_J_to_galLPG(J):
     gal = J*0.0000000099247861544414
-    return gal    
+    return gal
+
+def convert_J_to_kBtu(J):
+    Btu = J*0.000000947817
+    return Btu
 
 def convert_W_to_Btuh(W):
     Btuh = W*3.41
