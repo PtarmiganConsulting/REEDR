@@ -1,6 +1,6 @@
 #*******************************************************************************************************************************************************************
 
-#Copyright (C) 2023 Ptarmigan Consulting LLC
+#Copyright (C) 2024 Ptarmigan Consulting LLC
 
 #This file is part of REEDR.
 
@@ -170,7 +170,7 @@ def produce_output_report(output_dict, output_gran, output_type, get_data_dict, 
         if output_gran == "Annual":
             # Read in the EnergyPlus-generated output csv
             #... skip the first rows corresponding to the HVAC design days
-            rows_to_skip = range(1, 3)
+            rows_to_skip = 0#range(1, 3)
             eplus_out_df = pd.read_csv (eplus_out_path, skiprows=rows_to_skip)
 
             for column in column_header_list:
@@ -208,15 +208,14 @@ def produce_output_report(output_dict, output_gran, output_type, get_data_dict, 
                     df_out.at[run_label, [column]] = 0
 
         else: # Case is hourly or timestep granularity...
-
             # Compute output timestep for hourly and timestep output
             if output_gran == "Hourly":
                 output_timesteps_per_hr = 1
             elif output_gran == "TimeStep":
                 output_timesteps_per_hr = timestep
 
-            # Skip the last rows corresponding to the HVAC design days
-            endrows_to_skip = 0 #24*2*output_timesteps_per_hr
+            # Skip the last rows corresponding to the HVAC design days (2 weeks)
+            endrows_to_skip = 0#24*14*output_timesteps_per_hr
             # Read in each individual EnergyPlus-generated output file, and skip the last design day rows
             eplus_out_df = pd.read_csv(eplus_out_path, engine='python', skipfooter=endrows_to_skip)
             # Strip leading or trailing whitespace from column names...

@@ -195,7 +195,6 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
     hpBackupType_fieldname = model_input_temp_fieldnames_dict["hpBackupType_fieldname"][input_template_names_lookup_id]
     hpBackupCapacityUnits_fieldname = model_input_temp_fieldnames_dict["hpBackupCapacityUnits_fieldname"][input_template_names_lookup_id]
     hpBackupCapacity_fieldname = model_input_temp_fieldnames_dict["hpBackupCapacity_fieldname"][input_template_names_lookup_id]
-    #backupBaseboardCapacity_fieldname = model_input_temp_fieldnames_dict["backupBaseboardCapacity_fieldname"][input_template_names_lookup_id]
     hpBackupLockout_fieldname = model_input_temp_fieldnames_dict["hpBackupLockout_fieldname"][input_template_names_lookup_id]
     hpCompressorLockout_fieldname = model_input_temp_fieldnames_dict["hpCompressorLockout_fieldname"][input_template_names_lookup_id]
     AFUE_fieldname = model_input_temp_fieldnames_dict["AFUE_fieldname"][input_template_names_lookup_id]
@@ -208,18 +207,38 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
     suppHeatSourceCapacity_fieldname = model_input_temp_fieldnames_dict["suppHeatSourceCapacity_fieldname"][input_template_names_lookup_id]
     suppHeatSourceEfficiency_fieldname = model_input_temp_fieldnames_dict["suppHeatSourceEfficiency_fieldname"][input_template_names_lookup_id]
     suppHeatSourceFraction_fieldname = model_input_temp_fieldnames_dict["suppHeatSourceFraction_fieldname"][input_template_names_lookup_id]
-    htgInputMethod_fieldname = model_input_temp_fieldnames_dict["htgInputMethod_fieldname"][input_template_names_lookup_id]
-    htgSetpoint_fieldname = model_input_temp_fieldnames_dict["htgSetpoint_fieldname"][input_template_names_lookup_id]
-    htgSetback_fieldname = model_input_temp_fieldnames_dict["htgSetback_fieldname"][input_template_names_lookup_id]
-    htgSetbackStart_fieldname = model_input_temp_fieldnames_dict["htgSetbackStart_fieldname"][input_template_names_lookup_id]
-    htgSetbackEnd_fieldname = model_input_temp_fieldnames_dict["htgSetbackEnd_fieldname"][input_template_names_lookup_id]
-    htgSched_fieldname = model_input_temp_fieldnames_dict["htgSched_fieldname"][input_template_names_lookup_id]
-    clgInputMethod_fieldname = model_input_temp_fieldnames_dict["clgInputMethod_fieldname"][input_template_names_lookup_id]
-    clgSetpoint_fieldname = model_input_temp_fieldnames_dict["clgSetpoint_fieldname"][input_template_names_lookup_id]
-    clgSetback_fieldname = model_input_temp_fieldnames_dict["clgSetback_fieldname"][input_template_names_lookup_id]
-    clgSetbackStart_fieldname = model_input_temp_fieldnames_dict["clgSetbackStart_fieldname"][input_template_names_lookup_id]
-    clgSetbackEnd_fieldname = model_input_temp_fieldnames_dict["clgSetbackEnd_fieldname"][input_template_names_lookup_id]
-    clgSched_fieldname = model_input_temp_fieldnames_dict["clgSched_fieldname"][input_template_names_lookup_id]
+    htgStPt1Val_fieldname = model_input_temp_fieldnames_dict["htgStPt1Val_fieldname"][input_template_names_lookup_id]
+    htgStPt1End_fieldname = model_input_temp_fieldnames_dict["htgStPt1End_fieldname"][input_template_names_lookup_id]
+    htgStPt2Val_fieldname = model_input_temp_fieldnames_dict["htgStPt2Val_fieldname"][input_template_names_lookup_id]
+    htgStPt2End_fieldname = model_input_temp_fieldnames_dict["htgStPt2End_fieldname"][input_template_names_lookup_id]
+    htgStPt3Val_fieldname = model_input_temp_fieldnames_dict["htgStPt3Val_fieldname"][input_template_names_lookup_id]
+    htgStPt3End_fieldname = model_input_temp_fieldnames_dict["htgStPt3End_fieldname"][input_template_names_lookup_id]
+    htgStPt4Val_fieldname = model_input_temp_fieldnames_dict["htgStPt4Val_fieldname"][input_template_names_lookup_id]
+    htgStPt4End_fieldname = model_input_temp_fieldnames_dict["htgStPt4End_fieldname"][input_template_names_lookup_id]
+    htgStPt5Val_fieldname = model_input_temp_fieldnames_dict["htgStPt5Val_fieldname"][input_template_names_lookup_id]
+    htgStPt5End_fieldname = model_input_temp_fieldnames_dict["htgStPt5End_fieldname"][input_template_names_lookup_id]
+    htgStPt6Val_fieldname = model_input_temp_fieldnames_dict["htgStPt6Val_fieldname"][input_template_names_lookup_id]
+    htgStPt6End_fieldname = model_input_temp_fieldnames_dict["htgStPt6End_fieldname"][input_template_names_lookup_id]
+    htgStPt7Val_fieldname = model_input_temp_fieldnames_dict["htgStPt7Val_fieldname"][input_template_names_lookup_id]
+    htgStPt7End_fieldname = model_input_temp_fieldnames_dict["htgStPt7End_fieldname"][input_template_names_lookup_id]
+    htgStPt8Val_fieldname = model_input_temp_fieldnames_dict["htgStPt8Val_fieldname"][input_template_names_lookup_id]
+    htgStPt8End_fieldname = model_input_temp_fieldnames_dict["htgStPt8End_fieldname"][input_template_names_lookup_id]
+    clgStPt1Val_fieldname = model_input_temp_fieldnames_dict["clgStPt1Val_fieldname"][input_template_names_lookup_id]
+    clgStPt1End_fieldname = model_input_temp_fieldnames_dict["clgStPt1End_fieldname"][input_template_names_lookup_id]
+    clgStPt2Val_fieldname = model_input_temp_fieldnames_dict["clgStPt2Val_fieldname"][input_template_names_lookup_id]
+    clgStPt2End_fieldname = model_input_temp_fieldnames_dict["clgStPt2End_fieldname"][input_template_names_lookup_id]
+    clgStPt3Val_fieldname = model_input_temp_fieldnames_dict["clgStPt3Val_fieldname"][input_template_names_lookup_id]
+    clgStPt3End_fieldname = model_input_temp_fieldnames_dict["clgStPt3End_fieldname"][input_template_names_lookup_id]
+    clgStPt4Val_fieldname = model_input_temp_fieldnames_dict["clgStPt4Val_fieldname"][input_template_names_lookup_id]
+    clgStPt4End_fieldname = model_input_temp_fieldnames_dict["clgStPt4End_fieldname"][input_template_names_lookup_id]
+    clgStPt5Val_fieldname = model_input_temp_fieldnames_dict["clgStPt5Val_fieldname"][input_template_names_lookup_id]
+    clgStPt5End_fieldname = model_input_temp_fieldnames_dict["clgStPt5End_fieldname"][input_template_names_lookup_id]
+    clgStPt6Val_fieldname = model_input_temp_fieldnames_dict["clgStPt6Val_fieldname"][input_template_names_lookup_id]
+    clgStPt6End_fieldname = model_input_temp_fieldnames_dict["clgStPt6End_fieldname"][input_template_names_lookup_id]
+    clgStPt7Val_fieldname = model_input_temp_fieldnames_dict["clgStPt7Val_fieldname"][input_template_names_lookup_id]
+    clgStPt7End_fieldname = model_input_temp_fieldnames_dict["clgStPt7End_fieldname"][input_template_names_lookup_id]
+    clgStPt8Val_fieldname = model_input_temp_fieldnames_dict["clgStPt8Val_fieldname"][input_template_names_lookup_id]
+    clgStPt8End_fieldname = model_input_temp_fieldnames_dict["clgStPt8End_fieldname"][input_template_names_lookup_id]
     hysteresis_fieldname = model_input_temp_fieldnames_dict["hysteresis_fieldname"][input_template_names_lookup_id]
     dhwType_fieldname = model_input_temp_fieldnames_dict["dhwType_fieldname"][input_template_names_lookup_id]
     dhwSched_fieldname = model_input_temp_fieldnames_dict["dhwSched_fieldname"][input_template_names_lookup_id]
@@ -244,6 +263,8 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
     sim_type = get_data_dict["sim_type"]
     output_gran = gui_params["output_gran"]
     output_enduses = gui_params["output_enduses"]
+
+    timestepCounter = 0
 
     ### --- Update simulation status in command prompt. --- ###
     print("Starting model build...")
@@ -438,11 +459,23 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
                 # Get floor and foundation custom inputs from user
                 found_type_list = ["Crawlspace","Slab","Heated Basement","Unheated Basement"]
                 user_found_type = validate(foundType_fieldname, dictionary[foundType_fieldname], "list", dummy_int, dummy_int, found_type_list)
-                floor_effective_Rvalue = validate(floorRvalue_fieldname, dictionary[floorRvalue_fieldname], "any_num", dummy_int, dummy_int, dummy_list)
-                slab_perimeter_Rvalue = validate(slabPerimRvalue_fieldname, dictionary[slabPerimRvalue_fieldname], "any_num", dummy_int, dummy_int, dummy_list)
-                under_slab_Rvalue = validate(slabUnderRvalue_fieldname, dictionary[slabUnderRvalue_fieldname], "any_num", dummy_int, dummy_int, dummy_list)
-                slab_thermalbreak_Rvalue = validate(slabTBvalue_fieldname, dictionary[slabTBvalue_fieldname], "any_num", dummy_int, dummy_int, dummy_list)
-                foundation_wall_Rvalue = validate(foundWallRvalue_fieldname, dictionary[foundWallRvalue_fieldname], "any_num", dummy_int, dummy_int, dummy_list)
+                if user_found_type == "Crawlspace" or user_found_type == "Unheated Basement":
+                    floor_effective_Rvalue = validate(floorRvalue_fieldname, dictionary[floorRvalue_fieldname], "any_num", dummy_int, dummy_int, dummy_list)
+                else:
+                    floor_effective_Rvalue = 0
+                if user_found_type == "Slab":
+                    slab_perimeter_Rvalue = validate(slabPerimRvalue_fieldname, dictionary[slabPerimRvalue_fieldname], "any_num", dummy_int, dummy_int, dummy_list)
+                    under_slab_Rvalue = validate(slabUnderRvalue_fieldname, dictionary[slabUnderRvalue_fieldname], "any_num", dummy_int, dummy_int, dummy_list)
+                    slab_thermalbreak_Rvalue = validate(slabTBvalue_fieldname, dictionary[slabTBvalue_fieldname], "any_num", dummy_int, dummy_int, dummy_list)
+                else:
+                    slab_perimeter_Rvalue = 0
+                    under_slab_Rvalue = 0
+                    slab_thermalbreak_Rvalue = 0
+                if user_found_type == "Unheated Basement" or user_found_type == "Heated Basement":
+                    foundation_wall_Rvalue = validate(foundWallRvalue_fieldname, dictionary[foundWallRvalue_fieldname], "any_num", dummy_int, dummy_int, dummy_list)
+                else:
+                    foundation_wall_Rvalue = 0
+
                 # Pass these inputs to a function that can determine which general foundation construction to use
                 foundation_identifier = getFoundationIdentifier(user_found_type, floor_effective_Rvalue, slab_perimeter_Rvalue, under_slab_Rvalue, slab_thermalbreak_Rvalue, foundation_wall_Rvalue)
                 # Determine floor insulation depth
@@ -513,11 +546,14 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
 
             #... hysteresis
             ### --- Allows tstat to overrun setpoint by a certain amount and drift back down to setpoint before kicking on again.
-            deadband_F = validate(hysteresis_fieldname, dictionary[hysteresis_fieldname], "num_not_zero", dummy_int, dummy_int, dummy_list) #1.1111111111/12 for heat pumps
-            # convert to a delta in degrees C
-            deadband = 5/9 * deadband_F 
-            # calculate half of the full range to know the amount above and below the setpoint
-            deadband_offset = deadband/2
+            if str(dictionary[hysteresis_fieldname]) == "nan":
+                deadband = 5/9 * 2
+            else:
+                deadband_F = validate(hysteresis_fieldname, dictionary[hysteresis_fieldname], "num_not_zero", dummy_int, dummy_int, dummy_list) #1.1111111111/12 for heat pumps
+                # convert to a delta in degrees C
+                deadband = 5/9 * deadband_F 
+                # calculate half of the full range to know the amount above and below the setpoint
+                deadband_offset = deadband/2
             
             #... primary HVAC type
             hvac_type_list = hvac_dict.keys()
@@ -583,8 +619,162 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
             else:
                 primary_heating_capacity = "Autosize"
             
-            hour_lo = 0 # hour lo and high needed if setback is present for heating or cooling
-            hour_hi = 23
+            #... heating setpoint schedule
+            compact_htg_sch = "heating_sch"
+            htgStPt1Val = validate(htgStPt1Val_fieldname, convert_degF_to_degC(dictionary[htgStPt1Val_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
+            htgStPt1Val = htgStPt1Val + deadband_offset
+            htgStPt1End = dictionary[htgStPt1End_fieldname]
+            if str(dictionary[htgStPt2Val_fieldname]) == "nan":
+                numHtgStPts = 1
+                htgStPt1Punc = ";"
+                htgStPt2Punc = htgStPt3Punc = htgStPt4Punc = htgStPt5Punc = htgStPt6Punc = htgStPt7Punc = htgStPt8Punc = ""
+                htgStPt2Val = htgStPt3Val = htgStPt4Val = htgStPt5Val = htgStPt6Val = htgStPt7Val = htgStPt8Val = "NA"
+                htgStPt2End = htgStPt3End = htgStPt4End = htgStPt5End = htgStPt6End = htgStPt7End = htgStPt8End = "NA"
+                htgStPt2Flag = htgStPt3Flag = htgStPt4Flag = htgStPt5Flag = htgStPt6Flag = htgStPt7Flag = htgStPt8Flag = "!-"
+            elif str(dictionary[htgStPt3Val_fieldname]) == "nan":
+                numHtgStPts = 2
+                htgStPt2Flag = ""
+                htgStPt1Punc = ","
+                htgStPt2Punc = ";"
+                htgStPt2Val = validate(htgStPt2Val_fieldname, convert_degF_to_degC(dictionary[htgStPt2Val_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
+                htgStPt2Val = htgStPt2Val + deadband_offset
+                htgStPt2End = dictionary[htgStPt2End_fieldname]
+                htgStPt3Punc = htgStPt4Punc = htgStPt5Punc = htgStPt6Punc = htgStPt7Punc = htgStPt8Punc = ""
+                htgStPt3Val = htgStPt4Val = htgStPt5Val = htgStPt6Val = htgStPt7Val = htgStPt8Val = "NA"
+                htgStPt3End = htgStPt4End = htgStPt5End = htgStPt6End = htgStPt7End = htgStPt8End = "NA"
+                htgStPt3Flag = htgStPt4Flag = htgStPt5Flag = htgStPt6Flag = htgStPt7Flag = htgStPt8Flag = "!-"
+            elif str(dictionary[htgStPt4Val_fieldname]) == "nan":
+                numHtgStPts = 3
+                htgStPt2Flag = htgStPt3Flag = ""
+                htgStPt1Punc = htgStPt2Punc = ","
+                htgStPt3Punc = ";"
+                htgStPt2Val = validate(htgStPt2Val_fieldname, convert_degF_to_degC(dictionary[htgStPt2Val_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
+                htgStPt2Val = htgStPt2Val + deadband_offset
+                htgStPt2End = dictionary[htgStPt2End_fieldname]
+                htgStPt3Val = validate(htgStPt3Val_fieldname, convert_degF_to_degC(dictionary[htgStPt3Val_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
+                htgStPt3Val = htgStPt3Val + deadband_offset
+                htgStPt3End = dictionary[htgStPt3End_fieldname]
+                htgStPt4Punc = htgStPt5Punc = htgStPt6Punc = htgStPt7Punc = htgStPt8Punc = ""
+                htgStPt4Val = htgStPt5Val = htgStPt6Val = htgStPt7Val = htgStPt8Val = "NA"
+                htgStPt4End = htgStPt5End = htgStPt6End = htgStPt7End = htgStPt8End = "NA"
+                htgStPt4Flag = htgStPt5Flag = htgStPt6Flag = htgStPt7Flag = htgStPt8Flag = "!-"
+            elif str(dictionary[htgStPt5Val_fieldname]) == "nan":
+                numHtgStPts = 4
+                htgStPt2Flag = htgStPt3Flag = htgStPt4Flag = ""
+                htgStPt1Punc = htgStPt2Punc = htgStPt3Punc = ","
+                htgStPt4Punc = ";"
+                htgStPt2Val = validate(htgStPt2Val_fieldname, convert_degF_to_degC(dictionary[htgStPt2Val_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
+                htgStPt2Val = htgStPt2Val + deadband_offset
+                htgStPt2End = dictionary[htgStPt2End_fieldname]
+                htgStPt3Val = validate(htgStPt3Val_fieldname, convert_degF_to_degC(dictionary[htgStPt3Val_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
+                htgStPt3Val = htgStPt3Val + deadband_offset
+                htgStPt3End = dictionary[htgStPt3End_fieldname]
+                htgStPt4Val = validate(htgStPt4Val_fieldname, convert_degF_to_degC(dictionary[htgStPt4Val_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
+                htgStPt4Val = htgStPt4Val + deadband_offset
+                htgStPt4End = dictionary[htgStPt4End_fieldname]
+                htgStPt5Punc = htgStPt6Punc = htgStPt7Punc = htgStPt8Punc = ""
+                htgStPt5Val = htgStPt6Val = htgStPt7Val = htgStPt8Val = "NA"
+                htgStPt5End = htgStPt6End = htgStPt7End = htgStPt8End = "NA"
+                htgStPt5Flag = htgStPt6Flag = htgStPt7Flag = htgStPt8Flag = "!-"
+            elif str(dictionary[htgStPt6Val_fieldname]) == "nan":
+                numHtgStPts = 5
+                htgStPt2Flag = htgStPt3Flag = htgStPt4Flag = htgStPt5Flag = ""
+                htgStPt1Punc = htgStPt2Punc = htgStPt3Punc = htgStPt4Punc = ","
+                htgStPt5Punc = ";"
+                htgStPt2Val = validate(htgStPt2Val_fieldname, convert_degF_to_degC(dictionary[htgStPt2Val_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
+                htgStPt2Val = htgStPt2Val + deadband_offset
+                htgStPt2End = dictionary[htgStPt2End_fieldname]
+                htgStPt3Val = validate(htgStPt3Val_fieldname, convert_degF_to_degC(dictionary[htgStPt3Val_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
+                htgStPt3Val = htgStPt3Val + deadband_offset
+                htgStPt3End = dictionary[htgStPt3End_fieldname]
+                htgStPt4Val = validate(htgStPt4Val_fieldname, convert_degF_to_degC(dictionary[htgStPt4Val_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
+                htgStPt4Val = htgStPt4Val + deadband_offset
+                htgStPt4End = dictionary[htgStPt4End_fieldname]
+                htgStPt5Val = validate(htgStPt5Val_fieldname, convert_degF_to_degC(dictionary[htgStPt5Val_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
+                htgStPt5Val = htgStPt5Val + deadband_offset
+                htgStPt5End = dictionary[htgStPt5End_fieldname]
+                htgStPt6Punc = htgStPt7Punc = htgStPt8Punc = ""
+                htgStPt6Val = htgStPt7Val = htgStPt8Val = "NA"
+                htgStPt6End = htgStPt7End = htgStPt8End = "NA"
+                htgStPt6Flag = htgStPt7Flag = htgStPt8Flag = "!-"
+            elif str(dictionary[htgStPt7Val_fieldname]) == "nan":
+                numHtgStPts = 6
+                htgStPt2Flag = htgStPt3Flag = htgStPt4Flag = htgStPt5Flag = htgStPt6Flag = ""
+                htgStPt1Punc = htgStPt2Punc = htgStPt3Punc = htgStPt4Punc = htgStPt5Punc = ","
+                htgStPt6Punc = ";"
+                htgStPt2Val = validate(htgStPt2Val_fieldname, convert_degF_to_degC(dictionary[htgStPt2Val_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
+                htgStPt2Val = htgStPt2Val + deadband_offset
+                htgStPt2End = dictionary[htgStPt2End_fieldname]
+                htgStPt3Val = validate(htgStPt3Val_fieldname, convert_degF_to_degC(dictionary[htgStPt3Val_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
+                htgStPt3Val = htgStPt3Val + deadband_offset
+                htgStPt3End = dictionary[htgStPt3End_fieldname]
+                htgStPt4Val = validate(htgStPt4Val_fieldname, convert_degF_to_degC(dictionary[htgStPt4Val_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
+                htgStPt4Val = htgStPt4Val + deadband_offset
+                htgStPt4End = dictionary[htgStPt4End_fieldname]
+                htgStPt5Val = validate(htgStPt5Val_fieldname, convert_degF_to_degC(dictionary[htgStPt5Val_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
+                htgStPt5Val = htgStPt5Val + deadband_offset
+                htgStPt5End = dictionary[htgStPt5End_fieldname]
+                htgStPt6Val = validate(htgStPt6Val_fieldname, convert_degF_to_degC(dictionary[htgStPt6Val_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
+                htgStPt6Val = htgStPt6Val + deadband_offset
+                htgStPt6End = dictionary[htgStPt6End_fieldname]
+                htgStPt7Punc = htgStPt8Punc = ""
+                htgStPt7Val = htgStPt8Val = "NA"
+                htgStPt7End = htgStPt8End = "NA"
+                htgStPt7Flag = htgStPt8Flag = "!-"  
+            elif str(dictionary[htgStPt8Val_fieldname]) == "nan":
+                numHtgStPts = 7
+                htgStPt2Flag = htgStPt3Flag = htgStPt4Flag = htgStPt5Flag = htgStPt6Flag = htgStPt7Flag = ""
+                htgStPt1Punc = htgStPt2Punc = htgStPt3Punc = htgStPt4Punc = htgStPt5Punc = htgStPt6Punc = ","
+                htgStPt7Punc = ";"
+                htgStPt2Val = validate(htgStPt2Val_fieldname, convert_degF_to_degC(dictionary[htgStPt2Val_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
+                htgStPt2Val = htgStPt2Val + deadband_offset
+                htgStPt2End = dictionary[htgStPt2End_fieldname]
+                htgStPt3Val = validate(htgStPt3Val_fieldname, convert_degF_to_degC(dictionary[htgStPt3Val_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
+                htgStPt3Val = htgStPt3Val + deadband_offset
+                htgStPt3End = dictionary[htgStPt3End_fieldname]
+                htgStPt4Val = validate(htgStPt4Val_fieldname, convert_degF_to_degC(dictionary[htgStPt4Val_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
+                htgStPt4Val = htgStPt4Val + deadband_offset
+                htgStPt4End = dictionary[htgStPt4End_fieldname]
+                htgStPt5Val = validate(htgStPt5Val_fieldname, convert_degF_to_degC(dictionary[htgStPt5Val_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
+                htgStPt5Val = htgStPt5Val + deadband_offset
+                htgStPt5End = dictionary[htgStPt5End_fieldname]
+                htgStPt6Val = validate(htgStPt6Val_fieldname, convert_degF_to_degC(dictionary[htgStPt6Val_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
+                htgStPt6Val = htgStPt6Val + deadband_offset
+                htgStPt6End = dictionary[htgStPt6End_fieldname]
+                htgStPt7Val = validate(htgStPt7Val_fieldname, convert_degF_to_degC(dictionary[htgStPt7Val_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
+                htgStPt7Val = htgStPt7Val + deadband_offset
+                htgStPt7End = dictionary[htgStPt7End_fieldname]
+                htgStPt8Punc = ""
+                htgStPt8Val = "NA"
+                htgStPt8End = "NA"
+                htgStPt8Flag = "!-"  
+            else:
+                numHtgStPts = 8
+                htgStPt2Flag = htgStPt3Flag = htgStPt4Flag = htgStPt5Flag = htgStPt6Flag = htgStPt7Flag = htgStPt8Flag = ""
+                htgStPt1Punc = htgStPt2Punc = htgStPt3Punc = htgStPt4Punc = htgStPt5Punc = htgStPt6Punc = htgStPt7Punc = ","
+                htgStPt8Punc = ";"
+                htgStPt2Val = validate(htgStPt2Val_fieldname, convert_degF_to_degC(dictionary[htgStPt2Val_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
+                htgStPt2Val = htgStPt2Val + deadband_offset
+                htgStPt2End = dictionary[htgStPt2End_fieldname]
+                htgStPt3Val = validate(htgStPt3Val_fieldname, convert_degF_to_degC(dictionary[htgStPt3Val_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
+                htgStPt3Val = htgStPt3Val + deadband_offset
+                htgStPt3End = dictionary[htgStPt3End_fieldname]
+                htgStPt4Val = validate(htgStPt4Val_fieldname, convert_degF_to_degC(dictionary[htgStPt4Val_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
+                htgStPt4Val = htgStPt4Val + deadband_offset
+                htgStPt4End = dictionary[htgStPt4End_fieldname]
+                htgStPt5Val = validate(htgStPt5Val_fieldname, convert_degF_to_degC(dictionary[htgStPt5Val_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
+                htgStPt5Val = htgStPt5Val + deadband_offset
+                htgStPt5End = dictionary[htgStPt5End_fieldname]
+                htgStPt6Val = validate(htgStPt6Val_fieldname, convert_degF_to_degC(dictionary[htgStPt6Val_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
+                htgStPt6Val = htgStPt6Val + deadband_offset
+                htgStPt6End = dictionary[htgStPt6End_fieldname]
+                htgStPt7Val = validate(htgStPt7Val_fieldname, convert_degF_to_degC(dictionary[htgStPt7Val_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
+                htgStPt7Val = htgStPt7Val + deadband_offset
+                htgStPt7End = dictionary[htgStPt7End_fieldname]
+                htgStPt8Val = validate(htgStPt8Val_fieldname, convert_degF_to_degC(dictionary[htgStPt8Val_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
+                htgStPt8Val = htgStPt8Val + deadband_offset
+                htgStPt8End = dictionary[htgStPt8End_fieldname]
+
             #... cooling capacity and capacity units
             if AirLoopHVAC_Unitary_ObjectName == "SS Heat Pump" or AirLoopHVAC_Unitary_ObjectName == "DS Heat Pump" or AirLoopHVAC_Unitary_ObjectName == "MS Heat Pump" \
             or AirLoopHVAC_Unitary_ObjectName == "UnitarySystem_SPControl" or coolCoilTextFile != "No":
@@ -596,60 +786,176 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
                     primary_cooling_capacity = "Autosize"
 
                 #... cooling setpoint schedule
-                clgInputMethod_list = ["Constant Setpoint", "Setpoint with Night Setback", "Schedule"]
-                clgInputMethod = validate(clgInputMethod_fieldname, dictionary[clgInputMethod_fieldname], "list", dummy_int, dummy_int, clgInputMethod_list)
-                if clgInputMethod == "Constant Setpoint":
-                    clgSetpoint = validate(clgSetpoint_fieldname, convert_degF_to_degC(dictionary[clgSetpoint_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
-                    clgSetpoint = clgSetpoint + deadband_offset # add one degree F to account for tstat deadband
-                    #... set setback equal to setpoint
-                    clgSetback = validate(clgSetback_fieldname, convert_degF_to_degC(dictionary[clgSetpoint_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
-                    clgSetback = clgSetback + deadband_offset # add one degree F to account for tstat deadband
-                    #... set other variables to dummy values so they are not needed
-                    clgSetbackStart = validate(clgSetbackStart_fieldname, 20, "any_num", hour_lo, hour_hi, dummy_list)
-                    clgSetbackEnd = validate(clgSetbackEnd_fieldname, 6, "any_num", hour_lo, hour_hi, dummy_list)
-                    clg_stpt_sch = validate(clgSched_fieldname, "Cool_EZ_Sch_1", "list", dummy_int, dummy_int, sched_validation_list)
-                    #... use compact cooling schedule instead of file-based schedule
-                    compact_clg_sch = "cooling_sch"
-                    file_clg_sch = "cooling_sch_not_used"
-                
-                elif clgInputMethod == "Setpoint with Night Setback":
-                    clgSetpoint = validate(clgSetpoint_fieldname, convert_degF_to_degC(dictionary[clgSetpoint_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
-                    clgSetpoint = clgSetpoint + deadband_offset # add one degree F to account for tstat deadband
-                    clgSetback = validate(clgSetback_fieldname, convert_degF_to_degC(dictionary[clgSetback_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
-                    clgSetback = clgSetback + deadband_offset # add one degree F to account for tstat deadband
-                    clgSetbackStart = validate(clgSetbackStart_fieldname, int(dictionary[clgSetbackStart_fieldname]), "num_between", hour_lo, hour_hi, dummy_list)
-                    clgSetbackEnd = validate(clgSetbackEnd_fieldname, int(dictionary[clgSetbackEnd_fieldname]), "num_between", hour_lo, hour_hi, dummy_list)
-                    #... set other variables to dummy values so they are not needed
-                    clg_stpt_sch = validate(clgSched_fieldname, "Cool_EZ_Sch_1", "list", dummy_int, dummy_int, sched_validation_list)
-                    #... check that night setback end hour is less than night setback start hour
-                    if int(clgSetbackEnd) > int(clgSetbackStart):
-                        print("\n*** ERROR: Cooling setback end hour must be less than cooling setback start hour. For non-night setbacks, please use the schedule option. \n")
-                        return True
-                    #... use compact cooling schedule instead of file-based schedule
-                    compact_clg_sch = "cooling_sch"
-                    file_clg_sch = "cooling_sch_not_used"
+                compact_clg_sch = "cooling_sch"
+                clgStPt1Val = validate(clgStPt1Val_fieldname, convert_degF_to_degC(dictionary[clgStPt1Val_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
+                clgStPt1Val = clgStPt1Val - deadband_offset
+                clgStPt1End = dictionary[clgStPt1End_fieldname]
+                if str(dictionary[clgStPt2Val_fieldname]) == "nan":
+                    numClgStPts = 1
+                    clgStPt1Punc = ";"
+                    clgStPt2Punc = clgStPt3Punc = clgStPt4Punc = clgStPt5Punc = clgStPt6Punc = clgStPt7Punc = clgStPt8Punc = ""
+                    clgStPt2Val = clgStPt3Val = clgStPt4Val = clgStPt5Val = clgStPt6Val = clgStPt7Val = clgStPt8Val = "NA"
+                    clgStPt2End = clgStPt3End = clgStPt4End = clgStPt5End = clgStPt6End = clgStPt7End = clgStPt8End = "NA"
+                    clgStPt2Flag = clgStPt3Flag = clgStPt4Flag = clgStPt5Flag = clgStPt6Flag = clgStPt7Flag = clgStPt8Flag = "!-"
+                elif str(dictionary[clgStPt3Val_fieldname]) == "nan":
+                    numClgStPts = 2
+                    clgStPt2Flag = ""
+                    clgStPt1Punc = ","
+                    clgStPt2Punc = ";"
+                    clgStPt2Val = validate(clgStPt2Val_fieldname, convert_degF_to_degC(dictionary[clgStPt2Val_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
+                    clgStPt2Val = clgStPt2Val - deadband_offset
+                    clgStPt2End = dictionary[clgStPt2End_fieldname]
+                    clgStPt3Punc = clgStPt4Punc = clgStPt5Punc = clgStPt6Punc = clgStPt7Punc = clgStPt8Punc = ""
+                    clgStPt3Val = clgStPt4Val = clgStPt5Val = clgStPt6Val = clgStPt7Val = clgStPt8Val = "NA"
+                    clgStPt3End = clgStPt4End = clgStPt5End = clgStPt6End = clgStPt7End = clgStPt8End = "NA"
+                    clgStPt3Flag = clgStPt4Flag = clgStPt5Flag = clgStPt6Flag = clgStPt7Flag = clgStPt8Flag = "!-"
+                elif str(dictionary[clgStPt4Val_fieldname]) == "nan":
+                    numClgStPts = 3
+                    clgStPt2Flag = clgStPt3Flag = ""
+                    clgStPt1Punc = clgStPt2Punc = ","
+                    clgStPt3Punc = ";"
+                    clgStPt2Val = validate(clgStPt2Val_fieldname, convert_degF_to_degC(dictionary[clgStPt2Val_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
+                    clgStPt2Val = clgStPt2Val - deadband_offset
+                    clgStPt2End = dictionary[clgStPt2End_fieldname]
+                    clgStPt3Val = validate(clgStPt3Val_fieldname, convert_degF_to_degC(dictionary[clgStPt3Val_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
+                    clgStPt3Val = clgStPt3Val - deadband_offset
+                    clgStPt3End = dictionary[clgStPt3End_fieldname]
+                    clgStPt4Punc = clgStPt5Punc = clgStPt6Punc = clgStPt7Punc = clgStPt8Punc = ""
+                    clgStPt4Val = clgStPt5Val = clgStPt6Val = clgStPt7Val = clgStPt8Val = "NA"
+                    clgStPt4End = clgStPt5End = clgStPt6End = clgStPt7End = clgStPt8End = "NA"
+                    clgStPt4Flag = clgStPt5Flag = clgStPt6Flag = clgStPt7Flag = clgStPt8Flag = "!-"
+                elif str(dictionary[clgStPt5Val_fieldname]) == "nan":
+                    numClgStPts = 4
+                    clgStPt2Flag = clgStPt3Flag = clgStPt4Flag = ""
+                    clgStPt1Punc = clgStPt2Punc = clgStPt3Punc = ","
+                    clgStPt4Punc = ";"
+                    clgStPt2Val = validate(clgStPt2Val_fieldname, convert_degF_to_degC(dictionary[clgStPt2Val_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
+                    clgStPt2Val = clgStPt2Val - deadband_offset
+                    clgStPt2End = dictionary[clgStPt2End_fieldname]
+                    clgStPt3Val = validate(clgStPt3Val_fieldname, convert_degF_to_degC(dictionary[clgStPt3Val_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
+                    clgStPt3Val = clgStPt3Val - deadband_offset
+                    clgStPt3End = dictionary[clgStPt3End_fieldname]
+                    clgStPt4Val = validate(clgStPt4Val_fieldname, convert_degF_to_degC(dictionary[clgStPt4Val_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
+                    clgStPt4Val = clgStPt4Val - deadband_offset
+                    clgStPt4End = dictionary[clgStPt4End_fieldname]
+                    clgStPt5Punc = clgStPt6Punc = clgStPt7Punc = clgStPt8Punc = ""
+                    clgStPt5Val = clgStPt6Val = clgStPt7Val = clgStPt8Val = "NA"
+                    clgStPt5End = clgStPt6End = clgStPt7End = clgStPt8End = "NA"
+                    clgStPt5Flag = clgStPt6Flag = clgStPt7Flag = clgStPt8Flag = "!-"
+                elif str(dictionary[clgStPt6Val_fieldname]) == "nan":
+                    numClgStPts = 5
+                    clgStPt2Flag = clgStPt3Flag = clgStPt4Flag = clgStPt5Flag = ""
+                    clgStPt1Punc = clgStPt2Punc = clgStPt3Punc = clgStPt4Punc = ","
+                    clgStPt5Punc = ";"
+                    clgStPt2Val = validate(clgStPt2Val_fieldname, convert_degF_to_degC(dictionary[clgStPt2Val_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
+                    clgStPt2Val = clgStPt2Val - deadband_offset
+                    clgStPt2End = dictionary[clgStPt2End_fieldname]
+                    clgStPt3Val = validate(clgStPt3Val_fieldname, convert_degF_to_degC(dictionary[clgStPt3Val_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
+                    clgStPt3Val = clgStPt3Val - deadband_offset
+                    clgStPt3End = dictionary[clgStPt3End_fieldname]
+                    clgStPt4Val = validate(clgStPt4Val_fieldname, convert_degF_to_degC(dictionary[clgStPt4Val_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
+                    clgStPt4Val = clgStPt4Val - deadband_offset
+                    clgStPt4End = dictionary[clgStPt4End_fieldname]
+                    clgStPt5Val = validate(clgStPt5Val_fieldname, convert_degF_to_degC(dictionary[clgStPt5Val_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
+                    clgStPt5Val = clgStPt5Val - deadband_offset
+                    clgStPt5End = dictionary[clgStPt5End_fieldname]
+                    clgStPt6Punc = clgStPt7Punc = clgStPt8Punc = ""
+                    clgStPt6Val = clgStPt7Val = clgStPt8Val = "NA"
+                    clgStPt6End = clgStPt7End = clgStPt8End = "NA"
+                    clgStPt6Flag = clgStPt7Flag = clgStPt8Flag = "!-"
+                elif str(dictionary[clgStPt7Val_fieldname]) == "nan":
+                    numClgStPts = 6
+                    clgStPt2Flag = clgStPt3Flag = clgStPt4Flag = clgStPt5Flag = clgStPt6Flag = ""
+                    clgStPt1Punc = clgStPt2Punc = clgStPt3Punc = clgStPt4Punc = clgStPt5Punc = ","
+                    clgStPt6Punc = ";"
+                    clgStPt2Val = validate(clgStPt2Val_fieldname, convert_degF_to_degC(dictionary[clgStPt2Val_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
+                    clgStPt2Val = clgStPt2Val - deadband_offset
+                    clgStPt2End = dictionary[clgStPt2End_fieldname]
+                    clgStPt3Val = validate(clgStPt3Val_fieldname, convert_degF_to_degC(dictionary[clgStPt3Val_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
+                    clgStPt3Val = clgStPt3Val - deadband_offset
+                    clgStPt3End = dictionary[clgStPt3End_fieldname]
+                    clgStPt4Val = validate(clgStPt4Val_fieldname, convert_degF_to_degC(dictionary[clgStPt4Val_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
+                    clgStPt4Val = clgStPt4Val - deadband_offset
+                    clgStPt4End = dictionary[clgStPt4End_fieldname]
+                    clgStPt5Val = validate(clgStPt5Val_fieldname, convert_degF_to_degC(dictionary[clgStPt5Val_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
+                    clgStPt5Val = clgStPt5Val - deadband_offset
+                    clgStPt5End = dictionary[clgStPt5End_fieldname]
+                    clgStPt6Val = validate(clgStPt6Val_fieldname, convert_degF_to_degC(dictionary[clgStPt6Val_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
+                    clgStPt6Val = clgStPt6Val - deadband_offset
+                    clgStPt6End = dictionary[clgStPt6End_fieldname]
+                    clgStPt7Punc = clgStPt8Punc = ""
+                    clgStPt7Val = clgStPt8Val = "NA"
+                    clgStPt7End = clgStPt8End = "NA"
+                    clgStPt7Flag = clgStPt8Flag = "!-"  
+                elif str(dictionary[clgStPt8Val_fieldname]) == "nan":
+                    numClgStPts = 7
+                    clgStPt2Flag = clgStPt3Flag = clgStPt4Flag = clgStPt5Flag = clgStPt6Flag = clgStPt7Flag = ""
+                    clgStPt1Punc = clgStPt2Punc = clgStPt3Punc = clgStPt4Punc = clgStPt5Punc = clgStPt6Punc = ","
+                    clgStPt7Punc = ";"
+                    clgStPt2Val = validate(clgStPt2Val_fieldname, convert_degF_to_degC(dictionary[clgStPt2Val_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
+                    clgStPt2Val = clgStPt2Val - deadband_offset
+                    clgStPt2End = dictionary[clgStPt2End_fieldname]
+                    clgStPt3Val = validate(clgStPt3Val_fieldname, convert_degF_to_degC(dictionary[clgStPt3Val_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
+                    clgStPt3Val = clgStPt3Val - deadband_offset
+                    clgStPt3End = dictionary[clgStPt3End_fieldname]
+                    clgStPt4Val = validate(clgStPt4Val_fieldname, convert_degF_to_degC(dictionary[clgStPt4Val_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
+                    clgStPt4Val = clgStPt4Val - deadband_offset
+                    clgStPt4End = dictionary[clgStPt4End_fieldname]
+                    clgStPt5Val = validate(clgStPt5Val_fieldname, convert_degF_to_degC(dictionary[clgStPt5Val_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
+                    clgStPt5Val = clgStPt5Val - deadband_offset
+                    clgStPt5End = dictionary[clgStPt5End_fieldname]
+                    clgStPt6Val = validate(clgStPt6Val_fieldname, convert_degF_to_degC(dictionary[clgStPt6Val_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
+                    clgStPt6Val = clgStPt6Val - deadband_offset
+                    clgStPt6End = dictionary[clgStPt6End_fieldname]
+                    clgStPt7Val = validate(clgStPt7Val_fieldname, convert_degF_to_degC(dictionary[clgStPt7Val_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
+                    clgStPt7Val = clgStPt7Val - deadband_offset
+                    clgStPt7End = dictionary[clgStPt7End_fieldname]
+                    clgStPt8Punc = ""
+                    clgStPt8Val = "NA"
+                    clgStPt8End = "NA"
+                    clgStPt8Flag = "!-"  
                 else:
-                    clg_stpt_sch = validate(clgSched_fieldname, dictionary[clgSched_fieldname], "list", dummy_int, dummy_int, sched_validation_list)
-                    #... set other non-schedule variables to dummy values so they are not needed
-                    clgSetpoint = validate(clgSetpoint_fieldname, convert_degF_to_degC(75), "any_num", dummy_int, dummy_int, dummy_list)
-                    clgSetback = validate(clgSetback_fieldname, convert_degF_to_degC(80), "any_num", dummy_int, dummy_int, dummy_list)
-                    clgSetbackStart = validate(clgSetbackStart_fieldname, 20, "any_num", hour_lo, hour_hi, dummy_list)
-                    clgSetbackEnd = validate(clgSetbackEnd_fieldname, 6, "any_num", hour_lo, hour_hi, dummy_list)
-                    #... use file-based cooling schedule instead of compact schedule
-                    compact_clg_sch = "cooling_sch_not_used"
-                    file_clg_sch = "cooling_sch"
+                    numClgStPts = 8
+                    clgStPt2Flag = clgStPt3Flag = clgStPt4Flag = clgStPt5Flag = clgStPt6Flag = clgStPt7Flag = clgStPt8Flag = ""
+                    clgStPt1Punc = clgStPt2Punc = clgStPt3Punc = clgStPt4Punc = clgStPt5Punc = clgStPt6Punc = clgStPt7Punc = ","
+                    clgStPt8Punc = ";"
+                    clgStPt2Val = validate(clgStPt2Val_fieldname, convert_degF_to_degC(dictionary[clgStPt2Val_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
+                    clgStPt2Val = clgStPt2Val - deadband_offset
+                    clgStPt2End = dictionary[clgStPt2End_fieldname]
+                    clgStPt3Val = validate(clgStPt3Val_fieldname, convert_degF_to_degC(dictionary[clgStPt3Val_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
+                    clgStPt3Val = clgStPt3Val - deadband_offset
+                    clgStPt3End = dictionary[clgStPt3End_fieldname]
+                    clgStPt4Val = validate(clgStPt4Val_fieldname, convert_degF_to_degC(dictionary[clgStPt4Val_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
+                    clgStPt4Val = clgStPt4Val - deadband_offset
+                    clgStPt4End = dictionary[clgStPt4End_fieldname]
+                    clgStPt5Val = validate(clgStPt5Val_fieldname, convert_degF_to_degC(dictionary[clgStPt5Val_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
+                    clgStPt5Val = clgStPt5Val - deadband_offset
+                    clgStPt5End = dictionary[clgStPt5End_fieldname]
+                    clgStPt6Val = validate(clgStPt6Val_fieldname, convert_degF_to_degC(dictionary[clgStPt6Val_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
+                    clgStPt6Val = clgStPt6Val - deadband_offset
+                    clgStPt6End = dictionary[clgStPt6End_fieldname]
+                    clgStPt7Val = validate(clgStPt7Val_fieldname, convert_degF_to_degC(dictionary[clgStPt7Val_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
+                    clgStPt7Val = clgStPt7Val - deadband_offset
+                    clgStPt7End = dictionary[clgStPt7End_fieldname]
+                    clgStPt8Val = validate(clgStPt8Val_fieldname, convert_degF_to_degC(dictionary[clgStPt8Val_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
+                    clgStPt8Val = clgStPt8Val - deadband_offset
+                    clgStPt8End = dictionary[clgStPt8End_fieldname]
 
             else:
                 #... provide dummy values because there is no cooling
                 primary_cooling_capacity = 0
-                clg_stpt_sch = validate(clgSched_fieldname, "Cool_EZ_Sch_1", "list", dummy_int, dummy_int, sched_validation_list)
-                clgSetpoint = validate(clgSetpoint_fieldname, convert_degF_to_degC(75), "any_num", dummy_int, dummy_int, dummy_list)
-                clgSetback = validate(clgSetback_fieldname, convert_degF_to_degC(80), "any_num", dummy_int, dummy_int, dummy_list)
-                clgSetbackStart = validate(clgSetbackStart_fieldname, 20, "any_num", hour_lo, hour_hi, dummy_list)
-                clgSetbackEnd = validate(clgSetbackEnd_fieldname, 6, "any_num", hour_lo, hour_hi, dummy_list)
-                compact_clg_sch = "cooling_sch_not_used"
-                file_clg_sch = "cooling_sch"
-            
+
+                #... provide dummy values for cooling setpoint schedule
+                compact_clg_sch = "cooling_sch"
+                clgStPt1Val = validate(clgStPt1Val_fieldname, convert_degF_to_degC(79), "any_num", dummy_int, dummy_int, dummy_list)
+                clgStPt1Val = clgStPt1Val + deadband_offset
+                clgStPt1End = "24:00"
+                clgStPt1Punc = ";"
+                clgStPt2Punc = clgStPt3Punc = clgStPt4Punc = clgStPt5Punc = clgStPt6Punc = clgStPt7Punc = clgStPt8Punc = ""
+                clgStPt2Val = clgStPt3Val = clgStPt4Val = clgStPt5Val = clgStPt6Val = clgStPt7Val = clgStPt8Val = "NA"
+                clgStPt2End = clgStPt3End = clgStPt4End = clgStPt5End = clgStPt6End = clgStPt7End = clgStPt8End = "NA"
+                clgStPt2Flag = clgStPt3Flag = clgStPt4Flag = clgStPt5Flag = clgStPt6Flag = clgStPt7Flag = clgStPt8Flag = "!-"
+
             #... heat pump specific inputs
             if (AirLoopHVAC_Unitary_ObjectName == "SS Heat Pump" or AirLoopHVAC_Unitary_ObjectName == "DS Heat Pump" or AirLoopHVAC_Unitary_ObjectName == "MS Heat Pump" \
                 or AirLoopHVAC_Unitary_ObjectName == "UnitarySystem_SPControl") and CentralOrZonal == "Central":
@@ -727,52 +1033,6 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
                 return_leak = 0.0001
                 supplyUvalue = 0.0001
                 returnUvalue = 0.0001
-            
-            #... heating setpoint schedule
-            htgInputMethod_list = ["Constant Setpoint", "Setpoint with Night Setback", "Schedule"]
-            htgInputMethod = validate(htgInputMethod_fieldname, dictionary[htgInputMethod_fieldname], "list", dummy_int, dummy_int, htgInputMethod_list)
-            
-            if htgInputMethod == "Constant Setpoint":
-                htgSetpoint = validate(htgSetpoint_fieldname, convert_degF_to_degC(dictionary[htgSetpoint_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
-                htgSetpoint = htgSetpoint - deadband_offset # add one degree F to account for tstat deadband
-                #... set setback equal to setpoint
-                htgSetback = validate(htgSetback_fieldname, convert_degF_to_degC(dictionary[htgSetpoint_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
-                htgSetback = htgSetback - deadband_offset # add one degree F to account for tstat deadband
-                #... set other variables to dummy values so they are not needed
-                htgSetbackStart = validate(htgSetbackStart_fieldname, 20, "any_num", hour_lo, hour_hi, dummy_list)
-                htgSetbackEnd = validate(htgSetbackEnd_fieldname, 6, "any_num", hour_lo, hour_hi, dummy_list)
-                htg_stpt_sch = validate(htgSched_fieldname, "Heat_EZ_Sch_1", "list", dummy_int, dummy_int, sched_validation_list)
-                #... use compact heating schedule instead of file-based schedule
-                compact_htg_sch = "heating_sch"
-                file_htg_sch = "heating_sch_not_used"
-            
-            elif htgInputMethod == "Setpoint with Night Setback":
-                htgSetpoint = validate(htgSetpoint_fieldname, convert_degF_to_degC(dictionary[htgSetpoint_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
-                htgSetpoint = htgSetpoint - deadband_offset # add one degree F to account for tstat deadband
-                htgSetback = validate(htgSetback_fieldname, convert_degF_to_degC(dictionary[htgSetback_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
-                htgSetback = htgSetback - deadband_offset # add one degree F to account for tstat deadband
-                htgSetbackStart = validate(htgSetbackStart_fieldname, int(dictionary[htgSetbackStart_fieldname]), "num_between", hour_lo, hour_hi, dummy_list)
-                htgSetbackEnd = validate(htgSetbackEnd_fieldname, int(dictionary[htgSetbackEnd_fieldname]), "num_between", hour_lo, hour_hi, dummy_list)
-                #... set other variables to dummy values so they are not needed
-                htg_stpt_sch = validate(htgSched_fieldname, "Heat_EZ_Sch_1", "list", dummy_int, dummy_int, sched_validation_list)
-                #... check that night setback end hour is less than night setback start hour
-                if int(htgSetbackEnd) > int(htgSetbackStart):
-                    print("\n*** ERROR: Heating setback end hour must be less than heating setback start hour. For non-night setbacks, please use the schedule option. \n")
-                    return True
-                #... use compact heating schedule instead of file-based schedule
-                compact_htg_sch = "heating_sch"
-                file_htg_sch = "heating_sch_not_used"
-                
-            else:
-                htg_stpt_sch = validate(htgSched_fieldname, dictionary[htgSched_fieldname], "list", dummy_int, dummy_int, sched_validation_list)
-                #... set other non-schedule variables to dummy values so they are not needed
-                htgSetpoint = validate(htgSetpoint_fieldname, convert_degF_to_degC(68), "any_num", dummy_int, dummy_int, dummy_list)
-                htgSetback = validate(htgSetback_fieldname, convert_degF_to_degC(65), "any_num", dummy_int, dummy_int, dummy_list)
-                htgSetbackStart = validate(htgSetbackStart_fieldname, 20, "any_num", hour_lo, hour_hi, dummy_list)
-                htgSetbackEnd = validate(htgSetbackEnd_fieldname, 6, "any_num", hour_lo, hour_hi, dummy_list)
-                #... use file heating schedule instead of compact schedule
-                compact_htg_sch = "heating_sch_not_used"
-                file_htg_sch = "heating_sch"
             
             #... gas furnace AFUE
             if AirLoopHVAC_HeatingCoil_Name == "Heating_Fuel_Main" or hp_supp_heat_type == "Gas":
@@ -1080,8 +1340,8 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
             perf_t = f.read()
 
         # Schedules
-        htg_sch_num = sched_list.index(htg_stpt_sch) + 1
-        clg_sch_num = sched_list.index(clg_stpt_sch) + 1
+        htg_sch_num = sched_list.index("Heat_EZ_Sch_1") + 1
+        clg_sch_num = sched_list.index("Cool_EZ_Sch_1") + 1
         dhw_sch_num = sched_list.index(dhw_stpt_sch) + 1
 
         #... misc electric gains
@@ -1687,6 +1947,45 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
                 newfile.write(fullidf)
 
         i = i + 1
+
+        # Count total number of runs and timesteps to make sure Excel can handle output if need be
+        timestepCounter = timestepCounter + int(timestep)
+    
+    # Estimate total lines of output to make sure Excel can handle it
+    runCounter = int(len(get_data_dict["df"]))
+    #print(str(timestepCounter))
+    #print(str(runCounter))
+    #print(sim_type)
+    #print(output_gran)
+    if sim_type == "Test Run":
+        totalOutLines = 1 + 24 * runCounter
+    elif sim_type == "Annual":
+        if output_gran == "Annual":
+            totalOutLines = 1 + runCounter
+        elif output_gran == "Hourly":
+            totalOutLines = 1 + (runCounter * 8760)
+        elif output_gran == "TimeStep":
+            totalOutLines = 1 + (timestepCounter * 8760)
+    elif sim_type == "Sub-Annual":
+        # estimate total days
+        if end_mo == begin_mo:
+            totalDays = end_day - begin_day + 1
+        else:
+            daysBeginMo = 30.5 - begin_day
+            daysEndMo = end_day
+            daysBetween = (end_mo - begin_mo - 1) * 30.5
+            totalDays = int(daysBeginMo + daysEndMo + daysBetween)
+        if output_gran == "Hourly":
+            totalOutLines = 1 + (totalDays * runCounter * 24)
+        elif output_gran == "TimeStep":
+            totalOutLines = 1 + (timestepCounter * 24 * totalDays)
+        #print("totalDays: " + str(totalDays))
+    
+    if totalOutLines > 1048000:
+        print("\n*** ERROR: Model output will exceed Excel's maximum row limit. To resolve this issue, either reduce output granularity (if possible) or split models into multiple runs. ***\n")
+        return True        
+
+    #print("totalOutLines: " + str(totalOutLines))
 
     print("...model build complete.")
     print()
