@@ -1,6 +1,6 @@
 #*******************************************************************************************************************************************************************
 
-#Copyright (C) 2023 Ptarmigan Consulting LLC
+#Copyright (C) 2024 Ptarmigan Consulting LLC
 
 #This file is part of REEDR.
 
@@ -370,7 +370,7 @@ def gui(func):
 
     # Main Window Labels
     ttk.Label(frm, text="the Residential Energy Efficiency and Demand Response tool (REEDR)", style='Title.TLabel').grid(sticky=W, column=0, row=0, padx=10, columnspan=2)
-    ttk.Label(frm, text="v1.1.0-beta", style='Version.TLabel').grid(sticky=W, column=0, row=1, padx=10)
+    ttk.Label(frm, text="v1.2.0-beta", style='Version.TLabel').grid(sticky=W, column=0, row=1, padx=10)
 
     # Widget Formatting
     s = ttk.Style()
@@ -476,7 +476,7 @@ def gui(func):
     ttk.Button(frm, text="RUN", style='Run.TButton', width=15, command=exe_main).grid(column=2, row=13, columnspan=3, padx=0, pady=15, sticky=E)
 
     # Copyright label
-    ttk.Label(frm, text="Copyright (C) 2023 Ptarmigan Consulting LLC. All rights reserved.", style='Copyright.TLabel').grid(sticky=W, column=0, row=18, padx=10, columnspan=5)
+    ttk.Label(frm, text="Copyright (C) 2024 Ptarmigan Consulting LLC. All rights reserved.", style='Copyright.TLabel').grid(sticky=W, column=0, row=18, padx=10, columnspan=5)
  
     # Activate Tracing
     path_input.trace_add("write", update)
