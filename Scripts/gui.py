@@ -47,7 +47,7 @@ def gui(func):
 
     for _ in dir_list:
         if len(_) >= 5:
-            if _[-5:] == ".xlsx":
+            if (_[-5:] == ".xlsx") and (_[0] != "~"):
                 xlsx_files.append(_[:-5])
 
     months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
