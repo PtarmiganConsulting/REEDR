@@ -1,19 +1,19 @@
 # What is REEDR?
 REEDR stands for the **R**esidential **E**nergy **E**fficiency and **D**emand **R**esponse tool. REEDR is an open-source application written in Python that allows you to build, run, and analyze residential EnergyPlus models with relative ease. Some of its key features include:
 - ability to run large batches of parametric runs,
-- infinite scaling of building envelope and glazing,
+- continuous scaling of building envelope and glazing,
 - simple inputs for building geometry, infiltration, scheduling, and envelope constructions, and
 - automatic aggregation of individual run outputs for easier analysis.
 
 # How to Get REEDR Installed and Running on Your Machine
 There are two ways to learn how to install and run REEDR on your machine:
-- **Watch how-to videos on YouTube**. There is currently a [Quick Start Guide](https://www.youtube.com/watch?v=5DuCjWeKPXY&t=1s) on YouTube, and there are plans to post more content on how to use REEDR in the future.
+- **Watch how-to videos on YouTube**. There is currently a [Quick Start Guide](https://www.youtube.com/@ptarmiganconsulting) on YouTube, and there are plans to post more content on how to use REEDR in the future.
 - **Keep reading the instructions below**.
 
 To get REEDR running on your machine, you need to install REEDR and a copy of EnergyPlus *v22.2.0*, the version of EnergyPlus with which REEDR is currently compatible. Note that REEDR currently runs only in Windows environments.
 
 ## Installing REEDR
-To install REEDR, download *REEDR Setup.exe* from the [latest REEDR release](https://github.com/PtarmiganConsulting/REEDR/releases/tag/v1.1.0-beta) and run it on your machine. *REEDR Setup.exe* is a Windows Installer that will ask where you want REEDR installed.
+To install REEDR, download *REEDR Setup.exe* from the [latest REEDR release](https://github.com/PtarmiganConsulting/REEDR/tags) and run it on your machine. *REEDR Setup.exe* is a Windows Installer that will ask where you want REEDR installed.
 
 ## Installing EnergyPlus v22.2.0
 To install EnergyPlus v22.2.0, download a copy from the [EnergyPlus v22.2.0 github page](https://github.com/NREL/EnergyPlus/releases/tag/v22.2.0) and install it onto your computer using its Windows installer. Remember where you install EnergyPlus on your computer, as you will need to tell REEDR where it is located.
@@ -24,7 +24,7 @@ There are two main files you need to define and run a REEDR project:
 - *REEDR.exe*.
 
 ### The Model Input Template
-The *Model Input Template* file is where you define your building models. Specifically, building energy model inputs are defined on the *Model Inputs* tab of this workbook. If you just want to run REEDR, there should already be some example building models defined on the *Model Inputs* tab. (Note that you must *always* make sure you save this file before running REEDR, as REEDR is taking inputs from the saved copy of  the *Model Input Template*, not the live, unsaved version.)
+The *Model Input Template* file is where you define your building models. Specifically, building energy model inputs are defined on the *Model Inputs* tab of this workbook. (Note that you must *always* make sure you save this file before running REEDR, as REEDR is taking inputs from the saved copy of  the *Model Input Template*, not the live, unsaved version.)
 
 ### REEDR.exe
 Once you have one or more models defined in the *Model Input Template*, you are ready to define your project details and run REEDR.
@@ -35,6 +35,7 @@ If it is your first time running REEDR, you must first link up with EnergyPlus (
 
 Once you've linked up with EnergyPlus, you are ready to define your Project-level inputs and run REEDR. Projec-level inputs include:
 - **_Project Name_**: This is a custom string that defines the name of your current project. A folder of this name will hold all REEDR and EnergyPlus output.
+- **_Model Input File_**: This is a drop-down menu where users can select which "Model Input Template" they would like to run for a particular analysis. Before v1.2.0, this file had to be named "Model Input Template"; however, starting in v1.2.0, users can now make copies of "Model Input Template" and rename them, allowing for more flexible analysis.
 - **_Simulation Run Period_**: This is a drop-down menu used to define the length of your simulation. There are three choices: *Annual*, *Sub-Annual* (in which you will need to define your start and end dates in the boxes provided), and *Test Run*. A test run is a diagnostic run that only simulates a single day, and can be used to detect any input errors before running a large batch of models. 
 - **_Output Granularity_**: This drop-down menu defines the time period at which output will be generated. The options are *Annual* (available for Annual run periods only), *Hourly*, and *Timestep*. *Timestep* will output at whatever EnergyPlus timestep you have defined in the "Model Input Template".
 - **_Output End Uses_**: This drop-down menu defines the subset of energy end uses you wish to output. For *Annual* run periods with *Annual* output, REEDR will automatically generate *All End Uses*, as the amount of data will generally be small. However, for *Hourly* or *Timestep*-level output, file sizes can become very large, so users may wish to select only the end use of interest for the given analysis. 
