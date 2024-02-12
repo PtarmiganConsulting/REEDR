@@ -1,6 +1,6 @@
 #*******************************************************************************************************************************************************************
 
-#Copyright (C) 2023 Ptarmigan Consulting LLC
+#Copyright (C) 2024 Ptarmigan Consulting LLC
 
 #This file is part of REEDR.
 
@@ -40,7 +40,11 @@ def convert_J_to_therm(J):
 
 def convert_J_to_galLPG(J):
     gal = J*0.0000000099247861544414
-    return gal    
+    return gal
+
+def convert_J_to_kBtu(J):
+    Btu = J*0.000000947817
+    return Btu
 
 def convert_W_to_Btuh(W):
     Btuh = W*3.41
@@ -64,6 +68,10 @@ def convert_ft2_to_m2(ft2):
 def convert_ft3_to_m3(ft3):
     m3 = ft3/35.315
     return m3
+
+def convert_m3_to_ft3(m3):
+    ft3 = m3*35.315
+    return ft3
 
 def convert_kW_to_ton(kW):
     ton = kW/3.517

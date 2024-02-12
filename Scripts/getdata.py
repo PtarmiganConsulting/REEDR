@@ -1,6 +1,6 @@
 #*******************************************************************************************************************************************************************
 
-#Copyright (C) 2023 Ptarmigan Consulting LLC
+#Copyright (C) 2024 Ptarmigan Consulting LLC
 
 #This file is part of REEDR.
 
@@ -37,8 +37,13 @@ def getdata(gui_params):
 
     # Get REEDR workbook path and directory
     REEDR_wb_dirname = set_dir
-    REEDR_wb_name = "Model Input Template.xlsx"
+    # REEDR_wb_name = "Model Input Template.xlsx"
+    REEDR_wb_name = gui_params["model_val"]
+    
     REEDR_wb = os.path.join(set_dir, REEDR_wb_name)
+    
+    # print(str(REEDR_wb))
+
     
     #Define project directory name
     project_dirname = "Projects"

@@ -1,6 +1,6 @@
 #*******************************************************************************************************************************************************************
 
-#Copyright (C) 2023 Ptarmigan Consulting LLC
+#Copyright (C) 2024 Ptarmigan Consulting LLC
 
 #This file is part of REEDR.
 
@@ -23,7 +23,7 @@ import pytz
 from pathlib import Path
 
 ## Import "internal" modules needed for REEDR...
-from Scripts.unitconversions import convert_J_to_kWh, convert_J_to_therm, convert_W_to_Btuh, convert_degC_to_degF, convert_J_to_galLPG
+from Scripts.unitconversions import convert_J_to_kWh, convert_J_to_therm, convert_W_to_Btuh, convert_degC_to_degF, convert_J_to_kBtu
 from Scripts.xlsxadjust import adapt_spreadsheet
 from Scripts.dictmaker import dict_maker
 
@@ -170,7 +170,7 @@ def produce_output_report(output_dict, output_gran, output_type, get_data_dict, 
         if output_gran == "Annual":
             # Read in the EnergyPlus-generated output csv
             #... skip the first rows corresponding to the HVAC design days
-            rows_to_skip = range(1, 3)
+            rows_to_skip = 0#range(1, 3)
             eplus_out_df = pd.read_csv (eplus_out_path, skiprows=rows_to_skip)
 
             for column in column_header_list:
@@ -189,10 +189,15 @@ def produce_output_report(output_dict, output_gran, output_type, get_data_dict, 
                         if col_lookup in eplus_out_df.columns:
                             df_out.at[run_label, column] = convert_J_to_therm(eplus_out_df[col_lookup].sum())
                     elif output_dict[column]["conversion_ID"] == "Propane":
-                        # Convert propane output from joules to gallons
+                        # Convert propane output from joules to btus
                         col_lookup = str(output_dict[column]["mapping_fieldname"]) + "(RunPeriod)"
                         if col_lookup in eplus_out_df.columns:
-                            df_out.at[run_label, column] = convert_J_to_galLPG(eplus_out_df[col_lookup].sum())
+                            df_out.at[run_label, column] = convert_J_to_kBtu(eplus_out_df[col_lookup].sum())
+                    elif output_dict[column]["conversion_ID"] == "Wood":
+                        # Convert wood output from joules to btus
+                        col_lookup = str(output_dict[column]["mapping_fieldname"]) + "(RunPeriod)"
+                        if col_lookup in eplus_out_df.columns:
+                            df_out.at[run_label, column] = convert_J_to_kBtu(eplus_out_df[col_lookup].sum())
                     else:
                         # Units don't need to be converted; simply sum them up
                         col_lookup = str(output_dict[column]["mapping_fieldname"]) + "(RunPeriod)"
@@ -203,15 +208,14 @@ def produce_output_report(output_dict, output_gran, output_type, get_data_dict, 
                     df_out.at[run_label, [column]] = 0
 
         else: # Case is hourly or timestep granularity...
-
             # Compute output timestep for hourly and timestep output
             if output_gran == "Hourly":
                 output_timesteps_per_hr = 1
             elif output_gran == "TimeStep":
                 output_timesteps_per_hr = timestep
 
-            # Skip the last rows corresponding to the HVAC design days
-            endrows_to_skip = 0 #24*2*output_timesteps_per_hr
+            # Skip the last rows corresponding to the HVAC design days (2 weeks)
+            endrows_to_skip = 0#24*14*output_timesteps_per_hr
             # Read in each individual EnergyPlus-generated output file, and skip the last design day rows
             eplus_out_df = pd.read_csv(eplus_out_path, engine='python', skipfooter=endrows_to_skip)
             # Strip leading or trailing whitespace from column names...
@@ -243,6 +247,11 @@ def produce_output_report(output_dict, output_gran, output_type, get_data_dict, 
                 pass
             # Convert units
             if output_dict[key]["conversion_ID"] == "Gas" or output_dict[key]["conversion_ID"] == "Propane":
+                try:
+                    df_out[key] = convert_W_to_Btuh(df_out[key])
+                except:
+                    pass
+            if output_dict[key]["conversion_ID"] == "Wood":
                 try:
                     df_out[key] = convert_W_to_Btuh(df_out[key])
                 except:

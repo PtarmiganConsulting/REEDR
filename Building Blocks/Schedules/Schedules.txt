@@ -1298,6 +1298,39 @@ Schedule:Compact,
     1;                      !- Field 4
 
 Schedule:Compact,
+    heating_avail,           !- Name
+    On/Off,                 !- Schedule Type Limits Name
+    Through: 6/15,           !- Field 1
+    For: AllDays,            !- Field 2
+    Until 24:00,             !- Field 3
+    1,                    !- Field 4
+    Through: 8/31,           !- Field 5
+    For: AllDays,            !- Field 6
+    Until 24:00,             !- Field 7
+    1,                     !- Field 8
+    Through: 12/31,          !- Field 9
+    For: AllDays,            !- Field 10
+    Until: 24:00,            !- Field 11
+    1;                    !- Field 12
+
+Schedule:Compact,
+    cooling_avail,           !- Name
+    On/Off,                 !- Schedule Type Limits Name
+    Through: 3/31,           !- Field 1
+    For: AllDays,            !- Field 2
+    Until 24:00,             !- Field 3
+    0,                    !- Field 4
+    Through: 10/31,           !- Field 5
+    For: AllDays,            !- Field 6
+    Until 24:00,             !- Field 7
+    1,                     !- Field 8
+    Through: 12/31,          !- Field 9
+    For: AllDays,            !- Field 10
+    Until: 24:00,            !- Field 11
+    0;                    !- Field 12
+
+
+Schedule:Compact,
     always_off,           !- Name
     On/Off,                 !- Schedule Type Limits Name
     Through: 12/31,         !- Field 1
@@ -1322,7 +1355,6 @@ Schedule:Compact,
     Until: 24:00,           !- Field 3
     25.55;                  !- Field 4	   # RESNET Std 3-14
 
-
 Schedule:Compact,
     fan_cycle,               !- Name
     any number,              !- Schedule Type Limits Name
@@ -1330,6 +1362,11 @@ Schedule:Compact,
     For: AllDays,            !- Field 2
     Until: 24:00,            !- Field 3
     0;                       !- Field 4
+
+  Schedule:Constant,
+    Always On Discrete,
+    Any Number,
+    1;
 
 !-   ===========  ALL OBJECTS IN CLASS: SCHEDULE:CONSTANT ===========
 
@@ -1427,27 +1464,84 @@ Schedule:Constant,
 !-    Temperature,             !- Schedule Type Limits Name
 !-    53.333;                     !- Hourly Value
 
+!-Schedule:Compact,
+!-    compact_htg_sch,              !- Name
+!-    Temperature,                    !- Schedule Type Limits Name
+!-    Through: 12/31,                 !- Field 1
+!-    For: AllDays,                   !- Field 2
+!-    Until: htgSetbackEnd:00,      !- Field 3
+!-    htgSetback,                   !- Field 4
+!-    Until: htgSetbackStart:00,    !- Field 5
+!-    htgSetpoint,                  !- Field 6
+!-    Until: 24:00,                   !- Field 7
+!-    htgSetback;                   !- Field 8
+
+
+Schedule:Compact,
+    {compact_htg_sch},              !- Name
+    Temperature,                    !- Schedule Type Limits Name
+    Through: 12/31,                 !- Field 1
+    For: AllDays,                   !- Field 2
+    Until: {htgStPt1End},           !- Field 3
+    {htgStPt1Val}{htgStPt1Punc}                 !- Field 4
+    {htgStPt2Flag}Until: {htgStPt2End},           !- Field 5
+    {htgStPt2Flag}{htgStPt2Val}{htgStPt2Punc}                 !- Field 6
+    {htgStPt3Flag}Until: {htgStPt3End},           !- Field 7
+    {htgStPt3Flag}{htgStPt3Val}{htgStPt3Punc}                 !- Field 8
+    {htgStPt4Flag}Until: {htgStPt4End},           !- Field 9
+    {htgStPt4Flag}{htgStPt4Val}{htgStPt4Punc}                 !- Field 10
+    {htgStPt5Flag}Until: {htgStPt5End},           !- Field 11
+    {htgStPt5Flag}{htgStPt5Val}{htgStPt5Punc}                 !- Field 12
+    {htgStPt6Flag}Until: {htgStPt6End},           !- Field 13
+    {htgStPt6Flag} {htgStPt6Val}{htgStPt6Punc}                 !- Field 14
+    {htgStPt7Flag}Until: {htgStPt7End},           !- Field 11
+    {htgStPt7Flag}{htgStPt7Val}{htgStPt7Punc}                 !- Field 12
+    {htgStPt8Flag}Until: {htgStPt8End},           !- Field 13
+    {htgStPt8Flag} {htgStPt8Val}{htgStPt8Punc}                 !- Field 14
+
+Schedule:Compact,
+    {compact_clg_sch},              !- Name
+    Temperature,                    !- Schedule Type Limits Name
+    Through: 12/31,                 !- Field 1
+    For: AllDays,                   !- Field 2
+    Until: {clgStPt1End},           !- Field 3
+    {clgStPt1Val}{clgStPt1Punc}                 !- Field 4
+    {clgStPt2Flag}Until: {clgStPt2End},           !- Field 5
+    {clgStPt2Flag}{clgStPt2Val}{clgStPt2Punc}                 !- Field 6
+    {clgStPt3Flag}Until: {clgStPt3End},           !- Field 7
+    {clgStPt3Flag}{clgStPt3Val}{clgStPt3Punc}                 !- Field 8
+    {clgStPt4Flag}Until: {clgStPt4End},           !- Field 9
+    {clgStPt4Flag}{clgStPt4Val}{clgStPt4Punc}                 !- Field 10
+    {clgStPt5Flag}Until: {clgStPt5End},           !- Field 11
+    {clgStPt5Flag}{clgStPt5Val}{clgStPt5Punc}                 !- Field 12
+    {clgStPt6Flag}Until: {clgStPt6End},           !- Field 13
+    {clgStPt6Flag} {clgStPt6Val}{clgStPt6Punc}                 !- Field 14
+    {clgStPt7Flag}Until: {clgStPt7End},           !- Field 11
+    {clgStPt7Flag}{clgStPt7Val}{clgStPt7Punc}                 !- Field 12
+    {clgStPt8Flag}Until: {clgStPt8End},           !- Field 13
+    {clgStPt8Flag} {clgStPt8Val}{clgStPt8Punc}                 !- Field 14
+
 !-   ===========  ALL OBJECTS IN CLASS: SCHEDULE:FILE ===========
 
-Schedule:File,
-    heating_sch,             !- Name
-    Temperature,             !- Schedule Type Limits Name
-    ..\..\..\Building Blocks\Schedules\Schedules.csv,        !- File Name
-    {htg_sch_num},                       !- Column Number
-    1,                       !- Rows to Skip at Top
-    8760,                    !- Number of Hours of Data
-    Comma,                   !- Column Separator
-    Yes;                     !- Interpolate to Timestep
+!-Schedule:File,
+!-    file_htg_sch,             !- Name
+!-    Temperature,             !- Schedule Type Limits Name
+!-    ..\..\..\Building Blocks\Schedules\Schedules.csv,        !- File Name
+!-    htg_sch_num,                       !- Column Number
+!-    1,                       !- Rows to Skip at Top
+!-    8760,                    !- Number of Hours of Data
+!-    Comma,                   !- Column Separator
+!-    Yes;                     !- Interpolate to Timestep
 
-Schedule:File,
-    cooling_sch,             !- Name
-    Temperature,             !- Schedule Type Limits Name
-    ..\..\..\Building Blocks\Schedules\Schedules.csv,        !- File Name
-    {clg_sch_num},                       !- Column Number
-    1,                       !- Rows to Skip at Top
-    8760,                    !- Number of Hours of Data
-    Comma,                   !- Column Separator
-    Yes;                     !- Interpolate to Timestep
+!-Schedule:File,
+!-    file_clg_sch,             !- Name
+!-    Temperature,             !- Schedule Type Limits Name
+!-    ..\..\..\Building Blocks\Schedules\Schedules.csv,        !- File Name
+!-    clg_sch_num,                       !- Column Number
+!-    1,                       !- Rows to Skip at Top
+!-    8760,                    !- Number of Hours of Data
+!-    Comma,                   !- Column Separator
+!-    Yes;                     !- Interpolate to Timestep
 
 Schedule:File,
     dhw_setpt,             !- Name
@@ -1459,15 +1553,15 @@ Schedule:File,
     Comma,                   !- Column Separator
     Yes;                     !- Interpolate to Timestep
 
-Schedule:File,
-    MainsWaterTemp,                                         !- Name
-    Temperature,                                            !- Schedule Type Limits Name
-    ..\..\..\Building Blocks\Schedules\MainsWaterTemp.csv,  !- File Name
-    8,                                                      !- Column Number
-    1,                                                      !- Rows to Skip at Top
-    8760,                                                   !- Number of Hours of Data
-    Comma,                                                  !- Column Separator
-    Yes;                                                    !- Interpolate to Timestep
+!-Schedule:File,
+!-    MainsWaterTemp,                                         !- Name
+!-    Temperature,                                            !- Schedule Type Limits Name
+!-    ..\..\..\Building Blocks\Schedules\MainsWaterTemp.csv,  !- File Name
+!-    8,                                                      !- Column Number
+!-    1,                                                      !- Rows to Skip at Top
+!-    8760,                                                   !- Number of Hours of Data
+!-    Comma,                                                  !- Column Separator
+!-    Yes;                                                    !- Interpolate to Timestep
 
 
 !-   ===========  ALL OBJECTS IN CLASS: AVAILABILITYMANAGER:SCHEDULED ===========

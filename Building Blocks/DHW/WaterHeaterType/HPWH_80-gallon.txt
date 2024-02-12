@@ -5,14 +5,14 @@ WaterHeater:Stratified,
     1.5975,                         !- Tank Height {m}
     VerticalCylinder,               !- Tank Shape
     ,                               !- Tank Perimeter {m}
-    90,                             !- Maximum Temperature Limit {C}
+    54,                             !- Maximum Temperature Limit {C}
     MasterSlave,                    !- Heater Priority Control
     res wh_1 TopElementSetpoint,    !- Heater 1 Setpoint Temperature Schedule Name
-    18.5,                           !- Heater 1 Deadband Temperature Difference {deltaC}
+    2,                           !- Heater 1 Deadband Temperature Difference {deltaC}
     4500,                           !- Heater 1 Capacity {W}
     1.1315619675,                   !- Heater 1 Height {m}
     res wh_1 BottomElementSetpoint, !- Heater 2 Setpoint Temperature Schedule Name
-    3.89,                           !- Heater 2 Deadband Temperature Difference {deltaC}
+    2,                           !- Heater 2 Deadband Temperature Difference {deltaC}
     4500,                           !- Heater 2 Capacity {W}
     0.3328119675,                   !- Heater 2 Height {m}
     ELECTRICITY,                    !- Heater Fuel Type
@@ -29,7 +29,7 @@ WaterHeater:Stratified,
     ,                               !- Ambient Temperature Schedule Name
     living,                         !- Ambient Temperature Zone Name
     ,                               !- Ambient Temperature Outdoor Air Node Name
-    0.767544865977627,              !- Uniform Skin Loss Coefficient per Unit Area to Ambient Temperature {W/m2-K}
+    1,              !- Uniform Skin Loss Coefficient per Unit Area to Ambient Temperature {W/m2-K} 4.536492
     1,                              !- Skin Loss Fraction to Zone
     ,                               !- Off Cycle Flue Loss Coefficient to Ambient Temperature {W/K}
     1,                              !- Off Cycle Flue Loss Fraction to Zone
@@ -47,8 +47,8 @@ WaterHeater:Stratified,
     ,                               !- Source Side Inlet Height {m}
     ,                               !- Source Side Outlet Height {m}
     FIXED,                          !- Inlet Mode
-    0.00283433494640006,            !- Use Side Design Flow Rate {m3/s}
-    0.00115525,                     !- Source Side Design Flow Rate {m3/s}
+    autosize,            !- Use Side Design Flow Rate {m3/s}
+    autosize,                     !- Source Side Design Flow Rate {m3/s}
     1.5,                            !- Indirect Water Heating Recovery Time {hr}
     12,                             !- Number of Nodes
     0,                              !- Additional Destratification Conductivity {W/m-K}
@@ -119,7 +119,7 @@ WaterHeater:HeatPump:WrappedCondenser,
     Water Heater use outlet node,                   !- Tank Use Side Outlet Node Name
     Coil:WaterHeating:AirToWaterHeatPump:Wrapped,   !- DX Coil Object Type
     Heat Pump Water Heater Evaporator,              !- DX Coil Name
-    7.22222222222222,                               !- Minimum Inlet Air Temperature for Compressor Operation {C}
+    10,                               !- Minimum Inlet Air Temperature for Compressor Operation {C}
     48.89,                                          !- Maximum Inlet Air Temperature for Compressor Operation {C}
     Zone,                                           !- Compressor Location
     ,                                               !- Compressor Ambient Temperature Schedule Name
@@ -140,7 +140,7 @@ WaterHeater:HeatPump:WrappedCondenser,
 Coil:WaterHeating:AirToWaterHeatPump:Wrapped,
     Heat Pump Water Heater Evaporator,              !- Name
     1800,                                        !- Rated Heating Capacity {W}
-    3.71,                                           !- Rated COP {W/W}
+    3.89,                                           !- Rated COP {W/W}
     0.98,                                           !- Rated Sensible Heat Ratio
     19.7222222222222,                               !- Rated Evaporator Inlet Air Dry-Bulb Temperature {C}
     13.0766780924799,                               !- Rated Evaporator Inlet Air Wet-Bulb Temperature {C}
@@ -246,10 +246,6 @@ Schedule:Compact,
     Until 24:00,             !- Field 3
     44;                      !- Field 4
 
-Schedule:Constant,
-  Always On Discrete,                     !- Name
-  OnOff,                                  !- Schedule Type Limits Name
-  1;                                      !- Hourly Value
 
 Schedule:Constant,
   res wh_1 BottomElementSetpoint,         !- Name

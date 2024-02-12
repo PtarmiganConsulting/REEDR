@@ -1,52 +1,52 @@
 !-   ===========  ALL OBJECTS IN CLASS: AIRLOOPHVAC ===========
 
 AirLoopHVAC,
-    Central System,             !- Name
-    ,                           !- Controller List Name
-    availability list,      	!- Availability Manager List Name
-    autosize,                   !- Design Supply Air Flow Rate {{m3/s}}
-    Air Loop Branches,          !- Branch List Name
-    ,                           !- Connector List Name
-    Air Loop Inlet Node,        !- Supply Side Inlet Node Name
-    Return Air Mixer Outlet,    !- Demand Side Outlet Node Name
-    Zone Equipment Inlet Node,  !- Demand Side Inlet Node Names
-    Air Loop Outlet Node;       !- Supply Side Outlet Node Names
+    Central System,                     !- Name
+    ,                                   !- Controller List Name
+    availability list,      	        !- Availability Manager List Name
+    autosize,                           !- Design Supply Air Flow Rate {{m3/s}}
+    Air Loop Branches,                  !- Branch List Name
+    ,                                   !- Connector List Name
+    Air Loop Inlet Node,                !- Supply Side Inlet Node Name
+    Return Air Mixer Outlet,            !- Demand Side Outlet Node Name
+    Zone Equipment Inlet Node,          !- Demand Side Inlet Node Names
+    Air Loop Outlet Node;               !- Supply Side Outlet Node Names
 
 !-   ===========  ALL OBJECTS IN CLASS: AirLoopHVAC:ZoneSplitter ===========
 
 AirLoopHVAC:ZoneSplitter,
-    Zone Supply Air Splitter,	!- Name
-    Zone Equipment Inlet Node,  !- Inlet Node Name
-    Zone Inlet Node ATInlet;    !- Outlet 1 Node Name
+    Zone Supply Air Splitter,	        !- Name
+    Zone Equipment Inlet Node,          !- Inlet Node Name
+    Zone Inlet Node ATInlet;            !- Outlet 1 Node Name
 
 !-   ===========  ALL OBJECTS IN CLASS: AIRLOOPHVAC:SUPPLYPATH ===========
 
 AirLoopHVAC:SupplyPath,
     SupplyPath,    !- Name
-    Zone Equipment Inlet Node,      !- Supply Air Path Inlet Node Name
-    AirLoopHVAC:ZoneSplitter,       !- Component 1 Object Type
-    Zone Supply Air Splitter;   	!- Component 1 Name
+    Zone Equipment Inlet Node,          !- Supply Air Path Inlet Node Name
+    AirLoopHVAC:ZoneSplitter,           !- Component 1 Object Type
+    Zone Supply Air Splitter;   	    !- Component 1 Name
 
 !-   ===========  ALL OBJECTS IN CLASS: AIRLOOPHVAC:ZONEMIXER ===========
 
 AirLoopHVAC:ZoneMixer,
-    Zone Return Air Mixer,      	!- Name
-    Return Air Mixer Outlet,    	!- Outlet Node Name
-    Zone Outlet Node;           	!- Inlet 1 Node Name
+    Zone Return Air Mixer,      	    !- Name
+    Return Air Mixer Outlet,    	    !- Outlet Node Name
+    Zone Outlet Node;           	    !- Inlet 1 Node Name
 
 !-   ===========  ALL OBJECTS IN CLASS: AIRLOOPHVAC:RETURNPATH ===========
 
 AirLoopHVAC:ReturnPath,
     ReturnPath,         !- Name
-    Return Air Mixer Outlet,    	!- Return Air Path Outlet Node Name
-    AirLoopHVAC:ZoneMixer,      	!- Component 1 Object Type
-    Zone Return Air Mixer;      	!- Component 1 Name
+    Return Air Mixer Outlet,    	    !- Return Air Path Outlet Node Name
+    AirLoopHVAC:ZoneMixer,      	    !- Component 1 Object Type
+    Zone Return Air Mixer;      	    !- Component 1 Name
 
 !-   ===========  ALL OBJECTS IN CLASS: BRANCHLIST ===========
 
 BranchList,
-    Air Loop Branches,          !- Name
-    Air Loop Main Branch;       !- Branch 1 Name
+    Air Loop Branches,                  !- Name
+    Air Loop Main Branch;               !- Branch 1 Name
 
 !-   ===========  ALL OBJECTS IN CLASS: BRANCH ===========
 

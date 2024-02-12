@@ -1,6 +1,6 @@
 #*******************************************************************************************************************************************************************
 
-#Copyright (C) 2023 Ptarmigan Consulting LLC
+#Copyright (C) 2024 Ptarmigan Consulting LLC
 
 #This file is part of REEDR.
 
@@ -20,14 +20,15 @@ from tkinter import *
 from tkinter import ttk, filedialog
 from tkinter.filedialog import askopenfile
 import threading
-
-# from pathlib import Path
-
+from pathlib import Path
 from time import sleep as sleep
 from tkinter import messagebox as mb
 
 # Master GUI Function
 def gui(func):
+
+    # Acquire User Settings Path
+    gui_cwd = os.getcwd()
 
     # Dropdown Selection Data
     dropdown_dict = {
@@ -38,6 +39,16 @@ def gui(func):
         "subannual_gran_enduses": ["All_End_Uses", "All_HVAC", "Heating", "Cooling", "Fan", "Water_Heating", "Lighting", "Other_Equipment"],
         "testrun_gran_enduses": ["Test Run"],
     }
+
+    # Import .xlsx file names
+    dir_list = os.listdir(gui_cwd)
+
+    xlsx_files = []
+
+    for _ in dir_list:
+        if len(_) >= 5:
+            if (_[-5:] == ".xlsx") and (_[0] != "~"):
+                xlsx_files.append(_[:-5])
 
     months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
     days = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31]
@@ -74,12 +85,15 @@ def gui(func):
     sim_select = ["Annual", "Sub-Annual: enter start and end dates at right -->", "Test Run"]
     gran_select = dropdown_dict["annual_sim_granularity"]
     end_select = dropdown_dict["annual_gran_enduses"]
-    default_string = "C:\EnergyPlusV22-2-0\energyplus.exe!@##@!New Project!@##@!Annual!@##@!Annual!@##@!All_End_Uses!@##@!True!@##@!BLANKSTR!@##@!BLANKSTR!@##@!BLANKSTR!@##@!BLANKSTR!@##@!True"
+    model_select = xlsx_files
+
     ## even if the default string is not in use, it's handy for resetting defaults for version control.
 
-    # Acquire User Settings Path
-    gui_cwd = os.getcwd()
+    default_string_legacy = "C:\EnergyPlusV22-2-0\energyplus.exe!@##@!New Project!@##@!Annual!@##@!Annual!@##@!All_End_Uses!@##@!True!@##@!BLANKSTR!@##@!BLANKSTR!@##@!BLANKSTR!@##@!BLANKSTR!@##@!True"
 
+    default_string = "C:\EnergyPlusV22-2-0\energyplus.exe!@##@!New Project!@##@!Model Input Template!@##@!Annual!@##@!Annual!@##@!All_End_Uses!@##@!True!@##@!BLANKSTR!@##@!BLANKSTR!@##@!BLANKSTR!@##@!BLANKSTR!@##@!True"
+
+    
     # Revisit if time...directory fool-proofing
     if "REEDR" in gui_cwd:
         path_path = os.path.join(gui_cwd, r"Scripts\usersettings.txt")
@@ -98,10 +112,11 @@ def gui(func):
 
         with open(path_path, 'w') as data_storage:
                 data_storage.write(default_string)
-        
+
         import_list = [
             "C:\EnergyPlusV22-2-0\energyplus.exe",
             "New Project",
+            "Model Input Template",
             "Annual",
             "Annual",
             "All_End_Uses",
@@ -112,6 +127,20 @@ def gui(func):
             "BLANKSTR",
             "True",
         ]
+        
+        # import_list = [
+        #     "C:\EnergyPlusV22-2-0\energyplus.exe",
+        #     "New Project",
+        #     "Annual",
+        #     "Annual",
+        #     "All_End_Uses",
+        #     "True",
+        #     "BLANKSTR",
+        #     "BLANKSTR",
+        #     "BLANKSTR",
+        #     "BLANKSTR",
+        #     "True",
+        # ]
 
     # Functions Begin
     def browse(*args):
@@ -157,11 +186,14 @@ def gui(func):
 
         # Proceeds with launching REEDR unless halted by user
         if overwrite_allowed:
-              
+            
+            model_with_extension = model_input.get() + ".xlsx"
+
             # Harvest data from gui to be passed through the REEDR scripts.
             gui_params={
             "path_val":path_input.get(),
             "project_val":project_input.get(),
+            "model_val":model_with_extension,
             "sim_type":sim_input.get(),
             "output_gran":outgran_input.get(),
             "output_enduses":outenduses_input.get(),
@@ -171,6 +203,7 @@ def gui(func):
             "end_day":ed_input.get(),
             "multithread":multi_val.get(),
             }
+
 
             # Data-massaging some booleans.
             if multi_val.get() == True:
@@ -187,6 +220,7 @@ def gui(func):
             input_list = [
                 path_input.get(),
                 project_input.get(),
+                model_input.get(),
                 sim_input.get(),
                 outgran_input.get(),
                 outenduses_input.get(),
@@ -324,8 +358,9 @@ def gui(func):
     frm.grid()
     root.title("REEDR Project Setup")
     app_width = 795
-    app_height = 530
-    # app_height = 470 # B4
+    app_height = 615
+    # app_height = 530 # B4
+    # app_height = 470 # B4B4
     screen_width = root.winfo_screenwidth()
     screen_height = root.winfo_screenheight()
     x = (screen_width / 2) - (app_width / 2)
@@ -335,7 +370,7 @@ def gui(func):
 
     # Main Window Labels
     ttk.Label(frm, text="the Residential Energy Efficiency and Demand Response tool (REEDR)", style='Title.TLabel').grid(sticky=W, column=0, row=0, padx=10, columnspan=2)
-    ttk.Label(frm, text="v1.1.0-beta", style='Version.TLabel').grid(sticky=W, column=0, row=1, padx=10)
+    ttk.Label(frm, text="v1.2.0-beta", style='Version.TLabel').grid(sticky=W, column=0, row=1, padx=10)
 
     # Widget Formatting
     s = ttk.Style()
@@ -362,26 +397,33 @@ def gui(func):
     project_entry = ttk.Entry(frm, width=48, style='Body.TEntry', textvariable=project_input, foreground="black")
     project_entry.grid(sticky=W, column=1, row=3, padx=10, pady=20, columnspan=2)
 
+    # Model Temps ( begin from copy)
+    ttk.Label(frm, text="Model Input File: ", style='Body.TLabel').grid(sticky=W, column=0, row=5, padx=10, pady=25)
+    model_input = StringVar()
+    model_input.set("Model Input Template") # .xlsx will need to be added
+    outgran_entry = ttk.Combobox(frm, width=45, textvariable=model_input, values=model_select, state="readonly", foreground="black")
+    outgran_entry.grid(sticky=W, column=1, row=5, padx=10, pady=25) # output granularity
+
     # Simulation Run Period
-    ttk.Label(frm, text="Simulation Run Period: ", style='Body.TLabel').grid(sticky=W, column=0, row=5, padx=10, pady=0)
+    ttk.Label(frm, text="Simulation Run Period: ", style='Body.TLabel').grid(sticky=W, column=0, row=7, padx=10, pady=0)
     sim_input = StringVar()
     sim_input.set("Annual")
     simperiod_entry = ttk.Combobox(frm, width=45, textvariable=sim_input, values=sim_select, state="readonly", foreground="black")
-    simperiod_entry.grid(sticky=W, column=1, row=5, padx=10, pady=0)
+    simperiod_entry.grid(sticky=W, column=1, row=7, padx=10, pady=0)
 
     # Output Granularity
-    ttk.Label(frm, text="Output Granularity: ", style='Body.TLabel').grid(sticky=W, column=0, row=7, padx=10, pady=25)
+    ttk.Label(frm, text="Output Granularity: ", style='Body.TLabel').grid(sticky=W, column=0, row=9, padx=10, pady=25)
     outgran_input = StringVar()
     outgran_input.set("Annual")
     outgran_entry = ttk.Combobox(frm, width=45, textvariable=outgran_input, values=gran_select, state="readonly", foreground="black")
-    outgran_entry.grid(sticky=W, column=1, row=7, padx=10, pady=25) # output granularity
+    outgran_entry.grid(sticky=W, column=1, row=9, padx=10, pady=25) # output granularity
     
     # Output End Uses
-    ttk.Label(frm, text="Output End Uses: ", style='Body.TLabel').grid(sticky=W, column=0, row=8, padx=10, pady=0)
+    ttk.Label(frm, text="Output End Uses: ", style='Body.TLabel').grid(sticky=W, column=0, row=10, padx=10, pady=0)
     outenduses_input = StringVar()
     outenduses_input.set("All_End_Uses")
     outenduses_entry = ttk.Combobox(frm, width=45, textvariable=outenduses_input, values=end_select, state="readonly", foreground="black")
-    outenduses_entry.grid(sticky=W, column=1, row=8, padx=10, pady=5)
+    outenduses_entry.grid(sticky=W, column=1, row=10, padx=10, pady=5)
     # outenduses_entry.grid(sticky=W, column=1, row=8, padx=10, pady=0) # B4
 
     # Browse Button
@@ -389,52 +431,52 @@ def gui(func):
 
     # Segmented Run Labels and Positioning
     begin_label = ttk.Label(frm, text="Begin: ", style='Body.TLabel', foreground="black")
-    begin_label.grid(column=2, row=5, sticky=E)
+    begin_label.grid(column=2, row=7, sticky=E)
 
     end_label = ttk.Label(frm, text="End: ", style='Body.TLabel', foreground="black")
-    end_label.grid(column=2, row=6, sticky=E)
+    end_label.grid(column=2, row=8, sticky=E)
 
     mo_label = ttk.Label(frm, text="Mo: ", style='Body.TLabel', foreground="black")
-    mo_label.grid(column=3, row=4, sticky=S)
+    mo_label.grid(column=3, row=6, sticky=S)
 
     day_label = ttk.Label(frm, text="Day: ", style='Body.TLabel', foreground="black")
-    day_label.grid(column=4, row=4, sticky=S)
+    day_label.grid(column=4, row=6, sticky=S)
 
     bm_input = StringVar()
     bm = ttk.Combobox(frm, width=5, values=months, textvariable=bm_input, state="disabled") ## begin month
-    bm.grid(column=3, row=5)
+    bm.grid(column=3, row=7)
 
     bd_input = StringVar()
     bd = ttk.Combobox(frm, width=5, values=days, textvariable=bd_input, state="disabled") ## begin day
-    bd.grid(column=4, row=5)
+    bd.grid(column=4, row=7)
 
     em_input = StringVar()
     em = ttk.Combobox(frm, width=5, values=months, textvariable=em_input, state="disabled") ## end month
-    em.grid(column=3, row=6)
+    em.grid(column=3, row=8)
 
     ed_input = StringVar()
     ed = ttk.Combobox(frm, width=5, values=days, textvariable=ed_input, state="disabled") ## end day
-    ed.grid(column=4, row=6)
+    ed.grid(column=4, row=8)
 
     # Multi Threading
     multi_val = BooleanVar()
     multi_val.set(True)
     multibox = ttk.Checkbutton(frm, text='Enable multithreading', variable=multi_val, onvalue=True, offvalue=False)
-    multibox.grid(sticky=W, column=1, row=9, columnspan=3, padx=10, pady=15)
+    multibox.grid(sticky=W, column=1, row=11, columnspan=3, padx=10, pady=15)
     # multibox.grid(sticky=W, column=1, row=9, columnspan=3, padx=10, pady=15) # B4
 
     # Overwrite Project Files
     over_val = BooleanVar()
     over_val.set(True)
     over_box = ttk.Checkbutton(frm, text='Ask before overwriting project folders', variable=over_val, onvalue=True, offvalue=False)
-    over_box.grid(sticky=NW, column=1, row=10, columnspan=3, padx=10, pady=0)
+    over_box.grid(sticky=NW, column=1, row=12, columnspan=3, padx=10, pady=0)
 
     # Run Button
-    ttk.Button(frm, text="RUN", style='Run.TButton', width=15, command=threading.Thread(target=exe_main).start).grid(column=2, row=11, columnspan=3, padx=0, pady=15, sticky=E) # threaded v
-    ttk.Button(frm, text="RUN", style='Run.TButton', width=15, command=exe_main).grid(column=2, row=11, columnspan=3, padx=0, pady=15, sticky=E)
+    ttk.Button(frm, text="RUN", style='Run.TButton', width=15, command=threading.Thread(target=exe_main).start).grid(column=2, row=13, columnspan=3, padx=0, pady=15, sticky=E) # threaded v
+    ttk.Button(frm, text="RUN", style='Run.TButton', width=15, command=exe_main).grid(column=2, row=13, columnspan=3, padx=0, pady=15, sticky=E)
 
     # Copyright label
-    ttk.Label(frm, text="Copyright (C) 2023 Ptarmigan Consulting LLC. All rights reserved.", style='Copyright.TLabel').grid(sticky=W, column=0, row=16, padx=10, columnspan=5)
+    ttk.Label(frm, text="Copyright (C) 2024 Ptarmigan Consulting LLC. All rights reserved.", style='Copyright.TLabel').grid(sticky=W, column=0, row=18, padx=10, columnspan=5)
  
     # Activate Tracing
     path_input.trace_add("write", update)
@@ -461,6 +503,8 @@ def gui(func):
         elif i == 1:
             project_input.set(import_list[i])
         elif i == 2:
+            model_input.set(import_list[i])
+        elif i == 3:
             sim_input.set(import_list[i])
             if sim_input.get() == "Sub-Annual: enter start and end dates at right -->":
                 bm.config(state="readonly")
@@ -471,24 +515,24 @@ def gui(func):
                 end_label.config(foreground="black")
                 mo_label.config(foreground="black")
                 day_label.config(foreground="black")
-        elif i == 3:
-            outgran_input.set(import_list[i])
         elif i == 4:
-            outenduses_input.set(import_list[i])
+            outgran_input.set(import_list[i])
         elif i == 5:
+            outenduses_input.set(import_list[i])
+        elif i == 6:
             if import_list[i]:
                 multi_val.set(True)
             else:
                 multi_val.set(False)
-        elif i == 6:
-            bm_input.set(import_list[i])
         elif i == 7:
-            bd_input.set(import_list[i])
+            bm_input.set(import_list[i])
         elif i == 8:
-            em_input.set(import_list[i])
+            bd_input.set(import_list[i])
         elif i == 9:
-            ed_input.set(import_list[i])
+            em_input.set(import_list[i])
         elif i == 10:
+            ed_input.set(import_list[i])
+        elif i == 11:
             if import_list[i]:
                 over_val.set(True)
             else:
