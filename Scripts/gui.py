@@ -369,7 +369,7 @@ def gui(func):
         ## special thanks to codemy.com for help with the window-centering code
 
     # Main Window Labels
-    ttk.Label(frm, text="the Residential Energy Efficiency and Demand Response tool (REEDR)", style='Title.TLabel').grid(sticky=W, column=0, row=0, padx=10, columnspan=2)
+    ttk.Label(frm, text="Cool Program", style='Title.TLabel').grid(sticky=W, column=0, row=0, padx=10, columnspan=2)
     ttk.Label(frm, text="v1.2.0-beta", style='Version.TLabel').grid(sticky=W, column=0, row=1, padx=10)
 
     # Widget Formatting
