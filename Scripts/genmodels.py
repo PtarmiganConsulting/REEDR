@@ -212,6 +212,7 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
     suppHeatSourceEfficiency_fieldname = model_input_temp_fieldnames_dict["suppHeatSourceEfficiency_fieldname"][input_template_names_lookup_id]
     suppHeatSourceFraction_fieldname = model_input_temp_fieldnames_dict["suppHeatSourceFraction_fieldname"][input_template_names_lookup_id]
     htgStPtMethod_fieldname = model_input_temp_fieldnames_dict["htgStPtMethod_fieldname"][input_template_names_lookup_id] # added on 9.10.24 to bring back 8760 setpt functionality for some use cases
+    htgSchName_fieldname = model_input_temp_fieldnames_dict["htgSchName_fieldname"][input_template_names_lookup_id]
     htgStPt1Val_fieldname = model_input_temp_fieldnames_dict["htgStPt1Val_fieldname"][input_template_names_lookup_id]
     htgStPt1End_fieldname = model_input_temp_fieldnames_dict["htgStPt1End_fieldname"][input_template_names_lookup_id]
     htgStPt2Val_fieldname = model_input_temp_fieldnames_dict["htgStPt2Val_fieldname"][input_template_names_lookup_id]
@@ -229,6 +230,7 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
     htgStPt8Val_fieldname = model_input_temp_fieldnames_dict["htgStPt8Val_fieldname"][input_template_names_lookup_id]
     htgStPt8End_fieldname = model_input_temp_fieldnames_dict["htgStPt8End_fieldname"][input_template_names_lookup_id]
     clgStPtMethod_fieldname = model_input_temp_fieldnames_dict["clgStPtMethod_fieldname"][input_template_names_lookup_id] # added on 9.10.24 to bring back 8760 setpt functionality for some use cases
+    clgSchName_fieldname = model_input_temp_fieldnames_dict["clgSchName_fieldname"][input_template_names_lookup_id]
     clgStPt1Val_fieldname = model_input_temp_fieldnames_dict["clgStPt1Val_fieldname"][input_template_names_lookup_id]
     clgStPt1End_fieldname = model_input_temp_fieldnames_dict["clgStPt1End_fieldname"][input_template_names_lookup_id]
     clgStPt2Val_fieldname = model_input_temp_fieldnames_dict["clgStPt2Val_fieldname"][input_template_names_lookup_id]
@@ -630,7 +632,8 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
 
             StPtMethod_list = ["8760 Schedule (enter schedule name at right)", "Daily Schedule (enter setpoint values/end times at right)"]
             htgStPtMethod = validate(htgStPtMethod_fieldname, dictionary[htgStPtMethod_fieldname], "list", dummy_int, dummy_int, StPtMethod_list)
-            
+            htgSchName = validate(htgSchName_fieldname, dictionary[htgSchName_fieldname], "list", dummy_int, dummy_int, sched_validation_list)
+
             htgStPt1Val = validate(htgStPt1Val_fieldname, convert_degF_to_degC(dictionary[htgStPt1Val_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
             htgStPt1Val = htgStPt1Val + deadband_offset
             htgStPt1End = dictionary[htgStPt1End_fieldname]
@@ -799,6 +802,7 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
                 compact_clg_sch = "cooling_sch"
 
                 clgStPtMethod = validate(clgStPtMethod_fieldname, dictionary[clgStPtMethod_fieldname], "list", dummy_int, dummy_int, StPtMethod_list)
+                clgSchName = validate(clgSchName_fieldname, dictionary[clgSchName_fieldname], "list", dummy_int, dummy_int, sched_validation_list)
 
                 clgStPt1Val = validate(clgStPt1Val_fieldname, convert_degF_to_degC(dictionary[clgStPt1Val_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
                 clgStPt1Val = clgStPt1Val - deadband_offset
