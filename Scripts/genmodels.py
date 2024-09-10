@@ -19,6 +19,7 @@ import pandas as pd # to import xcel, some initial data manipulation
 import os # for making paths and directories and removing files
 import shutil # for removing full directories
 import math # used for functions like square root
+import warnings
 from pprint import pprint
 from pathlib import Path
 import datetime
@@ -30,6 +31,9 @@ from Scripts.dictmaker import dict_maker
 
 
 def genmodels(gui_params, get_data_dict, control_panel_dict):
+
+    ### -- Do not print warnings from Pandas to output screen -- ###
+    warnings.simplefilter(action='ignore', category=FutureWarning)
 
     ### --- Set the main working directory. --- ###
     set_dir = get_data_dict["parent"]
@@ -207,6 +211,7 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
     suppHeatSourceCapacity_fieldname = model_input_temp_fieldnames_dict["suppHeatSourceCapacity_fieldname"][input_template_names_lookup_id]
     suppHeatSourceEfficiency_fieldname = model_input_temp_fieldnames_dict["suppHeatSourceEfficiency_fieldname"][input_template_names_lookup_id]
     suppHeatSourceFraction_fieldname = model_input_temp_fieldnames_dict["suppHeatSourceFraction_fieldname"][input_template_names_lookup_id]
+    htgStPtMethod_fieldname = model_input_temp_fieldnames_dict["htgStPtMethod_fieldname"][input_template_names_lookup_id] # added on 9.10.24 to bring back 8760 setpt functionality for some use cases
     htgStPt1Val_fieldname = model_input_temp_fieldnames_dict["htgStPt1Val_fieldname"][input_template_names_lookup_id]
     htgStPt1End_fieldname = model_input_temp_fieldnames_dict["htgStPt1End_fieldname"][input_template_names_lookup_id]
     htgStPt2Val_fieldname = model_input_temp_fieldnames_dict["htgStPt2Val_fieldname"][input_template_names_lookup_id]
@@ -223,6 +228,7 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
     htgStPt7End_fieldname = model_input_temp_fieldnames_dict["htgStPt7End_fieldname"][input_template_names_lookup_id]
     htgStPt8Val_fieldname = model_input_temp_fieldnames_dict["htgStPt8Val_fieldname"][input_template_names_lookup_id]
     htgStPt8End_fieldname = model_input_temp_fieldnames_dict["htgStPt8End_fieldname"][input_template_names_lookup_id]
+    clgStPtMethod_fieldname = model_input_temp_fieldnames_dict["clgStPtMethod_fieldname"][input_template_names_lookup_id] # added on 9.10.24 to bring back 8760 setpt functionality for some use cases
     clgStPt1Val_fieldname = model_input_temp_fieldnames_dict["clgStPt1Val_fieldname"][input_template_names_lookup_id]
     clgStPt1End_fieldname = model_input_temp_fieldnames_dict["clgStPt1End_fieldname"][input_template_names_lookup_id]
     clgStPt2Val_fieldname = model_input_temp_fieldnames_dict["clgStPt2Val_fieldname"][input_template_names_lookup_id]
@@ -621,6 +627,10 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
             
             #... heating setpoint schedule
             compact_htg_sch = "heating_sch"
+
+            StPtMethod_list = ["8760 Schedule (enter schedule name at right)", "Daily Schedule (enter setpoint values/end times at right)"]
+            htgStPtMethod = validate(htgStPtMethod_fieldname, dictionary[htgStPtMethod_fieldname], "list", dummy_int, dummy_int, StPtMethod_list)
+            
             htgStPt1Val = validate(htgStPt1Val_fieldname, convert_degF_to_degC(dictionary[htgStPt1Val_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
             htgStPt1Val = htgStPt1Val + deadband_offset
             htgStPt1End = dictionary[htgStPt1End_fieldname]
@@ -787,6 +797,9 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
 
                 #... cooling setpoint schedule
                 compact_clg_sch = "cooling_sch"
+
+                clgStPtMethod = validate(clgStPtMethod_fieldname, dictionary[clgStPtMethod_fieldname], "list", dummy_int, dummy_int, StPtMethod_list)
+
                 clgStPt1Val = validate(clgStPt1Val_fieldname, convert_degF_to_degC(dictionary[clgStPt1Val_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
                 clgStPt1Val = clgStPt1Val - deadband_offset
                 clgStPt1End = dictionary[clgStPt1End_fieldname]
