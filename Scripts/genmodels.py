@@ -248,6 +248,7 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
     clgStPt8Val_fieldname = model_input_temp_fieldnames_dict["clgStPt8Val_fieldname"][input_template_names_lookup_id]
     clgStPt8End_fieldname = model_input_temp_fieldnames_dict["clgStPt8End_fieldname"][input_template_names_lookup_id]
     hysteresis_fieldname = model_input_temp_fieldnames_dict["hysteresis_fieldname"][input_template_names_lookup_id]
+    ventstpt_fieldname = model_input_temp_fieldnames_dict["ventstpt_fieldname"][input_template_names_lookup_id]
     dhwType_fieldname = model_input_temp_fieldnames_dict["dhwType_fieldname"][input_template_names_lookup_id]
     dhwSched_fieldname = model_input_temp_fieldnames_dict["dhwSched_fieldname"][input_template_names_lookup_id]
     numOfPeople_fieldname = model_input_temp_fieldnames_dict["numOfPeople_fieldname"][input_template_names_lookup_id]
@@ -562,6 +563,12 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
                 deadband = 5/9 * deadband_F 
                 # calculate half of the full range to know the amount above and below the setpoint
                 deadband_offset = deadband/2
+
+            #... natural ventilation
+            if str(dictionary[ventstpt_fieldname]) == "nan":
+                ventstpt = 23.888889
+            else:
+                ventstpt = validate(ventstpt_fieldname, convert_degF_to_degC(dictionary[ventstpt_fieldname]), "num_not_zero", dummy_int, dummy_int, dummy_list)
             
             #... primary HVAC type
             hvac_type_list = hvac_dict.keys()
@@ -1839,7 +1846,7 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
             AFN_sim_control_t = f"{f.read()}".format(**locals())
         #...insert AFN zones common to all buildings (i.e., main, attic)
         with open(os.path.join(set_dir, building_block_dir, hvac_afn_main_dir, hvac_afn_zone_dir, hvac_afn_zone_main_file), 'r') as f:
-            AFN_main_zones_t = f.read()
+            AFN_main_zones_t = f"{f.read()}".format(**locals())
         #...insert AFN surface leakage
         with open(os.path.join(set_dir, building_block_dir, hvac_afn_main_dir, hvac_afn_leakage_dir, hvac_afn_leakage_main_file), 'r') as f:
             AFN_main_leakage_t = f"{f.read()}".format(**locals())
