@@ -656,7 +656,7 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
             else:
                 compact_htg_sch = "heating_sch"
                 file_htg_sch = "htg_sch_unused" # dummy value
-                htg_sch_num = 1 #dummy value
+                htg_sch_num = 8 #dummy value
 
                 htgStPt1Val = validate(htgStPt1Val_fieldname, convert_degF_to_degC(dictionary[htgStPt1Val_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
                 htgStPt1Val = htgStPt1Val + deadband_offset
@@ -844,7 +844,7 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
                 else:
                     compact_clg_sch = "cooling_sch"
                     file_clg_sch = "clg_sch_unused" # dummy value
-                    clg_sch_num = 1 #dummy value
+                    clg_sch_num = 10 #dummy value
 
                     clgStPt1Val = validate(clgStPt1Val_fieldname, convert_degF_to_degC(dictionary[clgStPt1Val_fieldname]), "any_num", dummy_int, dummy_int, dummy_list)
                     clgStPt1Val = clgStPt1Val - deadband_offset
@@ -1007,7 +1007,7 @@ def genmodels(gui_params, get_data_dict, control_panel_dict):
                 #... provide dummy values for cooling setpoint schedule
                 compact_clg_sch = "cooling_sch"
                 file_clg_sch = "clg_sch_unused" # dummy value
-                clg_sch_num = 11 #dummy value
+                clg_sch_num = 10 #dummy value
                 clgStPt1Val = validate(clgStPt1Val_fieldname, convert_degF_to_degC(79), "any_num", dummy_int, dummy_int, dummy_list)
                 clgStPt1Val = clgStPt1Val + deadband_offset
                 clgStPt1End = "24:00"
