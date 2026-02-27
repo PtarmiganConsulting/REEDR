@@ -72,7 +72,7 @@ def main(gui_params):
     control_panel_dict["control_panel_folder_name"] = "Control Panel"
     control_panel_dict["control_panel_names_file"] = "Control Panel Names.csv"
     control_panel_dict["control_panel_names_path"] = os.path.join(set_dir, \
-        control_panel_dict["control_panel_folder_name"], control_panel_dict["control_panel_names_file"])
+    control_panel_dict["control_panel_folder_name"], control_panel_dict["control_panel_names_file"])
     control_panel_dict["control_panel_names_dict"] = dict_maker(control_panel_dict["control_panel_names_path"])
     control_panel_dict["control_panel_names_lookup_id"] = "folder_or_file_name"
     
