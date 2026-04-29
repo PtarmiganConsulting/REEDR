@@ -116,7 +116,7 @@ def runmodels(gui_params, get_data_dict):
                     time.sleep(.25)
                     thread.join()
                     # threads.pop(thread)
-                    thread._stop()
+                    # thread._stop()
                     time.sleep(.1)
 
                 threads = []
@@ -140,7 +140,7 @@ def runmodels(gui_params, get_data_dict):
         for thread in threads:
             # print(thread)
             thread.join()
-            thread._stop()
+            # thread._stop()
 
     else:
         for dictionary in get_data_dict["master_dict_list"]:

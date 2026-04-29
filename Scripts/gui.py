@@ -89,9 +89,9 @@ def gui(func):
 
     ## even if the default string is not in use, it's handy for resetting defaults for version control.
 
-    default_string_legacy = "C:\EnergyPlusV22-2-0\energyplus.exe!@##@!New Project!@##@!Annual!@##@!Annual!@##@!All_End_Uses!@##@!True!@##@!BLANKSTR!@##@!BLANKSTR!@##@!BLANKSTR!@##@!BLANKSTR!@##@!True"
+    default_string_legacy = r"C:\EnergyPlusV22-2-0\energyplus.exe!@##@!New Project!@##@!Annual!@##@!Annual!@##@!All_End_Uses!@##@!True!@##@!BLANKSTR!@##@!BLANKSTR!@##@!BLANKSTR!@##@!BLANKSTR!@##@!True"
 
-    default_string = "C:\EnergyPlusV22-2-0\energyplus.exe!@##@!New Project!@##@!Model Input Template!@##@!Annual!@##@!Annual!@##@!All_End_Uses!@##@!True!@##@!BLANKSTR!@##@!BLANKSTR!@##@!BLANKSTR!@##@!BLANKSTR!@##@!True"
+    default_string = r"C:\EnergyPlusV22-2-0\energyplus.exe!@##@!New Project!@##@!Model Input Template!@##@!Annual!@##@!Annual!@##@!All_End_Uses!@##@!True!@##@!BLANKSTR!@##@!BLANKSTR!@##@!BLANKSTR!@##@!BLANKSTR!@##@!True"
 
     
     # Revisit if time...directory fool-proofing
@@ -114,7 +114,7 @@ def gui(func):
                 data_storage.write(default_string)
 
         import_list = [
-            "C:\EnergyPlusV22-2-0\energyplus.exe",
+            r"C:\EnergyPlusV22-2-0\energyplus.exe",
             "New Project",
             "Model Input Template",
             "Annual",
@@ -176,7 +176,7 @@ def gui(func):
         
         # Acquire project name, names of project folders
         proj_name = project_input.get()
-        proj_dir = f"{gui_cwd}\Projects"
+        proj_dir = fr"{gui_cwd}\Projects"
         proj_folders = os.listdir(proj_dir)
 
         # Warns About Overwriting if the Warning Combobox is checked
@@ -386,7 +386,7 @@ def gui(func):
     # Path
     ttk.Label(frm, text="EnergyPlus v22.2 Executable Path: ", style='Body.TLabel').grid(sticky=W, column=0, row=2, padx=10, pady=25)
     path_input = StringVar()
-    path_input.set("C:\EnergyPlusV22-2-0\energyplus.exe")
+    path_input.set(r"C:\EnergyPlusV22-2-0\energyplus.exe")
     path_entry = ttk.Entry(frm, width=60, style='Body.TEntry', textvariable=path_input, foreground="black") # path entry
     path_entry.grid(sticky=W, column=1, row=2, padx=10, pady=25, columnspan=2)
 
