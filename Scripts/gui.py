@@ -23,6 +23,7 @@ import threading
 from pathlib import Path
 from time import sleep as sleep
 from tkinter import messagebox as mb
+from pprint import pprint
 
 # Master GUI Function
 def gui(func):
@@ -49,6 +50,7 @@ def gui(func):
         if len(_) >= 5:
             if (_[-5:] == ".xlsx") and (_[0] != "~"):
                 xlsx_files.append(_[:-5])
+
 
     months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
     days = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31]
@@ -87,9 +89,7 @@ def gui(func):
     end_select = dropdown_dict["annual_gran_enduses"]
     model_select = xlsx_files
 
-    ## even if the default string is not in use, it's handy for resetting defaults for version control.
-
-    default_string_legacy = r"C:\EnergyPlusV22-2-0\energyplus.exe!@##@!New Project!@##@!Annual!@##@!Annual!@##@!All_End_Uses!@##@!True!@##@!BLANKSTR!@##@!BLANKSTR!@##@!BLANKSTR!@##@!BLANKSTR!@##@!True"
+    # for resetting stored user settings if usesettings.txt is deleted.
 
     default_string = r"C:\EnergyPlusV22-2-0\energyplus.exe!@##@!New Project!@##@!Model Input Template!@##@!Annual!@##@!Annual!@##@!All_End_Uses!@##@!True!@##@!BLANKSTR!@##@!BLANKSTR!@##@!BLANKSTR!@##@!BLANKSTR!@##@!True"
 
@@ -128,20 +128,6 @@ def gui(func):
             "True",
         ]
         
-        # import_list = [
-        #     "C:\EnergyPlusV22-2-0\energyplus.exe",
-        #     "New Project",
-        #     "Annual",
-        #     "Annual",
-        #     "All_End_Uses",
-        #     "True",
-        #     "BLANKSTR",
-        #     "BLANKSTR",
-        #     "BLANKSTR",
-        #     "BLANKSTR",
-        #     "True",
-        # ]
-
     # Functions Begin
     def browse(*args):
         """
@@ -203,6 +189,8 @@ def gui(func):
             "end_day":ed_input.get(),
             "multithread":multi_val.get(),
             }
+
+            # pprint(gui_params)
 
 
             # Data-massaging some booleans.
@@ -401,8 +389,8 @@ def gui(func):
     ttk.Label(frm, text="Model Input File: ", style='Body.TLabel').grid(sticky=W, column=0, row=5, padx=10, pady=25)
     model_input = StringVar()
     model_input.set("Model Input Template") # .xlsx will need to be added
-    outgran_entry = ttk.Combobox(frm, width=45, textvariable=model_input, values=model_select, state="readonly", foreground="black")
-    outgran_entry.grid(sticky=W, column=1, row=5, padx=10, pady=25) # output granularity
+    model_entry = ttk.Combobox(frm, width=45, textvariable=model_input, values=model_select, state="readonly", foreground="black")
+    model_entry.grid(sticky=W, column=1, row=5, padx=10, pady=25) # output granularity
 
     # Simulation Run Period
     ttk.Label(frm, text="Simulation Run Period: ", style='Body.TLabel').grid(sticky=W, column=0, row=7, padx=10, pady=0)
@@ -503,7 +491,10 @@ def gui(func):
         elif i == 1:
             project_input.set(import_list[i])
         elif i == 2:
-            model_input.set(import_list[i])
+            if i in xlsx_files:
+                model_input.set(import_list[i])
+            else:
+                model_input.set(xlsx_files[0])
         elif i == 3:
             sim_input.set(import_list[i])
             if sim_input.get() == "Sub-Annual: enter start and end dates at right -->":

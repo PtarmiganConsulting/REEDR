@@ -126,7 +126,7 @@ def runmodels(gui_params, get_data_dict):
                 
 
             try:
-                t = threading.Thread(target=plusterwolf, args=(run_label, location_pull, get_data_dict["master_directory"], gui_params["path_val"], i, get_data_dict["df"]))
+                t = threading.Thread(target=plusterwolf, daemon=True, args=(run_label, location_pull, get_data_dict["master_directory"], gui_params["path_val"], i, get_data_dict["df"]))
                 # t.setName(run_label + "t")
                 threads.append(t)
                 t.start()
