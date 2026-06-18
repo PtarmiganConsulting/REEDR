@@ -50,7 +50,7 @@ def gui(func):
         if len(_) >= 5:
             if (_[-5:] == ".xlsx") and (_[0] != "~"):
                 xlsx_files.append(_[:-5])
-
+    # print(xlsx_files)
 
     months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
     days = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31]
@@ -234,6 +234,8 @@ def gui(func):
             # Saves user settings in usersettings.txt 
             with open(path_path, 'w') as data_storage:
                 data_storage.write(data_string)
+
+            # print(data_string)
 
             # If test run, assume hardcoded input values; genmodels will later assume single day for simulation
             if gui_params["sim_type"] == "Test Run":
@@ -491,7 +493,7 @@ def gui(func):
         elif i == 1:
             project_input.set(import_list[i])
         elif i == 2:
-            if i in xlsx_files:
+            if import_list[i] in xlsx_files:
                 model_input.set(import_list[i])
             else:
                 model_input.set(xlsx_files[0])
