@@ -45,7 +45,7 @@ def adapt_spreadsheet(standard_filename):
         month, day = input_scrub[0].split("/")[0], input_scrub[0].split("/")[1] # ['month', 'day'] ex: ['01', '01']
         hod = input_scrub[1].split(":")[0]
 
-        month_vals.append(month), day_vals.append(day), hod_vals.append(hod)
+        month_vals.append(int(month)), day_vals.append(int(day)), hod_vals.append(int(hod))
 
     df.insert(1, "Month", month_vals)
     df.insert(2, "Day", day_vals)
