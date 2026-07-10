@@ -16,6 +16,7 @@
 
 from openpyxl import load_workbook
 import pandas as pd
+from pprint import pprint as pprint
 
 # need to give it eyes
 def adapt_spreadsheet(standard_filename):
@@ -50,6 +51,20 @@ def adapt_spreadsheet(standard_filename):
     df.insert(1, "Month", month_vals)
     df.insert(2, "Day", day_vals)
     df.insert(3, "HOD", hod_vals)
+
+    try:
+        # oat = df["Outdoor Air Temperature [F]"]
+        # for i in range(len(oat)):
+        #     oat[i] = round(oat[i])
+
+        oat = df["Outdoor Air Temperature [F]"]
+        oat_round = []
+        for i in range(len(oat)):
+            oat_round.append(round(oat[i]))
+        df.drop(columns=['Outdoor Air Temperature [F]'])
+        df.insert(5, 'Outdoor Air Temperature [F] (Rounded)', oat_round)
+    except:
+        pass
 
     with pd.ExcelWriter(standard_filename) as writer:
         # df.to_excel(writer, sheet_name="Model Out", index=False)

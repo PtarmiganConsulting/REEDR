@@ -67,7 +67,12 @@ def main(gui_params):
         hit_error = True
 
     ### --- Get inputs from Control Panel. --- ###
-    set_dir = get_data_dict["parent"]
+    
+    try: 
+        set_dir = get_data_dict["parent"]
+    except:
+        pass
+
     control_panel_dict = {}
     control_panel_dict["control_panel_folder_name"] = "Control Panel"
     control_panel_dict["control_panel_names_file"] = "Control Panel Names.csv"
