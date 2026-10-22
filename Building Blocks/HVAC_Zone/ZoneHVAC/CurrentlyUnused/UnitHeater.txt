@@ -1,0 +1,85 @@
+   ZoneHVAC:UnitHeater,
+    UnitHeater_Gas,              !- Name
+    heating_avail,               !- Availability Schedule Name
+    Zone1UnitHeatAirInletNode,   !- Air Inlet Node Name
+    Zone1UnitHeatAirOutletNode,  !- Air Outlet Node Name
+    Fan:ConstantVolume,          !- Supply Air Fan Object Type
+    Zone1UnitHeatFan,            !- Supply Air Fan Name
+    0.84,                        !- Maximum Supply Air Flow Rate {{m3/s}}
+    Coil:Heating:Fuel,           !- Heating Coil Object Type
+    Zone1UnitHeatHeatingCoil,    !- Heating Coil Name
+    ,                            !- Supply Air Fan Operating Mode Schedule Name
+    Yes;                         !- Supply Air Fan Operation During No Heating
+
+  Fan:ConstantVolume,
+    Zone1UnitHeatFan,            !- Name
+    heating_avail,               !- Availability Schedule Name
+    0.5,                         !- Fan Total Efficiency
+    75.0,                        !- Pressure Rise {{Pa}}
+    0.84,                        !- Maximum Flow Rate {{m3/s}}
+    0.9,                         !- Motor Efficiency
+    1.0,                         !- Motor In Airstream Fraction
+    Zone1UnitHeatAirInletNode,   !- Air Inlet Node Name
+    Zone1UnitHeatFanOutletNode;  !- Air Outlet Node Name
+    
+
+  Coil:Heating:Fuel,
+    Zone1UnitHeatHeatingCoil,    !- Name
+    heating_avail,               !- Availability Schedule Name
+    NaturalGas,                  !- Fuel Type
+    0.76,                        !- Burner Efficiency
+    10000,                       !- Nominal Capacity {{W}}
+    Zone1UnitHeatFanOutletNode,  !- Air Inlet Node Name
+    Zone1UnitHeatAirOutletNode;  !- Air Outlet Node Name
+
+  NodeList,
+    Zone1Inlets,                 !- Name
+    Zone1UnitHeatAirOutletNode,  !- Node 1 Name
+    Zone Inlet Node;
+
+  NodeList,
+    Zone1Exhausts,               !- Name
+    Zone1UnitHeatAirInletNode;   !- Node 1 Name
+
+AirflowNetwork:Distribution:Node,
+    AFN_ZONE1UNITHEATAIROUTLETNODE,             !- Name
+    ZONE1UNITHEATAIROUTLETNODE,                           !- Component Name or Node Name
+    Other,                      !- Component Object Type or Node Type
+    3.0;                        !- Node Height {{m}}
+
+AirflowNetwork:Distribution:Node,
+    AFN_ZONE1UNITHEATAIRINLETNODE,             !- Name
+    ZONE1UNITHEATAIRINLETNODE,                           !- Component Name or Node Name
+    Other,                      !- Component Object Type or Node Type
+    3.0;                        !- Node Height {{m}}
+
+AirflowNetwork:Distribution:Node,
+    AFN_ZONE1UNITHEATFANOUTLETNODE,             !- Name
+    ZONE1UNITHEATFANOUTLETNODE,                           !- Component Name or Node Name
+    Other,                      !- Component Object Type or Node Type
+    3.0;                        !- Node Height {{m}}
+
+
+
+AirflowNetwork:Distribution:Linkage,
+    FanLink,   !- Name
+    AFN_ZONE1UNITHEATAIRINLETNODE,                     !- Node 1 Name
+    AFN_ZONE1UNITHEATFANOUTLETNODE,             !- Node 2 Name
+    Zone1UnitHeatFan;         !- Component Name
+
+AirflowNetwork:Distribution:Linkage,
+    CoilLink,   !- Name
+    AFN_ZONE1UNITHEATFANOUTLETNODE,                     !- Node 1 Name
+    AFN_ZONE1UNITHEATAIROUTLETNODE,             !- Node 2 Name
+    Zone1UnitHeatHeatingCoil;         !- Component Name
+
+AirflowNetwork:Distribution:Component:Coil,
+    CoilLink,               !- Coil Name
+    Coil:Heating:Fuel,           !- Coil Object Type
+    0.1,                                  !- Air Path Length {{m}}
+    1.000;                                !- Air Path Hydraulic Diameter {{m}}
+
+AirflowNetwork:Distribution:Component:Fan,
+    FanLink,            !- Fan Name
+    Fan:ConstantVolume;              !- Supply Fan Object Type
+

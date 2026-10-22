@@ -1,0 +1,17 @@
+!-   ===========  ALL OBJECTS IN CLASS: AIRLOOPHVAC:UNITARYHEATONLY ===========
+
+AirLoopHVAC:UnitaryHeatOnly,
+    Furnace,                     	            !- Name
+    always_avail,             		            !- Availability Schedule Name
+    Air Loop Inlet Node,        	            !- Unitary System Air Inlet Node Name
+    Air Loop Outlet Node,       	            !- Unitary System Air Outlet Node Name
+    fan_cycle,              		            !- Supply Air Fan Operating Mode Schedule Name
+    48.89,                         	            !- Maximum Supply Air Temperature {{C}} (Assume 120 deg. F per BEopt)
+    {fan_m3PerSec_spd_1},                       !- Supply Air Flow Rate During Heating Operation {{m3/s}}
+    living,                     	            !- Controlling Zone or Thermostat Location
+    Fan:OnOff,            		                !- Supply Fan Object Type
+    {fan_name},                 	            !- Supply Fan Name
+    BlowThrough,                	            !- Fan Placement
+    {AirLoopHVAC_HeatingCoil_ObjectType}, 	    !- Heating Coil Object Type (e.g. Coil:Heating:electric)
+    {AirLoopHVAC_HeatingCoil_Name};             !- Heating Coil Name
+

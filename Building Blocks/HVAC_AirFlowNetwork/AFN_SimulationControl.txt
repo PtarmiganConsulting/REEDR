@@ -1,0 +1,19 @@
+!-   ===========  ALL OBJECTS IN CLASS: AIRFLOWNETWORK:SIMULATIONCONTROL ===========
+
+AirflowNetwork:SimulationControl,
+    House AirflowNetwork,           !- Name
+    {AFN_control},                  !- AirflowNetwork Control
+    SurfaceAverageCalculation,      !- Wind Pressure Coefficient Type
+    ,                               !- Height Selection for Local Wind Speed Calculation
+    LOWRISE,                        !- Building Type
+    500,                            !- Maximum Number of Iterations {{dimensionless}}
+    ,                               !- Initialization Type
+    0.001,                          !- Relative Airflow Convergence Tolerance {{dimensionless}}
+    0.00001,                        !- Absolute Airflow Convergence Tolerance {{kg/s}}
+    0,                              !- Convergence Acceleration Limit {{dimensionless}}
+    0,                              !- Azimuth Angle of Long Axis of Building {{deg}}
+    0.75,                           !- Ratio of Building Width Along Short Axis to Width Along Long Axis
+	,                               !- Height Dependence of External Node Temperature
+    ,                               !- Solver
+    Yes;                            !- Allow Unsupported Zone Equipment
+

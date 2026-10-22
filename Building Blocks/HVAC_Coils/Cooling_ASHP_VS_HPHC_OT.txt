@@ -1,0 +1,419 @@
+!-   ===========  ALL OBJECTS IN CLASS: COIL:COOLING:DX:MULTISPEED ===========
+
+Coil:Cooling:DX:MultiSpeed,
+    DX_Cooling_Coil,                    !- Name
+    cooling_avail,                       !- Availability Schedule Name
+    Cooling Coil Air Inlet Node,        !- Air Inlet Node Name
+    Heating Coil Air Inlet Node,        !- Air Outlet Node Name
+    Dummy Outdoor Air Node,             !- Condenser Air Inlet Node Name
+    aircooled,                          !- Condenser Type
+    ,                                   !- Minimum Outdoor Dry-Bulb Temperature for Compressor Operation {{C}}
+    ,                                   !- Supply Water Storage Tank Name
+    ,                                   !- Condensate Collection Water Storage Tank Name
+    No,                                 !- Apply Part Load Fraction to Speeds Greater than 1
+    No,                                 !- Apply Latent Degradation to Speeds Greater than 1
+    0.0,                                !- Crankcase Heater Capacity {{W}}
+    10.0,                               !- Maximum Outdoor Dry-Bulb Temperature for Crankcase Heater Operation {{C}}
+    ,                                   !- Basin Heater Capacity {{W/K}}
+    ,                                   !- Basin Heater Setpoint Temperature {{C}}
+    ,                                   !- Basin Heater Operating Schedule Name
+    Electricity,                        !- Fuel Type
+    3,                                  !- Number of Speeds
+    {clg_capacity_spd_1},               !- Speed 1 Gross Rated Total Cooling Capacity {{W}}
+    0.795,                              !- Speed 1 Gross Rated Sensible Heat Ratio
+    4.077,                 !- Speed 1 Gross Rated Cooling COP {{W/W}}
+    {fan_m3PerSec_spd_1},               !- Speed 1 Rated Air Flow Rate {{m3/s}}
+    ,                                   !- 2017 Speed 1 Rated Evaporator Fan Power Per Volume Flow Rate {{W/(m3/s)}}
+    ,                                   !- 2023 Speed 1 Rated Evaporator Fan Power Per Volume Flow Rate {{W/(m3/s)}}
+    Cooling CapfT 1,            !- Speed 1 Total Cooling Capacity Function of Temperature Curve Name
+    Cooling CapfFF 1,           !- Speed 1 Total Cooling Capacity Function of Air Flow Fraction Curve Name
+    Cooling EIRfT 1,            !- Speed 1 Energy Input Ratio Function of Temperature Curve Name
+    Cooling EIRfFF 1,           !- Speed 1 Energy Input Ratio Function of Air Flow Fraction Curve Name
+    Cool-PLF-fPLR1,                     !- Speed 1 Part Load Fraction Correlation Curve Name
+    1000,                               !- Speed 1 Nominal Time for Condensate Removal to Begin {{s}}
+    1.5,                                !- Speed 1 Ratio of Initial Moisture Evaporation Rate and Steady State Latent Capacity {{dimensionless}}
+    3,                                  !- Speed 1 Maximum Cycling Rate {{cycles/hr}}
+    45,                                 !- Speed 1 Latent Capacity Time Constant {{s}}
+    ,                                   !- Speed 1 Rated Waste Heat Fraction of Power Input {{dimensionless}}
+    ConstantBiquadratic,                !- Speed 1 Waste Heat Function of Temperature Curve Name
+    ,                                   !- Speed 1 Evaporative Condenser Effectiveness {{dimensionless}}
+    ,                                   !- Speed 1 Evaporative Condenser Air Flow Rate {{m3/s}}
+    ,                                   !- Speed 1 Rated Evaporative Condenser Pump Power Consumption {{W}}
+    {clg_capacity_spd_2},               !- Speed 2 Gross Rated Total Cooling Capacity {{W}}
+    0.78,                               !- Speed 2 Gross Rated Sensible Heat Ratio
+    3.524,                  !- Speed 2 Gross Rated Cooling COP {{W/W}}
+    {fan_m3PerSec_spd_2},               !- Speed 2 Rated Air Flow Rate {{m3/s}}
+    ,                                   !- 2017 Speed 2 Rated Evaporator Fan Power Per Volume Flow Rate {{W/(m3/s)}}
+    ,                                   !- 2023 Speed 2 Rated Evaporator Fan Power Per Volume Flow Rate {{W/(m3/s)}}
+    Cooling CapfT 2,            !- Speed 2 Total Cooling Capacity Function of Temperature Curve Name
+    Cooling CapfFF 2,           !- Speed 2 Total Cooling Capacity Function of Air Flow Fraction Curve Name
+    Cooling EIRfT 2,            !- Speed 2 Energy Input Ratio Function of Temperature Curve Name
+    Cooling EIRfFF 2,           !- Speed 2 Energy Input Ratio Function of Air Flow Fraction Curve Name
+    Cool-PLF-fPLR2,                     !- Speed 2 Part Load Fraction Correlation Curve Name
+    1000,                               !- Speed 2 Nominal Time for Condensate Removal to Begin {{s}}
+    1.5,                                !- Speed 2 Ratio of Initial Moisture Evaporation Rate and steady state Latent Capacity {{dimensionless}}
+    3,                                  !- Speed 2 Maximum Cycling Rate {{cycles/hr}}
+    45,                                 !- Speed 2 Latent Capacity Time Constant {{s}}
+    ,                                   !- Speed 2 Rated Waste Heat Fraction of Power Input {{dimensionless}}
+    ConstantBiquadratic,                !- Speed 2 Waste Heat Function of Temperature Curve Name
+    ,                                   !- Speed 2 Evaporative Condenser Effectiveness {{dimensionless}}
+    ,                                   !- Speed 2 Evaporative Condenser Air Flow Rate {{m3/s}}
+    ,                                   !- Speed 2 Rated Evaporative Condenser Pump Power Consumption {{W}}
+    {clg_capacity_spd_3},               !- Speed 3 Gross Rated Total Cooling Capacity {{W}}
+    0.68,                               !- Speed 3 Gross Rated Sensible Heat Ratio
+    3.347,                  !- Speed 3 Gross Rated Cooling COP {{W/W}}
+    {fan_m3PerSec_spd_3},               !- Speed 3 Rated Air Flow Rate {{m3/s}}
+    ,                                   !- 2017 Speed 3 Rated Evaporator Fan Power Per Volume Flow Rate {{W/(m3/s)}}
+    ,                                   !- 2023 Speed 3 Rated Evaporator Fan Power Per Volume Flow Rate {{W/(m3/s)}}
+    Cooling CapfT 3,            !- Speed 3 Total Cooling Capacity Function of Temperature Curve Name
+    Cooling CapfFF 3,           !- Speed 3 Total Cooling Capacity Function of Air Flow Fraction Curve Name
+    Cooling EIRfT 3,            !- Speed 3 Energy Input Ratio Function of Temperature Curve Name
+    Cooling EIRfFF 3,           !- Speed 3 Energy Input Ratio Function of Air Flow Fraction Curve Name
+    Cool-PLF-fPLR3,                     !- Speed 3 Part Load Fraction Correlation Curve Name
+    1000,                               !- Speed 3 Nominal Time for Condensate Removal to Begin {{s}}
+    1.5,                                !- Speed 3 Ratio of Initial Moisture Evaporation Rate and steady state Latent Capacity {{dimensionless}}
+    3,                                  !- Speed 3 Maximum Cycling Rate {{cycles/hr}}
+    45,                                 !- Speed 3 Latent Capacity Time Constant {{s}}
+    ,                                   !- Speed 3 Rated Waste Heat Fraction of Power Input {{dimensionless}}
+    ConstantBiquadratic,                !- Speed 3 Waste Heat Function of Temperature Curve Name
+    ,                                   !- Speed 3 Evaporative Condenser Effectiveness {{dimensionless}}
+    ,                                   !- Speed 3 Evaporative Condenser Air Flow Rate {{m3/s}}
+    ;                                   !- Speed 3 Rated Evaporative Condenser Pump Power Consumption {{W}}
+
+
+AirflowNetwork:Distribution:Component:Coil,
+    DX_Cooling_Coil,               !- Coil Name
+    Coil:Cooling:DX:MultiSpeed,           !- Coil Object Type
+    0.1,                                  !- Air Path Length {{m}}
+    1.000;                                !- Air Path Hydraulic Diameter {{m}}
+
+OutdoorAir:Node,
+    Dummy Outdoor Air Node,       !- Name
+    -1;                             !- Height Above Ground {{m}}
+
+  Curve:Quadratic,
+    Cool-PLF-fPLR1,          !- Name
+    0.75,                    !- Coefficient1 Constant
+    0.25,                    !- Coefficient2 x
+    0,                       !- Coefficient3 x**2
+    0,                       !- Minimum Value of x
+    1,                       !- Maximum Value of x
+    0.7,                     !- Minimum Curve Output
+    1;                       !- Maximum Curve Output
+
+  Curve:Quadratic,
+    Cool-PLF-fPLR2,          !- Name
+    0.75,                    !- Coefficient1 Constant
+    0.25,                    !- Coefficient2 x
+    0,                       !- Coefficient3 x**2
+    0,                       !- Minimum Value of x
+    1,                       !- Maximum Value of x
+    0.7,                     !- Minimum Curve Output
+    1;                       !- Maximum Curve Output
+
+   Curve:Quadratic,
+    Cool-PLF-fPLR3,          !- Name
+    0.75,                    !- Coefficient1 Constant
+    0.25,                    !- Coefficient2 x
+    0,                       !- Coefficient3 x**2
+    0,                       !- Minimum Value of x
+    1,                       !- Maximum Value of x
+    0.7,                     !- Minimum Curve Output
+    1;                       !- Maximum Curve Output
+
+Table:IndependentVariable,
+  Cooling Outdoor Drybulb,    !- Name
+  Linear,                     !- Interpolation Method
+  Constant,                   !- Extrapolation Method
+  ,                           !- Minimum Value
+  ,                           !- Maximum Value
+  35.00,                      !- Normalization Reference Value
+  Temperature,                !- Unit Type
+  ,                           !- External File Name
+  ,                           !- External File Column Number
+  ,                           !- External File Starting Row Number
+  4.44,                       !- Value 1
+  8.61,                       !- Value 2
+  27.78,                      !- Value 3
+  35.00,                      !- Value 4
+  51.67;                      !- Value 5
+
+Table:IndependentVariable,
+  Cooling Indoor Wetbulb,     !- Name
+  Linear,                     !- Interpolation Method
+  Constant,                   !- Extrapolation Method
+  ,                           !- Minimum Value
+  ,                           !- Maximum Value
+  19.44,                      !- Normalization Reference Value
+  Temperature,                !- Unit Type
+  ,                           !- External File Name
+  ,                           !- External File Column Number
+  ,                           !- External File Starting Row Number
+  10.00,                      !- Value 1
+  19.44,                      !- Value 2
+  26.67;                      !- Value 3
+
+Table:IndependentVariableList,
+  Cooling fT List,            !- Name
+  Cooling Indoor Wetbulb,     !- Independent Variable 1 Name
+  Cooling Outdoor Drybulb;    !- Independent Variable 2 Name
+
+Curve:Linear,
+  Cooling fPLR,               !- Name
+  0.60,                       !- Coefficient1 Constant
+  0.40,                       !- Coefficient2 x
+  0.00,                       !- Minimum Value of x
+  1.00;                       !- Maximum Value of x
+
+Table:Lookup,
+  Cooling CapfFF 1,           !- Name
+  fFF List,                   !- Independent Variable List Name
+  None,                       !- Normalization Method
+  1.00,                       !- Normalization Divisor
+  ,                           !- Minimum Output
+  ,                           !- Maximum Output
+  Dimensionless,              !- Output Unit Type
+  ,                           !- External File Name
+  ,                           !- External File Column Number
+  ,                           !- External File Starting Row Number
+  0.96,                       !- Output Value 1
+  1.00,                       !- Output Value 2
+  1.03;                       !- Output Value 3
+
+Table:Lookup,
+  Cooling EIRfFF 1,           !- Name
+  fFF List,                   !- Independent Variable List Name
+  None,                       !- Normalization Method
+  1.00,                       !- Normalization Divisor
+  ,                           !- Minimum Output
+  ,                           !- Maximum Output
+  Dimensionless,              !- Output Unit Type
+  ,                           !- External File Name
+  ,                           !- External File Column Number
+  ,                           !- External File Starting Row Number
+  1.0366,                     !- Output Value 1
+  1.0000,                     !- Output Value 2
+  0.9629;                     !- Output Value 3
+
+Table:Lookup,
+  Cooling CapfT 1,            !- Name
+  Cooling fT List,            !- Independent Variable List Name
+  None,                       !- Normalization Method
+  1.00,                       !- Normalization Divisor
+  ,                           !- Minimum Output
+  ,                           !- Maximum Output
+  Dimensionless,              !- Output Unit Type
+  ,                           !- External File Name
+  ,                           !- External File Column Number
+  ,                           !- External File Starting Row Number
+  1.37,                       !- Output Value 1
+  1.30,                       !- Output Value 2
+  1.02,                       !- Output Value 3
+  0.92,                       !- Output Value 4
+  0.69,                       !- Output Value 5
+  1.51,                       !- Output Value 6
+  1.44,                       !- Output Value 7
+  1.12,                       !- Output Value 8
+  1.00,                       !- Output Value 9
+  0.72,                       !- Output Value 10
+  1.68,                       !- Output Value 11
+  1.60,                       !- Output Value 12
+  1.25,                       !- Output Value 13
+  1.11,                       !- Output Value 14
+  0.80;                       !- Output Value 15
+
+Table:Lookup,
+  Cooling EIRfT 1,            !- Name
+  Cooling fT List,            !- Independent Variable List Name
+  None,                       !- Normalization Method
+  1.00,                       !- Normalization Divisor
+  ,                           !- Minimum Output
+  ,                           !- Maximum Output
+  Dimensionless,              !- Output Unit Type
+  ,                           !- External File Name
+  ,                           !- External File Column Number
+  ,                           !- External File Starting Row Number
+  0.2920,                     !- Output Value 1
+  0.3061,                     !- Output Value 2
+  0.7985,                     !- Output Value 3
+  1.0706,                     !- Output Value 4
+  2.0227,                     !- Output Value 5
+  0.2759,                     !- Output Value 6
+  0.2893,                     !- Output Value 7
+  0.7500,                     !- Output Value 8
+  1.0000,                     !- Output Value 9
+  1.8955,                     !- Output Value 10
+  0.2383,                     !- Output Value 11
+  0.2498,                     !- Output Value 12
+  0.6531,                     !- Output Value 13
+  0.8869,                     !- Output Value 14
+  1.7445;                     !- Output Value 15
+
+Table:Lookup,
+  Cooling CapfFF 2,           !- Name
+  fFF List,                   !- Independent Variable List Name
+  None,                       !- Normalization Method
+  1.00,                       !- Normalization Divisor
+  ,                           !- Minimum Output
+  ,                           !- Maximum Output
+  Dimensionless,              !- Output Unit Type
+  ,                           !- External File Name
+  ,                           !- External File Column Number
+  ,                           !- External File Starting Row Number
+  0.96,                       !- Output Value 1
+  1.00,                       !- Output Value 2
+  1.03;                       !- Output Value 3
+
+Table:Lookup,
+  Cooling EIRfFF 2,           !- Name
+  fFF List,                   !- Independent Variable List Name
+  None,                       !- Normalization Method
+  1.00,                       !- Normalization Divisor
+  ,                           !- Minimum Output
+  ,                           !- Maximum Output
+  Dimensionless,              !- Output Unit Type
+  ,                           !- External File Name
+  ,                           !- External File Column Number
+  ,                           !- External File Starting Row Number
+  1.0366,                     !- Output Value 1
+  1.0000,                     !- Output Value 2
+  0.9629;                     !- Output Value 3
+
+Table:Lookup,
+  Cooling CapfT 2,            !- Name
+  Cooling fT List,            !- Independent Variable List Name
+  None,                       !- Normalization Method
+  1.00,                       !- Normalization Divisor
+  ,                           !- Minimum Output
+  ,                           !- Maximum Output
+  Dimensionless,              !- Output Unit Type
+  ,                           !- External File Name
+  ,                           !- External File Column Number
+  ,                           !- External File Starting Row Number
+  1.12,                       !- Output Value 1
+  1.09,                       !- Output Value 2
+  0.96,                       !- Output Value 3
+  0.92,                       !- Output Value 4
+  0.83,                       !- Output Value 5
+  1.23,                       !- Output Value 6
+  1.20,                       !- Output Value 7
+  1.06,                       !- Output Value 8
+  1.00,                       !- Output Value 9
+  0.87,                       !- Output Value 10
+  1.37,                       !- Output Value 11
+  1.34,                       !- Output Value 12
+  1.17,                       !- Output Value 13
+  1.11,                       !- Output Value 14
+  0.97;                       !- Output Value 15
+
+Table:Lookup,
+  Cooling EIRfT 2,            !- Name
+  Cooling fT List,            !- Independent Variable List Name
+  None,                       !- Normalization Method
+  1.00,                       !- Normalization Divisor
+  ,                           !- Minimum Output
+  ,                           !- Maximum Output
+  Dimensionless,              !- Output Unit Type
+  ,                           !- External File Name
+  ,                           !- External File Column Number
+  ,                           !- External File Starting Row Number
+  0.1264,                     !- Output Value 1
+  0.1298,                     !- Output Value 2
+  0.7734,                     !- Output Value 3
+  1.0706,                     !- Output Value 4
+  1.8828,                     !- Output Value 5
+  0.1195,                     !- Output Value 6
+  0.1227,                     !- Output Value 7
+  0.7264,                     !- Output Value 8
+  1.0000,                     !- Output Value 9
+  1.7644,                     !- Output Value 10
+  0.1032,                     !- Output Value 11
+  0.1059,                     !- Output Value 12
+  0.6325,                     !- Output Value 13
+  0.8869,                     !- Output Value 14
+  1.6238;                     !- Output Value 15
+
+Table:Lookup,
+  Cooling CapfFF 3,           !- Name
+  fFF List,                   !- Independent Variable List Name
+  None,                       !- Normalization Method
+  1.00,                       !- Normalization Divisor
+  ,                           !- Minimum Output
+  ,                           !- Maximum Output
+  Dimensionless,              !- Output Unit Type
+  ,                           !- External File Name
+  ,                           !- External File Column Number
+  ,                           !- External File Starting Row Number
+  0.96,                       !- Output Value 1
+  1.00,                       !- Output Value 2
+  1.03;                       !- Output Value 3
+
+Table:Lookup,
+  Cooling EIRfFF 3,           !- Name
+  fFF List,                   !- Independent Variable List Name
+  None,                       !- Normalization Method
+  1.00,                       !- Normalization Divisor
+  ,                           !- Minimum Output
+  ,                           !- Maximum Output
+  Dimensionless,              !- Output Unit Type
+  ,                           !- External File Name
+  ,                           !- External File Column Number
+  ,                           !- External File Starting Row Number
+  1.0366,                     !- Output Value 1
+  1.0000,                     !- Output Value 2
+  0.9629;                     !- Output Value 3
+
+Table:Lookup,
+  Cooling CapfT 3,            !- Name
+  Cooling fT List,            !- Independent Variable List Name
+  None,                       !- Normalization Method
+  1.00,                       !- Normalization Divisor
+  ,                           !- Minimum Output
+  ,                           !- Maximum Output
+  Dimensionless,              !- Output Unit Type
+  ,                           !- External File Name
+  ,                           !- External File Column Number
+  ,                           !- External File Starting Row Number
+  1.11,                       !- Output Value 1
+  1.08,                       !- Output Value 2
+  0.96,                       !- Output Value 3
+  0.92,                       !- Output Value 4
+  0.84,                       !- Output Value 5
+  1.23,                       !- Output Value 6
+  1.20,                       !- Output Value 7
+  1.05,                       !- Output Value 8
+  1.00,                       !- Output Value 9
+  0.88,                       !- Output Value 10
+  1.37,                       !- Output Value 11
+  1.33,                       !- Output Value 12
+  1.17,                       !- Output Value 13
+  1.11,                       !- Output Value 14
+  0.97;                       !- Output Value 15
+
+Table:Lookup,
+  Cooling EIRfT 3,            !- Name
+  Cooling fT List,            !- Independent Variable List Name
+  None,                       !- Normalization Method
+  1.00,                       !- Normalization Divisor
+  ,                           !- Minimum Output
+  ,                           !- Maximum Output
+  Dimensionless,              !- Output Unit Type
+  ,                           !- External File Name
+  ,                           !- External File Column Number
+  ,                           !- External File Starting Row Number
+  0.1111,                     !- Output Value 1
+  0.1140,                     !- Output Value 2
+  0.7696,                     !- Output Value 3
+  1.0706,                     !- Output Value 4
+  1.8877,                     !- Output Value 5
+  0.1050,                     !- Output Value 6
+  0.1077,                     !- Output Value 7
+  0.7228,                     !- Output Value 8
+  1.0000,                     !- Output Value 9
+  1.7690,                     !- Output Value 10
+  0.0907,                     !- Output Value 11
+  0.0930,                     !- Output Value 12
+  0.6294,                     !- Output Value 13
+  0.8869,                     !- Output Value 14
+  1.6280;                     !- Output Value 15
+

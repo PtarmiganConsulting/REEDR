@@ -1,0 +1,34 @@
+  Coil:Heating:Electric:MultiStage,
+    Heating_Resistance_Backup,          !- Name
+    heating_avail,                      !- Availability Schedule Name
+    Supp Heating Coil Air Inlet Node,   !- Air Inlet Node Name
+    Air Loop Outlet Node,               !- Air Outlet Node Name
+    ,                                   !- Temperature Setpoint Node Name
+    3,                                  !- Number of Stages
+    1,                                  !- Stage 1 Efficiency {{W/W}}
+    {hp_supp_heat_capacity_multistage}, !- Stage 1 Nominal Capacity {{W}}
+    1,                                  !- Stage 2 Efficiency {{W/W}}
+    {hp_supp_heat_capacity_multistage}, !- Stage 2 Nominal Capacity {{W}}
+    1,                                  !- Stage 3 Efficiency {{W/W}}
+    {hp_supp_heat_capacity_multistage}; !- Stage 3 Nominal Capacity {{W}}
+
+!-   ===========  ALL OBJECTS IN CLASS: AIRFLOWNETWORK:DISTRIBUTION:COMPONENT:COIL ===========
+
+AirflowNetwork:Distribution:Component:Coil,
+    Heating_Resistance_Backup,
+    Coil:Heating:Electric:MultiStage,
+    0.1,
+    1.000;
+
+AirflowNetwork:Distribution:Linkage,
+    SuppHeatingCoilLink,            !- Name
+    SuppHeatingInletNode,           !- Node 1 Name
+    HeatingOutletNode,              !- Node 2 Name
+    Heating_Resistance_Backup;      !- Component Name
+
+AirflowNetwork:Distribution:Node,
+    SuppHeatingInletNode,         	    !- Name
+    Supp Heating coil air inlet Node,   !- Component Name or Node Name
+    Other,                      		!- Component Object Type or Node Type
+    3.0;                        		!- Node Height {{m}}
+
